@@ -474,7 +474,7 @@ function nv_html_meta_tags($html = true)
     $return[] = [
         'name' => 'name',
         'value' => 'generator',
-        'content' => 'NukeViet v4.5'
+        'content' => 'NukeViet v4.6'
     ];
 
     if (defined('NV_IS_ADMIN')) {
@@ -747,24 +747,24 @@ function nv_html_css($html = true)
 
     if (theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.css')) {
         if ($html) {
-            return '<link rel="StyleSheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css" type="text/css" />' . PHP_EOL;
+            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css" type="text/css" />' . PHP_EOL;
         }
 
         return [
             [
-                'rel' => 'StyleSheet',
+                'rel' => 'stylesheet',
                 'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css'
             ]
         ];
     }
     if (theme_file_exists($module_info['template'] . '/css/' . $module_file . '.css')) {
         if ($html) {
-            return '<link rel="StyleSheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css" type="text/css" />' . PHP_EOL;
+            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css" type="text/css" />' . PHP_EOL;
         }
 
         return [
             [
-                'rel' => 'StyleSheet',
+                'rel' => 'stylesheet',
                 'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css'
             ]
         ];
