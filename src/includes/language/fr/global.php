@@ -138,6 +138,7 @@ $lang_global['today'] = 'Aujourd\'hui';
 $lang_global['current_month'] = 'Ce mois';
 $lang_global['nojs'] = 'Votre navigateur a désactivé le support de JAVASCRIPT.<br />Vous devez l\'activer pour que notre site fonctionne correctement.<br />Pour consulter comment activer JAVASCRIPT, cliquez <a >ici</a>!';
 $lang_global['chromeframe'] = 'Vous utilisez un navigateur <strong>obsolète et non sécurisé</strong>. Veuillez <a href="https://browsehappy.com/">mettre à jour votre navigateur</a> pour pouvoir utiliser toutes les fonctionnalités du site.';
+$lang_global['chromeframe_title'] = 'Navigateur obsolète et non pris en charge';
 $lang_global['sun'] = 'Dim';
 $lang_global['mon'] = 'Lun';
 $lang_global['tue'] = 'Mar';

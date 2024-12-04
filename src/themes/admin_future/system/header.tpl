@@ -9,9 +9,6 @@
     <meta name="generator" content="{$GCONFIG.site_name}">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="content-type" content="text/html; charset={$GCONFIG.site_charset}">
-    <!--[if IE]>
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EmulateIE8; IE=EDGE" />
-    <![endif]-->
 
     <link rel="shortcut icon" href="{$FAVICON}">
     <link rel="stylesheet" href="{$smarty.const.NV_BASE_SITEURL}themes/{$ADMIN_THEME}/css/nv.style{if not empty($TCONFIG) and $TCONFIG.dir eq 'rtl'}.rtl{/if}.css">

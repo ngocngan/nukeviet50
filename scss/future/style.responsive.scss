@@ -7,18 +7,6 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-// Define variable
-@import "../functions";
-//@import "fonts";
-//@import "variables";
-//@import "variables-dark";
+$enable-responsive: true;
 
-// Bootstrap all
-@import "../../node_modules/bootstrap/scss/bootstrap";
-
-// Fontawesome all
-@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "../../node_modules/@fortawesome/fontawesome-free/scss/brands";
-@import "../../node_modules/@fortawesome/fontawesome-free/scss/regular";
-@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
-@import "../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
+@import "style";

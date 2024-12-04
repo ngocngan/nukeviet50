@@ -1,0 +1,21 @@
+// Define variable
+@import "../functions";
+@import "mixins/responsive";
+//@import "fonts";
+@import "variables";
+//@import "variables-dark";
+
+// Bootstrap all
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Fontawesome all
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/brands";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
+
+@import "common";
+
+// Giữ ở cuối
+@import "override";

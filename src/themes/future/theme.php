@@ -61,6 +61,11 @@ function nv_site_theme($contents, $full = true)
     $tpl->assign('GCONFIG', $global_config);
     $tpl->assign('THEME_PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('CLIENT_INFO', $client_info);
+    $tpl->assign('OUTDATED_BROWSER', nv_outdated_browser());
+
+    $tpl->assign('HOME', $home);
+    $tpl->assign('MODULE_NAME', $module_name);
+    $tpl->assign('OP', $op);
     $tpl->assign('MODULE_CONTENT', $contents);
 
     // Meta-tags
@@ -69,7 +74,7 @@ function nv_site_theme($contents, $full = true)
         $metatags[] = [
             'name' => 'name',
             'value' => 'viewport',
-            'content' => 'width=device-width, initial-scale=1'
+            'content' => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'
         ];
     }
     $tpl->assign('METATAGS', $metatags);
@@ -232,6 +237,9 @@ function nv_site_theme($contents, $full = true)
     }
     $tpl->assign('HTML_JS', $html_js);
 
+    // Thông báo thu thập cookie lần đầu
+    $tpl->assign('COOKIE_NOTICE', ($global_config['cookie_notice_popup'] and !isset($_COOKIE[$global_config['cookie_prefix'] . '_cn'])));
+
     $sitecontent = $tpl->fetch($layout_file);
 
     // Giao diện đầy đủ thì có thêm block và thông báo lỗi
@@ -265,7 +273,7 @@ function nv_site_theme($contents, $full = true)
     $xtpl->assign('NV_SITE_NAME', $global_config['site_name']);
     $xtpl->assign('NV_SITE_TITLE', $global_config['site_name'] . NV_TITLEBAR_DEFIS . $nv_Lang->getGlobal('admin_page') . NV_TITLEBAR_DEFIS . $module_info['custom_title']);
     $xtpl->assign('SITE_DESCRIPTION', $global_config['site_description']);
-    $xtpl->assign('MODULE_NAME', $module_name);
+
     $xtpl->assign('NV_CURRENTTIME', nv_datetime_format(NV_CURRENTTIME, 0, 0));
     $xtpl->assign('NV_COOKIE_PREFIX', $global_config['cookie_prefix']);
 
@@ -381,11 +389,6 @@ function nv_site_theme($contents, $full = true)
     if (defined('SSO_REGISTER_DOMAIN')) {
         $xtpl->assign('SSO_REGISTER_ORIGIN', SSO_REGISTER_DOMAIN);
         $xtpl->parse('main.crossdomain_listener');
-    }
-
-    if ($global_config['cookie_notice_popup'] and !isset($_COOKIE[$global_config['cookie_prefix'] . '_cn'])) {
-        $xtpl->assign('COOKIE_NOTICE', $nv_Lang->getGlobal('cookie_notice', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=siteterms&amp;' . NV_OP_VARIABLE . '=privacy' . $global_config['rewrite_exturl']));
-        $xtpl->parse('main.cookie_notice');
     }
 }
 

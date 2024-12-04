@@ -6234,8 +6234,8 @@ textarea.form-control-lg {
 }
 .offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
   --bs-offcanvas-zindex: 1045;
-  --bs-offcanvas-width: 400px;
-  --bs-offcanvas-height: 30vh;
+  --bs-offcanvas-width: 300px;
+  --bs-offcanvas-height: fit-content;
   --bs-offcanvas-padding-x: 1rem;
   --bs-offcanvas-padding-y: 1rem;
   --bs-offcanvas-color: var(--bs-body-color);
@@ -25127,5 +25127,33 @@ readers do not read off random characters that represent icons */
 .fa.fa-meetup {
   font-family: "Font Awesome 6 Brands";
   font-weight: 400;
+}
+
+.cookie-notice {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 22rem;
+  max-width: calc(100vw - 2rem);
+  z-index: 500;
+  background-color: var(--bs-secondary-bg);
+  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  box-shadow: var(--bs-box-shadow);
+  padding: 1rem;
+}
+.cookie-notice .btn-close {
+  float: left;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeoutsess {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1200;
+  display: none;
 }
 /*# sourceMappingURL=style.responsive.rtl.css.map */

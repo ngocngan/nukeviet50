@@ -9,11 +9,12 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-use NukeViet\Api\Exception;
-
 if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
+
+use NukeViet\Api\Exception;
+use NukeViet\Client\Browser;
 
 /**
  * @param mixed $a
@@ -4193,4 +4194,41 @@ function nv_u2d_get(?int $timestamp, string $lang = '', string $method = 'get')
 function nv_u2d_post(?int $timestamp, string $lang = '')
 {
     return nv_u2d_get($timestamp, $lang, 'post');
+}
+
+/**
+ * Phát hiện trình duyệt đã lỗi thời dựa trên danh sách trình duyệt đã biết.
+ * Nếu không xem như không lỗi thời. Nếu giao diện hỗ trợ riêng hãy xử lý bằng hàm
+ * theme_outdated_browser()
+ *
+ * @return boolean
+ */
+function nv_outdated_browser()
+{
+    if (function_exists('theme_outdated_browser')) {
+        return theme_outdated_browser();
+    }
+
+    global $client_info;
+
+    if ($client_info['browser']['version'] <= 0) {
+        return false;
+    }
+    if ($client_info['browser']['key'] == Browser::BROWSER_IE) {
+        return true;
+    }
+    if ($client_info['browser']['key'] == Browser::BROWSER_CHROME) {
+        return $client_info['browser']['version'] < 60;
+    }
+    if ($client_info['browser']['key'] == Browser::BROWSER_FIREFOX) {
+        return $client_info['browser']['version'] < 60;
+    }
+    if ($client_info['browser']['key'] == Browser::BROWSER_EDGE) {
+        return $client_info['browser']['version'] < 60;
+    }
+    if ($client_info['browser']['key'] == Browser::BROWSER_SAFARI) {
+        return $client_info['browser']['version'] < 12;
+    }
+
+    return false;
 }

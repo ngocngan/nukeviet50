@@ -1,0 +1,5 @@
+@mixin responsive($responsive: $enable-responsive) {
+    @if $responsive {
+        @content;
+    }
+}

@@ -52,7 +52,7 @@ function getFiles(files, callback) {
 
 // timeoutsesscancel
 function timeoutsesscancel() {
-    $("#timeoutsess").slideUp("slow", function() {
+    $("#timeoutsess").slideUp(200, function() {
         clearInterval(myTimersecField);
         myTimerPage = setTimeout(function() {
             timeoutsessrun()
