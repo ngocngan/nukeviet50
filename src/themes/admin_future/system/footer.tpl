@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    {if $IS_IE}
+    {if $OUTDATED_BROWSER}
     <div class="nv-offcanvas text-bg-warning p-3 show">
         {$LANG->getGlobal('chromeframe')}
     </div>
