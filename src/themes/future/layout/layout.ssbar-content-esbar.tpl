@@ -1,21 +1,20 @@
 {include file='header_only.tpl'}
 {include file='header_extended.tpl'}
 
-<div class="container-lg bg-body-secondary py-4">
+<div class="container-lg py-4">
     [THEME_ERROR_INFO]
     <div class="row">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-body">
-                    Start Sidebar
-                </div>
+        <div class="col-3">
+            <div class="vstack vstack-blocks">
+                [START_SIDEBAR]
             </div>
         </div>
-        <div class="col-8">
-            <div class="card">
-                <div class="card-body">
-                    Content
-                </div>
+        <div class="col-7">
+            {$MODULE_CONTENT}
+        </div>
+        <div class="col-2">
+            <div class="vstack vstack-blocks">
+                [END_SIDEBAR]
             </div>
         </div>
     </div>

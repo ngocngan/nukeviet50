@@ -26440,7 +26440,7 @@ html:not([data-bs-theme=dark]) .btn-default {
 }
 
 .alert-box.modal {
-  --bs-modal-zindex: 1061;
+  --prefixmodal-zindex: 1061;
 }
 
 .main-content .apexcharts-canvas text {

@@ -47,7 +47,7 @@ $widget-couter-icon-size: 3rem;
         a.ic {
             width: $card-tools-icon-size;
             height: $card-tools-icon-size;
-            box-shadow: var(--bs-box-shadow);
+            box-shadow: var(--#{$prefix}box-shadow);
         }
 
         &.tool-top {
@@ -56,7 +56,7 @@ $widget-couter-icon-size: 3rem;
     }
 
     .dropdown-menu {
-        --bs-dropdown-min-width: 11rem;
+        --#{$prefix}dropdown-min-width: 11rem;
 
         .widget-col-select {
             width: 3.75rem;
@@ -70,11 +70,11 @@ $widget-couter-icon-size: 3rem;
     border-color: transparent;
 
     &.active {
-        border-color: var(--bs-danger-border-subtle);
+        border-color: var(--#{$prefix}danger-border-subtle);
     }
 
     &.hover {
-        border-color: var(--bs-danger);
+        border-color: var(--#{$prefix}danger);
     }
 }
 
@@ -83,8 +83,8 @@ $widget-couter-icon-size: 3rem;
     max-height: 18.125rem;
     position: relative;
     overflow: hidden;
-    border-bottom-left-radius: calc(var(--bs-border-radius) + .0625rem);
-    border-bottom-right-radius: calc(var(--bs-border-radius) + .0625rem);
+    border-bottom-left-radius: calc(var(--#{$prefix}border-radius) + .0625rem);
+    border-bottom-right-radius: calc(var(--#{$prefix}border-radius) + .0625rem);
 }
 
 .widget-chart-290 {
@@ -103,7 +103,7 @@ $widget-couter-icon-size: 3rem;
     }
 
     .item-unread {
-        border-left: 0.1875rem var(--bs-primary) solid;
+        border-left: 0.1875rem var(--#{$prefix}primary) solid;
     }
 
     .image {

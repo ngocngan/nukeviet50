@@ -287,10 +287,10 @@ function nv_blocks_content($sitecontent)
                         $checkss = md5(NV_CHECK_SESSION . '_' . $_row['bid']);
                         $content = '<div class="portlet" id="bl_' . ($_row['bid']) . '">
                              <div class="tool">
-                                 <a href="#" class="block_content" name="' . $_row['bid'] . '" alt="' . $nv_Lang->getGlobal('edit_block') . '" title="' . $nv_Lang->getGlobal('edit_block') . '"><em class="ic"></em></a>
-                                 <a href="#" class="delblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $nv_Lang->getGlobal('delete_block') . '" title="' . $nv_Lang->getGlobal('delete_block') . '"><em class="ic"></em></a>
-                                 <a href="#" class="actblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $act_title . '" title="' . $act_title . '" data-act="' . $nv_Lang->getGlobal('act_block') . '" data-deact="' . $nv_Lang->getGlobal('deact_block') . '"><em class="' . $act_icon . '" data-act="ic" data-deact="ic act0"></em></a>
-                                 <a href="#" class="outgroupblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $nv_Lang->getGlobal('outgroup_block') . '" title="' . $nv_Lang->getGlobal('outgroup_block') . '"><em class="ic"></em></a>
+                                 <a href="#" class="block_content" name="' . $_row['bid'] . '" alt="' . $nv_Lang->getGlobal('edit_block') . '" title="' . $nv_Lang->getGlobal('edit_block') . '" aria-label="' . $nv_Lang->getGlobal('edit_block') . '"><em class="ic"></em></a>
+                                 <a href="#" class="delblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $nv_Lang->getGlobal('delete_block') . '" title="' . $nv_Lang->getGlobal('delete_block') . '" aria-label="' . $nv_Lang->getGlobal('delete_block') . '"><em class="ic"></em></a>
+                                 <a href="#" class="actblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $act_title . '" title="' . $act_title . '" aria-label="' . $act_title . '" data-act="' . $nv_Lang->getGlobal('act_block') . '" data-deact="' . $nv_Lang->getGlobal('deact_block') . '"><em class="' . $act_icon . '" data-act="ic" data-deact="ic act0"></em></a>
+                                 <a href="#" class="outgroupblock" name="' . $_row['bid'] . '"  data-checkss="' . $checkss . '" alt="' . $nv_Lang->getGlobal('outgroup_block') . '" title="' . $nv_Lang->getGlobal('outgroup_block') . '" aria-label="' . $nv_Lang->getGlobal('outgroup_block') . '"><em class="ic"></em></a>
                              </div>
                              <div class="blockct' . $act_class . '">' . $content . '</div>
                              </div>';
@@ -309,15 +309,9 @@ function nv_blocks_content($sitecontent)
     if (defined('NV_IS_DRAG_BLOCK')) {
         $array_keys = array_keys($_posReal);
         foreach ($array_keys as $__pos) {
-            $__pos_name = str_replace([
-                '[',
-                ']'
-            ], [
-                '',
-                ''
-            ], $__pos);
+            $__pos_name = str_replace(['[', ']'], ['', ''], $__pos);
             $_posReal[$__pos] = '<div class="column" data-id="' . $__pos_name . '" data-checkss="' . md5(NV_CHECK_SESSION . '_' . $__pos_name) . '">' . $_posReal[$__pos];
-            $_posReal[$__pos] .= '<a href="#" class="add block_content" id="' . $__pos . '" title="' . $nv_Lang->getGlobal('add_block') . ' ' . $__pos_name . '" alt="' . $nv_Lang->getGlobal('add_block') . '"><em class="ic"></em></a>';
+            $_posReal[$__pos] .= '<a href="#" class="add block_content" id="' . $__pos . '" title="' . $nv_Lang->getGlobal('add_block') . ' ' . $__pos_name . '" aria-label="' . $nv_Lang->getGlobal('add_block') . ' ' . $__pos_name . '" alt="' . $nv_Lang->getGlobal('add_block') . '"><em class="ic"></em></a>';
             $_posReal[$__pos] .= '</div>';
         }
     }

@@ -65,7 +65,7 @@
 
 .site-header {
     .left-sidebar-toggle {
-        color: var(--bs-body-color);
+        color: var(--#{$prefix}body-color);
         width: 2rem;
         height: 2rem;
         position: relative;
@@ -86,7 +86,7 @@
 }
 
 .header-right {
-    [data-bs-toggle=dropdown] {
+    [data-#{$prefix}toggle=dropdown] {
         z-index: $zindex-header-dropdown-toggle;
 
         &.show {
@@ -123,7 +123,7 @@
 
             >a {
                 transition: $nav-link-transition;
-                color: var(--bs-body-color);
+                color: var(--#{$prefix}body-color);
                 display: block;
                 height: calc($header-height - $header-border-height);
                 position: relative;
@@ -159,7 +159,7 @@
             position: relative;
             font-size: $header-avatar-size;
             transition: $nav-link-transition;
-            color: var(--bs-body-color);
+            color: var(--#{$prefix}body-color);
 
             span {
                 overflow: hidden;
@@ -187,13 +187,13 @@
         }
 
         .dropdown-menu {
-            --bs-dropdown-min-width: #{$admin-info-width};
+            --#{$prefix}dropdown-min-width: #{$admin-info-width};
 
             a {
-                color: var(--bs-body-color);
+                color: var(--#{$prefix}body-color);
 
                 &:hover {
-                    color: var(--bs-link-color);
+                    color: var(--#{$prefix}link-color);
                 }
             }
 
@@ -207,11 +207,11 @@
         .dropdown-menu {
             @each $key, $value in $sysmenu-width {
                 @media (min-width: #{map.get($grid-breakpoints, $key)}) {
-                    --bs-dropdown-min-width: #{$value};
+                    --#{$prefix}dropdown-min-width: #{$value};
                 }
             }
 
-            &[data-bs-popper] {
+            &[data-#{$prefix}popper] {
                 top: calc(100% + $popover-arrow-height + $header-border-height);
             }
         }
@@ -224,7 +224,7 @@
     }
 
     .menu-sys-items a {
-        color: var(--bs-body-color);
+        color: var(--#{$prefix}body-color);
         transition: $nav-link-transition;
 
         &:hover {
@@ -234,7 +234,7 @@
 
     .site-noti {
         .dropdown-menu {
-            --bs-dropdown-min-width: #{$notification-width};
+            --#{$prefix}dropdown-min-width: #{$notification-width};
             width: $notification-width;
         }
 
@@ -267,11 +267,11 @@
             a {
                 background-color: var(--nv-notification-btn-bg);
                 transition: $nav-link-transition;
-                color: var(--bs-body-color);
+                color: var(--#{$prefix}body-color);
 
                 &:hover {
                     background-color: var(--nv-notification-btn-bg-hover);
-                    color: var(--bs-secondary-color);
+                    color: var(--#{$prefix}secondary-color);
                 }
 
                 &:first-child {

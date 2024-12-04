@@ -39,13 +39,13 @@
 
 .fmd-open {
     .select2-dropdown {
-        --bs-dropdown-zindex: #{$zindex-fmd};
+        --#{$prefix}dropdown-zindex: #{$zindex-fmd};
     }
 }
 
 .fmm-open {
     .dropdown-menu-fms {
-        --bs-dropdown-zindex: #{$zindex-fmm};
+        --#{$prefix}dropdown-zindex: #{$zindex-fmm};
     }
 }
 
@@ -115,7 +115,7 @@
     flex-shrink: 0;
     align-items: center;
     padding: .5rem 1rem;
-    border-bottom: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid var(--#{$prefix}border-color);
     border-top-left-radius: $modal-content-inner-border-radius;
     border-top-right-radius: $modal-content-inner-border-radius;
 
@@ -200,11 +200,11 @@
         left: 0;
         bottom: 0;
         right: 0;
-        background-color: rgba(var(--bs-secondary-bg-rgb), .95);
-        border: 2px dashed var(--bs-secondary);
+        background-color: rgba(var(--#{$prefix}secondary-bg-rgb), .95);
+        border: 2px dashed var(--#{$prefix}secondary);
         border-radius: $card-border-radius;
         display: none;
-        color: var(--bs-secondary-color);
+        color: var(--#{$prefix}secondary-color);
 
         i {
             font-size: 4rem;
@@ -216,8 +216,8 @@
             justify-content: center;
 
             &.dragover {
-                color: var(--bs-success);
-                border-color: var(--bs-success);
+                color: var(--#{$prefix}success);
+                border-color: var(--#{$prefix}success);
             }
         }
     }
@@ -232,8 +232,8 @@
     align-items: center;
     justify-content: center;
     border-radius: $card-border-radius;
-    background-color: rgba(var(--bs-secondary-rgb), .5);
-    color: var(--bs-primary);
+    background-color: rgba(var(--#{$prefix}secondary-rgb), .5);
+    color: var(--#{$prefix}primary);
     z-index: 10;
     display: none;
 
@@ -252,14 +252,14 @@
 .fms-tree {
     flex: 0 0 15rem;
     max-width: 15rem;
-    border-right: 1px solid var(--bs-border-color);
+    border-right: 1px solid var(--#{$prefix}border-color);
     padding-top: .5rem;
     padding-bottom: .5rem;
 
     @include media-breakpoint-down(md) {
         position: fixed;
         z-index: $zindex-fms-tree;
-        background-color: var(--bs-body-bg);
+        background-color: var(--#{$prefix}body-bg);
         left: 0;
         top: 0;
         bottom: 0;
@@ -297,7 +297,7 @@
     }
 
     a {
-        color: var(--bs-body-color);
+        color: var(--#{$prefix}body-color);
     }
 
     .tree-name {
@@ -305,12 +305,12 @@
         padding: .5rem 0;
 
         &:hover {
-            color: var(--bs-link-color);
+            color: var(--#{$prefix}link-color);
         }
 
         .tree-size {
             font-weight: 400;
-            color: var(--bs-secondary-color);
+            color: var(--#{$prefix}secondary-color);
         }
     }
 
@@ -388,8 +388,8 @@
 
     .selection-box {
         position: absolute;
-        border: 1px dashed var(--bs-success);
-        background: rgba(var(--bs-success-rgb), 0.2);
+        border: 1px dashed var(--#{$prefix}success);
+        background: rgba(var(--#{$prefix}success-rgb), 0.2);
         pointer-events: none;
     }
 }
@@ -404,10 +404,10 @@
     padding-top: .5rem;
 
     .pagination {
-        --bs-pagination-padding-x: 0.5rem;
-        --bs-pagination-padding-y: 0.25rem;
-        --bs-pagination-font-size: 0.875rem;
-        --bs-pagination-border-radius: var(--bs-border-radius-sm);
+        --#{$prefix}pagination-padding-x: 0.5rem;
+        --#{$prefix}pagination-padding-y: 0.25rem;
+        --#{$prefix}pagination-font-size: 0.875rem;
+        --#{$prefix}pagination-border-radius: var(--#{$prefix}border-radius-sm);
     }
 }
 
@@ -481,7 +481,7 @@
     }
 
     .file {
-        border: 1px solid var(--bs-border-color);
+        border: 1px solid var(--#{$prefix}border-color);
         border-radius: $border-radius;
 
         &.selected {
@@ -571,8 +571,8 @@
             right: .5rem;
             border: 0;
 
-            --bs-btn-padding-y: 0;
-            --bs-btn-padding-x: 1px;
+            --#{$prefix}btn-padding-y: 0;
+            --#{$prefix}btn-padding-x: 1px;
         }
 
         @include media-breakpoint-up(md) {
@@ -648,8 +648,8 @@
         }
 
         .btn-menu {
-            --bs-btn-padding-y: 2px;
-            --bs-btn-padding-x: 3px;
+            --#{$prefix}btn-padding-y: 2px;
+            --#{$prefix}btn-padding-x: 3px;
         }
     }
 
@@ -672,8 +672,8 @@
         }
 
         .btn-menu {
-            --bs-btn-padding-y: 2px;
-            --bs-btn-padding-x: 3px;
+            --#{$prefix}btn-padding-y: 2px;
+            --#{$prefix}btn-padding-x: 3px;
         }
     }
 }
@@ -691,7 +691,7 @@
     }
 
     .file {
-        border-bottom: 1px solid var(--bs-border-color);
+        border-bottom: 1px solid var(--#{$prefix}border-color);
         display: flex;
         line-height: 1.3;
         padding-bottom: .5rem;
@@ -737,8 +737,8 @@
             text-align: right;
 
             .btn-menu {
-                --bs-btn-padding-y: 0.125rem;
-                --bs-btn-padding-x: 0.25rem;
+                --#{$prefix}btn-padding-y: 0.125rem;
+                --#{$prefix}btn-padding-x: 0.25rem;
             }
         }
     }
@@ -751,8 +751,8 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--bs-body-bg);
-    border-radius: var(--bs-border-radius);
+    background-color: var(--#{$prefix}body-bg);
+    border-radius: var(--#{$prefix}border-radius);
     z-index: 3;
 }
 
@@ -788,12 +788,12 @@
     }
 
     .queue-head {
-        border-bottom: 2px solid var(--bs-border-color);
+        border-bottom: 2px solid var(--#{$prefix}border-color);
         font-weight: 500;
     }
 
     .queue-files-item {
-        border-bottom: 1px solid var(--bs-border-color);
+        border-bottom: 1px solid var(--#{$prefix}border-color);
 
         &:last-child {
             border-bottom: 0;
@@ -853,7 +853,7 @@
             right: 0.125rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--bs-danger);
+            color: var(--#{$prefix}danger);
             overflow: hidden;
         }
     }
@@ -905,7 +905,7 @@
 
         &.show {
             z-index: 999999999;
-            background-color: rgba(var(--bs-dark-rgb), .9);
+            background-color: rgba(var(--#{$prefix}dark-rgb), .9);
             transform: scale(1);
             position: fixed;
             width: 100vw;
@@ -963,7 +963,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: var(--bs-secondary-bg);
+        background-color: var(--#{$prefix}secondary-bg);
         display: flex;
         align-items: center;
         justify-content: center;

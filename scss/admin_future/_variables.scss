@@ -41,6 +41,7 @@ $main-bg: #eee;
 $min-contrast-ratio: 2;
 $theme-breakpoint: 767.98px;
 $spacer: 1rem;
+$prefix: bs-;
 
 // Shadow một số và tắt một số
 $enable-shadows: true;
@@ -116,7 +117,7 @@ $notification-width: 18.75rem; // 300px
 $notification-height: 18.75rem; // 300px
 $notification-image-size: 2.375rem;
 $notification-date-font-size: 0.6923rem;
-$notification-unread-bg: var(--bs-info-bg-subtle);
+$notification-unread-bg: var(--#{$prefix}info-bg-subtle);
 $notification-unread-border-color: tint($info, 70%);
 $notification-btn-bg: $gray-100;
 $notification-btn-bg-hover: shade($gray-100, 5%);
@@ -134,32 +135,32 @@ $breadcrumb-bg: $white;
 $toast-spacing: 1rem;
 
 // Card
-$card-border-color: var(--bs-border-color);
+$card-border-color: var(--#{$prefix}border-color);
 $card-box-shadow: 0 0.0625rem 0.125rem rgba($black, .075);
 $card-border-width: 0;
 $card-cap-bg: transparent;
 $card-cap-padding-y: $spacer;
 
 // Dropdown
-$dropdown-border-color: var(--bs-body-bg);
+$dropdown-border-color: var(--#{$prefix}body-bg);
 $dropdown-divider-bg: var(--nv-border-color-translucent);
 
 // Popovers
-$popover-border-color: var(--bs-body-bg);
+$popover-border-color: var(--#{$prefix}body-bg);
 $popover-font-size: $font-size-base;
 
 // Nav
 $nav-link-font-weight: 500;
 
 // Table
-$table-color: var(--bs-body-color);
+$table-color: var(--#{$prefix}body-color);
 
 // Offcanvas
 $offcanvas-border-color: transparent;
 
 // Accordion
 $accordion-button-focus-box-shadow: 0;
-$accordion-button-active-bg: var(--bs-primary);
+$accordion-button-active-bg: var(--#{$prefix}primary);
 $accordion-button-active-color: $gray-100;
 $accordion-button-padding-y: .75rem;
 $accordion-icon-active-color: $gray-100;

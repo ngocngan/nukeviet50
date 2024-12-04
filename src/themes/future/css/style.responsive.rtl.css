@@ -25156,4 +25156,174 @@ readers do not read off random characters that represent icons */
   z-index: 1200;
   display: none;
 }
+
+.column {
+  position: relative;
+  outline: 2px dashed var(--bs-danger);
+  min-height: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.column .ic::before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+.column > .add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 1.625rem;
+  width: 1.625rem;
+  z-index: 10;
+  background-color: #fd7e14;
+  color: #000;
+}
+.column > .add .ic::before {
+  content: "\+";
+}
+.column:hover > .add {
+  background-color: #e47112;
+  color: #000;
+}
+
+.portlet {
+  position: relative;
+}
+.portlet.ui-sortable-placeholder {
+  outline: 2px dashed var(--bs-border-color);
+  visibility: visible !important;
+  outline-offset: -2px;
+}
+.portlet > .blockct {
+  cursor: move;
+}
+.portlet > .blockct.act0 {
+  opacity: 0.5;
+}
+.portlet > .tool {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 100%;
+  z-index: 10;
+  opacity: 0;
+  background: rgba(134, 183, 254, 0.9);
+}
+.portlet > .tool a {
+  width: 1.875rem;
+  height: 1.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.875rem;
+  border-radius: var(--bs-border-radius-sm);
+  background-color: #0d6efd;
+  margin: 3px 1px;
+}
+.portlet > .tool a:hover {
+  background-color: #0b5ed7;
+}
+.portlet > .tool a:first-child {
+  margin-right: 3px;
+}
+.portlet > .tool a:last-child {
+  margin-left: 3px;
+}
+.portlet > .tool > .block_content:not(.add) .ic::before {
+  content: "\f0ad";
+}
+.portlet > .tool > .delblock .ic::before {
+  content: "\f1f8";
+}
+.portlet > .tool > .actblock .ic::before {
+  content: "\f14a";
+}
+.portlet > .tool > .actblock .ic.act0::before {
+  content: "\f0c8";
+}
+.portlet > .tool > .outgroupblock .ic::before {
+  content: "\f08e";
+}
+.portlet:hover > .tool {
+  opacity: 1;
+}
+
+#admintoolbar {
+  position: fixed;
+  right: 0;
+  top: 3rem;
+  box-shadow: var(--bs-box-shadow);
+  z-index: 501;
+  opacity: 0.5;
+  width: 2rem;
+  transition: width 0.15s ease-in-out;
+}
+#admintoolbar .text {
+  opacity: 0;
+  transform: translateX(20px);
+  overflow: hidden;
+  transition: all 0.15s ease-in-out;
+  text-overflow: ellipsis;
+}
+#admintoolbar .icon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+#admintoolbar:hover {
+  opacity: 1;
+  width: 15rem;
+}
+#admintoolbar:hover .text {
+  opacity: 1;
+  transform: translateX(0);
+}
+#admintoolbar a {
+  display: flex;
+  background-color: #0d6efd;
+  color: #fff;
+  white-space: nowrap;
+  padding: 0.125rem 0 0.125rem 0.5rem;
+  text-decoration: none;
+  border-bottom: 1px solid #0b5ed7;
+  align-items: center;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+#admintoolbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#admintoolbar ul li:hover a {
+  background-color: #0c63e4;
+  border-bottom: 1px solid #0a53be;
+}
+#admintoolbar ul li:last-child a {
+  border-bottom: 0;
+  border-bottom-left-radius: var(--bs-border-radius);
+}
+#admintoolbar ul li:first-child a {
+  border-top-left-radius: var(--bs-border-radius);
+}
+
+.vstack-blocks {
+  gap: 1rem;
+}
 /*# sourceMappingURL=style.responsive.rtl.css.map */

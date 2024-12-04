@@ -65,14 +65,14 @@
 .card {
     > .list-group:last-child {
         > .list-group-item:last-child {
-            border-bottom-right-radius: var(--bs-border-radius);
-            border-bottom-left-radius: var(--bs-border-radius);
+            border-bottom-right-radius: var(--#{$prefix}border-radius);
+            border-bottom-left-radius: var(--#{$prefix}border-radius);
         }
     }
 }
 
 .card-header {
-    --bs-card-border-width: var(--bs-border-width);
+    --#{$prefix}card-border-width: var(--#{$prefix}border-width);
 }
 
 .table-card {
@@ -129,18 +129,18 @@
 
 .table {
     thead {
-        --bs-table-bg: var(--nv-table-thead-bg);
+        --#{$prefix}table-bg: var(--nv-table-thead-bg);
     }
 }
 
 .card-header-tabs {
-    margin-right: calc(-1 * var(--bs-card-cap-padding-x));
-    margin-left: calc(-1 * var(--bs-card-cap-padding-x));
-    margin-top: calc(-.5 * var(--bs-card-cap-padding-y));
+    margin-right: calc(-1 * var(--#{$prefix}card-cap-padding-x));
+    margin-left: calc(-1 * var(--#{$prefix}card-cap-padding-x));
+    margin-top: calc(-.5 * var(--#{$prefix}card-cap-padding-y));
 
     .nav-tabs {
-        padding-left: calc(0.5 * var(--bs-card-cap-padding-x));
-        padding-right: calc(0.5 * var(--bs-card-cap-padding-x));
+        padding-left: calc(0.5 * var(--#{$prefix}card-cap-padding-x));
+        padding-right: calc(0.5 * var(--#{$prefix}card-cap-padding-x));
     }
 }
 
@@ -204,7 +204,7 @@
 
 .list-group-striped {
     >.list-group-item:nth-of-type(odd) {
-        background-color: var(--bs-tertiary-bg);
+        background-color: var(--#{$prefix}tertiary-bg);
     }
 }
 

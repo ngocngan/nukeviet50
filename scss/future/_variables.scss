@@ -1,7 +1,11 @@
 // Z-index
 $zindex-cookie-notice: 500;
+$zindex-admintoolbar: 501;
 $zindex-timeoutsess: 1200;
 
 // Offcanvas
 $offcanvas-vertical-height: fit-content;
 $offcanvas-horizontal-width: 300px;
+
+// Blocks
+$block-spacer: 1rem;

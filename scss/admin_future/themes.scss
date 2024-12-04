@@ -58,7 +58,7 @@
         align-content: center;
         gap: calc(#{$spacer} * .5);
         padding: calc(#{$spacer} * .5) #{$spacer};
-        background-color: rgba(var(--bs-secondary-bg-rgb), .8);
+        background-color: rgba(var(--#{$prefix}secondary-bg-rgb), .8);
         transition: opacity .2s ease-in-out;
         opacity: 0;
     }

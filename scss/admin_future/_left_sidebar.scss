@@ -13,7 +13,7 @@
 
     @media (max-width: #{$theme-breakpoint}) {
         position: static;
-        --bs-border-width: 0;
+        --#{$prefix}border-width: 0;
         width: 100%;
         height: auto;
     }
@@ -37,7 +37,7 @@
             >a {
                 display: block;
                 padding: 0 1.875rem 0 1.25rem;
-                color: var(--bs-body-color);
+                color: var(--#{$prefix}body-color);
                 line-height: $left-sidebar-lev1-height;
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -124,14 +124,14 @@
             }
 
             &.active>a {
-                color: var(--bs-primary);
+                color: var(--#{$prefix}primary);
             }
         }
 
         // Cấp 2 và 3 nói chung
         >li ul li>a {
             padding: .5rem .9375rem .5rem 1.875rem;
-            color: var(--bs-body-color);
+            color: var(--#{$prefix}body-color);
             display: block;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -157,14 +157,14 @@
     .left-sidebar-in-sm {
         display: none;
         background-color: var(--nv-left-sidebar-bg);
-        --bs-border-width: #{$border-width};
+        --#{$prefix}border-width: #{$border-width};
 
         a {
-            color: var(--bs-body-color);
+            color: var(--#{$prefix}body-color);
             transition: $nav-link-transition;
 
             &:hover {
-                color: var(--bs-primary);
+                color: var(--#{$prefix}primary);
             }
         }
 
@@ -249,7 +249,7 @@
                         height: 100%;
                         z-index: 1;
                         width: $left-sidebar-sub-width;
-                        border-right: $border-width $border-style var(--bs-border-color);
+                        border-right: $border-width $border-style var(--#{$prefix}border-color);
 
                         .title {
                             font-size: $h3-font-size;

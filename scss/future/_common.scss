@@ -10,10 +10,10 @@
     }
 
     z-index: $zindex-cookie-notice;
-    background-color: var(--bs-secondary-bg);
-    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    box-shadow: var(--bs-box-shadow);
+    background-color: var(--#{$prefix}secondary-bg);
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border-radius: var(--#{$prefix}border-radius);
+    box-shadow: var(--#{$prefix}box-shadow);
     padding: 1rem;
 
     .btn-close {

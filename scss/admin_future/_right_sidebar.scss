@@ -22,12 +22,12 @@
     .color-mode {
         a {
             &:not(:hover) {
-                color: var(--bs-body-color);
+                color: var(--#{$prefix}body-color);
             }
 
             &.active {
                 i {
-                    color: var(--bs-primary);
+                    color: var(--#{$prefix}primary);
                 }
             }
         }
@@ -40,6 +40,6 @@
     }
 
     .header-right .main-icons>ul>li>a[data-toggle=right-sidebar] {
-        color: var(--bs-primary);
+        color: var(--#{$prefix}primary);
     }
 }

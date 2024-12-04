@@ -1,3 +1,3 @@
-<!-- BEGIN: mainblock -->
-{BLOCK_CONTENT}
-<!-- END: mainblock -->
+<div>
+    {$CONTENT}
+</div>

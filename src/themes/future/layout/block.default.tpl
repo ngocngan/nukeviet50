@@ -1,10 +1,8 @@
-<!-- BEGIN: mainblock -->
-<div class="panel panel-default">
-    <div class="panel-heading">
-        {BLOCK_TITLE}
+<div class="card">
+    <div class="card-header fs-5 fw-medium">
+        {$BLOCK.blockTitle}
     </div>
-    <div class="panel-body">
-        {BLOCK_CONTENT}
+    <div class="card-body">
+        {$CONTENT}
     </div>
 </div>
-<!--  END: mainblock -->

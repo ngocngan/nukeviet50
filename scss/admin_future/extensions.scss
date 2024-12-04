@@ -33,8 +33,8 @@
 }
 
 .ext-detail-container {
-    margin-left: calc(-1 * var(--bs-modal-padding));
-    margin-right: calc(-1 * var(--bs-modal-padding));
+    margin-left: calc(-1 * var(--#{$prefix}modal-padding));
+    margin-right: calc(-1 * var(--#{$prefix}modal-padding));
 
     img {
         max-width: 100%;
@@ -45,7 +45,7 @@
         border-bottom: #{$nav-tabs-border-width} solid #{$nav-tabs-border-color};
 
         > .nav {
-            margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
+            margin-bottom: calc(-1 * var(--#{$prefix}nav-ta#{$prefix}border-width));
         }
     }
 }

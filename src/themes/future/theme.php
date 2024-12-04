@@ -414,12 +414,14 @@ function nv_error_theme($title, $content, $code)
  */
 function nv_block_theme($content, $row, $template)
 {
-    $xtpl = new XTemplate('block.' . $row['template'] . '.tpl', NV_ROOTDIR . '/themes/' . $template . '/layout');
-    $xtpl->assign('BLOCK_ID', $row['bid']);
-    $xtpl->assign('BLOCK_TITLE', $row['blockTitle']);
-    $xtpl->assign('BLOCK_CONTENT', $content);
-    $xtpl->assign('TEMPLATE', $template);
+    global $nv_Lang;
 
-    $xtpl->parse('mainblock');
-    return $xtpl->text('mainblock');
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $template . '/layout');
+    $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('BLOCK', $row);
+    $tpl->assign('CONTENT', $content);
+    $tpl->assign('TEMPLATE', $template);
+
+    return $tpl->fetch('block.' . $row['template'] . '.tpl');
 }

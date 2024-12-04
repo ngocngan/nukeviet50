@@ -1,7 +1,7 @@
 .breadcrumb-wrap {
     height: $breadcrumb-height;
     background-color: var(--nv-breadcrumb-bg);
-    border-bottom: $border-width $border-style var(--bs-border-color);
+    border-bottom: $border-width $border-style var(--#{$prefix}border-color);
     transition: height .2s ease-in-out, border-bottom .2s ease-in-out;
     overflow: hidden;
 
@@ -15,7 +15,7 @@
     .open-breadcrumb {
         .breadcrumb-wrap {
             height: $breadcrumb-height;
-            border-bottom: $border-width $border-style var(--bs-border-color);
+            border-bottom: $border-width $border-style var(--#{$prefix}border-color);
         }
     }
 }
@@ -33,14 +33,14 @@
 }
 
 .breadcrumb-popover {
-    --bs-popover-body-padding-x: 0;
-    --bs-popover-body-padding-y: 0;
-    --bs-popover-arrow-width: 0;
-    --bs-popover-arrow-height: 0;
-    --bs-popover-font-size: var(--bs-body-font-size);
+    --#{$prefix}popover-body-padding-x: 0;
+    --#{$prefix}popover-body-padding-y: 0;
+    --#{$prefix}popover-arrow-width: 0;
+    --#{$prefix}popover-arrow-height: 0;
+    --#{$prefix}popover-font-size: var(--#{$prefix}body-font-size);
 
     .list-group {
-        --bs-list-group-border-radius: calc(var(--bs-popover-border-radius) + 2 * #{$popover-border-width});
+        --#{$prefix}list-group-border-radius: calc(var(--#{$prefix}popover-border-radius) + 2 * #{$popover-border-width});
     }
 
     .list-group-item {

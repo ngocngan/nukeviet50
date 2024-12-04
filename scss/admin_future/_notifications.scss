@@ -8,7 +8,7 @@
             a {
                 width: 1.5rem;
                 height: 1.5rem;
-                background-color: var(--bs-body-bg);
+                background-color: var(--#{$prefix}body-bg);
                 box-shadow: $box-shadow-sm;
                 font-size: .625rem;
                 display: none;
@@ -17,7 +17,7 @@
         }
 
         &.notification-unread {
-            --bs-border-color: var(--nv-notification-unread-border-color);
+            --#{$prefix}border-color: var(--nv-notification-unread-border-color);
 
             .noti-item {
                 background-color: $notification-unread-bg;
@@ -25,22 +25,22 @@
         }
 
         .user-name {
-            color: var(--bs-primary);
+            color: var(--#{$prefix}primary);
         }
 
         .date {
             font-size: $notification-date-font-size;
-            color: var(--bs-secondary);
+            color: var(--#{$prefix}secondary);
         }
 
         .noti-item {
-            color: var(--bs-body-color);
+            color: var(--#{$prefix}body-color);
         }
 
         &:hover {
             .noti-item {
                 color: color-contrast($primary);
-                background-color: var(--bs-primary);
+                background-color: var(--#{$prefix}primary);
 
                 .user-name {
                     color: color-contrast($primary);
