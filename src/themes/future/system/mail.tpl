@@ -1,4 +1,5 @@
 {*
+Tệp thiết lập khung email gửi đi.
 Lưu ý: Có tệp này trong giao diện thì cần có tệp theme_email.php xử lý.
 Nếu không có tệp theme_email.php thì theme_email.php ở giao diện default được sử dụng và
 bạn cần phải đảm bảo ngôn ngữ viết trong tệp này là Smarty để tương thích

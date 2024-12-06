@@ -1,3 +1,7 @@
+{*
+Xóa tệp này khỏi giao diện của bạn nếu không có nhu cầu phát triển giao diện báo lỗi: 404, 403, 500...
+Khi đó hệ thống sẽ lấy từ themes/default/system/info_die.tpl
+*}
 <!DOCTYPE html>
 <html lang="{$LANG->getGlobal('Content_Language')}" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 

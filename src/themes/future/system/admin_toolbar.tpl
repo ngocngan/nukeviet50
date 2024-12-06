@@ -1,3 +1,7 @@
+{*
+Xóa tệp này khỏi giao diện của bạn nếu không có nhu cầu phát triển giao diện thanh công cụ của quản trị
+Khi đó hệ thống sẽ lấy từ themes/default/system/admin_toolbar.tpl
+*}
 <div id="admintoolbar">
     <ul>
         <li><a href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}"><span class="icon"><i class="fa-solid fa-gears fa-fw"></i></span><span class="text">{$LANG->getGlobal('admin_page')}</span></a></li>

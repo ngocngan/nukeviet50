@@ -1,3 +1,7 @@
+{*
+Xóa tệp này khỏi giao diện của bạn nếu không có nhu cầu phát triển giao diện thông báo inline
+Khi đó hệ thống sẽ lấy từ themes/default/system/alert.tpl
+*}
 <div class="text-center">
     <div class="alert alert-{$TYPE}" role="alert">
         {if not empty($TITLE)}
