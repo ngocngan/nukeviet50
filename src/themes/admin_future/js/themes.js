@@ -591,4 +591,22 @@ $(function() {
             nvToast($(e.trigger).data('success'), 'success');
         });
     }
+
+    // CSS editor phần cấu hình giao diện
+    const tconCss = $('[data-toggle="tconf-css"]');
+    if (tconCss.length) {
+        const cssContent = $('[data-toggle="tconf-css-textarea"]').val();
+        const editor = new nukeviet.CSSEditor(tconCss[0], {
+            dark: $('html').attr('data-bs-theme') == 'light' ? false : true,
+            content: cssContent.length > 0 ? cssContent : "\n\n\n\n\n\n\n\n\n"
+        });
+        // Khi giao diện thay đổi chế độ light dark thì thay đổi editor theo
+        document.addEventListener('changed.nv.thememode', () => {
+            editor.setDarkMode($('html').attr('data-bs-theme') == 'light' ? false : true);
+        });
+        // Trả lại nội dung soạn thảo vào textarea trước khi submit
+        tconCss.closest('form').on('submit', function() {
+            $('[data-toggle="tconf-css-textarea"]').val(editor.getValue());
+        });
+    }
 });

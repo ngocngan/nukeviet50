@@ -13,6 +13,36 @@ if (!defined('NV_IS_FILE_THEMES')) {
     exit('Stop!!!');
 }
 
+/**
+ * Tệp xử lý thiết lập giao diện trong quản trị.
+ * Xóa nếu bạn không có nhu cầu thiết lập các thông số trong giao diện của mình.
+ */
+
+$tpl = new \NukeViet\Template\NVSmarty();
+$tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $selectthemes . '/system');
+$tpl->assign('LANG', $nv_Lang);
+$tpl->assign('MODULE_NAME', $module_name);
+$tpl->assign('OP', $op);
+
+$tabs = ['color', 'variables', 'css', 'gfonts'];
+$tab = $nv_Request->get_title('tab', 'post,get', $tabs[2]);
+if (!in_array($tab, $tabs, true)) {
+    $tab = $tabs[2];
+}
+
+$tpl->assign('TAB', $tab);
+
+if (!empty($_POST)) {
+    echo '<pre><code>';
+    echo htmlspecialchars(print_r($_POST, true));
+    die('</code></pre>');
+}
+
+$contents = $tpl->fetch('config.tpl');
+return;
+
+
+
 $config_theme = [];
 $propety = [];
 

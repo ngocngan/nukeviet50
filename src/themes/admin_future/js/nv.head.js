@@ -21,6 +21,7 @@ const nvSetThemeMode = theme => {
     } else {
         document.documentElement.setAttribute('data-bs-theme', theme);
     }
+    document.dispatchEvent(new Event('changed.nv.thememode'));
 }
 
 (() => {

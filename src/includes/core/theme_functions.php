@@ -616,10 +616,11 @@ function nv_css_setproperties($tag, $property_array)
  */
 function nv_theme_alert($message_title, $message_content, $type = 'info', $url_back = '', $lang_back = '', $time_back = 5)
 {
-    global $global_config, $module_info, $page_title;
+    global $global_config, $module_info, $page_title, $admin_info;
 
     $dir_basenames = [];
     if (defined('NV_ADMIN')) {
+        !empty($admin_info['admin_theme']) && $dir_basenames[] = $admin_info['admin_theme'];
         !empty($global_config['admin_theme']) && $dir_basenames[] = $global_config['admin_theme'];
         $dir_basenames[] = 'admin_default';
     }
