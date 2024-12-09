@@ -25677,6 +25677,10 @@ readers do not read off random characters that represent icons */
   display: none;
 }
 
+.colpick {
+  z-index: 99999;
+}
+
 .header-outer {
   background-color: var(--nv-header-bg-color);
   position: sticky;

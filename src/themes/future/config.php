@@ -18,16 +18,22 @@ if (!defined('NV_IS_FILE_THEMES')) {
  * Xóa nếu bạn không có nhu cầu thiết lập các thông số trong giao diện của mình.
  */
 
+require NV_ROOTDIR . '/themes/' . $selectthemes . '/config_default.php';
+$variables = $default_config_theme['variables'];
+
 $tpl = new \NukeViet\Template\NVSmarty();
 $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $selectthemes . '/system');
 $tpl->assign('LANG', $nv_Lang);
 $tpl->assign('MODULE_NAME', $module_name);
 $tpl->assign('OP', $op);
+$tpl->assign('TEMPLATE', $selectthemes);
+
+$tpl->assign('VARIABLES', $variables);
 
 $tabs = ['color', 'variables', 'css', 'gfonts'];
-$tab = $nv_Request->get_title('tab', 'post,get', $tabs[2]);
+$tab = $nv_Request->get_title('tab', 'post,get', $tabs[0]);
 if (!in_array($tab, $tabs, true)) {
-    $tab = $tabs[2];
+    $tab = $tabs[0];
 }
 
 $tpl->assign('TAB', $tab);

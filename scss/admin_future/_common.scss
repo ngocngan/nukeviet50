@@ -224,3 +224,7 @@ $sm-breakpoint: map-get($grid-breakpoints, sm) - 0.02px;
 .grecaptcha-badge {
     display: none;
 }
+
+.colpick {
+    z-index: 99999;
+}

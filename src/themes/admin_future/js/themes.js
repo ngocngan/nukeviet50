@@ -608,5 +608,22 @@ $(function() {
         tconCss.closest('form').on('submit', function() {
             $('[data-toggle="tconf-css-textarea"]').val(editor.getValue());
         });
+
+        // Chọn màu
+        $('[data-toggle="colpick"]').colpick({
+            layout: 'hex',
+            submit: 0,
+            colorScheme: $('html').attr('data-bs-theme'),
+            onChange: function(hsb, hex, rgb, el, bySetColor) {
+                const preview = $('#' + $(el).attr('id') + '_preview');
+                preview.css({
+                    'background-color': '#' + hex,
+                    'border-color': '#' + hex,
+                });
+                if (!bySetColor) $(el).val('#' + hex);
+            }
+        }).keyup(function() {
+           $(this).colpickSetColor(this.value);
+        });
     }
 });
