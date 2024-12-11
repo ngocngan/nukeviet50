@@ -17,8 +17,7 @@ $default_config_theme = [
     'css' => '',
     'gfont' => [
         'family' => '',
-        'styles' => '',
-        'subset' => ''
+        'styles' => []
     ],
     'color' => [
         'mode' => '',
@@ -68,7 +67,7 @@ $default_config_theme = [
         'body' => [
             'font_family' => ['type' => 'text'],
             'font_size' => ['type' => 'size'],
-            'font_weight' => ['type' => 'text'],
+            'font_weight' => ['type' => 'font_weight'],
             'line_height' => ['type' => 'number'],
             'color' => ['type' => 'color', 'rgb' => true],
             'bg' => ['type' => 'color', 'rgb' => true],
@@ -87,7 +86,7 @@ $default_config_theme = [
         'link' => [
             'color' => ['type' => 'color', 'rgb' => true],
             'hover_color' => ['type' => 'color', 'rgb' => true],
-            'decoration' => ['type' => 'text'],
+            'decoration' => ['type' => 'text_decoration'],
         ],
         'code' => [
             'color' => ['type' => 'color', 'rgb' => false],
@@ -98,7 +97,7 @@ $default_config_theme = [
         ],
         'border' => [
             'width' => ['type' => 'size'],
-            'style' => ['type' => 'text'],
+            'style' => ['type' => 'border_style'],
             'color' => ['type' => 'color', 'rgb' => false],
             'radius' => ['type' => 'size'],
             'radius_sm' => ['type' => 'size'],

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.5.1",
+    "@simonwep/pickr": "^1.9.1",
     "bootstrap": "5.3.3"
   },
   "devDependencies": {
@@ -20,7 +21,6 @@
     "admin-compile": "sass --style expanded --source-map --embed-sources scss/admin_future/:src/themes/admin_future/css/",
     "watch-admin-css": "nodemon --watch scss/ --ext scss --exec \"npm-run-all admin-compile admin-css-prefix admin-css-rtl\"",
     "watch-admin": "npm-run-all --parallel watch-admin-*",
-
     "site-css": "npm-run-all site-compile site-css-prefix site-css-rtl",
     "site-css-prefix": "postcss --config build/postcss.config.mjs --replace \"src/themes/future/css/*.css\" \"!src/themes/future/css/*.rtl*.css\" \"!src/themes/future/css/*.min.css\"",
     "site-css-rtl": "cross-env NODE_ENV=RTL postcss --config build/postcss.config.mjs --dir \"src/themes/future/css\" --ext \".rtl.css\" \"src/themes/future/css/*.css\" \"!src/themes/future/css/*.rtl*.css\" \"!src/themes/future/css/*.min.css\"",

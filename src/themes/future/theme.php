@@ -130,35 +130,38 @@ function nv_site_theme($contents, $full = true)
     }
     $html_links = array_merge_recursive($html_links, nv_html_links(false));
 
-    // Customs Style
+    // Tùy chỉnh giao diện
+    $color_mode = 'light';
     if (isset($module_config['themes'][$global_config['module_theme']]) and !empty($module_config['themes'][$global_config['module_theme']])) {
-        $config_theme = unserialize($module_config['themes'][$global_config['module_theme']]);
+        $config_theme = json_decode($module_config['themes'][$global_config['module_theme']], true);
+        !is_array($config_theme) && $config_theme = [];
 
-        if (isset($config_theme['css_content']) and !empty($config_theme['css_content'])) {
-            $customFileName = $global_config['module_theme'] . '.' . NV_LANG_DATA . '.' . $global_config['idsite'];
-
-            if (!file_exists(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/css/' . $customFileName . '.css')) {
-                $replace = [
-                    '[body]' => 'body',
-                    '[a_link]' => 'a, a:link, a:active, a:visited',
-                    '[a_link_hover]' => 'a:hover',
-                    '[content]' => '.wraper',
-                    '[header]' => '#header',
-                    '[footer]' => '#footer',
-                    '[block]' => '.panel, .well, .nv-block-banners',
-                    '[block_heading]' => '.panel-default > .panel-heading'
-                ];
-
-                $css_content = str_replace(array_keys($replace), array_values($replace), $config_theme['css_content']);
-
-                file_put_contents(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/css/' . $customFileName . '.css', $css_content);
+        // Chế độ giao diện
+        if (isset($config_theme['color'])) {
+            $color_mode = $config_theme['color']['mode'] ?? $color_mode;
+            if ($color_mode == 'light') {
+                $color_mode = $config_theme['color']['light'] ?? $color_mode;
             }
+        }
 
+        // CSS biến hoặc toàn cục
+        if (!empty($config_theme['variables']) or !empty($config_theme['css']) or (isset($config_theme['gfont']) and !empty($config_theme['gfont']['family']))) {
             $html_links[] = [
                 'rel' => 'stylesheet',
-                'href' => NV_STATIC_URL . NV_ASSETS_DIR . '/css/' . $customFileName . '.css'
+                'href' => NV_STATIC_URL . NV_ASSETS_DIR . '/css/' . $global_config['module_theme'] . '.' . NV_LANG_DATA . '.' . $global_config['idsite'] . '.css'
             ];
         }
+
+        // Google Fonts version 2
+        if (isset($config_theme['gfont']) and !empty($config_theme['gfont']['family'])) {
+            $gf = new NukeViet\Client\Gfonts2($global_config['module_theme'], $config_theme['gfont']);
+            array_unshift($html_links, [
+                'rel' => 'stylesheet',
+                'href' => $gf->getLink()
+            ]);
+        }
+
+        /*
 
         if (isset($config_theme['gfont']) and !empty($config_theme['gfont']) and isset($config_theme['gfont']['family']) and !empty($config_theme['gfont']['family'])) {
             $subset = $config_theme['gfont']['subset'] ?? '';
@@ -176,7 +179,9 @@ function nv_site_theme($contents, $full = true)
         }
 
         unset($config_theme, $css_content, $webFontFile, $font, $subset, $gf);
+        */
     }
+    $tpl->assign('COLOR_MODE', $color_mode);
 
     if (!empty($opensearch_link)) {
         foreach ($opensearch_link as $ol => $nd) {

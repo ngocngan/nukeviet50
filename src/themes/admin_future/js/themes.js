@@ -610,20 +610,50 @@ $(function() {
         });
 
         // Chọn màu
-        $('[data-toggle="colpick"]').colpick({
-            layout: 'hex',
-            submit: 0,
-            colorScheme: $('html').attr('data-bs-theme'),
-            onChange: function(hsb, hex, rgb, el, bySetColor) {
-                const preview = $('#' + $(el).attr('id') + '_preview');
+        $('[data-toggle="colpick"]').each(function() {
+            const btn = $(this);
+            const preview = $('#' + btn.attr('id') + '_preview');
+            const cHex = trim(btn.val());
+            const pickr = Pickr.create({
+                el: this,
+                theme: 'nano',
+                useAsButton: true,
+                components: {
+                    preview: true,
+                    opacity: false,
+                    hue: true,
+                    interaction: {
+                        input: true
+                    }
+                },
+                default: cHex == '' ? '#4285f4' : cHex,
+                lockOpacity: true
+            });
+            pickr.on('change', (hsva, source) => {
+                if (source == 'swatch') {
+                   return;
+                }
+                const hex = hsva.toHEXA().toString();
+                btn.val(hex);
                 preview.css({
-                    'background-color': '#' + hex,
-                    'border-color': '#' + hex,
+                    'background-color': hex,
+                    'border-color': hex,
                 });
-                if (!bySetColor) $(el).val('#' + hex);
-            }
-        }).keyup(function() {
-           $(this).colpickSetColor(this.value);
+            });
+            btn.on('keyup', function() {
+                if (!pickr.setColor($(this).val())) {
+                    preview.removeAttr('style');
+                }
+            });
+        });
+
+        // Thay đổi form action khi chọn tab config giao diện
+        const tabTconf = $('#tab-tconf');
+        $('[data-bs-toggle="tab"]', tabTconf).on('show.bs.tab', function(e) {
+            let tab = $(e.target).data('tab');
+            const form = tabTconf.closest('form');
+            $('[name="tab"]', form).val(tab);
+            form.attr('action', $(e.target).data('location'));
         });
     }
 });
