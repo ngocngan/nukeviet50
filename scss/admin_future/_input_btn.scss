@@ -21,7 +21,14 @@ html:not([data-#{$prefix}theme="dark"]) {
         --#{$prefix}btn-disabled-bg: #{$gray-300};
         --#{$prefix}btn-disabled-border-color: #{$gray-400};
     }
+
+    .input-group .btn-secondary {
+        --#{$prefix}btn-border-color: var(--#{$prefix}border-color);
+        --#{$prefix}btn-hover-border-color: var(--#{$prefix}border-color);
+    }
 }
+
+$icon_btn_show_pass_color_light: #{$body-color};
 
 .form-check-input:not(:checked):disabled {
     background-color: var(--nv-form-check-input-disabled-bg);

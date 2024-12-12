@@ -161,25 +161,7 @@ function nv_site_theme($contents, $full = true)
             ]);
         }
 
-        /*
-
-        if (isset($config_theme['gfont']) and !empty($config_theme['gfont']) and isset($config_theme['gfont']['family']) and !empty($config_theme['gfont']['family'])) {
-            $subset = $config_theme['gfont']['subset'] ?? '';
-            $gf = new NukeViet\Client\Gfonts([
-                'fonts' => [
-                    $config_theme['gfont']
-                ],
-                'subset' => $subset
-            ], $client_info);
-            $webFontFile = $gf->getUrlCss();
-            array_unshift($html_links, [
-                'rel' => 'stylesheet',
-                'href' => $webFontFile
-            ]);
-        }
-
-        unset($config_theme, $css_content, $webFontFile, $font, $subset, $gf);
-        */
+        unset($config_theme, $gf);
     }
     $tpl->assign('COLOR_MODE', $color_mode);
 
@@ -206,15 +188,6 @@ function nv_site_theme($contents, $full = true)
             }
         }
     }
-
-    // CSS của nút ẩn/hiện mật khẩu
-    // FIXME
-    if (($global_config['passshow_button'] === 1) or ($global_config['passshow_button'] === 2 and defined('NV_IS_USER')) or ($global_config['passshow_button'] === 3 and defined('NV_IS_ADMIN'))) {
-        $html_links[] = [
-            'rel' => 'stylesheet',
-            'href' => ASSETS_STATIC_URL . '/js/show-pass-btn/bootstrap3-show-pass.css'
-        ];
-    }
     $tpl->assign('HTML_LINKS', $html_links);
 
     /*
@@ -233,11 +206,10 @@ function nv_site_theme($contents, $full = true)
     */
 
     // JS của nút ẩn/hiện mật khẩu
-    // FIXME
     if (($global_config['passshow_button'] === 1) or ($global_config['passshow_button'] === 2 and defined('NV_IS_USER')) or ($global_config['passshow_button'] === 3 and defined('NV_IS_ADMIN'))) {
         $html_js[] = [
             'ext' => 1,
-            'content' => ASSETS_STATIC_URL . '/js/show-pass-btn/bootstrap3-show-pass.js'
+            'content' => ASSETS_STATIC_URL . '/js/show-pass-btn/bootstrap5-show-pass.js'
         ];
     }
     $tpl->assign('HTML_JS', $html_js);
