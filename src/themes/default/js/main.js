@@ -112,20 +112,6 @@ function openID_load(a) {
     return !1
 }
 
-function openID_result() {
-    var resElement = $("#openidResult");
-    resElement.fadeIn();
-    setTimeout(function() {
-        if (resElement.data('redirect') != '') {
-            window.location.href = resElement.data('redirect');
-        } else if (resElement.data('result') == 'success') {
-            location.reload();
-        } else {
-            resElement.hide(0).html('').data('result', '').data('redirect', '');
-        }
-    }, 5000);
-}
-
 // QR-code
 function qrcodeLoad(a) {
     var b = new Image,
@@ -313,12 +299,6 @@ $(function() {
         }
     });
 
-    //OpenID
-    $("#openidBt").on("click", function() {
-        openID_result();
-        return !1
-    });
-
     //Đăng nhập bằng OpenID
     $('body').on('click', '[data-toggle=openID_load]', function(e) {
         e.preventDefault();
@@ -365,3 +345,21 @@ $(window).on("resize", function() {
 $(window).on('load', function() {
     nvbreadcrumbs();
 });
+
+// Fix bootstrap multiple modal
+$(document).on({
+    'show.bs.modal': function() {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    },
+    'hidden.bs.modal': function() {
+        if ($('.modal:visible').length > 0) {
+            setTimeout(function() {
+                $(document.body).addClass('modal-open');
+            }, 0);
+        }
+    }
+}, '.modal');

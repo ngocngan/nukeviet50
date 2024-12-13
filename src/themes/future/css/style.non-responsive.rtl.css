@@ -25146,6 +25146,103 @@ readers do not read off random characters that represent icons */
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 576 512' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m572.52 241.4c-54.23-105.81-161.59-177.4-284.52-177.4s-230.32 71.64-284.52 177.41a32.35 32.35 0 0 0 0 29.19c54.23 105.81 161.59 177.4 284.52 177.4s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zm-284.52 158.6a144 144 0 1 1 144-144 143.93 143.93 0 0 1 -144 144zm0-240a95.31 95.31 0 0 0 -25.31 3.79 47.85 47.85 0 0 1 -66.9 66.9 95.78 95.78 0 1 0 92.21-70.69z' fill='%23fff'/%3e%3c/svg%3e");
 }
 
+.nv-info {
+  --bs-alert-bg: transparent;
+  --bs-alert-padding-x: 1rem;
+  --bs-alert-padding-y: 1rem;
+  --bs-alert-color: inherit;
+  --bs-alert-border-color: transparent;
+  --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
+  --bs-alert-border-radius: var(--bs-border-radius);
+  --bs-alert-link-color: inherit;
+  position: relative;
+  padding: var(--bs-alert-padding-y) 3.625rem var(--bs-alert-padding-y) var(--bs-alert-padding-x);
+  color: var(--bs-alert-color);
+  background-color: var(--bs-alert-bg);
+  border: var(--bs-alert-border);
+  border-radius: var(--bs-alert-border-radius);
+}
+.nv-info.success {
+  --bs-alert-color: var(--bs-success-text-emphasis);
+  --bs-alert-bg: var(--bs-success-bg-subtle);
+  --bs-alert-border-color: var(--bs-success-border-subtle);
+  --bs-alert-link-color: var(--bs-success-text-emphasis);
+}
+.nv-info.success::before {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' fill='%23198754' viewBox='0 0 16 16'%3e%3cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/%3e%3c/svg%3e");
+}
+.nv-info.info {
+  --bs-alert-color: var(--bs-info-text-emphasis);
+  --bs-alert-bg: var(--bs-info-bg-subtle);
+  --bs-alert-border-color: var(--bs-info-border-subtle);
+  --bs-alert-link-color: var(--bs-info-text-emphasis);
+}
+.nv-info.info::before {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' fill='%230dcaf0' viewBox='0 0 16 16'%3e%3cpath d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2'/%3e%3c/svg%3e");
+}
+.nv-info.error {
+  --bs-alert-color: var(--bs-danger-text-emphasis);
+  --bs-alert-bg: var(--bs-danger-bg-subtle);
+  --bs-alert-border-color: var(--bs-danger-border-subtle);
+  --bs-alert-link-color: var(--bs-danger-text-emphasis);
+}
+.nv-info.error::before {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' fill='%23dc3545' viewBox='0 0 16 16'%3e%3cpath d='M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2'/%3e%3c/svg%3e");
+}
+
+.nv-info:before {
+  display: block;
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+}
+
+.nv-alert {
+  position: fixed;
+  top: 25%;
+  left: 0;
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 1rem);
+  margin: auto;
+  z-index: 99999999999999;
+  display: none;
+}
+.nv-alert.show {
+  display: block;
+}
+.nv-alert.nv-info {
+  --bs-alert-padding-y: 1.75rem;
+  box-shadow: var(--bs-box-shadow);
+}
+
+@keyframes nv-loadbar-spinner {
+  to {
+    transform: rotate(360deg) ;
+  }
+}
+.load-bar {
+  --bs-spinner-width: var(--bs-body-font-size);
+  --bs-spinner-height: var(--bs-body-font-size);
+  --bs-spinner-vertical-align: middle;
+  --bs-spinner-border-width: 0.2em;
+  --bs-spinner-animation-speed: 0.75s;
+  --bs-spinner-animation-name: nv-loadbar-spinner;
+  display: inline-block;
+  width: var(--bs-spinner-width);
+  height: var(--bs-spinner-height);
+  vertical-align: var(--bs-spinner-vertical-align);
+  border-radius: 50%;
+  animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
+  margin-right: 0.25rem;
+  border: var(--bs-spinner-border-width) solid currentcolor;
+  border-left-color: transparent;
+}
+
 .cookie-notice {
   position: fixed;
   bottom: 1rem;

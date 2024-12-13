@@ -194,16 +194,14 @@ function nv_site_theme($contents, $full = true)
      * JS
      */
     $html_js = nv_html_site_js(false);
-    /*
     $html_js[] = [
         'ext' => 1,
-        'content' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/js/main.js'
+        'content' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/js/nv.main.js'
     ];
     $html_js[] = [
         'ext' => 1,
-        'content' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/js/custom.js'
+        'content' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/js/nv.custom.js'
     ];
-    */
 
     // JS của nút ẩn/hiện mật khẩu
     if (($global_config['passshow_button'] === 1) or ($global_config['passshow_button'] === 2 and defined('NV_IS_USER')) or ($global_config['passshow_button'] === 3 and defined('NV_IS_ADMIN'))) {
@@ -361,11 +359,6 @@ function nv_site_theme($contents, $full = true)
             }
             $xtpl->parse('main.theme_type');
         }
-    }
-
-    if (defined('SSO_REGISTER_DOMAIN')) {
-        $xtpl->assign('SSO_REGISTER_ORIGIN', SSO_REGISTER_DOMAIN);
-        $xtpl->parse('main.crossdomain_listener');
     }
 }
 

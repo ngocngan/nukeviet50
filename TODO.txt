@@ -3,3 +3,66 @@
     + Xóa src/themes/admin_future/system/alert.tpl
     + Xóa src/themes/admin_future/theme_alert.php
     + Chuyển tệp src/assets/tpl/mail.tpl thành smarty
+
+Nâng cấp giao diện:
+
+- footer_only.tpl mở nó tìm xóa đoạn
+        <!-- BEGIN: crossdomain_listener -->
+        <script type="text/javascript">
+        function nvgSSOReciver(event) {
+            if (event.origin !== '{SSO_REGISTER_ORIGIN}') {
+                return false;
+            }
+            if (
+                event.data !== null && typeof event.data == 'object' && event.data.code == 'oauthback' &&
+                typeof event.data.redirect != 'undefined' && typeof event.data.status != 'undefined' && typeof event.data.mess != 'undefined'
+            ) {
+                $('#openidResult').data('redirect', event.data.redirect);
+                $('#openidResult').data('result', event.data.status);
+                $('#openidResult').html(event.data.mess + (event.data.status == 'success' ? ' <span class="load-bar"></span>' : ''));
+                $('#openidResult').addClass('nv-info ' + event.data.status);
+                $('#openidBt').trigger('click');
+            } else if (event.data == 'nv.reload') {
+                location.reload();
+            }
+        }
+        window.addEventListener('message', nvgSSOReciver, false);
+        </script>
+        <!-- END: crossdomain_listener -->
+
+Tìm và sửa
+        <div id="openidResult" class="nv-alert" style="display:none"></div>
+Thành
+        <div id="openidResult" data-sso-domain="{SSO_REGISTER_DOMAIN}" class="nv-alert" style="display:none"></div>
+
+- theme.php tìm và xóa đoạn
+
+    if (defined('SSO_REGISTER_DOMAIN')) {
+        $xtpl->assign('SSO_REGISTER_ORIGIN', SSO_REGISTER_DOMAIN);
+        $xtpl->parse('main.crossdomain_listener');
+    }
+
+- main.js tìm và xóa
+
+    //OpenID
+    $("#openidBt").on("click", function() {
+        openID_result();
+        return !1
+    });
+
+Xóa
+
+function openID_result() {
+    var resElement = $("#openidResult");
+    resElement.fadeIn();
+    setTimeout(function() {
+        if (resElement.data('redirect') != '') {
+            window.location.href = resElement.data('redirect');
+        } else if (resElement.data('result') == 'success') {
+            location.reload();
+        } else {
+            resElement.hide(0).html('').data('result', '').data('redirect', '');
+        }
+    }, 5000);
+}
+

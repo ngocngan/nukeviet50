@@ -1,9 +1,16 @@
 /**
- * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
- * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
- * @License GNU/GPL version 2 or any later version
- * @Createdate 19/3/2010 22:58
+ * NukeViet Content Management System
+ * @version 4.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2023 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
+ */
+
+/**
+ * Code ở tệp này cần không phụ thuộc vào thư viện làm giao diện
+ * giả sử bootstrap 3, 4, 5 hoặc fontawesome. Nếu phụ thuộc hãy đặt code
+ * ở riêng giao diện đó.
  */
 
 // Ap dung trinh nghe thu dong cho touchstart
@@ -522,6 +529,20 @@ var reCaptcha3ApiLoad = function() {
     }
 }
 
+function openID_result() {
+    var resElement = $("#openidResult");
+    resElement.fadeIn();
+    setTimeout(function() {
+        if (resElement.data('redirect') != '') {
+            window.location.href = resElement.data('redirect');
+        } else if (resElement.data('result') == 'success') {
+            location.reload();
+        } else {
+            resElement.hide(0).html('').data('result', '').data('redirect', '');
+        }
+    }, 5000);
+}
+
 $(function() {
 
     // Modify all empty link
@@ -666,25 +687,38 @@ $(function() {
             c = "click" == i.type ? !c || (this.checked = !1) : this.checked
         }
     }());
-});
 
-// Fix bootstrap multiple modal
-$(document).on({
-    'show.bs.modal': function() {
-        var zIndex = 1040 + (10 * $('.modal:visible').length);
-        $(this).css('z-index', zIndex);
-        setTimeout(function() {
-            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-        }, 0);
-    },
-    'hidden.bs.modal': function() {
-        if ($('.modal:visible').length > 0) {
-            setTimeout(function() {
-                $(document.body).addClass('modal-open');
-            }, 0);
+    // OpenID
+    $("#openidBt").on("click", function() {
+        openID_result();
+        return !1
+    });
+
+    // Xử lý các trường hợp Oauth cross-domain
+    const oauthRes = document.querySelector('#openidResult');
+    if (oauthRes) {
+        const ssoDomain = oauthRes.getAttribute('data-sso-domain');
+        if (!!ssoDomain) {
+            window.addEventListener('message', (event) => {
+                if (event.origin !== ssoDomain) {
+                    return false;
+                }
+                if (
+                    event.data !== null && typeof event.data == 'object' && event.data.code == 'oauthback' &&
+                    typeof event.data.redirect != 'undefined' && typeof event.data.status != 'undefined' && typeof event.data.mess != 'undefined'
+                ) {
+                    $('#openidResult').data('redirect', event.data.redirect);
+                    $('#openidResult').data('result', event.data.status);
+                    $('#openidResult').html(event.data.mess + (event.data.status == 'success' ? ' <span class="load-bar"></span>' : ''));
+                    $('#openidResult').addClass('nv-info ' + event.data.status);
+                    $('#openidBt').trigger('click');
+                } else if (event.data == 'nv.reload') {
+                    location.reload();
+                }
+            }, false);
         }
     }
-}, '.modal');
+});
 
 $(window).on('load', function() {
     (0 < $(".fb-like").length) && (1 > $("#fb-root").length && $("body").append('<div id="fb-root"></div>'), function(a, b, c) {
