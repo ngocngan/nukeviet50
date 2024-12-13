@@ -319,14 +319,6 @@ function nv_site_theme($contents, $full = true)
             $xtpl->parse('main.currenttime');
         }
 
-        // Statistics image
-        $theme_stat_img = '';
-        if ($global_config['statistic'] and isset($site_mods['statistics'])) {
-            $theme_stat_img .= '<a title="' . $nv_Lang->getGlobal('viewstats') . '" href="' . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=statistics"><img alt="' . $nv_Lang->getGlobal('viewstats') . '" src="' . NV_BASE_SITEURL . 'index.php?second=statimg&amp;p=' . nv_genpass() . "\" width=\"88\" height=\"31\" /></a>\n";
-        }
-
-        $xtpl->assign('THEME_STAT_IMG', $theme_stat_img);
-
         // Change theme types
         if (sizeof($global_config['array_theme_type']) > 1) {
             $mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : (($module_info['mobile'] != ':pcmod' and $module_info['mobile'] != ':pcsite') ? $module_info['mobile'] : '');
