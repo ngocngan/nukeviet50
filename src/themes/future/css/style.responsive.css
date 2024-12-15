@@ -25269,6 +25269,10 @@ readers do not read off random characters that represent icons */
   border-right-color: transparent;
 }
 
+.hide, .hidden {
+  display: none !important;
+}
+
 .cookie-notice {
   position: fixed;
   bottom: 1rem;
