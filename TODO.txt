@@ -66,3 +66,5 @@ function openID_result() {
     }, 5000);
 }
 
+- Checklist cập nhật bootstap:
+check node_modules/bootstrap/scss/bootstrap.scss xem khác với version cũ ra sao sau đó cập nhật ở style.non-responsive.scss

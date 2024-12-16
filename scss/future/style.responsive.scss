@@ -9,4 +9,6 @@
 
 $enable-responsive: true;
 
-@import "style";
+@import "style_header";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "style_footer";
