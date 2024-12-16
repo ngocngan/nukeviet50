@@ -7,7 +7,11 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
+// Biến tắt responsive của NukeViet (bootstrap 5 không có biến này)
 $enable-responsive: false;
+
+// Tắt responsive font chữ
+$enable-rfs: false;
 
 @import "style_header";
 
@@ -23,9 +27,19 @@ $enable-responsive: false;
 @import "../../node_modules/bootstrap/scss/maps";
 @import "../../node_modules/bootstrap/scss/mixins";
 
-// NukeViet override mixin breakpoint: Không dùng max-width, min-width cho các thành phần
+// NukeViet override mixin breakpoint: Không dùng max-width, min-width cho các thành phần.
+// Xét về nguyên tắc. Giao diện desktop luôn xét cho kích thước màn hình to nhất
+// vì thế min-width (width >=) luôn trả về true => luôn return content với mọi breakpoint
+//        max-width (width <=) luôn trả về false => hủy content trong nó. Trường hợp $breakpoint value = 0 thì trả về content
 @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
     @content;
+}
+
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+    $max: breakpoint-max($name, $breakpoints);
+    @if not $max {
+        @content;
+    }
 }
 
 @import "../../node_modules/bootstrap/scss/utilities";
