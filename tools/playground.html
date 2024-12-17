@@ -20,7 +20,7 @@
             <div class="col-3">
                 <div id="navbar-example" class="sticky-top">
                     <h5 class="mb-3 mt-5">Mục lục</h5>
-                    <div class="list-group">
+                    <div class="list-group small">
                         <a class="list-group-item list-group-item-action" href="#section-colors-text">Tông màu và văn bản</a>
                         <a class="list-group-item list-group-item-action" href="#section-spacers">Khoảng cách các thành phần</a>
                         <a class="list-group-item list-group-item-action" href="#section-form-btns">Biểu mẫu và nút ấn</a>
@@ -29,6 +29,18 @@
                         <a class="list-group-item list-group-item-action" href="#section-alert">Thông báo, cảnh báo</a>
                         <a class="list-group-item list-group-item-action" href="#section-badge">Huy hiệu (Badge)</a>
                         <a class="list-group-item list-group-item-action" href="#section-breadcrumb">Đường dẫn (Breadcrumb)</a>
+                        <a class="list-group-item list-group-item-action" href="#section-card">Thẻ (Card)</a>
+                        <a class="list-group-item list-group-item-action" href="#section-dropdowns">Menu đổ xuống (Dropdowns)</a>
+                        <a class="list-group-item list-group-item-action" href="#section-list-group">Nhóm danh sách</a>
+                        <a class="list-group-item list-group-item-action" href="#section-modal">Hộp thoại (modal)</a>
+                        <a class="list-group-item list-group-item-action" href="#section-navbar">Thanh menu ngang</a>
+                        <a class="list-group-item list-group-item-action" href="#section-nav">Thanh điều hướng + Tabs</a>
+                        <a class="list-group-item list-group-item-action" href="#section-pagination">Phân trang</a>
+                        <a class="list-group-item list-group-item-action" href="#section-tooltip">Tooltip và Popover</a>
+                        <a class="list-group-item list-group-item-action" href="#section-progressbar">Thanh tiến trình</a>
+                        <a class="list-group-item list-group-item-action" href="#section-spinner">Biểu tượng đang tải</a>
+                        <a class="list-group-item list-group-item-action" href="#section-toasts">Thông báo ngắn</a>
+                        <a class="list-group-item list-group-item-action" href="#section-utilities">Một số tiện ích, thành phần khác</a>
                     </div>
                 </div>
             </div>
@@ -1109,13 +1121,395 @@
                     </div>
                 </div>
 
-                <div id="section-xxxx" class="pt-5">
-                    <h2>xxxx</h2>
+                <div id="section-dropdowns" class="pt-5">
+                    <h2>Menu đổ xuống (Dropdowns)</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Nút dropdown
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Hành động</a></li>
+                            <li><a class="dropdown-item" href="#">Hành động khác</a></li>
+                            <li><a class="dropdown-item" href="#">Một cái gì đó khác ở đây</a></li>
+                        </ul>
+                    </div>
                 </div>
+
+                <div id="section-list-group" class="pt-5">
+                    <h2>Nhóm danh sách</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item active" aria-current="true">Một mục đang hoạt động</li>
+                        <li class="list-group-item">Mục thứ hai</li>
+                        <li class="list-group-item">Mục thứ ba</li>
+                        <li class="list-group-item">Mục thứ tư</li>
+                        <li class="list-group-item">Và mục thứ năm</li>
+                    </ul>
+                </div>
+
+                <div id="section-modal" class="pt-5">
+                    <h2>Hộp thoại (modal)</h2>
+                    <div class="bg-body-tertiary p-4">
+                        <div class="modal position-static d-block" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Tiêu đề modal</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Văn bản nội dung modal ở đây.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary">Lưu thay đổi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-navbar" class="pt-5">
+                    <h2>Thanh menu ngang</h2>
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">Brand</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Chuyển đổi điều hướng">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Liên kết</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Dropdown
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Hành động</a></li>
+                                            <li><a class="dropdown-item" href="#">Hành động khác</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="#">Một cái gì đó khác ở đây</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" aria-disabled="true">Vô hiệu hóa</a>
+                                    </li>
+                                </ul>
+                                <form class="d-flex" role="search">
+                                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="a">
+                                    <button class="btn btn-outline-success text-nowrap" type="submit">Tìm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <div id="section-nav" class="pt-5">
+                    <h2>Thanh điều hướng + Tabs</h2>
+                    <ul class="nav nav-pills mb-4">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Đang hoạt động</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Vô hiệu hóa</a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-underline mb-4">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Đang hoạt động</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Vô hiệu hóa</a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Đang hoạt động</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Liên kết</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Vô hiệu hóa</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="section-pagination" class="pt-5">
+                    <h2>Phân trang</h2>
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link">Trang trước</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Trang sau</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <nav aria-label="...">
+                        <ul class="pagination pagination-lg">
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">1</span>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        </ul>
+                    </nav>
+                    <nav aria-label="...">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">1</span>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div id="section-tooltip" class="pt-5">
+                    <h2>Tooltip và Popover</h2>
+                    <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-title="Tiêu đề popover" data-bs-content="Và đây là một số nội dung tuyệt vời. Nó rất thú vị. Đúng không?">Nhấp để bật/tắt popover</button>
+                    <div class="py-4">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip ở trên">
+                            Tooltip ở trên
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip ở bên phải">
+                            Tooltip ở bên phải
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Tooltip ở dưới">
+                            Tooltip ở dưới
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Tooltip ở bên trái">
+                            Tooltip ở bên trái
+                        </button>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", (event) => {
+                            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+                            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+                            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+                        });
+                    </script>
+                </div>
+
+                <div id="section-progressbar" class="pt-5">
+                    <h2>Thanh tiến trình</h2>
+
+                    <div class="vstack gap-3">
+                        <div class="progress" role="progressbar" aria-label="Ví dụ chiều cao 1px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 1px">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ chiều cao 20px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+
+                        <div class="progress" role="progressbar" aria-label="Ví dụ thành công" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-success" style="width: 25%">25%</div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ thông tin" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-info text-dark" style="width: 50%">50%</div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ cảnh báo" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-warning text-dark" style="width: 75%">75%</div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ nguy hiểm" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-danger" style="width: 100%">100%</div>
+                        </div>
+
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo mặc định" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped" style="width: 10%"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo thành công" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped bg-success" style="width: 25%"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo thông tin" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped bg-info" style="width: 50%"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo cảnh báo" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped bg-warning" style="width: 75%"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo nguy hiểm" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped bg-danger" style="width: 100%"></div>
+                        </div>
+
+                        <div class="progress" role="progressbar" aria-label="Ví dụ gạch chéo hoạt hình" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="section-spinner" class="pt-5">
+                    <h2>Biểu tượng đang tải</h2>
+                    <div class="hstack gap-2 mb-4">
+
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-border text-dark" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+                    <div class="hstack gap-2">
+                        <div class="spinner-grow text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-success" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-danger" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-warning" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-info" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-light" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <div class="spinner-grow text-dark" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-toasts" class="pt-5">
+                    <h2>Thông báo ngắn (Toast)</h2>
+                    <div class="toast fade show mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                        <div class="toast-header">
+                            <strong class="me-auto">Bootstrap</strong>
+                            <small>11 phút trước</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            Xin chào! Đây là một thông báo (toast) đơn giản.
+                        </div>
+                    </div>
+
+                    <div class="toast fade show align-items-center mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Xin chào, thế giới! Đây là một thông báo đơn giản.
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Đóng"></button>
+                        </div>
+                    </div>
+
+                    <div class="toast fade show align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Hello, world! This is a toast message.
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-utilities" class="pt-5">
+                    <h2>Một số tiện ích, thành phần khác</h2>
+                    <div class="hstack gap-2 flex-wrap mb-4">
+                        <div style="padding: 30px; width: 1px;" class="border border-primary"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-primary-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-secondary"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-secondary-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-success"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-success-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-danger"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-danger-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-warning"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-warning-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-info"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-info-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-light"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-light-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-dark"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-dark-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-black"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-white"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-primary"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-primary-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-secondary"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-secondary-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-success"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-success-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-danger"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-danger-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-warning"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-warning-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-info"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-info-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-light"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-light-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-dark"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-dark-subtle"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-black"></div>
+                        <div style="padding: 30px; width: 1px;" class="border border-white"></div>
+                    </div>
+                    <div class="shadow-none p-3 mb-5 bg-body-tertiary rounded">Không có bóng</div>
+                    <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">Bóng nhỏ</div>
+                    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">Bóng thường</div>
+                    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">Bóng lớn</div>
+                </div>
+
+                <div style="height: 400px;"></div>
             </div>
         </div>
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
