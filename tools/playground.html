@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="vi" dir="ltr" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trang thử giao diện của các thành phần trong Bootstrap 5</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbar-example" data-bs-offset="0" tabindex="0">
+    <div class="container">
+        <div class="row">
+            <!-- Phần Sticky Scrollspy bên trái -->
+            <div class="col-3">
+                <div id="navbar-example" class="sticky-top">
+                    <h5 class="mb-3 mt-5">Mục lục</h5>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" href="#section-colors-text">Tông màu và văn bản</a>
+                        <a class="list-group-item list-group-item-action" href="#section-spacers">Khoảng cách các thành phần</a>
+                        <a class="list-group-item list-group-item-action" href="#section-form-btns">Biểu mẫu và nút ấn</a>
+                        <a class="list-group-item list-group-item-action" href="#section-table">Bảng</a>
+                        <a class="list-group-item list-group-item-action" href="#section-accordion">Phần tử mở rộng, thu gọn</a>
+                        <a class="list-group-item list-group-item-action" href="#section-alert">Thông báo, cảnh báo</a>
+                        <a class="list-group-item list-group-item-action" href="#section-badge">Huy hiệu (Badge)</a>
+                        <a class="list-group-item list-group-item-action" href="#section-breadcrumb">Đường dẫn (Breadcrumb)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần Nội dung chính -->
+            <div class="col-9">
+                <!-- Phần 1 -->
+                <div id="section-colors-text" class="pt-5">
+                    <div class="h2">Tông màu và văn bản</div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-primary rounded-3">Chính</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-secondary rounded-3">Phụ</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-success rounded-3">Thành công</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-danger rounded-3">Nguy hiểm</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-warning rounded-3">Cảnh báo</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-info rounded-3">Thông tin</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-light rounded-3">Sáng</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 mb-3 text-bg-dark rounded-3">Tối</div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-swatches">
+                            <thead>
+                                <tr>
+                                    <th style="width: 340px;">Mô tả</th>
+                                    <th style="width: 200px;" class="ps-0">Mẫu màu</th>
+                                    <th>Biến</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2">
+                                        <strong>Nền chính —</strong> Màu văn bản và nền mặc định, bao gồm các thành phần.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-body-color);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-body-color</code><br><code>--bs-body-color-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 border" style="background-color: var(--bs-body-bg);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-body-bg</code><br><code>--bs-body-bg-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2">
+                                        <strong>Phụ —</strong> Dùng tùy chọn <code>color</code> cho văn bản sáng hơn. Dùng <code>bg</code> cho các đường phân cách và trạng thái bị vô hiệu.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-secondary-color);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-secondary-color</code><br><code>--bs-secondary-color-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 border" style="background-color: var(--bs-secondary-bg);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-secondary-bg</code><br><code>--bs-secondary-bg-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2">
+                                        <strong>Bậc ba —</strong> Dùng tùy chọn <code>color</code> cho văn bản nhạt nhất. Dùng <code>bg</code> để tạo kiểu cho nền khi di chuột, nhấn mạnh và khu vực riêng biệt.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-tertiary-color);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-tertiary-color</code><br><code>--bs-tertiary-color-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 border" style="background-color: var(--bs-tertiary-bg);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-tertiary-bg</code><br><code>--bs-tertiary-bg-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Nhấn mạnh —</strong> Dùng cho văn bản có độ tương phản cao hơn. Không áp dụng cho nền.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-emphasis-color);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-emphasis-color</code><br><code>--bs-emphasis-color-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Viền —</strong> Dùng cho viền thành phần, đường phân cách và gạch ngang. Sử dụng <code>--bs-border-color-translucent</code> để hòa trộn với nền qua giá trị <code>rgba()</code>.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-border-color);">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-border-color</code><br><code>--bs-border-color-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Chính —</strong> Màu chủ đề chính, dùng cho liên kết, trạng thái tiêu điểm và trạng thái kích hoạt thành phần.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-primary">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-primary</code><br><code>--bs-primary-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-primary-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-primary-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-primary-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-primary-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-primary-text-emphasis)">Văn bản</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-primary-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Thành công —</strong> Màu chủ đề được sử dụng cho các hành động và thông tin thành công hoặc tích cực.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-success">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-success</code><br><code>--bs-success-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-success-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-success-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-success-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-success-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-success-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-success-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Nguy hiểm —</strong> Màu chủ đề được sử dụng cho các lỗi và hành động nguy hiểm.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-danger">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-danger</code><br><code>--bs-danger-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-danger-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-danger-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-danger-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-danger-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-danger-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-danger-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Cảnh báo —</strong> Màu chủ đề được sử dụng cho các thông báo cảnh báo không mang tính phá hủy.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-warning">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-warning</code><br><code>--bs-warning-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-warning-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-warning-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-warning-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-warning-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-warning-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-warning-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Thông tin —</strong> Màu chủ đề được sử dụng cho nội dung trung lập và thông tin.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-info">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-info</code><br><code>--bs-info-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-info-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-info-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-info-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-info-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-info-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-info-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Sáng —</strong> Tùy chọn màu chủ đề bổ sung cho màu sắc ít tương phản hơn.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-light">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-light</code><br><code>--bs-light-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-light-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-light-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-light-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-light-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-light-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-light-text-emphasis</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <strong>Tối —</strong> Tùy chọn màu chủ đề bổ sung cho màu sắc có độ tương phản cao hơn.
+                                    </td>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2 bg-dark">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-dark</code><br><code>--bs-dark-rgb</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="background-color: var(--bs-dark-bg-subtle)">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-dark-bg-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="p-3 rounded-2" style="border: 5px var(--bs-dark-border-subtle) solid">&nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-dark-border-subtle</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0">
+                                        <div class="py-3 fw-bold h5" style="color: var(--bs-dark-text-emphasis)">Chữ</div>
+                                    </td>
+                                    <td>
+                                        <code>--bs-dark-text-emphasis</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h1>Tiêu đề H1</h1>
+                    <h2>Tiêu đề H2</h2>
+                    <h3>Tiêu đề H3</h3>
+                    <h4>Tiêu đề H4</h4>
+                    <h5>Tiêu đề H5</h5>
+                    <h6>Tiêu đề H6</h6>
+                    <div class="mb-3 fs-5">Kích thước số 5 .fs-5 hoặc h5 thường được chọn làm tiêu đề của các khối ví dụ như card-title, modal-title.
+                        Bên dưới thẻ lead nó cũng chính là dùng fs-5 luôn. Trước đây quan niệm dùng h4, h3 cần được thay thế</div>
+                    <p>
+                        Thẻ <code>&lt;p&gt;</code> được sử dụng để tạo một đoạn văn bản. Trong đoạn này,
+                        bạn có thể thêm <a href="https://www.google.com" target="_blank">liên kết</a>
+                        dẫn tới một trang khác.
+                    </p>
+                    <p class="lead">Đây là văn bản nổi bật biểu thị bằng class="lead".</p>
+                    <p><abbr title="Nội dung mô tả">Thẻ &lt;abbr&gt; được sử dụng để mô tả một cụm từ viết tắt</abbr></p>
+                    <p><abbr title="Nội dung mô tả">Thẻ &lt;abbr&gt; được sử dụng để mô tả một cụm từ viết tắt. Thêm class initialism</abbr></p>
+                    <blockquote class="blockquote">
+                        Một câu trích dẫn nổi tiếng, nằm trong phần tử blockquote.
+                    </blockquote>
+                </div>
+
+                <div id="section-spacers" class="pt-5">
+                    <h2>Khoảng cách giữa các thành phần</h2>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Mặc định</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Mặc định</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Mặc định</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 g-1">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-1</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-1</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-1</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 g-2">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-2</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-2</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-2</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 g-3">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-3</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-3</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-3</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 g-4">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-4</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-4</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-4</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 g-5">
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-5</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-5</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-bg-secondary p-2">Cấp độ g-5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần 2 -->
+                <div id="section-form-btns" class="pt-5">
+                    <h2>Biểu mẫu và nút ấn</h2>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Biểu mẫu đơn giản</h5>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Địa chỉ Email</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" autocomplete="off">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Ví dụ về vùng nhập liệu</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput2" class="form-label">Nhập text thông thường</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Nhập text thông thường">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput3" class="form-label">Kích thước nhỏ</label>
+                                <input type="text" class="form-control form-control-sm" id="exampleFormControlInput3" placeholder="Kích thước nhỏ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput4" class="form-label">Kích thước lớn</label>
+                                <input type="text" class="form-control form-control-lg" id="exampleFormControlInput4" placeholder="Kích thước lớn">
+                                <div class="form-text">Câu giải thích cho một phần nhập liệu</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput5" class="form-label">Ô nhập liệu chỉ đọc (readonly)</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput5" value="Ô nhập liệu chỉ đọc (readonly)">
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Ô chọn nhiều
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Ô chọn nhiều, được chọn
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" disabled>
+                                    <label class="form-check-label" for="flexCheckDefault2">
+                                        Ô chọn nhiều, bị cấm
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked disabled>
+                                    <label class="form-check-label" for="flexCheckChecked2">
+                                        Ô chọn nhiều, được chọn, bị cấm
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Ô chọn một
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Ô chọn một, được chọn
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault11" disabled>
+                                    <label class="form-check-label" for="flexRadioDefault11">
+                                        Ô chọn một, bị cấm
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault21" checked disabled>
+                                    <label class="form-check-label" for="flexRadioDefault21">
+                                        Ô chọn một, được chọn, bị cấm
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Công tắc checkbox mặc định</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                    <label class="form-check-label" for="flexSwitchCheckChecked">Công tắc checkbox đã được chọn</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDisabled" disabled>
+                                    <label class="form-check-label" for="flexSwitchCheckDisabled">Công tắc checkbox bị vô hiệu hóa</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" checked disabled>
+                                    <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">Công tắc checkbox đã chọn và bị vô hiệu hóa</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Biểu mẫu dạng cột</h5>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlInput6" class="col-sm-4 col-form-label text-sm-end">Dạng cột</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="exampleFormControlInput6">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlInput7" class="col-sm-4 col-form-label text-sm-end">Ô bị cấm</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="exampleFormControlInput7" value="Ô bị cấm" disabled>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlInput8" class="col-sm-4 col-form-label text-sm-end">Chỉ đọc và bị cấm</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="exampleFormControlInput8" value="Chỉ đọc và bị cấm" disabled readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="formFile" class="col-sm-4 col-form-label text-sm-end">Ô chọn tệp</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="file" id="formFile">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleColorInput" class="col-sm-4 col-form-label text-sm-end">Ô chọn màu</label>
+                                <div class="col-sm-8">
+                                    <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleSelectbox" class="col-sm-4 col-form-label text-sm-end">Select box</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="exampleSelectbox">
+                                        <option selected>Chọn menu này</option>
+                                        <option value="1">Một</option>
+                                        <option value="2">Hai</option>
+                                        <option value="3">Ba</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleSelectbox2" class="col-sm-4 col-form-label text-sm-end">Select box chọn nhiều</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" multiple id="exampleSelectbox2">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlInput9" class="col-sm-4 col-form-label text-sm-end">Trạng thái hợp lệ</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control is-valid" id="exampleFormControlInput9" placeholder="Trạng thái hợp lệ">
+                                    <div class="valid-feedback">Thông tin hợp lệ</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlInput10" class="col-sm-4 col-form-label text-sm-end">Trạng thái không hợp lệ</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control is-invalid" id="exampleFormControlInput10" placeholder="Trạng thái không hợp lệ">
+                                    <div class="invalid-feedback">Thông tin không hợp lệ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Nhóm các ô và nút</h5>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">@</span>
+                                <input name="a" type="text" class="form-control" placeholder="Tên người dùng" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input name="a" type="text" class="form-control" placeholder="Tên người dùng của người nhận" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <span class="input-group-text" id="basic-addon2">@example.com</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="basic-url" class="form-label">URL tùy chỉnh của bạn</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
+                                    <input name="a" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                </div>
+                                <div class="form-text" id="basic-addon4">Văn bản trợ giúp ví dụ nằm ngoài nhóm nhập liệu.</div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">$</span>
+                                <input name="a" type="text" class="form-control" aria-label="Số tiền (theo đô la gần nhất)">
+                                <span class="input-group-text">.00</span>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input name="a" type="text" class="form-control" placeholder="Tên người dùng" aria-label="Username">
+                                <span class="input-group-text">@</span>
+                                <input name="a" type="text" class="form-control" placeholder="Máy chủ" aria-label="Server">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Với textarea</span>
+                                <textarea name="a" class="form-control" aria-label="With textarea"></textarea>
+                            </div>
+
+                            <div class="btn-group mb-3">
+                                <a href="#" class="btn btn-primary active" aria-current="page">Kích hoạt</a>
+                                <a href="#" class="btn btn-primary">Nút 2</a>
+                                <a href="#" class="btn btn-primary">Nút 3</a>
+                            </div>
+
+                            <div class="input-group">
+                                <input name="a" type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username with two button addons">
+                                <button class="btn btn-primary" type="button">Nút ấn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Các dạng đặc biệt khác</h5>
+                            <div class="mb-3">
+                                <label for="customRange1" class="form-label">Chọn khoảng</label>
+                                <input type="range" class="form-range" id="customRange1">
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                <label for="floatingInput">Địa chỉ email</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Mật khẩu">
+                                <label for="floatingPassword">Mật khẩu</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Tất cả các nút ấn</h5>
+                            <p class="mb-1">Bình thường</p>
+                            <div class="hstack gap-2 flex-wrap">
+                                <button type="button" class="btn btn-primary">Chính</button>
+                                <button type="button" class="btn btn-secondary">Phụ</button>
+                                <button type="button" class="btn btn-success">Thành công</button>
+                                <button type="button" class="btn btn-danger">Nguy hiểm</button>
+                                <button type="button" class="btn btn-warning">Cảnh báo</button>
+                                <button type="button" class="btn btn-info">Thông tin</button>
+                                <button type="button" class="btn btn-light">Sáng</button>
+                                <button type="button" class="btn btn-dark">Tối</button>
+                                <button type="button" class="btn btn-link">Liên kết</button>
+                            </div>
+                            <p class="mt-4 mb-1">Nút chỉ có viền</p>
+                            <div class="hstack gap-2 flex-wrap">
+                                <button type="button" class="btn btn-outline-primary">Chính</button>
+                                <button type="button" class="btn btn-outline-secondary">Phụ</button>
+                                <button type="button" class="btn btn-outline-success">Thành công</button>
+                                <button type="button" class="btn btn-outline-danger">Nguy hiểm</button>
+                                <button type="button" class="btn btn-outline-warning">Cảnh báo</button>
+                                <button type="button" class="btn btn-outline-info">Thông tin</button>
+                                <button type="button" class="btn btn-outline-light">Sáng</button>
+                                <button type="button" class="btn btn-outline-dark">Tối</button>
+                            </div>
+                            <p class="mt-4 mb-1">Nhỏ</p>
+                            <div class="hstack gap-2 flex-wrap">
+                                <button type="button" class="btn btn-sm btn-primary">Chính</button>
+                                <button type="button" class="btn btn-sm btn-secondary">Phụ</button>
+                                <button type="button" class="btn btn-sm btn-success">Thành công</button>
+                                <button type="button" class="btn btn-sm btn-danger">Nguy hiểm</button>
+                                <button type="button" class="btn btn-sm btn-warning">Cảnh báo</button>
+                                <button type="button" class="btn btn-sm btn-info">Thông tin</button>
+                                <button type="button" class="btn btn-sm btn-light">Sáng</button>
+                                <button type="button" class="btn btn-sm btn-dark">Tối</button>
+                                <button type="button" class="btn btn-sm btn-link">Liên kết</button>
+                            </div>
+                            <p class="mt-4 mb-1">Lớn</p>
+                            <div class="hstack gap-2 flex-wrap">
+                                <button type="button" class="btn btn-lg btn-primary">Chính</button>
+                                <button type="button" class="btn btn-lg btn-secondary">Phụ</button>
+                                <button type="button" class="btn btn-lg btn-success">Thành công</button>
+                                <button type="button" class="btn btn-lg btn-danger">Nguy hiểm</button>
+                                <button type="button" class="btn btn-lg btn-warning">Cảnh báo</button>
+                                <button type="button" class="btn btn-lg btn-info">Thông tin</button>
+                                <button type="button" class="btn btn-lg btn-light">Sáng</button>
+                                <button type="button" class="btn btn-lg btn-dark">Tối</button>
+                                <button type="button" class="btn btn-lg btn-link">Liên kết</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần 4 -->
+                <div id="section-table" class="pt-5">
+                    <h2>Bảng</h2>
+                    <h5>Bảng mặc định</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên</th>
+                                <th>Tuổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Anh</td>
+                                <td>25</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Bình</td>
+                                <td>30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>Bảng có viền</h5>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên</th>
+                                <th>Tuổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Anh</td>
+                                <td>25</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Bình</td>
+                                <td>30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>Nổi bật khi di chuột qua các dòng</h5>
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên</th>
+                                <th>Tuổi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Anh</td>
+                                <td>25</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Bình</td>
+                                <td>30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>Bảng chật chội hơn</h5>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Họ</th>
+                                <th scope="col">Tên người dùng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="section-accordion" class="pt-5">
+                    <h2>Phần tử mở rộng, thu gọn</h2>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Mục Accordion #1
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <strong>Đây là nội dung của mục accordion đầu tiên.</strong> Nó được hiển thị mặc định, cho đến khi plugin collapse thêm các lớp phù hợp mà chúng tôi sử dụng để tạo kiểu cho từng phần tử. Các lớp này kiểm soát sự xuất hiện tổng thể, cũng như việc hiển thị và ẩn thông qua các chuyển tiếp CSS. Bạn có thể thay đổi bất kỳ điều gì trong số này với CSS tùy chỉnh hoặc ghi đè các biến mặc định của chúng tôi. Cũng cần lưu ý rằng gần như bất kỳ HTML nào cũng có thể nằm trong <code>.accordion-body</code>, mặc dù chuyển tiếp sẽ hạn chế tràn nội dung.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Mục Accordion #2
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <strong>Đây là nội dung của mục accordion thứ hai.</strong> Nó bị ẩn mặc định, cho đến khi plugin collapse thêm các lớp phù hợp mà chúng tôi sử dụng để tạo kiểu cho từng phần tử. Các lớp này kiểm soát sự xuất hiện tổng thể, cũng như việc hiển thị và ẩn thông qua các chuyển tiếp CSS. Bạn có thể thay đổi bất kỳ điều gì trong số này với CSS tùy chỉnh hoặc ghi đè các biến mặc định của chúng tôi. Cũng cần lưu ý rằng gần như bất kỳ HTML nào cũng có thể nằm trong <code>.accordion-body</code>, mặc dù chuyển tiếp sẽ hạn chế tràn nội dung.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Mục Accordion #3
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <strong>Đây là nội dung của mục accordion thứ ba.</strong> Nó bị ẩn mặc định, cho đến khi plugin collapse thêm các lớp phù hợp mà chúng tôi sử dụng để tạo kiểu cho từng phần tử. Các lớp này kiểm soát sự xuất hiện tổng thể, cũng như việc hiển thị và ẩn thông qua các chuyển tiếp CSS. Bạn có thể thay đổi bất kỳ điều gì trong số này với CSS tùy chỉnh hoặc ghi đè các biến mặc định của chúng tôi. Cũng cần lưu ý rằng gần như bất kỳ HTML nào cũng có thể nằm trong <code>.accordion-body</code>, mặc dù chuyển tiếp sẽ hạn chế tràn nội dung.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-alert" class="pt-5">
+                    <h2>Thông báo, cảnh báo</h2>
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        Một cảnh báo chính đơn giản—hãy kiểm tra nó!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+                    </div>
+                    <div class="alert alert-secondary" role="alert">
+                        Một cảnh báo phụ đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        Một cảnh báo thành công đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                        Một cảnh báo nguy hiểm đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        Một cảnh báo cảnh giác đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        Một cảnh báo thông tin đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        Một cảnh báo nhẹ đơn giản—hãy kiểm tra nó!
+                    </div>
+                    <div class="alert alert-dark" role="alert">
+                        Một cảnh báo tối đơn giản—hãy kiểm tra nó!
+                    </div>
+                </div>
+
+                <div id="section-badge" class="pt-5">
+                    <h2>Huy hiệu (Badge)</h2>
+                    <span class="badge text-bg-primary">Chính</span>
+                    <span class="badge text-bg-secondary">Phụ</span>
+                    <span class="badge text-bg-success">Thành công</span>
+                    <span class="badge text-bg-danger">Nguy hiểm</span>
+                    <span class="badge text-bg-warning">Cảnh báo</span>
+                    <span class="badge text-bg-info">Thông tin</span>
+                    <span class="badge text-bg-light">Nhẹ</span>
+                    <span class="badge text-bg-dark">Tối</span>
+                </div>
+
+                <div id="section-breadcrumb" class="pt-5">
+                    <h2>Đường dẫn (breadcrumb)</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Trang chủ</li>
+                        </ol>
+                    </nav>
+
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thư viện</li>
+                        </ol>
+                    </nav>
+
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="#">Thư viện</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Dữ liệu</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div id="section-card" class="pt-5">
+                    <h2>Thẻ (Card)</h2>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ mặc định</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-primary">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ chính</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-secondary">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ phụ</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-success">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ thành công</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-danger">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ nguy hiểm</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-warning">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ cảnh báo</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-info">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ thông tin</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-light">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ sáng</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-dark">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Tiêu đề thẻ tối</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card border-primary">
+                                <div class="card-header border-primary">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Thẻ có viền có màu</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header">Tiêu đề</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Thẻ có phần chân</h5>
+                                    <p class="card-text">Một đoạn văn bản ví dụ nhanh để xây dựng dựa trên tiêu đề thẻ và tạo nên phần lớn nội dung của thẻ.</p>
+                                </div>
+                                <div class="card-footer">
+                                    Phần chân thẻ
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-xxxx" class="pt-5">
+                    <h2>xxxx</h2>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
