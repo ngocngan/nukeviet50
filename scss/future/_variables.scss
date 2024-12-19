@@ -1,14 +1,107 @@
+// Màu sắc
+$gray: #22313C;
+$black: #000;
+
+$gray-100: tint($gray, 95%);
+$gray-200: tint($gray, 92%);
+$gray-300: tint($gray, 89%);//87
+$gray-400: tint($gray, 79%);
+$gray-500: tint($gray, 67%);
+$gray-600: tint($gray, 29%);
+$gray-700: tint($gray, 20%);
+$gray-800: tint($gray, 10%);
+$gray-900: $gray;
+
+$blue:    #4a72b2;
+$indigo:  #5c44b4;
+$purple:  #8a3fa6;
+$pink:    #d6336e;
+$red:     #CF4646;
+$orange:  #f7651e;
+$yellow:  #e0a800;
+$green:   #508250;
+$teal:    #1fa78b;
+$cyan:    #5a9ab2;
+
+$prefix: bs-;
+
 // Links
 $link-decoration: none;
+
+// Fonts
+$font-size-base: 1rem;
+$h1-font-size: $font-size-base * 1.875; // 30px
+$h2-font-size: $font-size-base * 1.75; // 28px
+$h3-font-size: $font-size-base * 1.625; // 26px
+$h4-font-size: $font-size-base * 1.5; // 24px
+$h5-font-size: $font-size-base * 1.25; // 20px
+$h6-font-size: $font-size-base;
+
+// Độ bo viền, viền
+$border-radius: .25rem; // 4px
+$border-radius-sm: .1875rem; // 3px
+$border-radius-lg: .375rem; // 6px
+$border-radius-xl: .5rem; // 8px
+$border-radius-xxl: .625rem; // 10px
+$border-color-translucent: rgba($black, .12);
+
+// Bóng đổ
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+$box-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+$box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+// Tắt bật các thành phần
+$enable-shadows: true;
+
+// Focus ring
+$focus-ring-box-shadow: 0 0;
 
 // Z-index
 $zindex-cookie-notice: 500;
 $zindex-admintoolbar: 501;
 $zindex-timeoutsess: 1200;
 
+// Buttons + Form
+$input-btn-focus-box-shadow: 0 0;
+
+// Input
+$input-box-shadow: 0 0;
+
+// Buttons
+$btn-box-shadow: 0 0;
+$btn-active-box-shadow: 0 0;
+
+// Select
+$form-select-box-shadow: 0 0;
+$form-select-focus-box-shadow: 0 0;
+
+// Dropdown
+$dropdown-border-color: transparent;
+
+// Range
+$form-range-track-box-shadow: 0 0;
+$form-range-thumb-focus-box-shadow: 0 0;
+$form-range-thumb-box-shadow: 0 0;
+
+// Nav
+$nav-link-focus-box-shadow: 0 0;
+
+// Pagination
+$pagination-focus-box-shadow: 0 0;
+
+// Process
+$progress-box-shadow: 0 0;
+
+// Modal
+$modal-content-border-color: transparent;
+
 // Offcanvas
 $offcanvas-vertical-height: fit-content;
 $offcanvas-horizontal-width: 300px;
 
+// Toasts
+$toast-border-color: transparent;
+
+// NukeViet CMS add variables
 // Blocks
 $block-spacer: 1rem;
