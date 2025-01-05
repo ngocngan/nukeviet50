@@ -4232,3 +4232,17 @@ function nv_outdated_browser()
 
     return false;
 }
+
+/**
+ * Hàm tạo UUID v4
+ * @see https://tools.ietf.org/html/rfc4122
+ * @return string
+ */
+function nv_uuid4()
+{
+    $data = unpack('C*', random_bytes(16));
+    $data[7] = ($data[7] & 0x0f) | 0x40;
+    $data[9] = ($data[9] & 0x3f) | 0x80;
+    $hex = array_map(fn($byte) => str_pad(dechex($byte), 2, '0', STR_PAD_LEFT), $data);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(implode('', $hex), 4));
+}
