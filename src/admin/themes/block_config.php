@@ -2,9 +2,9 @@
 
 /**
  * NukeViet Content Management System
- * @version 4.x
+ * @version 5.x
  * @author VINADES.,JSC <contact@vinades.vn>
- * @copyright (C) 2009-2023 VINADES.,JSC. All rights reserved
+ * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
  * @license GNU/GPL version 2 or any later version
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
@@ -58,7 +58,7 @@ if ($module == 'theme' and (preg_match($global_config['check_theme'], $selectthe
 
 /*
  * Đọc lấy tên hàm xử lý, data và ngôn ngữ của block nếu có tệp config
- * đọc cả tệp xml (chuẩn cũ) và json (chuẩn mới từ 4.6.00) theo thứ tự json ưu tiên hơn,
+ * đọc cả tệp xml (chuẩn cũ) và json (chuẩn mới từ 5.0.00) theo thứ tự json ưu tiên hơn,
  * nội dung trong json nếu có sẽ đè trong xml
  */
 $function_name = '';
