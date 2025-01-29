@@ -27,6 +27,7 @@ $tpl->assign('GCONFIG', $global_config);
 $tpl->assign('PAGE_TITLE', $nv_Lang->getGlobal('admin_page'));
 $tpl->assign('OUTDATED_BROWSER', nv_outdated_browser());
 $tpl->assign('ADMIN_THEME', $dir_tpl);
+$tpl->assign('PASSKEY_ALLOWED', $passkey_allowed);
 
 // Icon site
 $site_favicon = NV_BASE_SITEURL . 'favicon.ico';

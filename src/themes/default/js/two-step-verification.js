@@ -7,7 +7,7 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-function validErrorShow(a) {
+function valid2faErrorShow(a) {
     $(a).parent().parent().addClass("has-error");
     $("[data-mess]", $(a).parent().parent().parent()).not(".tooltip-current").tooltip("destroy");
     $(a).tooltip({
@@ -21,7 +21,7 @@ function validErrorShow(a) {
     "DIV" == $(a).prop("tagName") && $("input", a)[0].focus()
 }
 
-function validCheck(a) {
+function valid2faCheck(a) {
     if ($(a).is(':visible')) {
         var c = $(a).attr("data-pattern"),
             d = $(a).val(),
@@ -43,7 +43,7 @@ function validCheck(a) {
     return !0
 }
 
-function validErrorHidden(a, b) {
+function valid2faErrorHidden(a, b) {
     if (!b) b = 2;
     b = parseInt(b);
     var c = $(a),
@@ -56,16 +56,16 @@ function validErrorHidden(a, b) {
     c.removeClass("has-error")
 }
 
-function formErrorHidden(a) {
+function form2faErrorHidden(a) {
     $(".has-error", a).removeClass("has-error");
     $("[data-mess]", a).tooltip("destroy")
 }
 
-function validReset(a) {
+function valid2faReset(a) {
     var d = $(".nv-info", a).attr("data-default");
     if (!d) d = $(".nv-info-default", a).html();
     $(".nv-info", a).removeClass("error success").html(d);
-    formErrorHidden(a);
+    form2faErrorHidden(a);
     $("input,button,select,textarea", a).prop("disabled", !1);
     $(a)[0].reset()
 }
@@ -76,9 +76,9 @@ function confirmpass_validForm(a) {
         b = [];
     $(a).find(".required").each(function() {
         "password" == $(a).prop("type") && $(this).val(trim(strip_tags($(this).val())));
-        if (!validCheck(this)) return c++, $(".tooltip-current", a).removeClass("tooltip-current"), $(this).addClass("tooltip-current").attr("data-current-mess", $(this).attr("data-mess")), validErrorShow(this), !1
+        if (!valid2faCheck(this)) return c++, $(".tooltip-current", a).removeClass("tooltip-current"), $(this).addClass("tooltip-current").attr("data-current-mess", $(this).attr("data-mess")), valid2faErrorShow(this), !1
     });
-    c || (b.type = $(a).prop("method"), b.url = $(a).prop("action"), b.data = $(a).serialize(), formErrorHidden(a), $(a).find("input,button,select,textarea").prop("disabled", !0), $.ajax({
+    c || (b.type = $(a).prop("method"), b.url = $(a).prop("action"), b.data = $(a).serialize(), form2faErrorHidden(a), $(a).find("input,button,select,textarea").prop("disabled", !0), $.ajax({
         type: b.type,
         cache: !1,
         url: b.url,
@@ -90,7 +90,7 @@ function confirmpass_validForm(a) {
                     $(".tooltip-current", a).removeClass("tooltip-current"),
                     "" != d.input ? $(a).find("[name=\"" + d.input + "\"]").each(function() {
                         $(this).addClass("tooltip-current").attr("data-current-mess", d.mess);
-                        validErrorShow(this)
+                        valid2faErrorShow(this)
                     }) : $(".nv-info", a).html(d.mess).addClass("error").show(), setTimeout(function() {
                         $("[type=submit]", a).prop("disabled", !1)
                     }, 1E3)
@@ -108,9 +108,9 @@ function opt_validForm(a) {
         b = [];
     $(a).find(".required").each(function() {
         "password" == $(a).prop("type") && $(this).val(trim(strip_tags($(this).val())));
-        if (!validCheck(this)) return c++, $(".tooltip-current", a).removeClass("tooltip-current"), $(this).addClass("tooltip-current").attr("data-current-mess", $(this).attr("data-mess")), validErrorShow(this), !1
+        if (!valid2faCheck(this)) return c++, $(".tooltip-current", a).removeClass("tooltip-current"), $(this).addClass("tooltip-current").attr("data-current-mess", $(this).attr("data-mess")), valid2faErrorShow(this), !1
     });
-    c || (b.type = $(a).prop("method"), b.url = $(a).prop("action"), b.data = $(a).serialize(), formErrorHidden(a), $(a).find("input,button,select,textarea").prop("disabled", !0), $.ajax({
+    c || (b.type = $(a).prop("method"), b.url = $(a).prop("action"), b.data = $(a).serialize(), form2faErrorHidden(a), $(a).find("input,button,select,textarea").prop("disabled", !0), $.ajax({
         type: b.type,
         cache: !1,
         url: b.url,
@@ -122,7 +122,7 @@ function opt_validForm(a) {
                     $(".tooltip-current", a).removeClass("tooltip-current"),
                     "" != d.input ? $(a).find("[name=\"" + d.input + "\"]").each(function() {
                         $(this).addClass("tooltip-current").attr("data-current-mess", d.mess);
-                        validErrorShow(this)
+                        valid2faErrorShow(this)
                     }) : $(".nv-info", a).html(d.mess).addClass("error").show(), setTimeout(function() {
                         $("[type=submit]", a).prop("disabled", !1)
                     }, 1E3)
@@ -148,21 +148,39 @@ $(function() {
         e.preventDefault();
         modalShowByObj($(this).attr('href'));
     });
+
     // Tắt xác thực 2 bước
-    $('[data-toggle="turnoff2step"]').click(function() {
-        $(this).prop('disabled', true);
-        var tokend = $(this).data('tokend');
-        $.post(
-            nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(),
-            'turnoff2step=1&tokend=' + tokend,
-            function(res) {
-                if (res == 'OK') {
-                    window.location.reload(true);
-                } else {
-                    alert(res);
+    $('[data-toggle="turnoff2step"]').click(function(e) {
+        e.preventDefault();
+
+        const btn = $(this);
+        const icon = $('i', btn);
+        if (icon.is('.fa-spinner')) {
+            return false;
+        }
+        icon.removeClass(icon.data('icon')).addClass('fa-spinner fa-pulse');
+        $.ajax({
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(),
+            type: 'post',
+            data: {
+                tokend: btn.data('tokend'),
+                turnoff2step: 1
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status != 'ok') {
+                    icon.removeClass('fa-spinner fa-pulse').addClass(icon.data('icon'));
+                    alert(response.mess);
+                    return;
                 }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr, status, error);
+                icon.removeClass('fa-spinner fa-pulse').addClass(icon.data('icon'));
+                alert(error);
             }
-        );
+        });
     });
 
     $('[data-toggle=opt_validForm]').on('submit', function() {
@@ -173,24 +191,119 @@ $(function() {
         return confirmpass_validForm(this)
     });
 
-    $('[data-toggle=validErrorHidden]').on('keypress', function() {
-        $(this).data('parents') ? validErrorHidden(this, $(this).data('parents')) : validErrorHidden(this)
+    $('[data-toggle=valid2faErrorHidden]').on('keypress', function() {
+        $(this).data('parents') ? valid2faErrorHidden(this, $(this).data('parents')) : valid2faErrorHidden(this)
     });
 
     // Đổi mã
-    $('[data-toggle="changecode2step"]').click(function() {
-        $(this).prop('disabled', true);
-        var tokend = $(this).data('tokend');
-        $.post(
-            nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(),
-            'changecode2step=1&tokend=' + tokend,
-            function(res) {
-                if (res == 'OK') {
-                    window.location.reload(true);
-                } else {
-                    alert(res);
+    $('[data-toggle="changecode2step"]').on('click', function(e) {
+        e.preventDefault();
+
+        const btn = $(this);
+        const icon = $('i', btn);
+        if (icon.is('.fa-spinner')) {
+            return false;
+        }
+        icon.removeClass(icon.data('icon')).addClass('fa-spinner fa-pulse');
+        $.ajax({
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(),
+            type: 'post',
+            data: {
+                tokend: btn.data('tokend'),
+                changecode2step: 1
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status != 'ok') {
+                    icon.removeClass('fa-spinner fa-pulse').addClass(icon.data('icon'));
+                    alert(response.mess);
+                    return;
                 }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr, status, error);
+                icon.removeClass('fa-spinner fa-pulse').addClass(icon.data('icon'));
+                alert(error);
             }
-        );
+        });
     });
+
+    // In code
+    $('[data-toggle="print-codes"]').on('click', function(e) {
+        e.preventDefault();
+        nv_open_browse($(this).attr('href'), 'printcodes', 800, 600);
+    });
+
+    // Copy code
+    const cBtn = $('[data-toggle="copy-codes"]');
+    if (cBtn.length) {
+        var clipboard = new ClipboardJS(cBtn[0]);
+        clipboard.on('success', function () {
+            $('span', cBtn).text(cBtn.data('copied'));
+        });
+    }
+
+    // Xác nhận đã chép mã
+    $('.confirmed-codes').on('click', function() {
+        $('[data-toggle="confirm-complete"]').prop('disabled', false);
+    });
+    $('[data-toggle="confirm-complete"]').on('click', function() {
+        window.location.href = $(this).data('link');
+    });
+
+    // Đóng mở danh sách khóa bảo mật
+    $('#security-keys').on('hide.bs.collapse', function (e) {
+        locationReplace($(e.currentTarget).data('page-url'));
+    });
+    $('#security-keys').on('show.bs.collapse', function (e) {
+        locationReplace($(e.currentTarget).data('show-keys-url'));
+    });
+
+    // Đóng mở danh sách mã dự phòng
+    $('#recovery-codes').on('hide.bs.collapse', function (e) {
+        locationReplace($(e.currentTarget).data('page-url'));
+    });
+    $('#recovery-codes').on('show.bs.collapse', function (e) {
+        locationReplace($(e.currentTarget).data('show-codes-url'));
+    });
+
+    // Thay đổi phương án xác thực 2 bước ưu thích
+    $('[data-toggle="preferred_2fa_method"]').on('change', function() {
+        const btn = $(this);
+        const value = btn.val();
+        btn.prop('disabled', true);
+        $.ajax({
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(),
+            type: 'post',
+            data: {
+                change_preferred_2fa: btn.data('checkss'),
+                pref_2fa: value
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status != 'ok') {
+                    alert(response.mess);
+                }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr, status, error);
+                btn.prop('disabled', false);
+                alert(error);
+                location.reload();
+            }
+        });
+    });
+});
+
+$(window).on('load', function() {
+    const pkForm = $('#container-edit-app');
+    if (pkForm.length) {
+        if (pkForm.data('autoscroll')) {
+            $('html, body').animate({
+                scrollTop: pkForm.offset().top - 60
+            }, 100);
+        }
+    }
 });
