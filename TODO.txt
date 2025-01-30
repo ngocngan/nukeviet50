@@ -6,6 +6,9 @@
 
 Nâng cấp giao diện:
 
+- Tìm giao diện có dùng hàm js nv_is_dst, nv_DigitalClock thì xóa hoặc tự viết lại
+- Trước khi trộn code cần chạy tool sau để chép toàn bộ tệp block vào giao diện
+
 - footer_only.tpl mở nó tìm xóa đoạn
         <!-- BEGIN: crossdomain_listener -->
         <script type="text/javascript">

@@ -11,8 +11,10 @@
 @import "../core/polyfill";
 
 @import "common";
+@import "main";
 @import "admin";
 @import "blocks";
+@import "footer";
 
 // Giữ ở cuối
 @import "override";

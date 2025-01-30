@@ -1,0 +1,12 @@
+@if $enable-grid-classes {
+  .footer-top {
+    @include media-breakpoint-up($theme-layout-breakpoint, $grid-breakpoints) {
+      @each $key, $value in $footer-columns {
+        .footer-#{$key} {
+          flex: 0 0 auto;
+          width: #{$value};
+        }
+      }
+    }
+  }
+}

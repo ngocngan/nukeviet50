@@ -1,0 +1,12 @@
+@if $enable-grid-classes {
+  .main-content {
+    @include media-breakpoint-up($theme-layout-breakpoint, $grid-breakpoints) {
+      @each $key, $value in $main-columns {
+        .main-#{$key} {
+          flex: 0 0 auto;
+          width: #{$value};
+        }
+      }
+    }
+  }
+}

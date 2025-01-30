@@ -11,3 +11,25 @@
     {$LANG->getGlobal('cookie_notice', "{$smarty.const.NV_BASE_SITEURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=siteterms&amp;{$smarty.const.NV_OP_VARIABLE}=privacy{$GCONFIG.rewrite_exturl}")}
 </div>
 {/if}
+<footer class="text-bg-dark">
+    <div class="footer-top">
+        <div class="container py-4">
+            <div class="row g-4">
+                <div class="footer-start">
+                    1
+                </div>
+                <div class="footer-center">
+                    2
+                </div>
+                <div class="footer-end">
+                    3
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bar">
+        <div class="container">
+            sd
+        </div>
+    </div>
+</footer>

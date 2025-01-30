@@ -12,7 +12,18 @@ $gray-700: tint($gray, 20%);
 $gray-800: tint($gray, 10%);
 $gray-900: $gray;
 
-$blue:    #4a72b2;
+//$blue:    #4a72b2;
+//$indigo:  #5c44b4;
+//$purple:  #8a3fa6;
+//$pink:    #d6336e;
+//$red:     #CF4646;
+//$orange:  #f7651e;
+//$yellow:  #e0a800;
+//$green:   #508250;
+//$teal:    #1fa78b;
+//$cyan:    #5a9ab2;
+
+$blue:    #1477cc;
 $indigo:  #5c44b4;
 $purple:  #8a3fa6;
 $pink:    #d6336e;
@@ -55,6 +66,32 @@ $enable-shadows: true;
 
 // Focus ring
 $focus-ring-box-shadow: 0 0;
+
+// Containers
+$container-max-widths: (
+  sm: 540px,
+  md: 705px,
+  lg: 940px,
+  xl: 1094px,
+  xxl: 1095px
+);
+$grid-gutter-width: 1rem;
+$theme-columns: 5; // FIXME
+$theme-layout-breakpoint: lg;
+
+// Main
+$main-columns: (
+  start: 20%,
+  content: 60%,
+  end: 20%
+);
+
+// Footer
+$footer-columns: (
+  start: 40%,
+  center: 35%,
+  end: 25%
+);
 
 // Z-index
 $zindex-cookie-notice: 500;

@@ -828,6 +828,8 @@ function nv_html_site_js($html = true, $other_js = [], $language_js = true, $glo
     $jsDef .= ',XSSsanitize=' . ($global_config['XSSsanitize'] ? 1 : 0);
     $jsDef .= ',nv_jsdate_get="' . nv_region_config('jsdate_get') . '"';
     $jsDef .= ',nv_jsdate_post="' . nv_region_config('jsdate_post') . '"';
+    $jsDef .= ',nv_js_am="' . nv_region_config('js_am') . '"';
+    $jsDef .= ',nv_js_pm="' . nv_region_config('js_pm') . '"';
 
     $jsDef .= ';';
 
