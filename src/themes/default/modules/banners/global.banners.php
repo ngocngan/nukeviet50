@@ -9,11 +9,65 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-if (!defined('NV_SYSTEM')) {
+ if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
 if (!nv_function_exists('nv_block_global_banners')) {
+    /**
+     * nv_block_data_config_banners()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_block_data_config_banners($module, $data_block)
+    {
+        global $db, $language_array, $nv_Lang;
+
+        $html = "<select name=\"config_idplanbanner\" class=\"form-select\">\n";
+        $html .= '<option value="">' . $nv_Lang->getModule('idplanbanner') . "</option>\n";
+        $query = 'SELECT * FROM ' . NV_BANNERS_GLOBALTABLE . "_plans WHERE (blang='" . NV_LANG_DATA . "' OR blang='') ORDER BY title ASC";
+        $result = $db->query($query);
+
+        while ($row_bpn = $result->fetch()) {
+            $value = $row_bpn['title'] . ' (';
+            $value .= ((!empty($row_bpn['blang']) and isset($language_array[$row_bpn['blang']])) ? $language_array[$row_bpn['blang']]['name'] : $nv_Lang->getModule('blang_all')) . ', ';
+            $value .= $row_bpn['form'] . ', ';
+            $value .= $row_bpn['width'] . 'x' . $row_bpn['height'] . 'px';
+            $value .= ')';
+            $sel = ($data_block['idplanbanner'] == $row_bpn['id']) ? ' selected' : '';
+
+            $html .= '<option value="' . $row_bpn['id'] . '" ' . $sel . '>' . $value . "</option>\n";
+        }
+
+        $html .= "</select>\n";
+
+        return '<div class="row mb-3"><label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('idplanbanner') . ':</label><div class="col-sm-5">' . $html . '</div></div>';
+    }
+
+    /**
+     * nv_block_data_config_banners_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_block_data_config_banners_submit($module)
+    {
+        global $nv_Request, $nv_Lang;
+
+        $return = [];
+        $return['error'] = [];
+        $return['config'] = [];
+        $return['config']['idplanbanner'] = $nv_Request->get_int('config_idplanbanner', 'post', 0);
+
+        if (empty($return['config']['idplanbanner'])) {
+            $return['error'][] = $nv_Lang->getModule('idplanbanner');
+        }
+
+        return $return;
+    }
+
     /**
      * nv_block_global_banners()
      *

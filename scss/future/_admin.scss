@@ -2,7 +2,8 @@
 .column {
     position: relative;
     outline: 2px dashed var(--#{$prefix}danger);
-    min-height: 2.5rem;
+    min-height: 0.5rem;
+    min-width: 1rem;
     display: flex;
     flex-direction: column;
     gap: $block-spacer;

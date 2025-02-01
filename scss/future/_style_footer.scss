@@ -10,7 +10,9 @@
 
 @import "../core/polyfill";
 
+@import "root";
 @import "common";
+@import "header";
 @import "main";
 @import "admin";
 @import "blocks";

@@ -62,6 +62,7 @@ function nv_site_theme($contents, $full = true)
     $tpl->assign('THEME_PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('CLIENT_INFO', $client_info);
     $tpl->assign('OUTDATED_BROWSER', nv_outdated_browser());
+    $tpl->assign('SITE_MODS', $site_mods);
 
     $tpl->assign('HOME', $home);
     $tpl->assign('MODULE_NAME', $module_name);
@@ -286,10 +287,6 @@ function nv_site_theme($contents, $full = true)
 
     // Only full theme
     if ($full) {
-        // Search form variables
-        $xtpl->assign('NV_MAX_SEARCH_LENGTH', NV_MAX_SEARCH_LENGTH);
-        $xtpl->assign('NV_MIN_SEARCH_LENGTH', NV_MIN_SEARCH_LENGTH);
-
         if (!$global_config['rewrite_enable']) {
             $xtpl->assign('THEME_SEARCH_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=seek&amp;q=');
         } else {

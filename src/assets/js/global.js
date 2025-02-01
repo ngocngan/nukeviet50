@@ -273,12 +273,43 @@ function br2nl(str, replaceMode) {
     return (str + '').replace(/<\s*\/?br\s*[\/]?>/gi, replaceStr);
 }
 
+function nv_is_dst() {
+    var now = new Date();
+    var dst_start = new Date();
+    var dst_end = new Date();
+    // Set dst start to 2AM 2nd Sunday of March
+    dst_start.setMonth(2);
+    // March
+    dst_start.setDate(1);
+    // 1st
+    dst_start.setHours(2);
+    dst_start.setMinutes(0);
+    dst_start.setSeconds(0);
+    // 2AM
+    // Need to be on first Sunday
+    if (dst_start.getDay())
+        dst_start.setDate(dst_start.getDate() + (7 - dst_start.getDay()));
+    // Set to second Sunday
+    dst_start.setDate(dst_start.getDate() + 7);
+    // Set dst end to 2AM 1st Sunday of November
+    dst_end.setMonth(10);
+    dst_end.setDate(1);
+    dst_end.setHours(2);
+    dst_end.setMinutes(0);
+    dst_end.setSeconds(0);
+    // 2AM
+    // Need to be on first Sunday
+    if (dst_end.getDay())
+        dst_end.setDate(dst_end.getDate() + (7 - dst_end.getDay()));
+    return (now > dst_start && now < dst_end);
+}
+
 /**
  * @param {string} format
  * @param {Date} date
  * @returns
  */
-function formatDate(format, date = new Date()) {
+function nv_format_date(format, date = new Date()) {
     const replacements = {
         'Y': date.getFullYear(),
         'y': String(date.getFullYear()).slice(-2),

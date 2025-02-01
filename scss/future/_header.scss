@@ -1,0 +1,97 @@
+.logo-banner {
+  .logo {
+    img {
+      min-height: 80px;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+%topbar-padding {
+  padding-top: calc(($header-height - $font-size-base * $line-height-base) / 2);
+  padding-bottom: calc(($header-height - $font-size-base * $line-height-base) / 2);
+}
+
+%topbar-link-color {
+  color: var(--nv-topbar-link-color);
+  transition: color .15s ease-in-out;
+}
+
+%topbar-link-color-hover {
+  color: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-opacity, 1))
+}
+
+.topbar {
+  .start-topbar li,
+  .end-topbar li,
+  .topbar-inform {
+    @extend %topbar-padding;
+  }
+
+  .topbar-search .search-icon {
+    @extend %topbar-padding;
+    @extend %topbar-link-color;
+
+    &:hover {
+      @extend %topbar-link-color-hover;
+    }
+  }
+
+  .contact-icons {
+    li {
+      padding-left: .375rem;
+      padding-right: .375rem;
+
+      &.digital-clock {
+        border-right: 1px solid var(--#{$prefix}border-color);
+      }
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    a {
+      @extend %topbar-link-color;
+
+      &:hover {
+        @extend %topbar-link-color-hover;
+      }
+    }
+  }
+
+  .socal-icons a {
+    @extend %topbar-link-color;
+
+    &:hover {
+      color: var(--hover-color);
+    }
+  }
+}
+
+.contact-icons {
+  @each $key, $value in $contact-icons-light {
+    .icon-#{$key} {
+      display: inline-block;
+      font-variant: normal;
+      line-height: 1;
+      text-rendering: auto;
+      background-image: var(--nv-contact-icon-#{$key}-bg);
+      width: $font-size-base;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100%;
+
+      &::before {
+        content: "\00a0";
+      }
+    }
+  }
+}
