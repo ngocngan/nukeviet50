@@ -6,6 +6,7 @@
 
 Nâng cấp giao diện:
 
+- Trước khi lấy code mới về. Vào mỗi modules/ten-module/blocks chép toàn bộ tệp php, ini, json vào giao diện của bạn. Vị trí themes/ten-theme/modules/ten-module. Bạn có thể lên kho Github chép lấy tệp scripts/copy-blocks-to-theme.sh về chạy
 - Tìm giao diện có dùng hàm js nv_DigitalClock thì xóa hoặc tự viết lại
 - Trước khi trộn code cần chạy tool sau để chép toàn bộ tệp block vào giao diện
 
