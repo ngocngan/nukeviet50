@@ -1,0 +1,33 @@
+{
+    "info": {
+        "name": "Contact_default",
+        "author": "VINADES.,JSC",
+        "website": "https://vinades.vn",
+        "description": ""
+    },
+    "config": {
+        "departmentid": 1,
+        "shows": "phone,email",
+        "other_limit": 2,
+        "show_clock": 1
+    },
+    "datafunction": "nv_block_config_contact_default",
+    "submitfunction": "nv_block_config_contact_default_submit",
+    "i18n": {
+        "en": {
+            "info": {
+                "name": "Department contact information icon"
+            }
+        },
+        "fr": {
+            "info": {
+                "name": "Icône d'information de contact du département"
+            }
+        },
+        "vi": {
+            "info": {
+                "name": "Thông tin liên hệ bộ phận dạng nút"
+            }
+        }
+    }
+}

@@ -39,9 +39,9 @@ for MODULE_DIR in "$DIR_PATH"/src/modules/*; do
             FILE_NAME=$(basename "$FILE")
             TARGET_FILE="$THEME_MODULE_PATH/$FILE_NAME"
 
-            if [ -e "$TARGET_FILE" ]; then
-                cp "$TARGET_FILE" "$THEME_MODULE_PATH/"
-                echo "Đã sao chép: $TARGET_FILE -> $THEME_MODULE_PATH"
+            if [ ! -f "$TARGET_FILE" ]; then
+                cp "$FILE" "$TARGET_FILE"
+                echo "Đã sao chép: $FILE -> $TARGET_FILE"
             fi
         done
     fi
