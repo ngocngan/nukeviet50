@@ -13,6 +13,11 @@ if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
+if (defined('NV_IS_FILE_THEMES')) {
+    // include config theme
+    require NV_ROOTDIR . '/modules/menu/menu_config.php';
+}
+
 if (!nv_function_exists('nv_menu_bootstrap')) {
     /**
      * nv_menu_bootstrap()

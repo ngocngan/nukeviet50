@@ -5,14 +5,6 @@
         "website": "https://vinades.vn",
         "description": ""
     },
-    "config": {
-        "departmentid": 1,
-        "shows": "phone,email",
-        "other_limit": 2,
-        "show_clock": 1
-    },
-    "datafunction": "nv_block_config_contact_default",
-    "submitfunction": "nv_block_config_contact_default_submit",
     "i18n": {
         "en": {
             "info": {

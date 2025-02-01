@@ -15,6 +15,48 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_comment_new')) {
     /**
+     * nv_block_comment_new()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_block_comment_new($module, $data_block)
+    {
+        global $nv_Lang;
+
+        $html = '<div class="row mb-3">';
+        $html .= '	<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('titlelength') . ':</label>';
+        $html .= '	<div class="col-sm-5"><input type="text" name="config_titlelength" class="form-control" value="' . $data_block['titlelength'] . '"/><span class="form-text">' . $nv_Lang->getModule('titlenote') . '</span></div>';
+        $html .= '</div>';
+
+        $html .= '<div class="row mb-3">';
+        $html .= '	<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('numrow') . ':</label>';
+        $html .= '	<div class="col-sm-5"><input type="text" name="config_numrow" class="form-control" value="' . $data_block['numrow'] . '"/></div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * nv_block_comment_new_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_block_comment_new_submit($module)
+    {
+        global $nv_Request;
+        $return = [];
+        $return['error'] = [];
+        $return['config'] = [];
+        $return['config']['titlelength'] = $nv_Request->get_int('config_titlelength', 'post', 0);
+        $return['config']['numrow'] = $nv_Request->get_int('config_numrow', 'post', 0);
+
+        return $return;
+    }
+
+    /**
      * nv_comment_new()
      *
      * @param array $block_config

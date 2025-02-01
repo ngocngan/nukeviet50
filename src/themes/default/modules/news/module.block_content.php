@@ -9,7 +9,7 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-if (!defined('NV_IS_MOD_NEWS')) {
+if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 

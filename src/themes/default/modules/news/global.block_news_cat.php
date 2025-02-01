@@ -15,6 +15,110 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_block_news_cat')) {
     /**
+     * nv_block_config_news_cat()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_block_config_news_cat($module, $data_block)
+    {
+        global $nv_Cache, $site_mods, $nv_Lang;
+
+        $tooltip_position = [
+            'top' => $nv_Lang->getModule('tooltip_position_top'),
+            'bottom' => $nv_Lang->getModule('tooltip_position_bottom'),
+            'left' => $nv_Lang->getModule('tooltip_position_left'),
+            'right' => $nv_Lang->getModule('tooltip_position_right')
+        ];
+
+        $html = '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('catid') . ':</label>';
+
+        $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_cat ORDER BY sort ASC';
+        $list = $nv_Cache->db($sql, '', $module);
+        if (!is_array($data_block['catid'])) {
+            $data_block['catid'] = [$data_block['catid']];
+        }
+
+        $html .= '<div class="col-sm-9">';
+        foreach ($list as $l) {
+            if ($l['status'] == 1 or $l['status'] == 2) {
+                $xtitle_i = '';
+
+                if ($l['lev'] > 0) {
+                    for ($i = 1; $i <= $l['lev']; ++$i) {
+                        $xtitle_i .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                    }
+                }
+                $html .= '<div class="form-check"><input class="form-check-input" type="checkbox" name="config_catid[]" value="' . $l['catid'] . '" ' . ((in_array((int) $l['catid'], array_map('intval', $data_block['catid']), true)) ? ' checked="checked"' : '') . ' id="checkbox_catid_' . $l['catid'] . '"><label class="form-check-label" for="checkbox_catid_' . $l['catid'] . '">' . $xtitle_i . $l['title'] . '</label></div>';
+            }
+        }
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('title_length') . ':</label>';
+        $html .= '<div class="col-sm-9"><input type="text" class="form-control" name="config_title_length" size="5" value="' . $data_block['title_length'] . '"/></div>';
+        $html .= '</div>';
+        $html .= '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('numrow') . ':</label>';
+        $html .= '<div class="col-sm-9"><input type="text" class="form-control" name="config_numrow" size="5" value="' . $data_block['numrow'] . '"/></div>';
+        $html .= '</div>';
+        $html .= '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('showtooltip') . ':</label>';
+        $html .= '<div class="col-sm-9">';
+        $html .= '<div class="row g-2 align-items-center">';
+        $html .= '<div class="col-sm-2">';
+        $html .= '<input class="form-check-input" type="checkbox" value="1" name="config_showtooltip" ' . ($data_block['showtooltip'] == 1 ? 'checked="checked"' : '') . ' /></div>';
+        $html .= '<div class="col-sm-5">';
+        $html .= '<div class="input-group">';
+        $html .= '<div class="input-group-text">' . $nv_Lang->getModule('tooltip_position') . '</div>';
+        $html .= '<select name="config_tooltip_position" class="form-select">';
+
+        foreach ($tooltip_position as $key => $value) {
+            $html .= '<option value="' . $key . '" ' . ($data_block['tooltip_position'] == $key ? 'selected="selected"' : '') . '>' . $value . '</option>';
+        }
+
+        $html .= '</select>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="col-sm-5">';
+        $html .= '<div class="input-group">';
+        $html .= '<div class="input-group-text">' . $nv_Lang->getModule('tooltip_length') . '</div>';
+        $html .= '<input type="text" class="form-control" name="config_tooltip_length" value="' . $data_block['tooltip_length'] . '"/>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * nv_block_config_news_cat_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_block_config_news_cat_submit($module)
+    {
+        global $nv_Request;
+        $return = [];
+        $return['error'] = [];
+        $return['config'] = [];
+        $return['config']['catid'] = $nv_Request->get_array('config_catid', 'post', []);
+        $return['config']['numrow'] = $nv_Request->get_int('config_numrow', 'post', 0);
+        $return['config']['title_length'] = $nv_Request->get_int('config_title_length', 'post', 20);
+        $return['config']['showtooltip'] = $nv_Request->get_int('config_showtooltip', 'post', 0);
+        $return['config']['tooltip_position'] = $nv_Request->get_string('config_tooltip_position', 'post', 0);
+        $return['config']['tooltip_length'] = $nv_Request->get_string('config_tooltip_length', 'post', 0);
+
+        return $return;
+    }
+
+    /**
      * nv_block_news_cat()
      *
      * @param array $block_config

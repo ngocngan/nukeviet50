@@ -15,6 +15,68 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_block_freecontent')) {
     /**
+     * nv_block_config_freecontent()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_block_config_freecontent($module, $data_block)
+    {
+        global $site_mods, $nv_Cache, $nv_Lang;
+
+        $html = '';
+        $html .= '<div class="row mb-3">';
+        $html .= '	<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('blockid') . ':</label>';
+        $html .= '	<div class="col-sm-5">';
+        $html .= '		<select name="config_blockid" class="form-select">';
+
+        $sql = 'SELECT bid, title FROM ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_blocks ORDER BY title ASC';
+        $list = $nv_Cache->db($sql, '', $module);
+
+        foreach ($list as $row) {
+            $html .= '	<option value="' . $row['bid'] . '"' . ($row['bid'] == $data_block['blockid'] ? ' selected="selected"' : '') . '>' . $row['title'] . '</option>';
+        }
+
+        $html .= '		</select>';
+        $html .= '	</div>';
+        $html .= '</div>';
+
+        $html .= '<div class="row mb-3">';
+        $html .= '	<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('numrows') . ':</label>';
+        $html .= '	<div class="col-sm-5">';
+        $html .= '		<select name="config_numrows" class="form-select">';
+
+        for ($i = 1; $i <= 10; ++$i) {
+            $html .= '	<option value="' . $i . '"' . ($i == $data_block['numrows'] ? ' selected="selected"' : '') . '>' . $i . '</option>';
+        }
+
+        $html .= '		</select>';
+        $html .= '	</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * nv_block_config_freecontent_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_block_config_freecontent_submit($module)
+    {
+        global $nv_Request;
+        $return = [];
+        $return['error'] = [];
+        $return['config'] = [];
+        $return['config']['blockid'] = $nv_Request->get_int('config_blockid', 'post', 0);
+        $return['config']['numrows'] = $nv_Request->get_int('config_numrows', 'post', 2);
+
+        return $return;
+    }
+
+    /**
      * nv_block_freecontent()
      *
      * @param array $block_config

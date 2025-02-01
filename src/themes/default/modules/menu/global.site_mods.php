@@ -15,6 +15,67 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_menu_site_mods')) {
     /**
+     * nv_menu_site_mods_config()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_menu_site_mods_config($module, $data_block)
+    {
+        global $site_mods, $nv_Lang;
+
+        $html = '<div class="row mb-3">';
+        $html .= '	<div class="col-sm-9 offset-sm-3"><div class="alert alert-info mb-0" role="alert">' . $nv_Lang->getModule('menu_note_auto') . '</div></div>';
+        $html .= '</div>';
+        $html .= '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">';
+        $html .= $nv_Lang->getModule('title_length');
+        $html .= ':</label>';
+        $html .= '<div class="col-sm-7">';
+        $html .= '<input type="text" class="form-control" name="config_title_length" value="' . $data_block['title_length'] . '"/>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="row mb-3"><label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('module_display') . ':</label><div class="col-sm-7"><ul id="sortable" class="list-group">';
+
+        if (empty($data_block['module_in_menu']) or !is_array($data_block['module_in_menu'])) {
+            $data_block['module_in_menu'] = [];
+        }
+
+        $array_no_show = ['comment', 'menu'];
+        $modlist = !empty($data_block['module_in_menu']) ? ($data_block['module_in_menu'] + array_diff(array_keys($site_mods), $data_block['module_in_menu'])) : array_keys($site_mods);
+        $modlist = array_diff($modlist, $array_no_show);
+        foreach ($modlist as $modname) {
+            if (isset($site_mods[$modname])) {
+                $modvalues = $site_mods[$modname];
+                $checked = in_array($modname, $data_block['module_in_menu'], true) ? ' checked="checked"' : '';
+                $html .= '<li class="list-group-item"><div class="d-flex align-items-center justify-content-between"><div class="form-check"><input class="form-check-input" type="checkbox" ' . $checked . ' value="' . $modname . '" name="module_in_menu[]" id="module_in_menu_' . $modname . '"><label class="form-check-label" for="module_in_menu_' . $modname . '">' . $modvalues['custom_title'] . '</label></div><i class="fa-solid fa-sort"></i></li>';
+            }
+        }
+        $html .= '</ul></div></div>';
+        $html .= '<script>$( function() {$( "#sortable" ).sortable().disableSelection()});</script>';
+
+        return $html;
+    }
+
+    /**
+     * nv_menu_site_mods_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_menu_site_mods_submit($module)
+    {
+        global $nv_Request;
+        $return = [];
+        $return['error'] = [];
+        $return['config']['title_length'] = $nv_Request->get_int('config_title_length', 'post', 24);
+        $return['config']['module_in_menu'] = $nv_Request->get_typed_array('module_in_menu', 'post', 'string');
+
+        return $return;
+    }
+
+    /**
      * nv_menu_site_mods()
      *
      * @param array $block_config

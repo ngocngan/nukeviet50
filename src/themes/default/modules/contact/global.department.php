@@ -15,6 +15,50 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_department_info')) {
     /**
+     * nv_block_config_contact_department()
+     *
+     * @param string $module
+     * @param array  $data_block
+     * @return string
+     */
+    function nv_block_config_contact_department($module, $data_block)
+    {
+        global $site_mods, $nv_Cache, $nv_Lang;
+
+        $html = '';
+        $html .= '<div class="row mb-3">';
+        $html .= '<label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">' . $nv_Lang->getModule('departmentid') . ':</label>';
+        $html .= '<div class="col-sm-5"><select name="config_departmentid" class="form-select">';
+        $departments = $nv_Cache->db('SELECT * FROM ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_department ORDER BY weight', 'id', $module);
+        foreach ($departments as $l) {
+            if ($l['act']) {
+                $html .= '<option value="' . $l['id'] . '" ' . (($data_block['departmentid'] == $l['id']) ? ' selected="selected"' : '') . '>' . $l['full_name'] . '</option>';
+            }
+        }
+        $html .= '</select></div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * nv_block_config_contact_department_submit()
+     *
+     * @param string $module
+     * @return array
+     */
+    function nv_block_config_contact_department_submit($module)
+    {
+        global $nv_Request;
+        $return = [];
+        $return['error'] = [];
+        $return['config'] = [];
+        $return['config']['departmentid'] = $nv_Request->get_int('config_departmentid', 'post', 0);
+
+        return $return;
+    }
+
+    /**
      * nv_department_info()
      *
      * @param array $block_config
