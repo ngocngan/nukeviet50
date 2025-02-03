@@ -18,7 +18,7 @@ if (!defined('NV_MAINFILE')) {
  * Giữ tệp này, chỉnh sửa nó nếu muốn phát triển giao diện đăng nhập riêng
  */
 
-$dir_tpl = get_tpl_dir($global_config['admin_theme'], 'admin_default', '/system/login.tpl');
+$dir_tpl = get_tpl_dir($global_config['admin_theme'], NV_DEFAULT_ADMIN_THEME, '/system/login.tpl');
 $tpl = new \NukeViet\Template\NVSmarty();
 $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $dir_tpl . '/system');
 
