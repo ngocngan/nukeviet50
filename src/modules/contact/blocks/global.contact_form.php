@@ -19,6 +19,9 @@ $content = '';
 if ($module_name != $block_config['module'] and defined('NV_SYSTEM')) {
 
     addition_module_assets($block_config['module'], 'both');
+
+    $block_theme = get_block_tpl_dir('block.contact_form.tpl', $block_config['module']);
+
     return '';
 
     $fname_default = $site_mods[$block_config['module']]['module_file'];
