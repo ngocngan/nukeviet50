@@ -17,7 +17,32 @@ global $module_name, $site_mods, $global_config, $nv_Lang;
 
 $content = '';
 if ($module_name != $block_config['module'] and defined('NV_SYSTEM')) {
-    $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], 'default', '/modules/contact/block.contact_form.tpl');
+
+    addition_module_assets($block_config['module'], 'both');
+    return '';
+
+    $fname_default = $site_mods[$block_config['module']]['module_file'];
+
+    $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], NV_DEFAULT_SITE_THEME, '/modules/' . $site_mods[$block_config['module']]['module_theme'] . '/block.contact_form.tpl');
+
+    $blockJsTheme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], '', '/js/' . $fname_theme . '.js');
+    $blockJsDefault = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], NV_DEFAULT_SITE_THEME, '/js/' . $fname_default . '.js');
+
+    $blockCssTheme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], '', '/js/' . $fname_theme . '.css');
+    $blockCssDefault = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], NV_DEFAULT_SITE_THEME, '/css/' . $fname_default . '.css');
+
+    /**
+     * Load block css.
+     * Xử lý độc lập cho module_theme và module_file
+     *
+     * name.rtl.css module_theme
+     * name.css module_theme
+     * name.rtl.css site_theme
+     * name.css site_theme
+     * name.rtl.css default
+     * name.css default
+     */
+
     $blockJs = theme_file_exists($block_theme . '/js/contact.js') ? $block_theme : 'default';
     $blockCss = theme_file_exists($block_theme . '/css/contact.css') ? $block_theme : 'default';
 

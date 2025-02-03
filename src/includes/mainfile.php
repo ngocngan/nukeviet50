@@ -219,6 +219,8 @@ $nv_Lang = new \NukeViet\Core\Language();
 $nv_Lang->loadGlobal();
 require NV_ROOTDIR . '/includes/language/' . NV_LANG_INTERFACE . '/functions.php';
 
+NukeViet\Template\Config::setRtl(nv_region_config('dir') == 'rtl');
+
 // Class ma hoa du lieu
 $crypt = new NukeViet\Core\Encryption($global_config['sitekey']);
 

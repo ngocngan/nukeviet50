@@ -76,7 +76,7 @@ if (!nv_function_exists('nv_block_data_config_banners')) {
      */
     function nv_block_global_banners($block_config)
     {
-        global $global_config, $client_info;
+        global $global_config, $client_info, $site_mods;
 
         if ($global_config['idsite']) {
             $xmlfile = NV_ROOTDIR . '/' . NV_DATADIR . '/site_' . $global_config['idsite'] . '_bpl_' . $block_config['idplanbanner'] . '.xml';
@@ -117,39 +117,48 @@ if (!nv_function_exists('nv_block_data_config_banners')) {
                 $array_banners_content[] = $banners;
             }
         }
-
-        if (!empty($array_banners_content)) {
-            if ($xml->form == 'random') {
-                shuffle($array_banners_content);
-            } elseif ($xml->form == 'random_one') {
-                $array_banners_content = [$array_banners_content[array_rand($array_banners_content)]];
-            }
-            unset($xml, $array_banners);
-
-            $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], 'default', '/modules/banners/global.banners.tpl');
-            $xtpl = new XTemplate('global.banners.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/banners');
-
-            foreach ($array_banners_content as $banners) {
-                $xtpl->assign('DATA', $banners);
-
-                if ($banners['file_name'] != 'no_image') {
-                    if (!empty($banners['file_click'])) {
-                        $xtpl->parse('main.loop.type_image_link');
-                    } else {
-                        $xtpl->parse('main.loop.type_image');
-                    }
-                }
-
-                if (!empty($banners['bannerhtml'])) {
-                    $xtpl->parse('main.loop.bannerhtml');
-                }
-
-                $xtpl->parse('main.loop');
-            }
-            $xtpl->parse('main');
-
-            return $xtpl->text('main');
+        if (empty($array_banners_content)) {
+            return '';
         }
+
+        if ($xml->form == 'random') {
+            shuffle($array_banners_content);
+        } elseif ($xml->form == 'random_one') {
+            $array_banners_content = [$array_banners_content[array_rand($array_banners_content)]];
+        }
+        unset($xml, $array_banners);
+
+        $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], 'default', '/modules/banners/global.banners.tpl');
+        $module = $block_config['module'];
+
+        $tpl = new \NukeViet\Template\NVSmarty();
+        $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $site_mods[$module]['module_theme']);
+        $tpl->assign('DATA', $array_banners_content);
+
+        return $tpl->fetch('global.banners.tpl');
+
+        $xtpl = new XTemplate('global.banners.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/banners');
+
+        foreach ($array_banners_content as $banners) {
+            $xtpl->assign('DATA', $banners);
+
+            if ($banners['file_name'] != 'no_image') {
+                if (!empty($banners['file_click'])) {
+                    $xtpl->parse('main.loop.type_image_link');
+                } else {
+                    $xtpl->parse('main.loop.type_image');
+                }
+            }
+
+            if (!empty($banners['bannerhtml'])) {
+                $xtpl->parse('main.loop.bannerhtml');
+            }
+
+            $xtpl->parse('main.loop');
+        }
+        $xtpl->parse('main');
+
+        return $xtpl->text('main');
     }
 }
 

@@ -391,7 +391,6 @@ function nv_check_valid_login($login, $max, $min)
             $_login = str_replace('@', '', $login);
 
             return $login != strip_punctuation($_login) ? $nv_Lang->getGlobal('unick_type_' . $type) : '';
-            break;
         default:
             return '';
     }
@@ -2202,7 +2201,7 @@ function nv_is_url($url, $isInternal = false)
  *
  * @param string $url
  * @param bool   $isArray
- * @return bool
+ * @return bool|array
  */
 function nv_check_url($url, $isArray = false)
 {
@@ -2569,6 +2568,7 @@ function nv_change_buffer($buffer)
             $_google_analytics .= "ga('create', '" . $global_config['googleAnalyticsID'] . "', '" . $global_config['cookie_domain'] . "');" . PHP_EOL;
         }
         if (defined('GOOGLE_ANALYTICS_SYSTEM')) {
+            /** @disregard P1011 */
             $_google_analytics .= "ga('create', '" . GOOGLE_ANALYTICS_SYSTEM . "', 'auto');" . PHP_EOL;
         }
         $_google_analytics .= "ga('send', 'pageview');" . PHP_EOL;
@@ -2886,7 +2886,7 @@ function nv_sys_mods($lang = '')
  * nv_site_mods()
  *
  * @param string $lang
- * @return array
+ * @return array|null
  */
 function nv_site_mods($lang = '')
 {
@@ -4096,7 +4096,7 @@ function nv_currency_format(float $num, string $lang = '')
 /**
  * @param string $key
  * @param string $lang
- * @return NULL|string|number
+ * @return null|string|number
  */
 function nv_region_config(string $key, string $lang = '')
 {
@@ -4223,6 +4223,7 @@ function nv_u2d_post(?int $timestamp, string $lang = '')
 function nv_outdated_browser()
 {
     if (function_exists('theme_outdated_browser')) {
+        /** @disregard P1010 */
         return theme_outdated_browser();
     }
 

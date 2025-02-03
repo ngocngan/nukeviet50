@@ -16,6 +16,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-truncate{$TAB eq 'time' ? ' active' : ''}" data-bs-toggle="tab" id="link-time" data-tab="time" data-bs-target="#tab-time" aria-current="{$TAB eq 'time' ? 'true' : 'false'}" role="tab" aria-controls="tab-time" aria-selected="{$TAB eq 'time' ? 'true' : 'false'}" href="#" data-location="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}={$OP}&amp;tab=time">{$LANG->getModule('region_time')}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-truncate{$TAB eq 'text' ? ' active' : ''}" data-bs-toggle="tab" id="link-text" data-tab="text" data-bs-target="#tab-text" aria-current="{$TAB eq 'text' ? 'true' : 'false'}" role="tab" aria-controls="tab-text" aria-selected="{$TAB eq 'text' ? 'true' : 'false'}" href="#" data-location="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}={$OP}&amp;tab=text">{$LANG->getModule('tab_dir')}</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -24,8 +27,8 @@
                         <div class="tab-pane fade{$TAB eq 'numbers' ? ' show active' : ''}" id="tab-numbers" role="tabpanel" aria-labelledby="link-numbers" tabindex="0">
                             <div class="form-contents">
                                 <div class="row mb-3">
-                                    <label for="element_decimal_symbol" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_symbol')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_decimal_symbol" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_symbol')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_decimal_symbol" name="decimal_symbol" value="{$DATA.decimal_symbol}" maxlength="1" list="decimal_symbol_lists">
                                         <datalist id="decimal_symbol_lists">
                                             <option value=",">{$LANG->getModule('comma')}</option>
@@ -35,8 +38,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_decimal_length" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_length')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_decimal_length" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_length')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_decimal_length" name="decimal_length">
                                             {for $length=0 to 9}
                                             <option value="{$length}"{if $length eq $DATA.decimal_length} selected{/if}>{$length}</option>
@@ -45,8 +48,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_thousand_symbol" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('thousand_symbol')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_thousand_symbol" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('thousand_symbol')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_thousand_symbol" name="thousand_symbol" value="{$DATA.thousand_symbol}" maxlength="1" list="thousand_symbol_lists">
                                         <datalist id="thousand_symbol_lists">
                                             <option value=",">{$LANG->getModule('comma')}</option>
@@ -56,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="leading_zero"{if $DATA.leading_zero} checked{/if} value="1" role="switch" id="element_leading_zero">
                                             <label class="form-check-label" for="element_leading_zero">{$LANG->getModule('leading_zero')}</label>
@@ -64,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="trailing_zero" value="1"{if $DATA.trailing_zero} checked{/if} role="switch" id="element_trailing_zero">
                                             <label class="form-check-label" for="element_trailing_zero">{$LANG->getModule('trailing_zero')}</label>
@@ -72,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <button type="submit" class="btn btn-primary">{$LANG->getGlobal('submit')}</button>
                                     </div>
                                 </div>
@@ -81,8 +84,8 @@
                         <div class="tab-pane fade{$TAB eq 'currency' ? ' show active' : ''}" id="tab-currency" role="tabpanel" aria-labelledby="link-currency" tabindex="0">
                             <div class="form-contents">
                                 <div class="row mb-3">
-                                    <label for="element_currency_symbol" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('currency_symbol')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_currency_symbol" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('currency_symbol')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_currency_symbol" name="currency_symbol" value="{$DATA.currency_symbol}" maxlength="10" list="currency_symbol_lists">
                                         <datalist id="currency_symbol_lists">
                                             <option value="đ">đ</option>
@@ -92,8 +95,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_currency_display" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('currency_display')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_currency_display" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('currency_display')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_currency_display" name="currency_display">
                                             {for $display=0 to 3}
                                             <option value="{$display}"{$DATA.currency_display eq $display ? ' selected' : ''}>{$LANG->getModule("currency_display`$display`")}</option>
@@ -102,8 +105,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_currency_decimal_symbol" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_symbol')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_currency_decimal_symbol" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_symbol')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_currency_decimal_symbol" name="currency_decimal_symbol" value="{$DATA.currency_decimal_symbol}" maxlength="1" list="currency_decimal_symbol_lists">
                                         <datalist id="currency_decimal_symbol_lists">
                                             <option value=",">{$LANG->getModule('comma')}</option>
@@ -113,8 +116,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_currency_decimal_length" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_length')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_currency_decimal_length" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('decimal_length')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_currency_decimal_length" name="currency_decimal_length">
                                             {for $length=0 to 9}
                                             <option value="{$length}"{if $length eq $DATA.currency_decimal_length} selected{/if}>{$length}</option>
@@ -123,8 +126,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_currency_thousand_symbol" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('thousand_symbol')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_currency_thousand_symbol" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('thousand_symbol')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_currency_thousand_symbol" name="currency_thousand_symbol" value="{$DATA.currency_thousand_symbol}" maxlength="1" list="currency_thousand_symbol_lists">
                                         <datalist id="currency_thousand_symbol_lists">
                                             <option value=",">{$LANG->getModule('comma')}</option>
@@ -134,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="currency_trailing_zero" value="1"{$DATA.currency_trailing_zero} checked/if} role="switch" id="element_currency_trailing_zero">
                                             <label class="form-check-label" for="element_currency_trailing_zero">{$LANG->getModule('trailing_zero')}</label>
@@ -142,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <button type="submit" class="btn btn-primary">{$LANG->getGlobal('submit')}</button>
                                     </div>
                                 </div>
@@ -151,8 +154,8 @@
                         <div class="tab-pane fade{$TAB eq 'date' ? ' show active' : ''}" id="tab-date" role="tabpanel" aria-labelledby="link-date" tabindex="0">
                             <div class="form-contents">
                                 <div class="row mb-3">
-                                    <label for="element_date_short" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_short')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_date_short" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_short')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_date_short" name="date_short" value="{$DATA.date_short}" maxlength="50" list="element_date_short_lists">
                                         <datalist id="element_date_short_lists">
                                             <option value="d/m/Y">
@@ -169,8 +172,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_date_long" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_long')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_date_long" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_long')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_date_long" name="date_long" value="{$DATA.date_long}" maxlength="50" list="element_date_long_lists">
                                         <datalist id="element_date_long_lists">
                                             <option value="l, d F Y">
@@ -179,8 +182,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_first_day_of_week" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('first_day_of_week')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_first_day_of_week" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('first_day_of_week')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_first_day_of_week" name="first_day_of_week">
                                             <option value="0"{if $DATA.first_day_of_week eq 0} selected{/if}>{$LANG->getGlobal('monday')}</option>
                                             <option value="1"{if $DATA.first_day_of_week eq 1} selected{/if}>{$LANG->getGlobal('sunday')}</option>
@@ -188,8 +191,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_date_get" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('date_get')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_date_get" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('date_get')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_date_get" name="date_get">
                                             {foreach from=$FORMAT_GET item=fmt}
                                             <option value="{$fmt}"{if $DATA.date_get eq $fmt} selected{/if}>{$fmt}</option>
@@ -199,8 +202,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_date_post" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('date_post')}</label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_date_post" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('date_post')}</label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <select class="form-select" id="element_date_post" name="date_post">
                                             {foreach from=$FORMAT_POST item=fmt}
                                             <option value="{$fmt}"{if $DATA.date_post eq $fmt} selected{/if}>{$fmt}</option>
@@ -210,7 +213,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <button type="submit" class="btn btn-primary">{$LANG->getGlobal('submit')}</button>
                                     </div>
                                 </div>
@@ -219,8 +222,8 @@
                         <div class="tab-pane fade{$TAB eq 'time' ? ' show active' : ''}" id="tab-time" role="tabpanel" aria-labelledby="link-time" tabindex="0">
                             <div class="form-contents">
                                 <div class="row mb-3">
-                                    <label for="element_time_short" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_short')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_time_short" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_short')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_time_short" name="time_short" value="{$DATA.time_short}" maxlength="50" list="element_time_short_lists">
                                         <datalist id="element_time_short_lists">
                                             <option value="g:i A">
@@ -229,8 +232,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_time_long" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_long')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_time_long" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('region_display_long')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_time_long" name="time_long" value="{$DATA.time_long}" maxlength="50" list="element_time_long_lists">
                                         <datalist id="element_time_long_lists">
                                             <option value="g:i:s A">
@@ -239,8 +242,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_am_char" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('char_am')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_am_char" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('char_am')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_am_char" name="am_char" value="{$DATA.am_char}" maxlength="50" list="element_am_char_lists">
                                         <datalist id="element_am_char_lists">
                                             <option value="SA">
@@ -249,8 +252,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="element_pm_char" class="col-12 col-sm-3 col-form-label text-sm-end">{$LANG->getModule('char_pm')} <span class="text-danger">(*)</span></label>
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5">
+                                    <label for="element_pm_char" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('char_pm')} <span class="text-danger">(*)</span></label>
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5">
                                         <input type="text" class="form-control required" id="element_pm_char" name="pm_char" value="{$DATA.pm_char}" maxlength="50" list="element_pm_char_lists">
                                         <datalist id="element_pm_char_lists">
                                             <option value="CH">
@@ -259,7 +262,31 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
+                                        <button type="submit" class="btn btn-primary">{$LANG->getGlobal('submit')}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade{$TAB eq 'text' ? ' show active' : ''}" id="tab-text" role="tabpanel" aria-labelledby="link-text" tabindex="0">
+                            <div class="form-contents">
+                                <div class="row mb-3">
+                                    <div class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('dir')}</div>
+                                    <div class="col-sm-9">
+                                        {assign var="dir" value=$DATA.dir|default:'ltr' nocache}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="dir" value="ltr" id="element_dir_ltr"{if $dir eq 'ltr'} checked{/if}>
+                                            <label class="form-check-label" for="element_dir_ltr">{$LANG->getModule('ltr')}</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="dir" value="rtl" id="element_dir_rtl"{if $dir eq 'rtl'} checked{/if}>
+                                            <label class="form-check-label" for="element_dir_rtl">{$LANG->getModule('rtl')}</label>
+                                        </div>
+                                        <div class="form-text">{$LANG->getModule('dir_note')}.</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-6 col-xxl-5 offset-sm-3">
                                         <button type="submit" class="btn btn-primary">{$LANG->getGlobal('submit')}</button>
                                     </div>
                                 </div>
@@ -341,6 +368,14 @@
                             </div>
                             <div class="col-8" id="lbl_demo_time_long">
                             </div>
+                        </div>
+                    </div>
+                    <div data-toggle="preview" data-tab="text" id="preview-text"{$TAB neq 'text' ? ' class="d-none"' : ''}>
+                        <div class="p-2 rounded border mb-2">
+                            <div dir="ltr">{$LANG->getModule('ltr_preview')}</div>
+                        </div>
+                        <div class="p-2 rounded border">
+                            <div dir="rtl">{$LANG->getModule('rtl_preview')}</div>
                         </div>
                     </div>
                     <div class="mt-4 border-top pt-3">

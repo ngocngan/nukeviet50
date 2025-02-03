@@ -13,6 +13,8 @@ if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
+use NukeViet\Template\Config;
+
 /**
  * Hàm lấy thông báo lỗi
  *
@@ -210,7 +212,6 @@ function nv_htmlOutput($html, $type = 'html', $custom_headers = [])
  *
  * @param array $array_data
  * @param int   $flags
- * @return never
  */
 function nv_jsonOutput($array_data, $flags = 0)
 {
@@ -233,7 +234,7 @@ function nv_xmlOutput($content, $lastModified)
             'indent-cdata' => true,
             'wrap' => 2000
         ];
-        $tidy = new tidy();
+        $tidy = new tidy(); // phpcs:ignore
         $tidy->parseString($content, $tidy_options, 'utf8');
         $tidy->cleanRepair();
         $content = (string) $tidy;
@@ -657,4 +658,79 @@ function nv_disable_site()
     }
 
     nv_info_die($nv_Lang->getGlobal('disable_site_title'), $nv_Lang->getGlobal('disable_site_title'), $disable_site_content, $disable_site_code, '', '', '', '', $disable_site_headers);
+}
+
+/**
+ * Thêm js, css của module vào trang hiện tại của các module khác
+ *
+ * @param string $module
+ * @param "js"|"css"|"both" $type
+ * @return void
+ */
+function addition_module_assets(string $module, string $type): void
+{
+    global $global_config, $site_mods, $my_head, $my_footer, $module_name;
+
+    if (!isset($site_mods[$module]) or $module_name == $module) {
+        return;
+    }
+
+    // Thứ tự load các giao diện của mỗi file
+    $dir_allowed = [];
+    $dir_allowed[$global_config['module_theme']] = $global_config['module_theme'];
+    if (!isset($dir_allowed[$global_config['site_theme']])) {
+        $dir_allowed[$global_config['site_theme']] = $global_config['site_theme'];
+    }
+    if (!isset($dir_allowed[NV_DEFAULT_SITE_THEME])) {
+        $dir_allowed[NV_DEFAULT_SITE_THEME] = NV_DEFAULT_SITE_THEME;
+    }
+
+    // Xác định các module. Nếu có tùy biến module_theme thì ưu tiên, không có thì tìm tiếp vào module_file gốc
+    $names = [];
+    $names[] = $site_mods[$module]['module_theme'];
+    if ($site_mods[$module]['module_theme'] != $site_mods[$module]['module_file']) {
+        $names[] = $site_mods[$module]['module_file'];
+    }
+
+    if ($type == 'js' or $type == 'both') {
+        // Lặp tên các module
+        foreach ($names as $name) {
+            $fileLoad = $name . '.js';
+            $fileIgnore = $name . '.nojs';
+
+            // Lặp các giao diện
+            foreach ($dir_allowed as $dir) {
+                if (theme_file_exists('/' . $dir . '/js/' . $fileLoad)) {
+                    $my_footer .= '<script src="' . NV_STATIC_URL . 'themes/' . $dir . '/js/' . $fileLoad . '"></script>' . PHP_EOL;
+                    break 2;
+                }
+                if (theme_file_exists('/' . $dir . '/js/' . $fileIgnore)) {
+                    break 2;
+                }
+            }
+        }
+    }
+
+    if ($type == 'css' or $type == 'both') {
+        // Lặp tên các module
+        foreach ($names as $name) {
+            $files = [];
+            // Nếu ở chế độ RTL thì load file css có dạng .rtl.css không có tìm sang tệp .css gốc
+            if (Config::isRtl()) {
+                $files[] = $name . '.rtl.css';
+            }
+            $files[] = $name . '.css';
+
+            // Lặp các giao diện
+            foreach ($dir_allowed as $dir) {
+                // Lặp các tệp css
+                foreach ($files as $file) {
+                    if (theme_file_exists('/' . $dir . '/css/' . $file)) {
+                        $my_head .= '<link rel="stylesheet" type="text/css" href="' . NV_STATIC_URL . 'themes/' . $dir . '/css/' . $file . '" />' . PHP_EOL;
+                        break 3;
+                    }
+                }
+            }
+        }
+    }
 }

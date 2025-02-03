@@ -13,6 +13,8 @@ if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
+use NukeViet\Template\Config;
+
 // Thiết lập config riêng của giao diện
 if (!empty($nv_Request) and $nv_Request->isset_request('store_theme_config', 'post')) {
     $respon = [
@@ -67,7 +69,7 @@ function nv_admin_theme(?string $contents, $head_site = 1)
     AND theme=" . $db->quote($admin_info['admin_theme']) . " AND (lang='all' OR lang=" . $db->quote(NV_LANG_DATA) . ")";
     $theme_config = $db->query($sql)->fetchAll(PDO::FETCH_KEY_PAIR);
     !isset($theme_config['color_mode']) && $theme_config['color_mode'] = 'auto';
-    !isset($theme_config['dir']) && $theme_config['dir'] = 'ltr';
+    !isset($theme_config['dir']) && ($theme_config['dir'] = Config::isRtl() ? 'rtl' : 'ltr');
 
     $nv_Lang->loadFile(NV_ROOTDIR . '/themes/' . $tpl_dir . '/language/' . NV_LANG_INTERFACE . '.php');
 

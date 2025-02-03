@@ -14,6 +14,7 @@ if (!defined('NV_MAINFILE')) {
 }
 
 use NukeViet\Client\Browser;
+use NukeViet\Template\Config;
 
 /**
  * is_current_url()
@@ -739,7 +740,18 @@ function nv_html_css($html = true)
 {
     global $module_info, $module_file;
 
-    if (theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.css')) {
+    if (Config::isRtl() and theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css')) {
+        if ($html) {
+            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css" type="text/css" />' . PHP_EOL;
+        }
+
+        return [
+            [
+                'rel' => 'stylesheet',
+                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css'
+            ]
+        ];
+    } elseif (theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.css')) {
         if ($html) {
             return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css" type="text/css" />' . PHP_EOL;
         }
@@ -751,7 +763,18 @@ function nv_html_css($html = true)
             ]
         ];
     }
-    if (theme_file_exists($module_info['template'] . '/css/' . $module_file . '.css')) {
+    if (Config::isRtl() and theme_file_exists($module_info['template'] . '/css/' . $module_file . '.rtl.css')) {
+        if ($html) {
+            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.rtl.css" type="text/css" />' . PHP_EOL;
+        }
+
+        return [
+            [
+                'rel' => 'stylesheet',
+                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.rtl.css'
+            ]
+        ];
+    } elseif (theme_file_exists($module_info['template'] . '/css/' . $module_file . '.css')) {
         if ($html) {
             return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css" type="text/css" />' . PHP_EOL;
         }

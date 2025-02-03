@@ -633,7 +633,8 @@ $nv_default_regions = [
         'date_get' => 'd-m-Y',
         'date_post' => 'd/m/Y',
         'jsdate_get' => 'dd-mm-yyyy',
-        'jsdate_post' => 'dd/mm/yyyy'
+        'jsdate_post' => 'dd/mm/yyyy',
+        'dir' => 'ltr'
     ],
     'en' => [
         'decimal_symbol' => '.',
@@ -657,6 +658,7 @@ $nv_default_regions = [
         'date_get' => 'm-d-Y',
         'date_post' => 'm/d/Y',
         'jsdate_get' => 'mm-dd-yyyy',
-        'jsdate_post' => 'mm/dd/yyyy'
+        'jsdate_post' => 'mm/dd/yyyy',
+        'dir' => 'ltr'
     ],
 ];
