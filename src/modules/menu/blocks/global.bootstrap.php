@@ -117,8 +117,6 @@ if (!nv_function_exists('nv_menu_bootstrap')) {
     }
 
     /**
-     * nv_menu_bootstrap()
-     *
      * @param array $block_config
      * @return string
      */
@@ -130,6 +128,13 @@ if (!nv_function_exists('nv_menu_bootstrap')) {
         $list = $nv_Cache->db($sql, 'id', $block_config['module']);
 
         $menulist = nv_menu_bootstrap_getdata($list, 0, $block_config);
+
+
+        [$block_theme, $dir] = get_block_tpl_dir('global.bootstrap.tpl', $block_config['module'], true);
+        $tpl = new \NukeViet\Template\NVSmarty();
+        $tpl->setTemplateDir($dir);
+
+        return $tpl->fetch('global.bootstrap.tpl');
 
         $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], 'default', '/modules/menu/global.bootstrap.tpl');
         $xtpl = new XTemplate('global.bootstrap.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/menu');

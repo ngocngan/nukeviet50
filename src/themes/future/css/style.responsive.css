@@ -25786,6 +25786,12 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.main-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .column {
   position: relative;
   outline: 2px dashed var(--bs-danger);

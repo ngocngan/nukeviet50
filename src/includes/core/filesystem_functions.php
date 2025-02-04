@@ -1204,13 +1204,19 @@ function get_block_tpl_dir(string $filename, string $module, bool $array = false
     }
 
     $themes_check = [];
-    $themes_check[$global_config['module_theme']] = $global_config['module_theme'];
-    if (!isset($themes_check[$site_mods[$module]['module_theme']])) {
-        $themes_check[$site_mods[$module]['module_theme']] = $site_mods[$module]['module_theme'];
+    // Admin bật kéo thả block, dùng trong block config sẽ không có module_theme hoặc module_theme là theme admin
+    if (!defined('NV_ADMIN')) {
+        $themes_check[$global_config['module_theme']] = $global_config['module_theme'];
     }
+    // Giao diện cố định của module chứa block nếu có thiết lập
+    if (!empty($site_mods[$module]['theme']) and !isset($themes_check[$site_mods[$module]['theme']])) {
+        $themes_check[$site_mods[$module]['theme']] = $site_mods[$module]['theme'];
+    }
+    // Giao diện của site
     if (!isset($themes_check[$global_config['site_theme']])) {
         $themes_check[$global_config['site_theme']] = $global_config['site_theme'];
     }
+    // Giao diện mặc định
     if (!isset($themes_check[NV_DEFAULT_SITE_THEME])) {
         $themes_check[NV_DEFAULT_SITE_THEME] = NV_DEFAULT_SITE_THEME;
     }

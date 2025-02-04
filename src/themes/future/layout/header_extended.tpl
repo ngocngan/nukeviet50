@@ -62,7 +62,7 @@
     </div>
     <nav class="site-nav text-bg-primary">
         <div class="container">
-            main-nav
+            [MAIN_NAV]
         </div>
     </nav>
 </header>

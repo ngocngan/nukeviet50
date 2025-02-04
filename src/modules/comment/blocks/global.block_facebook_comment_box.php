@@ -21,11 +21,11 @@ if (!nv_function_exists('nv_facebook_comment_box_blocks')) {
      */
     function nv_block_config_facebook_comment_box_blocks($module, $data_block)
     {
-        global $nv_Lang, $global_config, $site_mods;
+        global $nv_Lang;
 
-        $block_theme = get_tpl_dir([$global_config['module_theme'], $global_config['site_theme']], NV_DEFAULT_SITE_THEME, '/modules/' . $site_mods[$module]['module_theme'] . '/global.facebook_comment_box.config.tpl');
+        [$block_theme, $dir] = get_block_tpl_dir('global.facebook_comment_box.config.tpl', $module, true);
         $tpl = new \NukeViet\Template\NVSmarty();
-        $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $site_mods[$module]['module_theme']);
+        $tpl->setTemplateDir($dir);
         $tpl->assign('LANG', $nv_Lang);
         $tpl->assign('TEMPLATE', $block_theme);
         $tpl->assign('CONFIG', $data_block);
