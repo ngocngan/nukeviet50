@@ -1,25 +1,47 @@
-<div class="main-nav">
+{function writeTrees parentid=0 treestt=0}
+{if $parentid < 5}
+{for $stt=1 to 10}
+<li data-toggle="item-lev-{$parentid + 1}"{if $stt == 4} class="active"{/if}>
+    <div class="menu-item{if ($stt == 1 or $stt == 10) and $parentid < 4} has-submenu{/if}">
+        <a class="item-link" href="#">
+            <span class="item-icon d-none"><i class="fa-solid fa-house"></i></span>
+            <span class="item-name">Menu level {$parentid + 1}.{$stt}</span>
+        </a>
+        {if ($stt == 1 or $stt == 10) and $parentid < 4}
+        <span role="button" class="item-arrow" aria-label="Toggle submenu">
+            <i class="fa-solid fa-caret-down"></i>
+        </span>
+        {/if}
+    </div>
+    {if ($stt == 1 or $stt == 10) and $parentid < 4}
+    <ul data-toggle="submenu">
+        {writeTrees parentid=$parentid + 1 treestt=$stt}
+    </ul>
+    {/if}
+</li>
+{/for}
+{/if}
+{/function}
+<div class="main-nav" data-toggle="main-nav">
     <ul>
-        <li class="main-nav-home">
-            <li>
-                <div class="menu-item">
-                    <div class="item-icon">
+        <li class="main-nav-home" data-toggle="item-lev-1">
+            <div class="menu-item">
+                <a class="item-link" href="#" aria-label="Home">
+                    <span class="item-icon">
                         <i class="fa-solid fa-house"></i>
-                    </div>
-                </div>
-            </li>
-        </li>
-        <li>
-            <div>
-                Element
+                    </span>
+                </a>
             </div>
-            <ul>
-                <li>
-                    <div>
-                        Element
-                    </div>
-                </li>
-            </ul>
+        </li>
+        {writeTrees}
+        <li class="nav-expanded" data-toggle="item-expanded">
+            <div class="menu-item">
+                <a class="item-link" href="#" aria-label="Expanded">
+                    <span class="item-icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                </a>
+            </div>
         </li>
     </ul>
 </div>

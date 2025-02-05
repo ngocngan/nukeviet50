@@ -68,4 +68,77 @@ $(function() {
             err.text('');
         }
     });
+
+    // Thanh menu ngang mặc định
+    const menu = $('[data-toggle="main-nav"]');
+    if (menu.length == 1) {
+        const buildMenu = () => {
+            const iExpanded = $('[data-toggle="item-expanded"]', menu);
+
+            /**
+             * Bước 1: Reset hết về mặc định
+             * Bước 2: Tính xem có phần mở rộng không, không tính nút expand
+             * Bước 3: Tính lại kể cả nút expanded
+             *
+             * no processed thì nút expanded có show nhưng dạng visibility: hidden
+             * processed thì:
+             * - has-expanded nút expanded show visible
+             * - no-expanded hidden
+             */
+            menu.removeClass('processed has-expanded no-expanded');
+            $('[data-toggle="item-lev-1"]', menu).removeClass('d-none');
+            $('[data-toggle="submenu"]', menu).removeClass('submenu-end');
+            iExpanded.find('ul').remove();
+
+            const expandWidth = iExpanded.innerWidth();
+            let menuWidth = menu.innerWidth();
+            let expanded = false;
+            let sWidth = 0;
+            $('[data-toggle="item-lev-1"]', menu).each(function() {
+                sWidth += $(this).innerWidth();
+                if (sWidth > menuWidth) {
+                    expanded = true;
+                }
+            });
+            if (!expanded) {
+                menu.addClass('processed no-expanded');
+                return;
+            }
+
+            const stacks = [];
+            menuWidth = menu.innerWidth() - expandWidth;
+            sWidth = 0;
+            $('[data-toggle="item-lev-1"]', menu).each(function() {
+                sWidth += $(this).innerWidth();
+                if (sWidth > menuWidth) {
+                    stacks.push($(this).clone());
+                    $(this).addClass('d-none');
+                }
+            });
+            menu.addClass('processed has-expanded');
+            const mExpanded = $('<ul data-toggle="submenu"></ul>');
+            stacks.forEach((item) => {
+                mExpanded.append(item);
+            });
+            iExpanded.append(mExpanded);
+
+            // Bố trí lại vị trí các submenu
+            $('[data-toggle="submenu"]', menu).each(function() {
+                if (this.getBoundingClientRect().right > document.documentElement.clientWidth) {
+                    $(this).addClass('submenu-end');
+                }
+            });
+        };
+        let timer = null;
+
+        $(window).on('resize', function() {
+            clearTimeout(timer);
+            timer = setTimeout(buildMenu, 50);
+        });
+        buildMenu();
+    }
+});
+
+$(window).on('load', function() {
+
 });

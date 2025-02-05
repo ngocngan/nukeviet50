@@ -124,6 +124,12 @@ if (!nv_function_exists('nv_menu_bootstrap')) {
     {
         global $nv_Cache, $global_config, $nv_Lang;
 
+        if (defined('NV_ADDED_MENU_BOOTSTRAP')) {
+            // Chỉ thêm block này 1 lần
+            return '';
+        }
+        define('NV_ADDED_MENU_BOOTSTRAP', true);
+
         $sql = 'SELECT id, parentid, title, link, icon, note, subitem, groups_view, module_name, op, target, css, active_type FROM ' . NV_PREFIXLANG . '_menu_rows WHERE status=1 AND mid = ' . $block_config['menuid'] . ' ORDER BY parentid, weight ASC';
         $list = $nv_Cache->db($sql, 'id', $block_config['module']);
 

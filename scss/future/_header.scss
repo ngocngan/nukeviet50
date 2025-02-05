@@ -1,3 +1,32 @@
+@include media-breakpoint-down($theme-layout-breakpoint) {
+  .site-header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: $zindex-sticky;
+    width: $offcanvas-horizontal-width;
+    max-width: 90vw;
+    background-color: $offcanvas-bg-color;
+  }
+}
+
+.site-header-mobile {
+  @include media-breakpoint-up($theme-layout-breakpoint) {
+    display: none;
+  }
+
+  .logo {
+    img {
+      min-height: 60px;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
 .logo-banner {
   .logo {
     img {
