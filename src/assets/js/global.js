@@ -484,3 +484,20 @@ function arrayBufferToBase64Url(buffer) {
 nv_check_timezone();
 
 nukeviet.WebAuthnSupported = 'PublicKeyCredential' in window && 'credentials' in navigator && 'create' in navigator.credentials && 'get' in navigator.credentials;
+nukeviet.getScrollbarWidth = () => {
+    const outer = document.createElement('div');
+    outer.style.visibility = 'hidden';
+    outer.style.overflow = 'scroll';
+    outer.style.msOverflowStyle = 'scrollbar';
+    outer.style.position = 'fixed';
+    document.body.appendChild(outer);
+
+    const inner = document.createElement('div');
+    outer.appendChild(inner);
+
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+    outer.parentNode.removeChild(outer);
+
+    return scrollbarWidth;
+}

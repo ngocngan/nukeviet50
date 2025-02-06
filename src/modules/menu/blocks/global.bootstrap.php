@@ -138,6 +138,7 @@ if (!nv_function_exists('nv_menu_bootstrap')) {
 
         [$block_theme, $dir] = get_block_tpl_dir('global.bootstrap.tpl', $block_config['module'], true);
         $tpl = new \NukeViet\Template\NVSmarty();
+        $tpl->assign('LANG', $nv_Lang);
         $tpl->setTemplateDir($dir);
 
         return $tpl->fetch('global.bootstrap.tpl');

@@ -26187,6 +26187,26 @@ readers do not read off random characters that represent icons */
   -webkit-box-orient: vertical;
 }
 
+.topbar .topbar-search .search-icon, .topbar .start-topbar li,
+.topbar .end-topbar li,
+.topbar .topbar-inform {
+  padding-top: 0.46875rem;
+  padding-bottom: 0.46875rem;
+}
+
+.topbar .socal-icons a, .topbar .contact-icons a, .topbar .topbar-search .search-icon, .site-header-mobile .toggle-main-nav {
+  color: var(--nv-topbar-link-color);
+  transition: color 0.15s ease-in-out;
+}
+
+.topbar .contact-icons a:hover, .topbar .topbar-search .search-icon:hover, .site-header-mobile .toggle-main-nav:hover, .site-header-mobile .toggle-main-nav.active {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+}
+
+.site-header .mobile-search {
+  display: none;
+}
+
 .site-header-mobile {
   display: none;
 }
@@ -26198,7 +26218,6 @@ readers do not read off random characters that represent icons */
   -o-object-fit: contain;
   object-fit: contain;
 }
-
 .logo-banner .logo img {
   min-height: 80px;
   width: auto;
@@ -26206,22 +26225,6 @@ readers do not read off random characters that represent icons */
   max-width: 100%;
   -o-object-fit: contain;
   object-fit: contain;
-}
-
-.topbar .topbar-search .search-icon, .topbar .start-topbar li,
-.topbar .end-topbar li,
-.topbar .topbar-inform {
-  padding-top: 0.46875rem;
-  padding-bottom: 0.46875rem;
-}
-
-.topbar .socal-icons a, .topbar .contact-icons a, .topbar .topbar-search .search-icon {
-  color: var(--nv-topbar-link-color);
-  transition: color 0.15s ease-in-out;
-}
-
-.topbar .contact-icons a:hover, .topbar .topbar-search .search-icon:hover {
-  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
 }
 
 .topbar .contact-icons li {
@@ -26340,6 +26343,10 @@ readers do not read off random characters that represent icons */
   content: " ";
 }
 
+.site-nav {
+  background-color: #1477cc;
+}
+
 .main-content .main-start {
   flex: 0 0 auto;
   width: 20%;
@@ -26353,17 +26360,6 @@ readers do not read off random characters that represent icons */
   width: 20%;
 }
 
-.site-nav {
-  background-color: #1477cc;
-}
-
-.main-nav > ul > li > .menu-item .item-icon,
-.main-nav > ul > li > .menu-item .item-name,
-.main-nav > ul > li > .menu-item .item-arrow {
-  padding-top: 0.8125rem;
-  padding-bottom: 0.8125rem;
-}
-
 .main-nav {
   position: relative;
   overflow: hidden;
@@ -26371,8 +26367,29 @@ readers do not read off random characters that represent icons */
 .main-nav .nav-expanded {
   visibility: hidden;
 }
+.main-nav .nav-loader {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-nav .nav-loader .loader-mask {
+  width: 2.5rem;
+  background: linear-gradient(to left, rgba(var(--bs-primary-rgb), 1) 0%, rgba(var(--bs-primary-rgb), 0) 100%);
+}
+.main-nav .nav-loader .loader-icon {
+  background-color: #1477cc;
+}
 .main-nav.processed {
   overflow: visible;
+}
+.main-nav.processed .nav-loader {
+  display: none;
 }
 .main-nav.processed.has-expanded .nav-expanded {
   visibility: visible;
@@ -26401,6 +26418,8 @@ readers do not read off random characters that represent icons */
 .main-nav .menu-item .item-link {
   display: flex;
   align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
 }
 .main-nav > ul {
   display: flex;
@@ -26422,6 +26441,12 @@ readers do not read off random characters that represent icons */
 }
 .main-nav > ul > li > .menu-item .item-link {
   color: #fff;
+}
+.main-nav > ul > li > .menu-item .item-icon,
+.main-nav > ul > li > .menu-item .item-name,
+.main-nav > ul > li > .menu-item .item-arrow {
+  padding-top: 0.8125rem;
+  padding-bottom: 0.8125rem;
 }
 .main-nav > ul > li > ul {
   top: 100%;
@@ -26494,6 +26519,9 @@ readers do not read off random characters that represent icons */
 .main-nav > ul ul li.active > .menu-item .item-arrow, .main-nav > ul ul li:active > .menu-item .item-link,
 .main-nav > ul ul li:active > .menu-item .item-arrow {
   color: #fff;
+}
+.main-nav .main-nav-home .item-link .item-name {
+  display: none;
 }
 
 .column {

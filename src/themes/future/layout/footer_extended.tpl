@@ -13,7 +13,7 @@
 {/if}
 <footer class="text-bg-dark">
     <div class="footer-top">
-        <div class="container py-4">
+        <div class="container g-4 py-4">
             <div class="row g-4">
                 <div class="footer-start">
                     1

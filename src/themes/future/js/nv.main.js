@@ -10,6 +10,10 @@
 'use strict';
 
 $(function() {
+    const mScreen = () => {
+        return !$('#breakpoint-mobile').is(':visible');
+    };
+
     // Đồng hồ
     const sClock = $('#site-digital-clock');
     if (sClock.length) {
@@ -55,7 +59,11 @@ $(function() {
             e.preventDefault();
         }
     });
-    $('body').on('keyup change', '[required]', function() {
+    $('body').on('keyup change', '[required]', function(e) {
+        if (e.type === 'keyup' && e.keyCode === 13) {
+            return;
+        }
+
         const input = $(this);
         const form = input.closest('form');
         if (!form.length || !form.is('[data-toggle="valid-dform"]')) {
@@ -74,21 +82,13 @@ $(function() {
     if (menu.length == 1) {
         const buildMenu = () => {
             const iExpanded = $('[data-toggle="item-expanded"]', menu);
-
-            /**
-             * Bước 1: Reset hết về mặc định
-             * Bước 2: Tính xem có phần mở rộng không, không tính nút expand
-             * Bước 3: Tính lại kể cả nút expanded
-             *
-             * no processed thì nút expanded có show nhưng dạng visibility: hidden
-             * processed thì:
-             * - has-expanded nút expanded show visible
-             * - no-expanded hidden
-             */
             menu.removeClass('processed has-expanded no-expanded');
             $('[data-toggle="item-lev-1"]', menu).removeClass('d-none');
             $('[data-toggle="submenu"]', menu).removeClass('submenu-end');
             iExpanded.find('ul').remove();
+            if (mScreen()) {
+                return;
+            }
 
             const expandWidth = iExpanded.innerWidth();
             let menuWidth = menu.innerWidth();
@@ -136,9 +136,101 @@ $(function() {
             timer = setTimeout(buildMenu, 50);
         });
         buildMenu();
+
+        // Ẩn hiện submenu trên mobile
+        $('[data-toggle="subtg"]', menu).on('click', function(e) {
+            e.preventDefault();
+            if (!mScreen()) {
+                return;
+            }
+
+            const btn = $(this);
+            const pMenu = btn.closest('li');
+            const sMenu = $('> ul:first', pMenu);
+
+            if (pMenu.is('.opening') || pMenu.is('.closing') || sMenu.length !== 1) {
+                return;
+            }
+            if (pMenu.is('.open')) {
+                // Thu gọn
+                pMenu.addClass('closing');
+                sMenu[0].style.height = sMenu[0].scrollHeight + "px";
+                setTimeout(() => {
+                    sMenu[0].style.height = 0;
+                }, 1);
+                setTimeout(() => {
+                    pMenu.removeClass('closing open');
+                }, 150);
+                return;
+            }
+            // Mở rộng
+            pMenu.addClass('opening');
+            sMenu[0].style.height = sMenu[0].scrollHeight + "px";
+            setTimeout(() => {
+                pMenu.addClass('open').removeClass('opening');
+                sMenu[0].style.height = null;
+            }, 150);
+        });
     }
-});
 
-$(window).on('load', function() {
+    // Xử lý đóng mở menu mobile
+    const mainNavToggler = $('[data-toggle="toggle-main-nav"]');
+    mainNavToggler.on('click', function(e) {
+        e.preventDefault();
+        const btn = $(this);
+        const hd = $('[data-toggle="site-header"]');
+        const body = document.getElementsByTagName('body')[0];
 
+        if (hd.is('.showing') || hd.is('.hiding')) {
+            return;
+        }
+        btn.toggleClass('active');
+        if (hd.is('.show')) {
+            // Ẩn
+            hd.addClass('hiding');
+            hd.data('backdrop').removeClass('show');
+
+            setTimeout(() => {
+                hd.removeClass('show showing hiding');
+                hd.data('backdrop').remove();
+                hd.data('backdrop', null);
+
+                body.style.overflow = hd.data('body-overflow');
+                body.style.paddingRight = hd.data('body-padding-right');
+                if (body.getAttribute('style') === '') {
+                    body.removeAttribute('style');
+                }
+            }, 300);
+            return;
+        }
+
+        // Hiện
+        const backDrop = $('<div class="site-header-backdrop fade"></div>');
+        backDrop.on('click', function() {
+            btn.trigger('click');
+        });
+        hd.addClass('showing');
+        hd.after(backDrop);
+        hd.data('backdrop', backDrop);
+
+        hd.data('body-overflow', body.style.overflow);
+        hd.data('body-padding-right', body.style.paddingRight);
+        body.style.overflow = 'hidden';
+        if (document.documentElement.scrollHeight > window.innerHeight) {
+            body.style.paddingRight = nukeviet.getScrollbarWidth() + 'px';
+        }
+
+        setTimeout(() => {
+            backDrop.addClass('show');
+        }, 1);
+        setTimeout(() => {
+            hd.addClass('show').removeClass('showing');
+        }, 300);
+    });
+    $(window).on('resize', function() {
+        // Đang mở menu mobile mà resize thì tự đóng
+        if (mainNavToggler.is('.active') && !mScreen()) {
+            mainNavToggler.trigger('click');
+        }
+    });
 });

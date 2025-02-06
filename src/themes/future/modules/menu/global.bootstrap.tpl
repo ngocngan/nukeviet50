@@ -8,7 +8,7 @@
             <span class="item-name">Menu level {$parentid + 1}.{$stt}</span>
         </a>
         {if ($stt == 1 or $stt == 10) and $parentid < 4}
-        <span role="button" class="item-arrow" aria-label="Toggle submenu">
+        <span class="item-arrow" data-toggle="subtg" aria-label="Toggle submenu">
             <i class="fa-solid fa-caret-down"></i>
         </span>
         {/if}
@@ -30,6 +30,7 @@
                     <span class="item-icon">
                         <i class="fa-solid fa-house"></i>
                     </span>
+                    <span class="item-name">{$LANG->getGlobal('Home')}</span>
                 </a>
             </div>
         </li>
@@ -44,4 +45,12 @@
             </div>
         </li>
     </ul>
+    <div class="nav-loader">
+        <div class="loader-mask h-100"></div>
+        <div class="loader-icon h-100 px-2 d-flex justify-content-center align-items-center">
+            <div class="spinner-grow spinner-grow-sm" role="status">
+                <span class="visually-hidden">{$LANG->getGlobal('wait_page_load')}</span>
+            </div>
+        </div>
+    </div>
 </div>
