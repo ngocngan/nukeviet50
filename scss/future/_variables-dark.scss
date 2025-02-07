@@ -2,6 +2,8 @@ $body-bg-dark: $gray-900;
 $body-color-dark: $gray-300;
 
 // Header
+$header-link-color-dark: var(--#{$prefix}link-color);
+
 $topbar-color-dark: $body-color-dark;
 $topbar-bg-dark: $body-bg-dark;
 $contact-icons-dark: (

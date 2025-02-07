@@ -5,7 +5,6 @@
     </div>
     <div id="openidResult" data-sso-domain="{$smarty.const.SSO_REGISTER_DOMAIN}" class="nv-alert"></div>
     <div id="openidBt" data-result="" data-redirect=""></div>
-    <div id="breakpoint-mobile"></div>
     <script src="{$smarty.const.NV_STATIC_URL}themes/{$GCONFIG.module_theme}/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,9 +1,7 @@
-[data-#{$prefix}theme="light"] {
-  --nv-topbar-link-color: #{$topbar-link-color};
-}
-
 :root,
 [data-#{$prefix}theme="light"] {
+  --nv-header-link-color: #{$header-link-color};
+
   @each $key, $value in $contact-icons-light {
     --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
   }
@@ -11,6 +9,8 @@
 
 @if $enable-dark-mode {
   [data-#{$prefix}theme="dark"] {
+    --nv-header-link-color: #{$header-link-color-dark};
+
     @each $key, $value in $contact-icons-dark {
       --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
     }

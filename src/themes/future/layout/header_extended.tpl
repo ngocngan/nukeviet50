@@ -4,43 +4,66 @@
 <header>
     <div class="site-header" data-toggle="site-header">
         <div class="site-header-contents">
-            <div class="topbar border-bottom">
+            <div class="topbar">
                 <div class="container">
-                    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2">
-                        <div class="start-topbar">
+                    <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
+                        <div class="start-topbar me-auto">
                             [START_TOPBAR]
                         </div>
-                        <div class="d-flex align-items-center">
-                            <div class="end-topbar border-end pe-2">
-                                [END_TOPBAR]
+                        <div class="end-topbar">
+                            [END_TOPBAR]
+                        </div>
+                        {if isset($SITE_MODS.seek)}
+                        <div class="topbar-search dropdown px-2 border-start border-end">
+                            <a class="search-icon d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="50,0" aria-expanded="false" aria-label="{$LANG->getGlobal('search_all')}">
+                                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end p-3">
+                                <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-toggle="valid-dform" novalidate>
+                                    {if not $GCONFIG.rewrite_enable}
+                                    <input type="hidden" name="{$smarty.const.NV_LANG_VARIABLE}" value="{$smarty.const.NV_LANG_DATA}">
+                                    <input type="hidden" name="{$smarty.const.NV_NAME_VARIABLE}" value="seek">
+                                    {/if}
+                                    <label for="site-search-ipt" class="fw-medium form-label">{$LANG->getGlobal('search_all')}:</label>
+                                    <div class="input-group has-validation flex-nowrap">
+                                        <input type="text" class="form-control fw-175" name="q" placeholder="{$LANG->getGlobal('keyword')}" id="site-search-ipt"
+                                            minlength="{$smarty.const.NV_MIN_SEARCH_LENGTH}"
+                                            maxlength="{$smarty.const.NV_MAX_SEARCH_LENGTH}"
+                                            required data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
+                                        >
+                                        <div class="invalid-tooltip"></div>
+                                        <button class="btn btn-secondary text-nowrap" type="submit" id="site-search-btn"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> {$LANG->getGlobal('search')}</button>
+                                    </div>
+                                </form>
                             </div>
-                            {if isset($SITE_MODS.seek)}
-                            <div class="topbar-search border-end dropdown px-2">
-                                <a class="search-icon d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="50,0" aria-expanded="false" aria-label="{$LANG->getGlobal('search_all')}">
-                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                        </div>
+                        {/if}
+                        <div class="user-area d-flex gap-2 align-items-center" data-toggle="site-user-area">
+                            <div class="dropdown site-user-inform">
+                                <a class="inform-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="40,0" aria-expanded="false">
+                                    <i class="fa-solid fa-bell fa-lg"></i>
+                                    <span class="counter badge rounded-pill bg-danger">
+                                        99+
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end p-3">
-                                    <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-toggle="valid-dform" novalidate>
-                                        {if not $GCONFIG.rewrite_enable}
-                                        <input type="hidden" name="{$smarty.const.NV_LANG_VARIABLE}" value="{$smarty.const.NV_LANG_DATA}">
-                                        <input type="hidden" name="{$smarty.const.NV_NAME_VARIABLE}" value="seek">
-                                        {/if}
-                                        <label for="site-search-ipt" class="fw-medium form-label">{$LANG->getGlobal('search_all')}:</label>
-                                        <div class="input-group has-validation flex-nowrap">
-                                            <input type="text" class="form-control fw-175" name="q" placeholder="{$LANG->getGlobal('keyword')}" id="site-search-ipt"
-                                                minlength="{$smarty.const.NV_MIN_SEARCH_LENGTH}"
-                                                maxlength="{$smarty.const.NV_MAX_SEARCH_LENGTH}"
-                                                required data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
-                                            >
-                                            <div class="invalid-tooltip"></div>
-                                            <button class="btn btn-secondary text-nowrap" type="submit" id="site-search-btn"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> {$LANG->getGlobal('search')}</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
                             </div>
-                            {/if}
-                            <div class="ps-2">
-                                <button type="button" class="btn btn-primary btn-sm text-nowrap">Đăng nhập</button>
+                            <div class="site-user-button dropdown">
+                                <button type="button" class="d-none btn btn-primary btn-sm text-nowrap">Đăng nhập</button>
+                                <a class="user-button" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="8,0" aria-expanded="false">
+                                    <span class="no-avatar d-flex align-items-center justify-content-center text-bg-primary rounded-circle w-100 h-100"><span>TD</span></span>
+                                    <img src="#" alt="User avatar" class="d-none">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -55,13 +78,13 @@
                         <input type="hidden" name="{$smarty.const.NV_NAME_VARIABLE}" value="seek">
                         {/if}
                         <div class="position-relative">
-                            <input type="text" class="form-control fw-175" name="q" placeholder="{$LANG->getGlobal('keyword')}" id="site-search-ipt"
+                            <input type="text" class="form-control" name="q" placeholder="{$LANG->getGlobal('search_all')}"
                                 minlength="{$smarty.const.NV_MIN_SEARCH_LENGTH}"
                                 maxlength="{$smarty.const.NV_MAX_SEARCH_LENGTH}"
                                 required data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
                             >
                             <div class="invalid-tooltip"></div>
-                            <button class="btn btn-secondary text-nowrap" type="submit" id="site-search-btn"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> {$LANG->getGlobal('search')}</button>
+                            <button type="submit" aria-label="{$LANG->getGlobal('search')}"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>
                 </div>
@@ -90,17 +113,24 @@
             </nav>
         </div>
     </div>
-    <div class="site-header-mobile">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between gap-3 py-3">
-                <div class="logo flex-shrink-0">
-                    <a title="{$GCONFIG.site_name}" href="{$smarty.const.NV_BASE_SITEURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}" aria-label="Logo {$GCONFIG.site_name}">
-                        <img src="{$smarty.const.NV_BASE_SITEURL}{$GCONFIG.site_logo}" alt="{$GCONFIG.site_name}">
-                    </a>
+    <div class="site-header-mobile shadow-sm">
+        <div class="container py-3">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="logo ps-2 ps-sm-0">
+                        <a title="{$GCONFIG.site_name}" href="{$smarty.const.NV_BASE_SITEURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}" aria-label="Logo {$GCONFIG.site_name}">
+                            <img src="{$smarty.const.NV_BASE_SITEURL}{$GCONFIG.site_logo}" alt="{$GCONFIG.site_name}">
+                        </a>
+                    </div>
                 </div>
-                <a href="#" role="button" class="p-2 toggle-main-nav" data-toggle="toggle-main-nav" aria-label="Toggle main navigation">
-                    <i class="fa-solid fa-bars fa-2x"></i>
-                </a>
+                <div class="col-6 ps-3">
+                    <div class="d-flex gap-2 align-items-center justify-content-end pe-2 pe-sm-0">
+                        <div class="d-flex gap-2 align-items-center" data-toggle="site-user-area-mobile"></div>
+                        <a href="#" role="button" class="toggle-main-nav" data-toggle="toggle-main-nav" aria-label="{$LANG->getModule('toggle_mobile_nav')}">
+                            <i class="fa-solid fa-align-right fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -33,13 +33,6 @@
     display: none;
 }
 
-// Kiểm tra breakpoint của giao diện
-@include media-breakpoint-down($theme-layout-breakpoint) {
-  #breakpoint-mobile {
-    display: none;
-  }
-}
-
 // Width in px
 @for $i from 1 through 20 {
     .fw-#{$i * 25} {

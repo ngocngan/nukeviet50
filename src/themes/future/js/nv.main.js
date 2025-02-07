@@ -10,10 +10,6 @@
 'use strict';
 
 $(function() {
-    const mScreen = () => {
-        return !$('#breakpoint-mobile').is(':visible');
-    };
-
     // Đồng hồ
     const sClock = $('#site-digital-clock');
     if (sClock.length) {
@@ -86,7 +82,7 @@ $(function() {
             $('[data-toggle="item-lev-1"]', menu).removeClass('d-none');
             $('[data-toggle="submenu"]', menu).removeClass('submenu-end');
             iExpanded.find('ul').remove();
-            if (mScreen()) {
+            if (nukeviet.isMScreen()) {
                 return;
             }
 
@@ -140,7 +136,7 @@ $(function() {
         // Ẩn hiện submenu trên mobile
         $('[data-toggle="subtg"]', menu).on('click', function(e) {
             e.preventDefault();
-            if (!mScreen()) {
+            if (!nukeviet.isMScreen()) {
                 return;
             }
 
@@ -229,7 +225,7 @@ $(function() {
     });
     $(window).on('resize', function() {
         // Đang mở menu mobile mà resize thì tự đóng
-        if (mainNavToggler.is('.active') && !mScreen()) {
+        if (mainNavToggler.is('.active') && !nukeviet.isMScreen()) {
             mainNavToggler.trigger('click');
         }
     });

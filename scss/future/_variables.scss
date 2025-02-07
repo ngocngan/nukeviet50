@@ -93,9 +93,10 @@ $main-nav-submenu-width: 15.625rem; // 250px
 
 // Header
 $header-height: 2.4375rem; // 39px
+$header-link-color: $body-color;
+$header-avatar-size: 2rem; // 32px
 
 $topbar-color: $body-color;
-$topbar-link-color: $topbar-color;
 $topbar-bg: $body-bg;
 
 $contact-icons-light: (

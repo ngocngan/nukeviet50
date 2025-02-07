@@ -15,6 +15,13 @@
  * Bởi mặc định script sẽ được kéo xuống cuối footer
  */
 
+var nukeviet = nukeviet || {};
+nukeviet.mobileBreakPoint = '(min-width: 992px)';
+nukeviet.isMScreen = () => {
+    const hasViewport = !!document.querySelector('meta[name="viewport"]');
+    return !window.matchMedia(nukeviet.mobileBreakPoint).matches && hasViewport;
+};
+
 const nvSetThemeMode = theme => {
     if (theme === 'auto') {
         document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
@@ -36,3 +43,28 @@ const nvSetThemeMode = theme => {
         setTheme();
     });
 })();
+
+nukeviet.toggleThemeScreen = () => {
+    let da = document.querySelector('[data-toggle="site-user-area"]');
+    let ma = document.querySelector('[data-toggle="site-user-area-mobile"]');
+    if (!da || !ma) {
+        return;
+    }
+    if (nukeviet.isMScreen()) {
+        // Desktop > Mobile
+        while (da.firstChild) {
+            ma.appendChild(da.firstChild);
+        }
+        return;
+    }
+    // Mobile > Desktop
+    while (ma.firstChild) {
+        da.appendChild(ma.firstChild);
+    }
+};
+document.addEventListener('DOMContentLoaded', () => {
+    nukeviet.toggleThemeScreen();
+});
+window.matchMedia(nukeviet.mobileBreakPoint).addEventListener('change', () => {
+    nukeviet.toggleThemeScreen();
+});

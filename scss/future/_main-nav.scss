@@ -111,6 +111,22 @@ $max-depth: 20;
             }
           }
         }
+
+        &.active {
+          >.menu-item {
+            >.item-link:not(:hover) {
+              color: var(--#{$prefix}primary);
+            }
+
+            >.item-arrow {
+              color: var(--#{$prefix}primary);
+
+              &:hover {
+                opacity: .75;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -130,6 +146,10 @@ $max-depth: 20;
       gap: 0.25rem;
       min-width: 0; // Fix elipsis issue
       @include media-breakpoint-down($theme-layout-breakpoint) {
+        &:not(:hover) {
+          color: var(--#{$prefix}body-color);
+        }
+
         .item-name {
           padding-top: .5rem;
           padding-bottom: .5rem;

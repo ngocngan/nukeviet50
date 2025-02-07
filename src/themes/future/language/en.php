@@ -28,4 +28,3 @@ $lang_module['tconf_light_theme'] = 'Light theme';
 $lang_module['tconf_customize_variables'] = 'Variables';
 $lang_module['tconf_css'] = 'CSS';
 $lang_module['tconf_gfonts'] = 'Google fonts';
-

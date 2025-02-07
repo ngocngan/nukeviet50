@@ -135,7 +135,6 @@ if (!nv_function_exists('nv_menu_bootstrap')) {
 
         $menulist = nv_menu_bootstrap_getdata($list, 0, $block_config);
 
-
         [$block_theme, $dir] = get_block_tpl_dir('global.bootstrap.tpl', $block_config['module'], true);
         $tpl = new \NukeViet\Template\NVSmarty();
         $tpl->assign('LANG', $nv_Lang);
