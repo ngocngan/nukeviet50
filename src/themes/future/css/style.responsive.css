@@ -25628,12 +25628,12 @@ readers do not read off random characters that represent icons */
   -webkit-box-orient: vertical;
 }
 
-.site-user-inform .inform-toggle, .topbar .socal-icons a, .topbar .contact-icons a, .topbar .topbar-search .search-icon, .site-header-mobile .toggle-main-nav {
+.site-user-inform .inform-toggle, .topbar .socal-icons a, .topbar .contact-icons a:not(.dropdown-item), .topbar .topbar-search .search-icon, .site-header-mobile .toggle-main-nav {
   color: var(--nv-header-link-color);
   transition: color 0.15s ease-in-out;
 }
 
-.site-user-inform .inform-toggle:hover, .topbar .contact-icons a:hover, .topbar .topbar-search .search-icon:hover, .site-header-mobile .toggle-main-nav:hover, .site-header-mobile .toggle-main-nav.active {
+.site-user-inform .inform-toggle:hover, .topbar .contact-icons a:not(.dropdown-item):hover, .topbar .topbar-search .search-icon:hover, .site-header-mobile .toggle-main-nav:hover, .site-header-mobile .toggle-main-nav.active {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
 }
 
@@ -25753,8 +25753,8 @@ readers do not read off random characters that represent icons */
   .topbar {
     border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
   }
-  .topbar .start-topbar li,
-  .topbar .end-topbar li,
+  .topbar .start-topbar ul:not(.dropdown-menu) > li,
+  .topbar .end-topbar ul:not(.dropdown-menu) > li,
   .topbar .topbar-inform {
     padding-top: 0.46875rem;
     padding-bottom: 0.46875rem;
@@ -25770,21 +25770,24 @@ readers do not read off random characters that represent icons */
   padding-bottom: 0.46875rem;
 }
 @media (min-width: 992px) {
-  .topbar .contact-icons li {
+  .topbar .contact-icons > li {
     padding-left: 0.375rem;
     padding-right: 0.375rem;
   }
 }
-.topbar .contact-icons li.digital-clock {
+.topbar .contact-icons > li.digital-clock {
   border-right: 1px solid var(--bs-border-color);
 }
-.topbar .contact-icons li:first-child {
+.topbar .contact-icons > li:first-child {
   padding-left: 0;
 }
-.topbar .contact-icons li:last-child {
+.topbar .contact-icons > li:last-child {
   padding-right: 0;
 }
 @media (max-width: 991.98px) {
+  .topbar .contact-icons {
+    gap: 0.25rem;
+  }
   .topbar .contact-icons .digital-clock {
     display: none;
   }
@@ -25933,7 +25936,8 @@ readers do not read off random characters that represent icons */
 .site-user-button .user-button {
   display: block;
   width: 2rem;
-  height: 2rem;
+  height: 2.4375rem;
+  padding: 0.21875rem 0;
 }
 .site-user-button .user-button .no-avatar {
   font-weight: 500;

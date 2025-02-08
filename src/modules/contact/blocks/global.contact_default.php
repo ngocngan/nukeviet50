@@ -23,8 +23,6 @@ if (!nv_function_exists('nv_contact_default_info')) {
     {
         global $site_mods, $nv_Cache, $nv_Lang;
 
-        $data_block['shows'] = empty($data_block['shows']) ? [] : (is_string($data_block['shows']) ? explode(',', $data_block['shows']) : $data_block['shows']);
-
         [$block_theme, $dir] = get_block_tpl_dir('block.contact_default.config.tpl', $module, true);
         $tpl = new \NukeViet\Template\NVSmarty();
         $tpl->setTemplateDir($dir);
@@ -56,8 +54,14 @@ if (!nv_function_exists('nv_contact_default_info')) {
         $return['config'] = [];
         $return['config']['departmentid'] = $nv_Request->get_int('config_departmentid', 'post', 0);
         $return['config']['shows'] = $nv_Request->get_typed_array('config_shows', 'post', 'title', []);
-        $return['config']['other_limit'] = $nv_Request->get_absint('config_other_limit', 'post', 0);
         $return['config']['show_clock'] = $nv_Request->get_bool('config_show_clock', 'post', false);
+
+        $keys = ['phone', 'fax', 'email', 'other'];
+        $return['config']['order_shows'] = $return['config']['limit_shows'] = [];
+        foreach ($keys as $key) {
+            $return['config']['order_shows'][$key] = $nv_Request->get_absint('config_' . $key . '_order', 'post', 0);
+            $return['config']['limit_shows'][$key] = $nv_Request->get_absint('config_' . $key . '_limit', 'post', 0);
+        }
 
         return $return;
     }
@@ -86,82 +90,170 @@ if (!nv_function_exists('nv_contact_default_info')) {
         $tpl = new \NukeViet\Template\NVSmarty();
         $tpl->setTemplateDir($dir);
         $tpl->registerPlugin('modifier', 'ddatetime', 'nv_datetime_format');
+        $tpl->registerPlugin('modifier', 'min', 'min');
         $tpl->assign('LANG', $nv_Lang);
         $tpl->assign('TEMPLATE', $block_theme);
         $tpl->assign('BCONFIG', $block_config);
         $tpl->assign('DATETIME_FORMAT', nv_region_config('date_short') . ' ' . nv_region_config('time_short'));
 
         $icons = [];
+
+        // Điện thoại
         if (in_array('phone', $block_config['shows'], true)) {
+            $limit = $block_config['limit_shows']['phone'];
             $department['phone'] = nv_parse_phone($department['phone']);
+            $stt = 0;
+
             foreach ($department['phone'] as $num) {
-                $icons['phone']['title'] = $nv_Lang->getModule('phone');
-                $icons['phone']['value'] = $num[0];
+                $icons['phone'][$stt]['type'] = 'phone';
+                $icons['phone'][$stt]['title'] = $nv_Lang->getModule('phone');
+                $icons['phone'][$stt]['value'] = $num[0];
                 if (count($num) == 2) {
-                    $icons['phone']['link'] = 'tel:' . $num[1];
+                    $icons['phone'][$stt]['link'] = 'tel:' . $num[1];
                 }
-                break;
+
+                $stt++;
+                if ($limit > 0 and $stt >= $limit) {
+                    break;
+                }
             }
         }
+
+        // Fax
         if (in_array('fax', $block_config['shows'], true) and !empty($department['fax'])) {
+            $limit = $block_config['limit_shows']['fax'];
             $department['fax'] = nv_parse_phone($department['fax']);
+            $stt = 0;
+
             foreach ($department['fax'] as $num) {
-                $icons['fax']['title'] = $nv_Lang->getModule('fax');
-                $icons['fax']['value'] = $num[0];
+                $icons['fax'][$stt]['type'] = 'fax';
+                $icons['fax'][$stt]['title'] = $nv_Lang->getModule('fax');
+                $icons['fax'][$stt]['value'] = $num[0];
                 if (count($num) == 2) {
-                    $icons['fax']['link'] = 'tel:' . $num[1];
+                    $icons['fax'][$stt]['link'] = 'tel:' . $num[1];
                 }
-                break;
+
+                $stt++;
+                if ($limit > 0 and $stt >= $limit) {
+                    break;
+                }
             }
         }
+
+        // Email
         if (in_array('email', $block_config['shows'], true) and !empty($department['email'])) {
+            $stt = 0;
+            $limit = $block_config['limit_shows']['email'];
             $emails = array_map('trim', explode(',', $department['email']));
-            if (!empty($emails)) {
-                $icons['email']['title'] = $nv_Lang->getModule('email');
-                $icons['email']['value'] = $emails[0];
-                $icons['email']['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=contact&amp;' . NV_OP_VARIABLE . '=' . $department['alias'];
+
+            foreach ($emails as $email) {
+                if (empty($email)) {
+                    continue;
+                }
+                $icons['email'][$stt]['type'] = 'email';
+                $icons['email'][$stt]['title'] = $nv_Lang->getModule('email');
+                $icons['email'][$stt]['value'] = $email;
+                $icons['email'][$stt]['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=contact&amp;' . NV_OP_VARIABLE . '=' . $department['alias'];
+
+                $stt++;
+                if ($limit > 0 and $stt >= $limit) {
+                    break;
+                }
             }
         }
+
+        // Liên hệ khác
         if (in_array('other', $block_config['shows'], true) and !empty($department['others'])) {
             $others = json_decode($department['others'], true);
-            $num = 0;
             if (!empty($others)) {
-                foreach ($others as $key => $value) {
-                    if (!empty($value)) {
-                        $accepted = false;
-                        $key = nv_strtolower($key);
+                $limit = $block_config['limit_shows']['other'];
+                $stt = 0;
 
-                        if (strtolower($key) == 'skype') {
-                            $ss = array_map('trim', explode(',', $value));
-                            $icons[$key]['value'] = $ss[0];
-                            $icons[$key]['link'] = 'skype:' . $ss[0] . '?call';
-                            $accepted = true;
-                        } elseif (strtolower($key) == 'viber') {
-                            $ss = array_map('trim', explode(',', $value));
-                            $icons[$key]['value'] = $ss[0];
-                            $icons[$key]['link'] = 'viber://pa?chatURI=' . $ss[0];
-                            $accepted = true;
-                        } elseif (strtolower($key) == 'whatsapp') {
-                            $ss = array_map('trim', explode(',', $value));
-                            $icons[$key]['value'] = $ss[0];
-                            $icons[$key]['link'] = 'https://wa.me/' . $ss[0];
-                            $accepted = true;
-                        } elseif (strtolower($key) == 'zalo') {
-                            $ss = array_map('trim', explode(',', $value));
-                            $icons[$key]['value'] = $ss[0];
-                            $icons[$key]['link'] = 'https://zalo.me/' . $ss[0];
-                            $accepted = true;
-                        } else {
-                            $icons[$key] = $value;
-                            $accepted = true;
+                foreach ($others as $key => $value) {
+                    if (empty($value)) {
+                        continue;
+                    }
+                    $key = nv_strtolower($key);
+
+                    if (strtolower($key) == 'skype') {
+                        $ss = array_map('trim', explode(',', $value));
+                        foreach ($ss as $s) {
+                            if (empty($s)) {
+                                continue;
+                            }
+                            $icons['other'][$key][$stt]['type'] = $key;
+                            $icons['other'][$key][$stt]['title'] = nv_ucfirst($key);
+                            $icons['other'][$key][$stt]['value'] = $s;
+                            $icons['other'][$key][$stt]['link'] = 'skype:' . $s . '?chat';
+                            $stt++;
+                            if ($limit > 0 and $stt >= $limit) {
+                                break;
+                            }
                         }
-                        if ($accepted) {
-                            $num++;
-                            $icons[$key]['title'] = nv_ucfirst($key);
+                        continue;
+                    }
+
+                    if (strtolower($key) == 'viber') {
+                        $ss = array_map('trim', explode(',', $value));
+                        foreach ($ss as $s) {
+                            if (empty($s)) {
+                                continue;
+                            }
+                            $icons['other'][$key][$stt]['type'] = $key;
+                            $icons['other'][$key][$stt]['title'] = nv_ucfirst($key);
+                            $icons['other'][$key][$stt]['value'] = $s;
+                            $icons['other'][$key][$stt]['link'] = 'viber://pa?chatURI=' . $s;
+                            $stt++;
+                            if ($limit > 0 and $stt >= $limit) {
+                                break;
+                            }
                         }
-                        if ($num >= $block_config['other_limit']) {
-                            break;
+                        continue;
+                    }
+
+                    if (strtolower($key) == 'whatsapp') {
+                        $ss = array_map('trim', explode(',', $value));
+                        foreach ($ss as $s) {
+                            if (empty($s)) {
+                                continue;
+                            }
+                            $icons['other'][$key][$stt]['type'] = $key;
+                            $icons['other'][$key][$stt]['title'] = nv_ucfirst($key);
+                            $icons['other'][$key][$stt]['value'] = $s;
+                            $icons['other'][$key][$stt]['link'] = 'https://wa.me/' . $s;
+                            $stt++;
+                            if ($limit > 0 and $stt >= $limit) {
+                                break;
+                            }
                         }
+                        continue;
+                    }
+
+                    if (strtolower($key) == 'zalo') {
+                        $ss = array_map('trim', explode(',', $value));
+                        foreach ($ss as $s) {
+                            if (empty($s)) {
+                                continue;
+                            }
+                            $icons['other'][$key][$stt]['type'] = $key;
+                            $icons['other'][$key][$stt]['title'] = nv_ucfirst($key);
+                            $icons['other'][$key][$stt]['value'] = $s;
+                            $icons['other'][$key][$stt]['link'] = 'https://zalo.me/' . $s;
+                            $stt++;
+                            if ($limit > 0 and $stt >= $limit) {
+                                break;
+                            }
+                        }
+                        continue;
+                    }
+
+                    $icons['other'][$key][$stt]['type'] = $key;
+                    $icons['other'][$key][$stt]['title'] = nv_ucfirst($key);
+                    $icons['other'][$key][$stt]['value'] = $value;
+
+                    $stt++;
+                    if ($limit > 0 and $stt >= $limit) {
+                        break;
                     }
                 }
             }
@@ -169,10 +261,29 @@ if (!nv_function_exists('nv_contact_default_info')) {
         if (empty($icons)) {
             return '';
         }
-        $tpl->assign('ICONS', $icons);
+        // Sắp xếp
+        $order_shows = $block_config['order_shows'];
+        uksort($icons, function ($a, $b) use ($order_shows) {
+            $orderA = $order_shows[$a] ?? PHP_INT_MAX;
+            $orderB = $order_shows[$b] ?? PHP_INT_MAX;
+            return $orderA - $orderB;
+        });
+        $array_icons = [];
+        foreach ($icons as $key => $values) {
+            if ($key == 'other') {
+                foreach ($values as $value) {
+                    $array_icons = array_merge($array_icons, $value);
+                }
+            } else {
+                $array_icons = array_merge($array_icons, $values);
+            }
+        }
+        unset($icons);
 
+        $tpl->assign('ICONS', $array_icons);
+        $content = $tpl->fetch('block.contact_default.tpl');
         $nv_Lang->changeLang();
-        return $tpl->fetch('block.contact_default.tpl');
+        return $content;
     }
 }
 

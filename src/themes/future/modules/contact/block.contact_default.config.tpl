@@ -9,23 +9,29 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium pt-0">{$LANG->getModule('properties_show')}:</div>
-    <div class="col-sm-8">
-        {foreach from=$SHOWS key=key item=title}
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="config_shows[]" value="{$key}" id="config_show_{$key}"{if in_array($key, $CONFIG.shows)} checked{/if}>
-            <label class="form-check-label" for="config_show_{$key}">
-                {$title}
-            </label>
-        </div>
-        {/foreach}
-    </div>
-</div>
-<div class="row mb-3">
-    <label for="config_other_limit" class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">{$LANG->getModule('number_others')}:</label>
+    <div class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">{$LANG->getModule('properties_show')}:</div>
     <div class="col-sm-9">
-        <input type="number" min="0" name="config_other_limit" id="config_other_limit" class="form-control w-auto mw-100" value="{$CONFIG.other_limit}">
-        <div class="form-text">{$LANG->getModule('number_others_help')}</div>
+        <div class="vstack gap-2">
+            {foreach from=$SHOWS key=key item=title}
+            <div class="row g-3 align-items-center">
+                <div class="col-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="config_shows[]" value="{$key}" id="config_show_{$key}"{if in_array($key, $CONFIG.shows)} checked{/if}>
+                        <label class="form-check-label" for="config_show_{$key}">
+                            {$title}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <input type="number" min="0" name="config_{$key}_order" id="config_{$key}_order" class="form-control w-auto mw-100" value="{$CONFIG.order_shows[$key] ?? 1}">
+                </div>
+                <div class="col-4">
+                    <input type="number" min="0" name="config_{$key}_limit" id="config_{$key}_limit" class="form-control w-auto mw-100" value="{$CONFIG.limit_shows[$key] ?? 1}">
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="form-text">{$LANG->getModule('properties_show_note')}</div>
     </div>
 </div>
 <div class="row mb-3">

@@ -7,8 +7,24 @@
     },
     "config": {
         "departmentid": 1,
-        "shows": "phone,email",
-        "other_limit": 2,
+        "shows": [
+            "phone",
+            "fax",
+            "email",
+            "other"
+        ],
+        "order_shows": {
+            "phone": 1,
+            "fax": 4,
+            "email": 2,
+            "other": 3
+        },
+        "limit_shows": {
+            "phone": 1,
+            "fax": 0,
+            "email": 1,
+            "other": 0
+        },
         "show_clock": 1
     },
     "datafunction": "nv_block_config_contact_default",

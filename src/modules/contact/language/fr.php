@@ -187,3 +187,7 @@ $lang_module['mail_language'] = 'Langue du courrier';
 $lang_module['admin_content'] = 'Informations';
 $lang_module['admin_error_content'] = 'Erreur: manque de contenu';
 $lang_module['admin_error_title'] = 'Erreur: manque de titre';
+$lang_module['pick_department'] = 'Choisir le département';
+$lang_module['properties_show'] = 'Afficher, ordre, limite';
+$lang_module['properties_show_note'] = 'Entrez 0 pour illimité';
+$lang_module['show_clock'] = 'Afficher l\'horloge';

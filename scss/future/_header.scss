@@ -149,8 +149,8 @@
   @include media-breakpoint-up($theme-layout-breakpoint) {
     border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 
-    .start-topbar li,
-    .end-topbar li,
+    .start-topbar ul:not(.dropdown-menu)>li,
+    .end-topbar ul:not(.dropdown-menu)>li,
     .topbar-inform {
       padding-top: calc(($header-height - $font-size-base * $line-height-base) / 2);
       padding-bottom: calc(($header-height - $font-size-base * $line-height-base) / 2);
@@ -174,7 +174,7 @@
   }
 
   .contact-icons {
-    li {
+    >li {
       @include media-breakpoint-up($theme-layout-breakpoint) {
         padding-left: .375rem;
         padding-right: .375rem;
@@ -194,12 +194,14 @@
     }
 
     @include media-breakpoint-down($theme-layout-breakpoint) {
+      gap: .25rem;
+
       .digital-clock {
         display: none;
       }
     }
 
-    a {
+    a:not(.dropdown-item) {
       @extend %header-link-color;
 
       &:hover {
@@ -283,7 +285,8 @@
   .user-button {
     display: block;
     width: $header-avatar-size;
-    height: $header-avatar-size;
+    height: $header-height;
+    padding: calc(($header-height - $header-avatar-size) / 2) 0;
 
     .no-avatar {
       font-weight: $font-weight-medium;

@@ -187,3 +187,7 @@ $lang_module['mail_language'] = 'Language of the mail';
 $lang_module['admin_content'] = 'Content';
 $lang_module['admin_error_content'] = 'Error: Empty content';
 $lang_module['admin_error_title'] = 'Error: Empty title';
+$lang_module['pick_department'] = 'Pick department';
+$lang_module['properties_show'] = 'Display, order, limit';
+$lang_module['properties_show_note'] = 'Enter 0 for unlimited';
+$lang_module['show_clock'] = 'Display clock';
