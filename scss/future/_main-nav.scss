@@ -146,6 +146,8 @@ $max-depth: 20;
       gap: 0.25rem;
       min-width: 0; // Fix elipsis issue
       @include media-breakpoint-down($theme-layout-breakpoint) {
+        flex-grow: 1;
+
         &:not(:hover) {
           color: var(--#{$prefix}body-color);
         }
@@ -155,6 +157,17 @@ $max-depth: 20;
           padding-bottom: .5rem;
           word-wrap: break-word;
           word-break: break-word;
+        }
+      }
+
+      .item-icon {
+        flex: 0 0 $main-nav-icon-min-width;
+
+        img {
+          max-width: $main-nav-icon-min-width;
+          max-height: $main-nav-height;
+          object-fit: contain;
+          height: auto;
         }
       }
     }

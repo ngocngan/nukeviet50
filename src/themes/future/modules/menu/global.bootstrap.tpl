@@ -6,7 +6,11 @@
 <li data-toggle="item-lev-{$lev}"{if not empty($mClasses)} class="{$mClasses|join:' '}"{/if}>
     <div class="menu-item{if not empty($menu.sub)} has-submenu{/if}">
         <a class="item-link" href="{$menu.link}"{$menu.target} title="{$menu.note}" aria-label="{$menu.note}">
-            <span class="item-icon d-none"><i class="fa-solid fa-house"></i></span>
+            {if not empty($menu.icon) and not empty($CONFIG.show_icon)}
+            <span class="item-icon">
+                <img src="{$menu.icon}" alt="{$menu.title}">
+            </span>
+            {/if}
             <span class="item-name">{$menu.title_trim}</span>
         </a>
         {if not empty($menu.sub)}

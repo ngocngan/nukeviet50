@@ -26458,6 +26458,16 @@ readers do not read off random characters that represent icons */
   gap: 0.25rem;
   min-width: 0;
 }
+.main-nav .menu-item .item-link .item-icon {
+  flex: 0 0 1.25rem;
+}
+.main-nav .menu-item .item-link .item-icon img {
+  max-width: 1.25rem;
+  max-height: 3.125rem;
+  -o-object-fit: contain;
+  object-fit: contain;
+  height: auto;
+}
 .main-nav > ul {
   display: flex;
   align-items: center;
