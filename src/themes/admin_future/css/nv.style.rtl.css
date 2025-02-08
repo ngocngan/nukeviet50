@@ -28206,7 +28206,7 @@ span.flatpickr-weekday {
 }
 
 .alert-box.modal {
-  --prefixmodal-zindex: 1061;
+  --bs-modal-zindex: 1061;
 }
 
 .main-content .apexcharts-canvas text {
