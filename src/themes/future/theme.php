@@ -13,6 +13,8 @@ if (!defined('NV_SYSTEM') or !defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
+use NukeViet\Template\Config;
+
 $theme_config = [
     'pagination' => [
         // Nếu dùng bootstrap 3: 'pagination'
@@ -59,6 +61,7 @@ function nv_site_theme($contents, $full = true)
     $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/layout');
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('GCONFIG', $global_config);
+    $tpl->assign('TCONFIG', Config::class);
     $tpl->assign('THEME_PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('CLIENT_INFO', $client_info);
     $tpl->assign('OUTDATED_BROWSER', nv_outdated_browser());
@@ -118,16 +121,24 @@ function nv_site_theme($contents, $full = true)
      * Links
      */
     $html_links = [];
-    if ($global_config['current_theme_type'] == 'r') {
-        $html_links[] = [
-            'rel' => 'stylesheet',
-            'href' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/css/style.responsive.css'
-        ];
-    } else {
-        $html_links[] = [
-            'rel' => 'stylesheet',
-            'href' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/css/style.non-responsive.css'
-        ];
+    $styles = Config::isRtl()
+    ? array_merge(
+        $global_config['current_theme_type'] != 'r' ? ['style.non-responsive.rtl.css'] : [],
+        ['style.responsive.rtl.css', 'nv.style.rtl.css', 'style.rtl.css']
+    )
+    : [];
+    if ($global_config['current_theme_type'] != 'r') {
+        $styles[] = 'style.non-responsive.css';
+    }
+    $styles = array_merge($styles, ['style.responsive.css', 'nv.style.css', 'style.css']);
+    foreach ($styles as $style) {
+        if (theme_file_exists($global_config['module_theme'] . '/css/' . $style)) {
+            $html_links[] = [
+                'rel' => 'stylesheet',
+                'href' => NV_STATIC_URL . 'themes/' . $global_config['module_theme'] . '/css/' . $style
+            ];
+            break;
+        }
     }
     $html_links = array_merge_recursive($html_links, nv_html_links(false));
 

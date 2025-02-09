@@ -120,7 +120,11 @@ $(function() {
 
             // Bố trí lại vị trí các submenu
             $('[data-toggle="submenu"]', menu).each(function() {
-                if (this.getBoundingClientRect().right > document.documentElement.clientWidth) {
+                if (document.documentElement.dir === 'rtl') {
+                    if (this.getBoundingClientRect().left < 0) {
+                        $(this).addClass('submenu-end');
+                    }
+                } else if (this.getBoundingClientRect().right > document.documentElement.clientWidth) {
                     $(this).addClass('submenu-end');
                 }
             });
@@ -156,6 +160,7 @@ $(function() {
                 }, 1);
                 setTimeout(() => {
                     pMenu.removeClass('closing open');
+                    sMenu[0].style.height = null;
                 }, 150);
                 return;
             }

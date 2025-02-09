@@ -32,14 +32,15 @@ $enable-rfs: false;
 // vì thế min-width (width >=) luôn trả về true => luôn return content với mọi breakpoint
 //        max-width (width <=) luôn trả về false => hủy content trong nó. Trường hợp $breakpoint value = 0 thì trả về content
 @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
-    @content;
+  @content;
 }
 
 @mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
-    $max: breakpoint-max($name, $breakpoints);
-    @if not $max {
-        @content;
-    }
+  $max: breakpoint-max($name, $breakpoints);
+
+  @if not $max {
+    @content;
+  }
 }
 
 @import "../../node_modules/bootstrap/scss/utilities";
@@ -86,32 +87,33 @@ $enable-rfs: false;
 
 // NukeViet override container: Cố định chiều rộng các container
 @if $enable-container-classes {
-    @each $breakpoint, $container-max-width in $container-max-widths {
-        .container-#{$breakpoint} {
-            @extend .container-fluid;
-        }
-
-        @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
-            %responsive-container-#{$breakpoint} {
-                width: $container-max-width;
-            }
-
-            $extend-breakpoint: true;
-
-            @each $name, $width in $grid-breakpoints {
-                @if ($extend-breakpoint) {
-                    .container#{breakpoint-infix($name, $grid-breakpoints)} {
-                        @extend %responsive-container-#{$breakpoint};
-                    }
-
-                    @if ($breakpoint == $name) {
-                        $extend-breakpoint: false;
-                    }
-                }
-            }
-        }
+  @each $breakpoint, $container-max-width in $container-max-widths {
+    .container-#{$breakpoint} {
+      @extend .container-fluid;
     }
+
+    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+      %responsive-container-#{$breakpoint} {
+        width: $container-max-width;
+      }
+
+      $extend-breakpoint: true;
+
+      @each $name, $width in $grid-breakpoints {
+        @if ($extend-breakpoint) {
+          .container#{breakpoint-infix($name, $grid-breakpoints)} {
+            @extend %responsive-container-#{$breakpoint};
+          }
+
+          @if ($breakpoint ==$name) {
+            $extend-breakpoint: false;
+          }
+        }
+      }
+    }
+  }
 }
+
 // END: bootstrap
 
 @import "style_footer";

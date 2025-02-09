@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{$LANG->getGlobal('Content_Language')}" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#" data-theme="{$COLOR_MODE}" data-bs-theme="{$COLOR_MODE}" dir="ltr">
+<html lang="{$LANG->getGlobal('Content_Language')}" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#" data-theme="{$COLOR_MODE}" data-bs-theme="{$COLOR_MODE}" dir="{$TCONFIG::isRtl() ? 'rtl' : 'ltr'}">
 
 <head>
     <title>{$THEME_PAGE_TITLE}</title>

@@ -1,62 +1,70 @@
+// Giao diện desktop đưa kích thước nhỏ nhất của site về kích thước lớn nhất của container
+@include non-responsive() {
+  html,
+  body {
+    min-width: map-get($container-max-widths, xxl);
+  }
+}
+
 // Thông báo thu thập cookie
 .cookie-notice {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    width: 22rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 22rem;
 
-    @include responsive() {
-        max-width: calc(100vw - 2rem);
-    }
+  @include responsive() {
+    max-width: calc(100vw - 2rem);
+  }
 
-    z-index: $zindex-cookie-notice;
-    background-color: var(--#{$prefix}secondary-bg);
-    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-    border-radius: var(--#{$prefix}border-radius);
-    box-shadow: var(--#{$prefix}box-shadow);
-    padding: 1rem;
+  z-index: $zindex-cookie-notice;
+  background-color: var(--#{$prefix}secondary-bg);
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-radius: var(--#{$prefix}border-radius);
+  box-shadow: var(--#{$prefix}box-shadow);
+  padding: 1rem;
 
-    .btn-close {
-        float: right;
-        margin-left: .5rem;
-        margin-bottom: .5rem;
-    }
+  .btn-close {
+    float: right;
+    margin-left: .5rem;
+    margin-bottom: .5rem;
+  }
 }
 
 // Thông báo phiên đăng nhập hết hạn
 .timeoutsess {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: $zindex-timeoutsess;
-    display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: $zindex-timeoutsess;
+  display: none;
 }
 
 // Width in px
 @for $i from 1 through 20 {
-    .fw-#{$i * 25} {
-        width: #{$i * 25}px!important;
-    }
+  .fw-#{$i * 25} {
+    width: #{$i * 25}px !important;
+  }
 
-    .maxw-#{$i * 25} {
-        max-width: #{$i * 25}px!important;
-    }
+  .maxw-#{$i * 25} {
+    max-width: #{$i * 25}px !important;
+  }
 
-    .maxh-#{$i * 25} {
-        max-height: #{$i * 25}px!important;
-    }
+  .maxh-#{$i * 25} {
+    max-height: #{$i * 25}px !important;
+  }
 }
 
 // Block ellipsis: Chú ý class này chỉ dùng khi không thiết lập font-size, line-height mà dùng mặc định của body
 @for $i from 2 through 4 {
-    .text-truncate-#{$i} {
-        max-height: calc($font-size-base * $line-height-base * $i);
-        -webkit-line-clamp: #{$i};
-        line-clamp: #{$i};
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-    }
+  .text-truncate-#{$i} {
+    max-height: calc($font-size-base * $line-height-base * $i);
+    -webkit-line-clamp: #{$i};
+    line-clamp: #{$i};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
 }
