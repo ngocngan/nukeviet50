@@ -346,6 +346,7 @@ $lang_global['company_phone'] = 'Téléphone';
 $lang_global['company_fax'] = 'Fax';
 $lang_global['company_email'] = 'Adresse mail';
 $lang_global['company_website'] = 'Site Web';
+$lang_global['company_map'] = 'Carte';
 $lang_global['siteterms'] = 'Condition d\'utilisation';
 $lang_global['siteterms_url'] = 'Lien au Conditions d\'utilisation';
 $lang_global['copyright_by'] = 'Droit d\'auteur est à';

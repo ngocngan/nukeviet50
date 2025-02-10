@@ -234,4 +234,11 @@ $(function() {
             mainNavToggler.trigger('click');
         }
     });
+
+    // Google map
+    $('.company-map-modal').on('show.bs.modal', function() {
+        if (!$('iframe', this).length) {
+            $('.modal-body', this).html('<iframe class="w-100 fh-300" frameborder="0" src="' + $(this).data('src') +'" allowfullscreen></iframe>')
+        }
+    });
 });

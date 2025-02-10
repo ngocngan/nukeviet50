@@ -65,11 +65,12 @@ if (!nv_function_exists('nv_company_info')) {
     {
         global $global_config, $nv_Lang;
 
+        // JSON-LD LocalBusiness
         $ld_json = [
             '@context' => 'http://schema.org',
             '@type' => 'LocalBusiness',
             'priceRange' => 'N/A',
-            'image' => NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo'],
+            'image' => [NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo']],
         ];
         !empty($block_config['company_name']) && $ld_json['name'] = $block_config['company_name'];
         !empty($block_config['company_sortname']) && $ld_json['alternateName'] = $block_config['company_sortname'];
@@ -83,9 +84,14 @@ if (!nv_function_exists('nv_company_info')) {
             $ld_json['address'] = [
                 '@type' => 'PostalAddress',
                 'addressLocality' => $block_config['company_address'],
+                'postalCode' => 'N/A',
+                'streetAddress' => 'N/A',
+                'addressCountry' => NV_LANG_DATA
             ];
         }
-        //!empty($block_config['company_phone']) && $ld_json['telephone'] = $block_config['company_phone'];
+        if (!empty($block_config['company_showmap']) && !empty($block_config['company_mapurl'])) {
+            $ld_json['hasMap'] = $block_config['company_mapurl'];
+        }
 
         $company_regcode = '';
         if (!empty($block_config['company_regcode'])) {
@@ -109,12 +115,19 @@ if (!nv_function_exists('nv_company_info')) {
             return $url;
         }, $block_config['company_website']);
 
-        $stpl = new \NukeViet\Template\NVSmarty();
-        $stpl->setTemplateDir($block_config['real_path']);
-        $stpl->assign('LANG', $nv_Lang);
-        $stpl->assign('SITE_LOGO', NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo']);
-        $stpl->assign('DATA', $block_config);
-        return $stpl->fetch('global.company_info.tpl');
+        if (!empty($block_config['company_phone'])) {
+            $ld_json['telephone'] = $block_config['company_phone'][0][1] ?? $block_config['company_phone'][0][0];
+        }
+        !empty($block_config['company_email']) && $ld_json['email'] = $block_config['company_email'][0];
+        !empty($block_config['company_website']) && $ld_json['url'] = $block_config['company_website'][0];
+        !empty($block_config['company_fax']) && $ld_json['faxNumber'] = $block_config['company_fax'];
+
+        $tpl = new \NukeViet\Template\NVSmarty();
+        $tpl->setTemplateDir($block_config['real_path']);
+        $tpl->assign('LANG', $nv_Lang);
+        $tpl->assign('DATA', $block_config);
+        $tpl->assign('LD_JSON', json_encode($ld_json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        return $tpl->fetch('global.company_info.tpl');
     }
 }
 
