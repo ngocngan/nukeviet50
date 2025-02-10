@@ -116,6 +116,10 @@ $footer-columns: (
   center: 35%,
   end: 25%
 );
+$footer-bg: $gray-800;
+$footer-bg-emphasis: $gray-900;
+$footer-link-color: #b0c4de;
+$footer-link-color-hover: #d7e3fc;
 
 // Z-index
 $zindex-cookie-notice: 500;

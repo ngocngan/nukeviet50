@@ -10,3 +10,23 @@
     }
   }
 }
+
+.site-footer {
+  color: var(--nv-footer-color);
+
+  a {
+    color: var(--nv-footer-link-color);
+
+    &:hover {
+      color: var(--nv-footer-link-color-hover);
+    }
+  }
+}
+
+.footer-top {
+  background-color: var(--nv-footer-bg);
+}
+
+.footer-bar {
+  background-color: var(--nv-footer-emphasis);
+}

@@ -1,6 +1,14 @@
+:root {
+  --nv-footer-link-color: #{$footer-link-color};
+  --nv-footer-link-color-hover: #{$footer-link-color-hover};
+}
+
 :root,
 [data-#{$prefix}theme="light"] {
   --nv-header-link-color: #{$header-link-color};
+  --nv-footer-bg: #{$footer-bg};
+  --nv-footer-emphasis: #{$footer-bg-emphasis};
+  --nv-footer-color: #{color-contrast($footer-bg)};
 
   @each $key, $value in $contact-icons-light {
     --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
@@ -10,6 +18,9 @@
 @if $enable-dark-mode {
   [data-#{$prefix}theme="dark"] {
     --nv-header-link-color: #{$header-link-color-dark};
+    --nv-footer-bg: #{$footer-bg-dark};
+    --nv-footer-emphasis: #{$footer-bg-emphasis-dark};
+    --nv-footer-color: #{color-contrast($footer-bg-dark)};
 
     @each $key, $value in $contact-icons-dark {
       --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
