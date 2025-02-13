@@ -191,9 +191,13 @@ function loginForm(redirect) {
         url: url,
         cache: !1,
         data: '&nv_ajax=1',
-        dataType: "html"
-    }).done(function(a) {
-        modalShow('', a, 'recaptchareset')
+        dataType: "json"
+    }).done(function(res) {
+        if (res.sso) {
+            window.location.href = res.sso;
+            return !1;
+        }
+        modalShow('', res.html, 'recaptchareset');
     });
     return !1
 }
@@ -703,16 +707,7 @@ $(function() {
                 if (event.origin !== ssoDomain) {
                     return false;
                 }
-                if (
-                    event.data !== null && typeof event.data == 'object' && event.data.code == 'oauthback' &&
-                    typeof event.data.redirect != 'undefined' && typeof event.data.status != 'undefined' && typeof event.data.mess != 'undefined'
-                ) {
-                    $('#openidResult').data('redirect', event.data.redirect);
-                    $('#openidResult').data('result', event.data.status);
-                    $('#openidResult').html(event.data.mess + (event.data.status == 'success' ? ' <span class="load-bar"></span>' : ''));
-                    $('#openidResult').addClass('nv-info ' + event.data.status);
-                    $('#openidBt').trigger('click');
-                } else if (event.data == 'nv.reload') {
+                if (event.data == 'nv.reload') {
                     location.reload();
                 }
             }, false);
