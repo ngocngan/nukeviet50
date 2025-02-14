@@ -1,5 +1,5 @@
-<div class="card">
-    <div class="card-header fs-5 fw-medium">
+<section class="nv-block nv-block-simple">
+    <div class="block-heading">
         {if not empty($BLOCK.title)}
         {assign var="openTag" value='<div class="block-title">'}
         {assign var="closeTag" value="</div>"}
@@ -10,7 +10,7 @@
         {$openTag}{if not empty($BLOCK.link)}<a href="{$BLOCK.link}">{$BLOCK.title}</a>{else}{$BLOCK.title}{/if}{$closeTag}
         {/if}
     </div>
-    <div class="card-body">
+    <div class="block-body">
         {$CONTENT}
     </div>
-</div>
+</section>

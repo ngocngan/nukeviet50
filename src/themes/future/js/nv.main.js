@@ -241,4 +241,27 @@ $(function() {
             $('.modal-body', this).html('<iframe class="w-100 fh-300" frameborder="0" src="' + $(this).data('src') +'" allowfullscreen></iframe>')
         }
     });
+
+    // QR-code
+    $('[data-toggle="siteQrCode"').on('show.bs.dropdown', function(e) {
+        const btn = $(e.target);
+        const ctn = btn.closest('.dropup');
+        if (btn.data('load') != 'no') {
+            return;
+        }
+        btn.data('load', 'loading');
+        const img = new Image;
+        $(img).on('load', function() {
+            $('img', ctn).attr('src', img.src);
+            $('.loader', ctn).addClass('d-none');
+            btn.data('load', 'yes');
+        });
+        img.src = nv_base_siteurl + "index.php?second=qr&u=" + encodeURIComponent($(btn).data("url"));
+    });
+
+    // Đổi kiểu giao diện
+    $('[data-toggle="siteThemeModeChange"]').on('click', function(e) {
+        e.preventDefault();
+        window.location.href = $(this).data('type');
+    });
 });

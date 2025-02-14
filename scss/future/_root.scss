@@ -1,6 +1,6 @@
 :root {
   --nv-footer-link-color: #{$footer-link-color};
-  --nv-footer-link-color-hover: #{$footer-link-color-hover};
+  --nv-footer-link-color-hover: #{color-contrast($footer-bg)};
 }
 
 :root,

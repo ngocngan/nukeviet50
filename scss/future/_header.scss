@@ -212,7 +212,7 @@
 
   .socal-icons {
     @include media-breakpoint-down($theme-layout-breakpoint) {
-      font-size: $h1-font-size;
+      @include font-size($h1-font-size);
     }
 
     a {

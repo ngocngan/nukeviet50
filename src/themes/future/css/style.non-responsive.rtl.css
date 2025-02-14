@@ -231,23 +231,23 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 }
 
 h1, .h1 {
-  font-size: 1.875rem;
-}
-
-h2, .h2 {
-  font-size: 1.75rem;
-}
-
-h3, .h3 {
   font-size: 1.625rem;
 }
 
-h4, .h4 {
+h2, .h2 {
   font-size: 1.5rem;
 }
 
-h5, .h5 {
+h3, .h3 {
+  font-size: 1.375rem;
+}
+
+h4, .h4 {
   font-size: 1.25rem;
+}
+
+h5, .h5 {
+  font-size: 1.125rem;
 }
 
 h6, .h6 {
@@ -8004,23 +8004,23 @@ textarea.form-control-lg {
 }
 
 .fs-1 {
-  font-size: 1.875rem !important;
-}
-
-.fs-2 {
-  font-size: 1.75rem !important;
-}
-
-.fs-3 {
   font-size: 1.625rem !important;
 }
 
-.fs-4 {
+.fs-2 {
   font-size: 1.5rem !important;
 }
 
-.fs-5 {
+.fs-3 {
+  font-size: 1.375rem !important;
+}
+
+.fs-4 {
   font-size: 1.25rem !important;
+}
+
+.fs-5 {
+  font-size: 1.125rem !important;
 }
 
 .fs-6 {
@@ -25840,8 +25840,8 @@ readers do not read off random characters that represent icons */
 }
 
 :root {
-  --nv-footer-link-color: #b0c4de;
-  --nv-footer-link-color-hover: #d7e3fc;
+  --nv-footer-link-color: #d7e3fc;
+  --nv-footer-link-color-hover: #fff;
 }
 
 :root,
@@ -26828,11 +26828,38 @@ body {
 .site-footer {
   color: var(--nv-footer-color);
 }
-.site-footer a {
+.site-footer a:not(.dropdown-item) {
   color: var(--nv-footer-link-color);
 }
-.site-footer a:hover {
+.site-footer a:not(.dropdown-item):hover {
   color: var(--nv-footer-link-color-hover);
+}
+.site-footer .nv-block .block-title {
+  font-size: 1.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.site-footer .socal-icons-title {
+  display: none;
+}
+.site-footer .socal-icons {
+  flex-wrap: wrap;
+}
+.site-footer .socal-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #626d75;
+  border-radius: 50%;
+  color: #fff;
+  transition: color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+.site-footer .socal-icons a:hover {
+  color: var(--hover-color);
+  background-color: #d0d3d6;
 }
 
 .footer-top {
@@ -26841,5 +26868,10 @@ body {
 
 .footer-bar {
   background-color: var(--nv-footer-emphasis);
+}
+
+.site-qrcode img {
+  width: 11.25rem;
+  height: 11.25rem;
 }
 /*# sourceMappingURL=style.non-responsive.rtl.css.map */

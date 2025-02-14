@@ -13,23 +13,34 @@
 {/if}
 <footer class="site-footer">
     <div class="footer-top">
-        <div class="container g-4 py-4">
-            <div class="row g-4">
-                <div class="footer-start">
-                    [START_FOOTER]
+        <div class="container gx-4 pt-4">
+            <div class="row gx-4">
+                <div class="footer-start mb-4">
+                    <div class="vstack vstack-blocks">
+                        [START_FOOTER]
+                    </div>
                 </div>
-                <div class="footer-center">
-                    [CENTER_FOOTER]
+                <div class="footer-center mb-4">
+                    <div class="vstack vstack-blocks">
+                        [CENTER_FOOTER]
+                    </div>
                 </div>
                 <div class="footer-end">
-                    [END_FOOTER]
+                    <div class="vstack vstack-blocks mb-4">
+                        [END_FOOTER]
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
+                        [QR_CODE]
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="footer-bar">
         <div class="container">
-            [FOOTER_COPYRIGHT]
+            <div class="vstack vstack-blocks">
+                [FOOTER_COPYRIGHT]
+            </div>
         </div>
     </div>
 </footer>
