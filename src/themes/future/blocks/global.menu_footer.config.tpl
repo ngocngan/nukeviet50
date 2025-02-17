@@ -1,5 +1,5 @@
 <div class="row mb-3">
-    <label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">{$LANG->getModule('module_in_menu')}:</label>
+    <label class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium" title="{$LANG->getModule('module_in_menu')}">{$LANG->getModule('module_in_menu')}:</label>
     <div class="col-sm-9">
         <div class="row g-2">
             {foreach from=$SITE_MODS key=modname item=modvalues}

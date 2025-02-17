@@ -15,8 +15,6 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_menu_theme_social_btns')) {
     /**
-     * nv_menu_theme_social_btns_config()
-     *
      * @param string $module
      * @param array  $data_block
      * @return string
@@ -30,24 +28,20 @@ if (!nv_function_exists('nv_menu_theme_social_btns')) {
         $icons = array_map('trim', explode(',', $data_block['icon']));
         $colors = array_map('trim', explode(',', $data_block['color']));
 
-        $html = '<script>$((function(){$("body").on("click",".social-add",(function(){var t=$(this).parents(".social-item"),a=t.clone();$("input",a).attr("value","").val(""),t.after(a)})),$("body").on("click",".social-del",(function(){var t=$(this).parents(".social-btns"),a=$(this).parents(".social-item");$(".social-item",t).length>1?a.remove():$("input",a).attr("value","").val("")}))}));</script>';
-        $html .= '<div class="social-btns">';
-        foreach ($names as $key => $name) {
-            $html .= '<div class="row g-2 mb-3 social-item">';
-            $html .= '	<div class="col-sm-3"><div class="input-group"><button class="btn btn-secondary social-add" type="button"><i class="fa fa-plus"></i></button><button class="btn btn-secondary social-del" type="button"><i class="fa fa-times"></i></button><input type="text" name="social_name[]" class="form-control" value="' . $name . '" placeholder="' . $nv_Lang->getModule('social_name') . '"/></div></div>';
-            $html .= '	<div class="col-sm-5"><div><input type="text" name="social_url[]" class="form-control" value="' . $urls[$key] . '" placeholder="' . $nv_Lang->getModule('social_url') . '"/></div></div>';
-            $html .= '	<div class="col-sm-2"><div><input type="text" name="social_icon[]" class="form-control" value="' . $icons[$key] . '" placeholder="' . $nv_Lang->getModule('social_icon') . '"/></div></div>';
-            $html .= '	<div class="col-sm-2"><div class="input-group"><span class="input-group-text">#</span><input type="text" name="social_color[]" class="form-control" value="' . $colors[$key] . '" placeholder="' . $nv_Lang->getModule('social_color') . '"/></div></div>';
-            $html .= '</div>';
-        }
-        $html .= '</div>';
+        $tpl = new \NukeViet\Template\NVSmarty();
+        $tpl->setTemplateDir(__DIR__);
+        $tpl->assign('LANG', $nv_Lang);
+        $tpl->assign('CONFIG', $data_block);
 
-        return $html;
+        $tpl->assign('NAMES', $names);
+        $tpl->assign('URLS', $urls);
+        $tpl->assign('ICONS', $icons);
+        $tpl->assign('COLORS', $colors);
+
+        return $tpl->fetch('global.social_btns.config.tpl');
     }
 
     /**
-     * nv_menu_theme_social_btns_submit()
-     *
      * @param string $module
      * @return array
      */
@@ -86,8 +80,6 @@ if (!nv_function_exists('nv_menu_theme_social_btns')) {
     }
 
     /**
-     * nv_menu_theme_social_btns()
-     *
      * @param array $block_config
      * @return string
      */
