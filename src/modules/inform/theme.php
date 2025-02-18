@@ -50,6 +50,13 @@ function user_getlist_theme($items, $generate_page, $filter, $page_url)
 {
     global $global_config, $nv_Lang, $module_info;
 
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(get_module_tpl_dir('list.tpl'));
+    $tpl->assign('LANG', $nv_Lang);
+
+    return $tpl->fetch('list.tpl');
+
+
     $xtpl = new XTemplate('main.tpl', get_module_tpl_dir('main.tpl'));
     $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
     $xtpl->assign('GLANG', \NukeViet\Core\Language::$lang_global);

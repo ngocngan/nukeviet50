@@ -1,5 +1,5 @@
 <div class="row mb-3">
-    <label for="config_idplanbanner" class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium">{$LANG->getModule('idplanbanner')}:</label>
+    <label for="config_idplanbanner" class="col-sm-3 col-form-label text-sm-end text-truncate fw-medium" title="{$LANG->getModule('idplanbanner')}">{$LANG->getModule('idplanbanner')}:</label>
     <div class="col-sm-9">
         <select name="config_idplanbanner" id="config_idplanbanner" class="form-select">
             <option value="0">{$LANG->getModule('idplanbanner')}</option>

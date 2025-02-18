@@ -1,0 +1,32 @@
+.site-user-inform {
+  .inform-box {
+    width: 21.875rem;
+
+    .inform-header {
+      padding-bottom: $dropdown-padding-y;
+    }
+
+    .inform-content {
+      position: relative;
+      max-height: calc(100vh - 150px);
+      min-height: 100px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .inform-footer {
+      padding-top: $dropdown-padding-y;
+
+      a {
+        border: 1px solid transparent;
+        line-height: 1;
+        transition: border-color .15s ease-in-out;
+        padding: .25rem .5rem;
+
+        &:hover {
+          border: 1px solid var(--#{$prefix}border-color);
+        }
+      }
+    }
+  }
+}

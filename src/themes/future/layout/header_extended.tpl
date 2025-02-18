@@ -39,20 +39,7 @@
                         </div>
                         {/if}
                         <div class="user-area d-flex gap-2 align-items-center" data-toggle="site-user-area">
-                            <div class="dropdown site-user-inform">
-                                <a class="inform-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="40,0" aria-expanded="false">
-                                    <i class="fa-solid fa-bell fa-lg"></i>
-                                    <span class="counter badge rounded-pill bg-danger">
-                                        99+
-                                        <span class="visually-hidden">unread messages</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </div>
+                            [USER_BUTTON]
                             <div class="site-user-button dropdown">
                                 <button type="button" class="d-none btn btn-primary btn-sm text-nowrap">Đăng nhập</button>
                                 <a class="user-button" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="8,0" aria-expanded="false">

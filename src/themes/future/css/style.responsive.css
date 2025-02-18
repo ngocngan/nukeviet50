@@ -26617,4 +26617,49 @@ readers do not read off random characters that represent icons */
   height: 11.25rem;
 }
 
+[data-bs-theme=dark] .ps .ps__rail-x:hover,
+[data-bs-theme=dark] .ps .ps__rail-y:hover,
+[data-bs-theme=dark] .ps .ps__rail-x:focus,
+[data-bs-theme=dark] .ps .ps__rail-y:focus,
+[data-bs-theme=dark] .ps .ps__rail-x.ps--clicking,
+[data-bs-theme=dark] .ps .ps__rail-y.ps--clicking {
+  background-color: #4e5a63;
+}
+[data-bs-theme=dark] .ps__rail-x:hover > .ps__thumb-x,
+[data-bs-theme=dark] .ps__rail-x:focus > .ps__thumb-x,
+[data-bs-theme=dark] .ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #626d75;
+}
+[data-bs-theme=dark] .ps__rail-y:hover > .ps__thumb-y,
+[data-bs-theme=dark] .ps__rail-y:focus > .ps__thumb-y,
+[data-bs-theme=dark] .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #626d75;
+}
+
+.site-user-inform .inform-box {
+  width: 21.875rem;
+}
+.site-user-inform .inform-box .inform-header {
+  padding-bottom: 0.5rem;
+}
+.site-user-inform .inform-box .inform-content {
+  position: relative;
+  max-height: calc(100vh - 150px);
+  min-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.site-user-inform .inform-box .inform-footer {
+  padding-top: 0.5rem;
+}
+.site-user-inform .inform-box .inform-footer a {
+  border: 1px solid transparent;
+  line-height: 1;
+  transition: border-color 0.15s ease-in-out;
+  padding: 0.25rem 0.5rem;
+}
+.site-user-inform .inform-box .inform-footer a:hover {
+  border: 1px solid var(--bs-border-color);
+}
+
 /*# sourceMappingURL=style.responsive.css.map */

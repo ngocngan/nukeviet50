@@ -110,6 +110,20 @@ foreach ($array_sitelangs as $lang) {
             echo 'Copy: ' . $row['module_file'] . ": " . $row['file_name'] . "\n";
         }
 
+        $basename = preg_replace('/\.php$/i', '', $row['file_name']);
+        $sourceIni = NV_ROOTDIR . '/modules/' . $row['module_file'] . '/blocks/' . $basename . '.ini';
+        $sourceJson = NV_ROOTDIR . '/modules/' . $row['module_file'] . '/blocks/' . $basename . '.json';
+        $destinationIni = NV_ROOTDIR . '/themes/' . $row['theme'] . '/modules/' . $row['module_file'] . '/' . $basename . '.ini';
+        $destinationJson = NV_ROOTDIR . '/themes/' . $row['theme'] . '/modules/' . $row['module_file'] . '/' . $basename . '.json';
+        if (file_exists($sourceIni) and !file_exists($destinationIni)) {
+            copy_source_to_destination($sourceIni, $destinationIni);
+            echo 'Copy: ' . $row['module_file'] . ": " . $basename . ".ini\n";
+        }
+        if (file_exists($sourceJson) and !file_exists($destinationJson)) {
+            copy_source_to_destination($sourceJson, $destinationJson);
+            echo 'Copy: ' . $row['module_file'] . ": " . $basename . ".json\n";
+        }
+
         $array_moved[$row['module_file']][] = $row['file_name'];
     }
 

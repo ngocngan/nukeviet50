@@ -415,23 +415,6 @@ if (!empty($u_groups)) {
     $where .= " AND (mtb.sender_role != 'group')";
 }
 
-// Lấy tổng số thông báo chưa xem
-/*if (defined('NV_IS_AJAX') and $nv_Request->isset_request('getNew', 'post')) {
-    $where .= ' AND NOT EXISTS (SELECT * FROM ' . NV_INFORM_STATUS_GLOBALTABLE . ' AS exc WHERE (exc.pid = mtb.id AND exc.userid = ' . $user_info['userid'] . ') AND (exc.shown_time != 0 OR exc.hidden_time != 0))';
-    $sql = 'SELECT mtb.id FROM ' . NV_INFORM_GLOBALTABLE . ' AS mtb WHERE ' . $where . ' ORDER BY mtb.id DESC';
-    $result = $db->query($sql);
-    $count = $result->rowCount();
-    if ($result) {
-        nv_jsonOutput([
-            'count' => $count
-        ]);
-    }
-
-    nv_jsonOutput([
-        'count' => 0
-    ]);
-}*/
-
 // Thay đổi trạng thái đã xem/chưa xem, đã ẩn/chưa ẩn
 if ($nv_Request->isset_request('setStatus', 'post')) {
     $status = $nv_Request->get_title('setStatus', 'post', '');
