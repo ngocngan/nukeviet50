@@ -30,3 +30,43 @@
     }
   }
 }
+
+.inform-items {
+  .item {
+    .avatar {
+      float: left;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: .5rem;
+      margin-top: .25rem;
+      background-color: $primary;
+      color: color-contrast($primary);
+      font-size: $font-size-lg;
+      line-height: 1;
+      text-align: center;
+      border-radius: 50%;
+    }
+
+    .message {
+      &::after {
+        display: block;
+        content: "";
+        clear: both;
+      }
+    }
+
+    .foot {
+      .btn {
+        width: 1.875rem;
+        height: 1.875rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+    }
+  }
+}

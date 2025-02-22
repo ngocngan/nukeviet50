@@ -99,6 +99,24 @@ nukeviet.inform.GetList = () => {
         }
     })
 };
+nukeviet.inform.SetStatus = (id, status, callback) => {
+    const ctn = $('#inform-notification');
+    const url = ctn.data('url') + ((-1 < ctn.data('url').indexOf("?")) ? '&' : '?') + 'nocache=' + new Date().getTime();
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: 'setStatus=' + status + '&id=' + id,
+        dataType: "json",
+        success: function(result) {
+            if ('OK' == result.status) {
+                nukeviet.inform.GetList();
+                if (typeof callback === "function") {
+                    callback()
+                }
+            }
+        }
+    });
+};
 
 $(function() {
     const ctn = $('#inform-notification');
@@ -136,7 +154,36 @@ $(function() {
             $(this).siblings().removeClass('active');
             nukeviet.inform.GetList();
         }
-    })
+    });
+
+    // Xem đầy đủ
+    ctn.on('click', '[data-toggle=more]', function(e) {
+        e.preventDefault();
+        var obj = $(this).closest('.item');
+        $('.more', obj).hide();
+        $('.morecontent', obj).show();
+        nukeviet.inform.ps.update();
+    });
+
+    // Các nút thao tác
+    ctn.on('click', '[data-toggle=informNotifySetStatus]', function(e) {
+        e.preventDefault();
+        nukeviet.inform.SetStatus($(this).closest('.item').data('id'), $(this).data('status'));
+    });
+
+    // Đánh dấu đã đọc khi click vào nội dung
+    ctn.on('click', '.message a', function(e) {
+        var item = $(this).closest('.item'),
+            href = $(this).attr('href');
+        if (item.is('.viewed-0')) {
+            e.preventDefault();
+            nukeviet.inform.SetStatus(item.data('id'), 'viewed', function() {
+                if ('' != href && '#' != href) {
+                    window.location.href = href;
+                }
+            })
+        }
+    });
 });
 
 // Đếm số thông báo chưa đọc

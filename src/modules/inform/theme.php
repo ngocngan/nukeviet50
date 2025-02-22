@@ -54,6 +54,27 @@ function user_getlist_theme($items, $generate_page, $filter, $page_url)
     $tpl->setTemplateDir(get_module_tpl_dir('list.tpl'));
     $tpl->assign('LANG', $nv_Lang);
 
+    if (!empty($items)) {
+        $keys = array_keys($items);
+        foreach ($keys as $key) {
+            if (empty($items[$key]['message'])) {
+                unset($items[$key]);
+                continue;
+            }
+            $items[$key]['is_hidden'] = $filter == 'hidden' ? 1 : 0;
+            $items[$key]['is_viewed'] = !empty($items[$key]['viewed_time']) ? 1 : 0;
+            $items[$key]['is_favorite'] = !empty($items[$key]['favorite_time']) ? 1 : 0;
+            $items[$key]['add_time'] = nv_datetime_format($items[$key]['add_time']);
+            if (!empty($items[$key]['link']) and !preg_match('#^https?\:\/\/#', $items[$key]['link'])) {
+                $items[$key]['link'] = nv_url_rewrite(NV_BASE_SITEURL . $items[$key]['link'], true);
+            }
+        }
+    }
+
+    $tpl->assign('PAGE_URL', nv_url_rewrite($page_url, true));
+    $tpl->assign('ITEMS', $items);
+    $tpl->assign('GENERATE_PAGE', $generate_page);
+
     return $tpl->fetch('list.tpl');
 
 
