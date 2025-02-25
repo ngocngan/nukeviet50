@@ -601,6 +601,7 @@ $lang_module['hide_inauthor'] = 'Không hiển thị công khai tên tác giả 
 $lang_module['title_length'] = 'Số ký tự của tiêu đề';
 $lang_module['catid'] = 'Chuyên mục';
 $lang_module['blockid'] = 'Nhóm tin liên quan';
+$lang_module['blockid1'] = 'Chọn nhóm tin';
 $lang_module['numrow'] = 'Số bài hiển thị';
 $lang_module['type'] = 'Cách thức hiển thị';
 $lang_module['tooltip_position'] = 'Vị trí';

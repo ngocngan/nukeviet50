@@ -123,14 +123,14 @@ function nv_site_theme($contents, $full = true)
     $html_links = [];
     $styles = Config::isRtl()
     ? array_merge(
-        $global_config['current_theme_type'] != 'r' ? ['style.non-responsive.rtl.css'] : [],
-        ['style.responsive.rtl.css', 'nv.style.rtl.css', 'style.rtl.css']
+        $global_config['current_theme_type'] != 'r' ? ['style.d.rtl.css'] : [],
+        ['style.r.rtl.css', 'nv.style.rtl.css', 'style.rtl.css']
     )
     : [];
     if ($global_config['current_theme_type'] != 'r') {
-        $styles[] = 'style.non-responsive.css';
+        $styles[] = 'style.d.css';
     }
-    $styles = array_merge($styles, ['style.responsive.css', 'nv.style.css', 'style.css']);
+    $styles = array_merge($styles, ['style.r.css', 'nv.style.css', 'style.css']);
     foreach ($styles as $style) {
         if (theme_file_exists($global_config['module_theme'] . '/css/' . $style)) {
             $html_links[] = [

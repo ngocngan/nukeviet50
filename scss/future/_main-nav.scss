@@ -17,6 +17,8 @@ $max-depth: 20;
 }
 
 .main-nav {
+  z-index: $zindex-main-nav;
+
   @include media-breakpoint-up($theme-layout-breakpoint) {
     position: relative;
     overflow: hidden;

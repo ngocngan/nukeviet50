@@ -3,6 +3,7 @@
 <div class="main-content">
     <div class="container py-4">
         [THEME_ERROR_INFO]
+        [HEADER]
         <div class="row">
             <aside class="main-start">
                 <div class="vstack vstack-blocks">

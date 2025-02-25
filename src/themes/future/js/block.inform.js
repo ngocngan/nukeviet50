@@ -43,7 +43,7 @@ nukeviet.inform.GetCount = () => {
             success: function(data) {
                 nukeviet.inform.lastCount = parseInt(data.count);
                 nv_setCookie(nukeviet.inform.cookie.count, nukeviet.inform.lastCount, 365);
-                $('[data-toggle="unreadCounter"]', ctn).text(nukeviet.inform.lastCount);
+                $('[data-toggle="unreadCounter"]', ctn).text(nukeviet.inform.lastCount > 99 ? '99+' : nukeviet.inform.lastCount);
                 if (nukeviet.inform.lastCount > 0) {
                     $('[data-toggle="unreadBadge"]', ctn).removeClass('d-none');
                 } else {
@@ -54,7 +54,7 @@ nukeviet.inform.GetCount = () => {
         nukeviet.inform.RunCount(nukeviet.inform.refresh);
         return;
     }
-    $('[data-toggle="unreadCounter"]', ctn).text(nukeviet.inform.lastCount);
+    $('[data-toggle="unreadCounter"]', ctn).text(nukeviet.inform.lastCount > 99 ? '99+' : nukeviet.inform.lastCount);
     if (nukeviet.inform.lastCount > 0) {
         $('[data-toggle="unreadBadge"]', ctn).removeClass('d-none');
     } else {

@@ -40,18 +40,6 @@
                         {/if}
                         <div class="user-area d-flex gap-2 align-items-center" data-toggle="site-user-area">
                             [USER_BUTTON]
-                            <div class="site-user-button dropdown">
-                                <button type="button" class="d-none btn btn-primary btn-sm text-nowrap">Đăng nhập</button>
-                                <a class="user-button" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-offset="8,0" aria-expanded="false">
-                                    <span class="no-avatar d-flex align-items-center justify-content-center text-bg-primary rounded-circle w-100 h-100"><span>TD</span></span>
-                                    <img src="#" alt="User avatar" class="d-none">
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>

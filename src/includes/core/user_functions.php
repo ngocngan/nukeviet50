@@ -735,60 +735,65 @@ function nv_html_page_title($html = true)
 }
 
 /**
- * nv_html_css()
+ * Thêm CSS của module vào trang
  *
  * @param bool $html
  * @return array|string
  */
 function nv_html_css($html = true)
 {
-    global $module_info, $module_file;
+    global $module_info, $module_file, $global_config;
 
-    if (Config::isRtl() and theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css')) {
-        if ($html) {
-            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css" type="text/css" />' . PHP_EOL;
+    $css = [];
+    if ($global_config['current_theme_type'] != 'd') {
+        // Responsive
+        if (Config::isRtl()) {
+            $css[] = $module_info['module_theme'] . '.r.rtl.css';
         }
-
-        return [
-            [
-                'rel' => 'stylesheet',
-                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.rtl.css'
-            ]
-        ];
-    } elseif (theme_file_exists($module_info['template'] . '/css/' . $module_info['module_theme'] . '.css')) {
-        if ($html) {
-            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css" type="text/css" />' . PHP_EOL;
+        $css[] = $module_info['module_theme'] . '.r.css';
+    } else {
+        // Non-responsive
+        if (Config::isRtl()) {
+            $css[] = $module_info['module_theme'] . '.d.rtl.css';
         }
-
-        return [
-            [
-                'rel' => 'stylesheet',
-                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_info['module_theme'] . '.css'
-            ]
-        ];
+        $css[] = $module_info['module_theme'] . '.d.css';
     }
-    if (Config::isRtl() and theme_file_exists($module_info['template'] . '/css/' . $module_file . '.rtl.css')) {
+    if (Config::isRtl()) {
+        $css[] = $module_info['module_theme'] . '.rtl.css';
+    }
+    $css[] = $module_info['module_theme'] . '.css';
+    if ($module_info['module_theme'] != $module_file) {
+        // Tùy biến module_theme
+        if ($global_config['current_theme_type'] != 'd') {
+            // Responsive
+            if (Config::isRtl()) {
+                $css[] = $module_file . '.r.rtl.css';
+            }
+            $css[] = $module_file . '.r.css';
+        } else {
+            // Non-responsive
+            if (Config::isRtl()) {
+                $css[] = $module_file . '.d.rtl.css';
+            }
+            $css[] = $module_file . '.d.css';
+        }
+        if (Config::isRtl()) {
+            $css[] = $module_file . '.rtl.css';
+        }
+        $css[] = $module_file . '.css';
+    }
+    foreach ($css as $css_i) {
+        if (!theme_file_exists($module_info['template'] . '/css/' . $css_i)) {
+            continue;
+        }
         if ($html) {
-            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.rtl.css" type="text/css" />' . PHP_EOL;
+            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $css_i . '" type="text/css" />' . PHP_EOL;
         }
 
-        return [
-            [
-                'rel' => 'stylesheet',
-                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.rtl.css'
-            ]
-        ];
-    } elseif (theme_file_exists($module_info['template'] . '/css/' . $module_file . '.css')) {
-        if ($html) {
-            return '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css" type="text/css" />' . PHP_EOL;
-        }
-
-        return [
-            [
-                'rel' => 'stylesheet',
-                'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $module_file . '.css'
-            ]
-        ];
+        return [[
+            'rel' => 'stylesheet',
+            'href' => NV_STATIC_URL . 'themes/' . $module_info['template'] . '/css/' . $css_i
+        ]];
     }
 
     return $html ? '' : [];
