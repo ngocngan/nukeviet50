@@ -264,4 +264,21 @@ $(function() {
         e.preventDefault();
         window.location.href = $(this).data('type');
     });
+
+    // Tooltip mặc định của block: Ảnh + Mô tả
+    ([...document.querySelectorAll('[data-toggle="tooltipArticle"]')].map(tipEl => new bootstrap.Tooltip(tipEl, {
+        boundary: document.body,
+        container: 'body',
+        html: true,
+        trigger: 'hover',
+        title: () => {
+            let html = '';
+            if ($(tipEl).data('img') != '') {
+                html += '<div class="img"><div class="img-inner"><img src="' + $(tipEl).data('img') + '" alt="' + $(tipEl).data('alt') + '"></div></div>';
+            }
+            html += '<div class="tip-body">' + $(tipEl).data('hometext') + '</div>';
+            return html;
+        },
+        template: '<div class="tooltip tooltip-block-articles" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+    })))
 });

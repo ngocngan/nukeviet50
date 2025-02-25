@@ -197,5 +197,5 @@ $contents = call_user_func($function_name, $module, $data_block);
 $nv_Lang->changeLang();
 
 $respon['error'] = 0;
-$respon['html'] = $contents;
+$respon['html'] = nv_url_rewrite($contents, true);
 nv_jsonOutput($respon);
