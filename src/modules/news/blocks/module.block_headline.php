@@ -87,7 +87,7 @@ if (!nv_function_exists('nv_block_headline')) {
             $row['cat_name'] = $global_array_cat[$row['catid']]['title'];
             $row['imgsource'] = '';
             $row['homeimgalt'] = !empty($row['homeimgalt']) ? $row['homeimgalt'] : $row['title'];
-            $width = $stt == 1 ? 600 : 300;
+            $width = $stt == 1 ? 700 : 350;
 
             if (!empty($row['homeimgfile']) and ($imginfo = nv_is_image(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['homeimgfile'])) != []) {
                 $image = NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['homeimgfile'];
