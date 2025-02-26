@@ -15,8 +15,6 @@ if (!defined('NV_SYSTEM')) {
 
 if (!nv_function_exists('nv_block_voting')) {
     /**
-     * nv_block_voting()
-     *
      * @return string
      * @param mixed $block_config
      */
