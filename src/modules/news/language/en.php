@@ -643,3 +643,7 @@ $lang_module['draft_menu'] = 'Draft articles';
 $lang_module['queue_draft'] = 'You have <strong>%s</strong> draft articles';
 $lang_module['queue_approval'] = 'You have <strong>%s</strong> articles pending approval';
 $lang_module['queue_public'] = 'You have <strong>%s</strong> articles awaiting publication';
+$lang_module['show_tags'] = 'Sort tags';
+$lang_module['show_random'] = 'Random';
+$lang_module['show_featured'] = 'Popular';
+$lang_module['show_tags_num'] = 'Number of tags displayed';

@@ -96,3 +96,38 @@
     }
   }
 }
+
+// Tạo padding các cấp menu con
+$indent-step: 0.75rem;
+$max-depth: 10;
+@mixin nested-menu($level) {
+  $padding: $level * $indent-step;
+
+  @if $level > 0 {
+    > .menu-item {
+      padding-left: $padding;
+    }
+  }
+  @if $level < $max-depth {
+    >ul>li {
+      @include nested-menu($level + 1);
+    }
+  }
+}
+
+// Danh mục tin. Collapse mặc định của bootstrap
+.news-menu-cats {
+  >li{
+    @include nested-menu(0);
+  }
+
+  .bi {
+    transition: transform .15s ease-in-out;
+  }
+
+  a:not(.collapsed) {
+    >.bi {
+      transform: rotate(-180deg);
+    }
+  }
+}

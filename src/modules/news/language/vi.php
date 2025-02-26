@@ -644,3 +644,7 @@ $lang_module['draft_menu'] = 'Bài viết dở';
 $lang_module['queue_draft'] = 'Bạn có <strong>%s</strong> bài viết đang lưu nháp';
 $lang_module['queue_approval'] = 'Bạn có <strong>%s</strong> bài viết đang chờ duyệt';
 $lang_module['queue_public'] = 'Bạn có <strong>%s</strong> bài viết đang chờ đăng';
+$lang_module['show_tags'] = 'Sắp xếp tags';
+$lang_module['show_random'] = 'Ngẫu nhiên';
+$lang_module['show_featured'] = 'Phổ biến';
+$lang_module['show_tags_num'] = 'Số tags hiển thị';

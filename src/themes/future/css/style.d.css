@@ -4929,7 +4929,7 @@ textarea.form-control-lg {
   --bs-badge-padding-x: 0.65em;
   --bs-badge-padding-y: 0.35em;
   --bs-badge-font-size: 0.75em;
-  --bs-badge-font-weight: 700;
+  --bs-badge-font-weight: 400;
   --bs-badge-color: #fff;
   --bs-badge-border-radius: var(--bs-border-radius);
   display: inline-block;
@@ -26675,7 +26675,7 @@ body {
   min-width: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 .column .ic::before {
   -moz-osx-font-smoothing: grayscale;
@@ -26836,7 +26836,7 @@ body {
 }
 
 .vstack-blocks {
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .nv-block-default > .block-heading {
