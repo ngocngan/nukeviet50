@@ -26631,6 +26631,43 @@ readers do not read off random characters that represent icons */
   object-fit: cover;
 }
 
+.news-menu-cats > li > ul > li > .menu-item {
+  padding-left: 0.75rem;
+}
+.news-menu-cats > li > ul > li > ul > li > .menu-item {
+  padding-left: 1.5rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 2.25rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 3rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 3.75rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 4.5rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 5.25rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 6rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 6.75rem;
+}
+.news-menu-cats > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > ul > li > .menu-item {
+  padding-left: 7.5rem;
+}
+.news-menu-cats .bi {
+  transition: transform 0.15s ease-in-out;
+}
+.news-menu-cats a:not(.collapsed) > .bi {
+  transform: rotate(-180deg);
+}
+
 @media (min-width: 992px) {
   .footer-top .footer-start {
     flex: 0 0 auto;
