@@ -26786,4 +26786,11 @@ readers do not read off random characters that represent icons */
   justify-content: center;
   padding: 0;
 }
+
+.form-control-required {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23CF4646' viewBox='0 0 16 16'%3e%3cpath d='M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1'/%3e%3c/svg%3e");
+  background-position: calc(100% - (100% - 0.5rem)) center;
+  background-repeat: no-repeat;
+  padding-left: 1.375rem;
+}
 /*# sourceMappingURL=style.r.rtl.css.map */

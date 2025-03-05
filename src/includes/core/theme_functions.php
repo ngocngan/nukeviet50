@@ -723,6 +723,19 @@ function addition_module_assets(string $module, string $type): void
         // Lặp tên các module
         foreach ($names as $name) {
             $files = [];
+            if ($global_config['current_theme_type'] != 'd') {
+                // Responsive
+                if (Config::isRtl()) {
+                    $files[] = $name . '.r.rtl.css';
+                }
+                $files[] = $name . '.r.css';
+            } else {
+                // Non-responsive
+                if (Config::isRtl()) {
+                    $files[] = $name . '.d.rtl.css';
+                }
+                $files[] = $name . '.d.css';
+            }
             // Nếu ở chế độ RTL thì load file css có dạng .rtl.css không có tìm sang tệp .css gốc
             if (Config::isRtl()) {
                 $files[] = $name . '.rtl.css';

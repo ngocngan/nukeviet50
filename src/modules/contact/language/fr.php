@@ -191,3 +191,5 @@ $lang_module['pick_department'] = 'Choisir le département';
 $lang_module['properties_show'] = 'Afficher, ordre, limite';
 $lang_module['properties_show_note'] = 'Entrez 0 pour illimité';
 $lang_module['show_clock'] = 'Afficher l\'horloge';
+$lang_module['requestform_title'] = 'Contactez-nous';
+$lang_module['requestform_help'] = 'Si vous avez besoin d\'aide, veuillez laisser vos coordonnées';

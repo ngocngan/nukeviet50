@@ -191,3 +191,5 @@ $lang_module['pick_department'] = 'Pick department';
 $lang_module['properties_show'] = 'Display, order, limit';
 $lang_module['properties_show_note'] = 'Enter 0 for unlimited';
 $lang_module['show_clock'] = 'Display clock';
+$lang_module['requestform_title'] = 'Contact us';
+$lang_module['requestform_help'] = 'If you need support, please leave your contact information';
