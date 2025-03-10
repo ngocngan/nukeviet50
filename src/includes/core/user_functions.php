@@ -863,6 +863,9 @@ function nv_html_site_js($html = true, $other_js = [], $language_js = true, $glo
     $jsDef .= ',nv_jsdate_post="' . nv_region_config('jsdate_post') . '"';
     $jsDef .= ',nv_js_am="' . nv_region_config('am_char') . '"';
     $jsDef .= ',nv_js_pm="' . nv_region_config('pm_char') . '"';
+    $jsDef .= ',nv_gfx_width="' . NV_GFX_WIDTH . '"';
+    $jsDef .= ',nv_gfx_height="' . NV_GFX_HEIGHT . '"';
+    $jsDef .= ',nv_gfx_num="' . NV_GFX_NUM . '"';
 
     $jsDef .= ';';
 

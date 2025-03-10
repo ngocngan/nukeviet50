@@ -273,10 +273,22 @@ $(function() {
     }
 
     $(document).on('click', function(event) {
-        if (tip_active && !($(event.target).closest("[data-toggle=tip]", this).length || $(event.target).closest("#tip", this).length || $(event.target).closest(".modal").length)) {
-            tipHide()
-        } else if (ftip_active && !($(event.target).closest("[data-toggle=ftip]", this).length || $(event.target).closest("#ftip", this).length || $(event.target).closest(".modal").length)) {
-            ftipHide()
+        if (tip_active && !(
+            $(event.target).closest("[data-toggle=tip]", this).length ||
+            $(event.target).closest("#tip", this).length ||
+            $(event.target).closest(".modal").length ||
+            $(event.target).closest(".cr-md").length ||
+            $(event.target).closest(".cr-cap").length
+        )) {
+            tipHide();
+        } else if (ftip_active && !(
+            $(event.target).closest("[data-toggle=ftip]", this).length ||
+            $(event.target).closest("#ftip", this).length ||
+            $(event.target).closest(".modal").length ||
+            $(event.target).closest(".cr-md").length ||
+            $(event.target).closest(".cr-cap").length
+        )) {
+            ftipHide();
         }
     });
 

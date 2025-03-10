@@ -24,7 +24,13 @@ class Config
     public static bool $isRtl = false;
 
     /**
-     * Có đang chê độ RTL hay không
+     * Dùng các core CSS mặc định
+     * @var bool
+     */
+    public static bool $loadCoreCss = true;
+
+    /**
+     * Có đang chế độ RTL hay không
      * @return bool
      */
     public static function isRtl(): bool
@@ -40,5 +46,24 @@ class Config
     public static function setRtl(bool $isRtl = true): void
     {
         self::$isRtl = $isRtl;
+    }
+
+    /**
+     * Có load core CSS hay không
+     * @return bool
+     */
+    public static function isLoadCoreCss(): bool
+    {
+        return self::$loadCoreCss;
+    }
+
+    /**
+     * Nếu giao diện tùy biến các core CSS thì set false
+     * @param bool $loadCoreCss
+     * @return void
+     */
+    public static function setLoadCoreCss(bool $loadCoreCss = true): void
+    {
+        self::$loadCoreCss = $loadCoreCss;
     }
 }
