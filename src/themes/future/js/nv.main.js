@@ -9,6 +9,80 @@
 
 'use strict';
 
+/**
+ * Tạo thẻ báo lỗi cho các trường dữ liệu trong form khi valid
+ *
+ * @param {JQuery} ipt
+ * @param {String} message
+ * @returns {JQuery}
+ */
+function _make_check_invalid(ipt, message) {
+    let element = ipt.next();
+    if (!element.length || (!element.is('.invalid-feedback') && !element.is('.invalid-tooltip'))) {
+        element = $('<div class="invalid-tooltip"></div>').insertAfter(ipt);
+    }
+    element.text(message);
+    ipt.addClass('is-invalid');
+    return element;
+}
+
+/**
+ * Kiểm tra từng input trong form
+ *
+ * @param {JQuery} ipt
+ * @param {String | undefined | null} customMess
+ * @param {Boolean | undefined} focus
+ * @returns {JQuery}
+ */
+function _check_invalid(ipt, customMess, focus) {
+    const valid = {
+        type: $(ipt).data('valid'),
+        empty: $(ipt).data('empty') !== undefined ? $(ipt).data('empty') : '',
+        allowedEmpty: !!$(ipt).data('allowed-empty'),
+    };
+    focus && ipt.focus();
+    if (customMess && customMess.length > 0) {
+        return _make_check_invalid(ipt, customMess);
+    }
+    // Check bắt buộc
+    if (!valid.allowedEmpty && (valid.type == 'email' || valid.type == 'text') && trim(ipt.val()) == valid.empty) {
+        return _make_check_invalid(ipt, nv_required);
+    }
+    // Check rule
+    if (valid.type == 'email' && !nv_mailfilter.test(trim(ipt.val()))) {
+        return _make_check_invalid(ipt, nv_email);
+    }
+}
+
+/**
+ * Hàm kiểm tra validate form trước khi submit mặc định
+ *
+ * @param {HTMLElement | JQuery} form
+ * @returns {Boolean}
+ */
+function nv_precheck_form(form) {
+    if (!(form instanceof jQuery)) {
+        form = $(form);
+    }
+
+    $('.is-invalid', form).removeClass('is-invalid');
+    $('.is-valid', form).removeClass('is-valid');
+    $('.invalid-tooltip, .valid-feedback', form).text('');
+
+    $('[data-valid]', form).each(function() {
+        _check_invalid($(this));
+    });
+
+    const invalid = form.find('.invalid-tooltip:visible, .valid-feedback:visible').first();
+    const iptBefore = invalid.prev('[data-valid]');
+    if (iptBefore.length > 0) {
+        iptBefore.focus();
+        return false;
+    }
+
+    return true;
+}
+
 $(function() {
     // Đồng hồ
     const sClock = $('#site-digital-clock');
@@ -280,5 +354,124 @@ $(function() {
             return html;
         },
         template: '<div class="tooltip tooltip-block-articles" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-    })))
+    })));
+
+    // Xử lý các form ajax mặc định
+    $('body').on('submit', '[data-toggle="ajax-form"]', function(e) {
+        e.preventDefault();
+
+        const form = $(this);
+
+        if ($('.is-invalid:visible', form).length > 0) {
+            let ipt = $('.is-invalid:visible:first', form);
+            if (ipt.is('.input-group')) {
+                ipt = $('input:first', ipt);
+            }
+            ipt.focus();
+            return;
+        }
+
+        $('.is-invalid', form).removeClass('is-invalid');
+        $('.is-valid', form).removeClass('is-valid');
+
+        if (typeof(CKEDITOR) !== 'undefined') {
+            for (let instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+                CKEDITOR.instances[instance].setReadOnly(true);
+            }
+        }
+
+        const formData = new FormData(form[0]);
+        $('input, textarea, select, button', form).prop('disabled', true);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: (form.attr('method') || 'POST'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            cache: false,
+            success: function(respon) {
+                // Gửi form thành công
+                if (respon.status == 'OK' || respon.status == 'ok' || respon.status == 'success') {
+                    let cb;
+                    const callback = form.data('callback');
+                    if ('function' === typeof callback) {
+                        cb = callback(respon);
+                    } else if ('string' == typeof callback && "function" === typeof window[callback]) {
+                        cb = window[callback](respon);
+                    }
+                    if (cb === 0 || cb === false) {
+                        return;
+                    }
+                    let timeout = 0;
+                    if (respon.mess) {
+                        nukeviet.toast(respon.mess, respon.warning ? 'warning' : 'success');
+                        timeout = respon.timeout ? respon.timeout : 2000;
+                    }
+                    if (respon.redirect) {
+                        setTimeout(() => {
+                            window.location.href = respon.redirect;
+                        }, timeout);
+                    } else if (respon.refresh) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, timeout);
+                    } else {
+                        setTimeout(() => {
+                            $('input, textarea, select, button', form).prop('disabled', false);
+                            if (typeof(CKEDITOR) !== 'undefined') {
+                                for (let instance in CKEDITOR.instances) {
+                                    CKEDITOR.instances[instance].setReadOnly(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+                // Gửi form thất bại
+                $('input, textarea, select, button', form).prop('disabled', false);
+                if (respon.tab) {
+                    bootstrap.Tab.getOrCreateInstance(document.getElementById(respon.tab)).show();
+                }
+                if (respon.input) {
+                    let eleCtn = null;
+                    if (respon.input_parent) {
+                        // Trường hợp nhiều input cùng tên có chỉ định ra thẻ cha của nó
+                        eleCtn = $(respon.input_parent, form);
+                    } else {
+                        eleCtn = form;
+                    }
+                    let ele = $('[name^=' + respon.input + ']', eleCtn);
+                    if (ele.length) {
+                        _check_invalid(ele, respon.mess, true);
+                        return;
+                    }
+                }
+                nukeviet.toast(respon.mess, 'error');
+            },
+            error: function(xhr, text, err) {
+                $('input, textarea, select, button', form).prop('disabled', false);
+                nukeviet.toast(err || text, 'error');
+                console.log(xhr, text, err);
+            }
+        });
+    });
+
+    $(document).on('change keyup', '[data-toggle="ajax-form"] select', function() {
+        $(this).removeClass('is-invalid is-valid');
+        if ($(this).parent().is('.input-group')) {
+            $(this).parent().removeClass('is-invalid is-valid');
+        }
+    });
+
+    $(document).on('change keyup', '[data-toggle="ajax-form"] [type="text"], [data-toggle="ajax-form"] [type="password"], [data-toggle="ajax-form"] [type="number"], [data-toggle="ajax-form"] [type="email"], [data-toggle="ajax-form"] textarea', function(e) {
+        if (e.type === "keyup" && e.which === 13) {
+            return;
+        }
+        let pr = $(this).parent();
+        let prAlso = $(this).parent().is('.input-group');
+        $(this).removeClass('is-invalid is-valid');
+        if (prAlso) pr.removeClass('is-invalid is-valid');
+    });
 });

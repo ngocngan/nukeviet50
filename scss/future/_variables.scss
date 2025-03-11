@@ -124,11 +124,11 @@ $footer-link-color: #d7e3fc;
 $zindex-main-nav: 400;
 $zindex-cookie-notice: 500;
 $zindex-admintoolbar: 501;
-$zindex-timeoutsess: 1200;
-$zindex-offcanvas-backdrop: 1040;
-$zindex-offcanvas: 1045;
 $zindex-sitenav-backdrop: 1039;
+$zindex-offcanvas-backdrop: 1040;
 $zindex-sitenav: 1044;
+$zindex-offcanvas: 1045;
+$zindex-timeoutsess: 1200;
 
 // Buttons + Form
 $input-btn-focus-box-shadow: 0 0;
@@ -161,9 +161,6 @@ $pagination-focus-box-shadow: 0 0;
 
 // Process
 $progress-box-shadow: 0 0;
-
-// Modal
-$modal-content-border-color: transparent;
 
 // Offcanvas
 $offcanvas-vertical-height: fit-content;

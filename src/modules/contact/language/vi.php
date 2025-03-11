@@ -193,3 +193,4 @@ $lang_module['properties_show_note'] = 'Nhập 0 là không giới hạn';
 $lang_module['show_clock'] = 'Hiển thị đồng hồ';
 $lang_module['requestform_title'] = 'Liên hệ với chúng tôi';
 $lang_module['requestform_help'] = 'Nếu bạn cần hỗ trợ hãy để lại thông tin liên hệ';
+$lang_module['requestform_ftitle'] = 'Yêu cầu liên hệ lại';

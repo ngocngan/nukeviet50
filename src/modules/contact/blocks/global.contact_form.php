@@ -27,6 +27,7 @@ if ($module_name != $block_config['module'] and defined('NV_SYSTEM') and isset($
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('TEMPLATE', $block_theme);
     $tpl->assign('CONFIG', $block_config);
+    $tpl->assign('REQUEST_FORM', md5($block_config['module'] . '_request_form_' . NV_CHECK_SESSION));
 
     $module_captcha = (!empty($module_config[$block_config['module']]['captcha_type']) ? $module_config[$block_config['module']]['captcha_type'] : '');
     if (!(empty($module_captcha) or in_array($module_captcha, ['captcha', 'recaptcha', 'turnstile'], true)) or ($module_captcha == 'recaptcha' and (empty($global_config['recaptcha_sitekey']) or empty($global_config['recaptcha_secretkey']))) or ($module_captcha == 'turnstile' and (empty($global_config['turnstile_sitekey']) or empty($global_config['turnstile_secretkey'])))) {

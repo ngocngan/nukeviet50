@@ -10,6 +10,10 @@
   --nv-footer-emphasis: #{$footer-bg-emphasis};
   --nv-footer-color: #{color-contrast($footer-bg)};
 
+  --cr-md-header-font-size: #{$h5-font-size};
+  --cr-cap-header-font-size: #{$h5-font-size};
+  --cr-danger: #{$red};
+
   @each $key, $value in $contact-icons-light {
     --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
   }
@@ -26,4 +30,19 @@
       --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};
     }
   }
+}
+
+.cr-btn-primary {
+  --cr-btn-color: #{color-contrast($primary)};
+  --cr-btn-bg: #{$primary};
+  --cr-btn-border-color: #{$primary};
+  --cr-btn-hover-color: #{color-contrast(shade-color($primary, 15%))};
+  --cr-btn-hover-bg: #{shade-color($primary, 15%)};
+  --cr-btn-hover-border-color: #{shade-color($primary, 20%)};
+  --cr-btn-active-color: #{color-contrast(shade-color($primary, 20%))};
+  --cr-btn-active-bg: #{shade-color($primary, 20%)};
+  --cr-btn-active-border-color: #{shade-color($primary, 25%)};
+  --cr-btn-disabled-color: #{color-contrast($primary)};
+  --cr-btn-disabled-bg: #{$primary};
+  --cr-btn-disabled-border-color: #{$primary};
 }
