@@ -26,6 +26,7 @@
 @import "root";
 @import "perfect_scrollbar";
 @import "common";
+@import "card";
 @import "header";
 @import "footer";
 @import "left_sidebar";
@@ -38,12 +39,11 @@
 @import "../select2";
 @import "../uidatepicker";
 @import "../show_pass";
-@import "../core/polyfill";
+@import "../standalone/polyfill";
 @import "../uiautocomplete";
 @import "../flatpickr";
 
 @import "error_info";
-@import "alert";
 @import "apexcharts";
 @import "file_manager";
 @import "login";

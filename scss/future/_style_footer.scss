@@ -6,9 +6,9 @@
 @import "../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 
 @import "../show_pass";
-@import "../core/alert";
+@import "../standalone/alert";
 
-@import "../core/polyfill";
+@import "../standalone/polyfill";
 
 @import "root";
 @import "common";

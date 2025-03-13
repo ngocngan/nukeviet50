@@ -14,7 +14,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR/.."
 DIR_PATH=$PWD
 
-sass --style compressed --no-source-map scss/core/info_die.scss:scripts/info_die.css
+sass --style compressed --no-source-map scss/standalone/info_die.scss:scripts/info_die.css
 
 CSS_CONTENT=$(<"${DIR_PATH}/scripts/info_die.css")
 sed -i 's|<style>.*</style>|<style>'"$CSS_CONTENT"'</style>|g' $DIR_PATH/src/themes/future/system/info_die.tpl
