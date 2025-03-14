@@ -9,16 +9,5 @@
 
 'use strict';
 
-function contactRequestform_precheck(form) {
-    return 1;
-}
-
 $(function() {
-    // Submit các form gửi yêu cầu liên hệ lại
-    $('[data-toggle="contactRequestform"]').each(function() {
-        $(this).on('submit', function(e) {
-            e.preventDefault();
-            console.log('Form submit');
-        });
-    });
 });

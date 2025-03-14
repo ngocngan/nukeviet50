@@ -428,6 +428,7 @@ $(function() {
                             }
                         }, 1000);
                     }
+                    return;
                 }
                 // Gửi form thất bại
                 $('input, textarea, select, button', form).prop('disabled', false);

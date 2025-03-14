@@ -290,6 +290,7 @@ if ($nv_Request->isset_request('checkss', 'post')) {
         nv_jsonOutput([
             'status' => 'success',
             'input' => '',
+            'refresh' => $is_reqform,
             'mess' => $nv_Lang->getModule('sendcontactok')
         ]);
     }
