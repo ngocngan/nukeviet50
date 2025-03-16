@@ -79,3 +79,13 @@ function openID_result() {
 
 - Checklist cập nhật bootstap:
 check node_modules/bootstrap/scss/bootstrap.scss xem khác với version cũ ra sao sau đó cập nhật ở style.non-responsive.scss
+
+--------------------------
+-- Voting
+--------------------------
+
+Chạy sql này để tìm xem giao diện bạn có dùng block global.voting_random.php không
+SELECT * FROM `nv4_vi_blocks_groups` WHERE `file_name` LIKE 'global.voting_random.php'
+SELECT * FROM `nv4_en_blocks_groups` WHERE `file_name` LIKE 'global.voting_random.php'
+
+Nếu có vào quản lý block tìm các block đó sửa nó sang block global.voting.php với kiểu hiển thị là "Ngẫu nhiên"

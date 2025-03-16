@@ -9,10 +9,10 @@
             <div class="fs-5 fw-medium mb-2">{$LANG->getModule('requestform_title')}</div>
             <p>{$LANG->getModule('requestform_help')}</p>
             <div class="position-relative mb-2">
-                <input class="form-control form-control-required" type="text" name="fname" value="" data-valid="text" placeholder="{$LANG->getModule('fullname')}" aria-label="{$LANG->getModule('fullname')}">
+                <input class="form-control form-control-required" type="text" name="fname" value="" data-valid placeholder="{$LANG->getModule('fullname')}" aria-label="{$LANG->getModule('fullname')}">
             </div>
             <div class="position-relative">
-                <input class="form-control form-control-required mb-3" type="email" name="femail" value="" data-valid="email" placeholder="{$LANG->getModule('email')}" aria-label="{$LANG->getModule('email')}">
+                <input class="form-control form-control-required mb-3" type="email" name="femail" value="" data-valid placeholder="{$LANG->getModule('email')}" aria-label="{$LANG->getModule('email')}">
             </div>
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">{$LANG->getModule('sendcontact')}</button>

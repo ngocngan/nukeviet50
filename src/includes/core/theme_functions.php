@@ -671,7 +671,7 @@ function nv_disable_site()
 /**
  * Thêm js, css của module vào trang hiện tại của các module khác
  *
- * @param string $module
+ * @param string $module Biến $module_name
  * @param "js"|"css"|"both" $type
  * @return void
  */

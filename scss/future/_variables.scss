@@ -135,6 +135,8 @@ $zindex-alert: 9903;
 
 // Buttons + Form
 $input-btn-focus-box-shadow: 0 0;
+$form-check-input-border-color: $gray-500;
+$form-check-input-border: var(--#{$prefix}border-width) solid var(--nv-check-border-color);
 
 // Input
 $input-box-shadow: 0 0;

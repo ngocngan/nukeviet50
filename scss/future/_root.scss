@@ -10,6 +10,7 @@
   --nv-footer-bg: #{$footer-bg};
   --nv-footer-emphasis: #{$footer-bg-emphasis};
   --nv-footer-color: #{color-contrast($footer-bg)};
+  --nv-check-border-color: #{$form-check-input-border-color};
 
   --cr-md-header-font-size: #{$h5-font-size};
   --cr-cap-header-font-size: #{$h5-font-size};
@@ -55,6 +56,7 @@
     --nv-footer-bg: #{$footer-bg-dark};
     --nv-footer-emphasis: #{$footer-bg-emphasis-dark};
     --nv-footer-color: #{color-contrast($footer-bg-dark)};
+    --nv-check-border-color: #{$form-check-input-border-color-dark};
 
     @each $key, $value in $contact-icons-dark {
       --nv-contact-icon-#{$key}-bg: #{escape-svg($value)};

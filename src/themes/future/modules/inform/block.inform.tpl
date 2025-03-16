@@ -31,29 +31,3 @@
         </div>
     </ul>
 </div>
-
-{*
-
-<div class="inform-notification dropdown" id="inform-notification">
-    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <em class="fa fa-bell-o"></em>
-        <span class="new-count" style="display:none"></span>
-    </a>
-    <div class="dropdown-menu inform-box">
-        <div class="inform-header">
-            <button type="button" class="btn-close">&times;</button>
-            <div class="filter-box">
-                <input type="hidden" name="aj_filter" value="{$FILTER_DEFAULT}">
-{foreach $FILTERS as $key => $vals}
-                <button type="button" class="btn {$key}{if $vals.is_active} active{/if}" data-toggle="changeFilter" data-filter="{$key}">{$vals.name}</button>
-{/foreach}
-            </div>
-        </div>
-        <div class="inform-content"></div>
-        <div class="inform-footer">
-            <a href="#" data-toggle="informNotifyRefresh">{$LANG->getGlobal('refresh')}</a>
-            <a href="{$INFORM_VIEWALL_URL}">{$LANG->getGlobal('viewall')}</a>
-        </div>
-    </div>
-</div>
-*}

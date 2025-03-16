@@ -19,7 +19,7 @@
                                 <span><i class="fa-solid fa-magnifying-glass"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end p-3">
-                                <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-toggle="valid-dform" novalidate>
+                                <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-precheck="nv_precheck_form" novalidate>
                                     {if not $GCONFIG.rewrite_enable}
                                     <input type="hidden" name="{$smarty.const.NV_LANG_VARIABLE}" value="{$smarty.const.NV_LANG_DATA}">
                                     <input type="hidden" name="{$smarty.const.NV_NAME_VARIABLE}" value="seek">
@@ -29,7 +29,7 @@
                                         <input type="text" class="form-control fw-175" name="q" placeholder="{$LANG->getGlobal('keyword')}" id="site-search-ipt"
                                             minlength="{$smarty.const.NV_MIN_SEARCH_LENGTH}"
                                             maxlength="{$smarty.const.NV_MAX_SEARCH_LENGTH}"
-                                            required data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
+                                            data-valid data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
                                         >
                                         <div class="invalid-tooltip"></div>
                                         <button class="btn btn-secondary text-nowrap" type="submit" id="site-search-btn"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> {$LANG->getGlobal('search')}</button>
@@ -47,7 +47,7 @@
             {if isset($SITE_MODS.seek)}
             <div class="mobile-search mb-2">
                 <div class="container">
-                    <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-toggle="valid-dform" novalidate>
+                    <form method="get" action="{$smarty.const.NV_BASE_SITEURL}index.php{if $GCONFIG.rewrite_enable}?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}=seek{/if}" data-precheck="nv_precheck_form" novalidate>
                         {if not $GCONFIG.rewrite_enable}
                         <input type="hidden" name="{$smarty.const.NV_LANG_VARIABLE}" value="{$smarty.const.NV_LANG_DATA}">
                         <input type="hidden" name="{$smarty.const.NV_NAME_VARIABLE}" value="seek">
@@ -56,9 +56,8 @@
                             <input type="text" class="form-control" name="q" placeholder="{$LANG->getGlobal('search_all')}"
                                 minlength="{$smarty.const.NV_MIN_SEARCH_LENGTH}"
                                 maxlength="{$smarty.const.NV_MAX_SEARCH_LENGTH}"
-                                required data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
+                                data-valid data-error-mess="{$LANG->getGlobal('search_keyword_rule', $smarty.const.NV_MIN_SEARCH_LENGTH, $smarty.const.NV_MAX_SEARCH_LENGTH)}"
                             >
-                            <div class="invalid-tooltip"></div>
                             <button type="submit" aria-label="{$LANG->getGlobal('search')}"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>

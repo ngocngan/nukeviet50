@@ -1,8 +1,8 @@
 /**
  * NukeViet Content Management System
- * @version 4.x
+ * @version 5.x
  * @author VINADES.,JSC <contact@vinades.vn>
- * @copyright (C) 2009-2024 VINADES.,JSC. All rights reserved
+ * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
  * @license GNU/GPL version 2 or any later version
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
@@ -13,16 +13,29 @@
  * Tạo thẻ báo lỗi cho các trường dữ liệu trong form khi valid
  *
  * @param {JQuery} ipt
+ * @param {Object} data
  * @param {String} message
  * @returns {JQuery}
  */
-function _make_check_invalid(ipt, message) {
+function _make_check_invalid(ipt, data, message) {
+    const form = ipt.closest('form');
     let element = ipt.next();
+    if (element.is('label')) {
+        // Dạng form-check
+        element = element.next();
+    }
     if (!element.length || (!element.is('.invalid-feedback') && !element.is('.invalid-tooltip'))) {
-        element = $('<div class="invalid-tooltip"></div>').insertAfter(ipt);
+        element = $(`<div class="invalid-${data.errType}"></div>`).insertAfter(ipt.next().is('label') ? ipt.next() : ipt);
     }
     element.text(message);
-    ipt.addClass('is-invalid');
+
+    if ((data.type === 'radio' || data.type === 'checkbox')) {
+        // Lỗi tất cả input cùng name nhưng tip ở item cuối cùng
+        $('[name="' + ipt.attr('name') + '"]', form).addClass('is-invalid');
+    } else {
+        ipt.addClass('is-invalid');
+    }
+
     return element;
 }
 
@@ -30,28 +43,108 @@ function _make_check_invalid(ipt, message) {
  * Kiểm tra từng input trong form
  *
  * @param {JQuery} ipt
- * @param {String | undefined | null} customMess
+ * @param {String | undefined | null} customMess Thông báo tùy chỉnh hay mặc định
  * @param {Boolean | undefined} focus
- * @returns {JQuery}
+ * @returns {JQuery | null}
  */
 function _check_invalid(ipt, customMess, focus) {
+    if (ipt.is('.is-invalid')) {
+        return;
+    }
+
+    // Xác định custom message
+    let elErr = ipt.next();
+    let errMess = '';
+    if (ipt.data('error-mess') && ipt.data('error-mess').length > 0) {
+        errMess = ipt.data('error-mess');
+    } else {
+        if (elErr.is('label')) {
+            // Dạng form-check
+            elErr = elErr.next();
+        }
+        if (elErr.length == 1 && (elErr.is('.invalid-feedback') || elErr.is('.invalid-tooltip'))) {
+            if (!elErr.data('error-mess') || elErr.data('error-mess') == '') {
+                elErr.data('error-mess', elErr.text());
+            }
+            errMess = elErr.data('error-mess');
+        }
+    }
+
     const valid = {
-        type: $(ipt).data('valid'),
+        type: ($(ipt).data('valid') || $(ipt).attr('type') || 'text').toLowerCase(),
         empty: $(ipt).data('empty') !== undefined ? $(ipt).data('empty') : '',
         allowedEmpty: !!$(ipt).data('allowed-empty'),
+        min: $(ipt).data('min') !== undefined ? $(ipt).data('min') : 1,
+        max: $(ipt).data('max') !== undefined ? $(ipt).data('max') : 1,
+        minLen: $(ipt).attr('minlength') !== undefined ? parseFloat($(ipt).attr('minlength')) : -1,
+        maxLen: $(ipt).attr('maxlength') !== undefined ? parseFloat($(ipt).attr('maxlength')) : -1,
+        errMess: errMess.length > 0 ? errMess : null,
+        errType: $(ipt).data('error-type') || 'tooltip'
     };
-    focus && ipt.focus();
+    const form = ipt.closest('form');
+    focus && ipt.focus(); // FIXME
     if (customMess && customMess.length > 0) {
-        return _make_check_invalid(ipt, customMess);
+        return _make_check_invalid(ipt, valid, customMess);
     }
-    // Check bắt buộc
-    if (!valid.allowedEmpty && (valid.type == 'email' || valid.type == 'text') && trim(ipt.val()) == valid.empty) {
-        return _make_check_invalid(ipt, nv_required);
+    // Check bắt buộc dạng nhập
+    if (!valid.allowedEmpty && (valid.type == 'email' || valid.type == 'text') && (
+        trim(ipt.val()) == valid.empty ||
+        (valid.minLen >= 0 && trim(ipt.val()).length < valid.minLen) ||
+        (valid.maxLen >= 0 && trim(ipt.val()).length > valid.maxLen)
+    )) {
+        let mess = nv_required;
+        if (valid.minLen >=0 && valid.maxLen >= 0) {
+            mess = nv_rangelength.replace('{0}', valid.minLen).replace('{1}', valid.maxLen);
+        } else if (valid.minLen >= 0) {
+            mess = nv_minlength.replace('{0}', valid.minLen);
+        } else if (valid.maxLen >= 0) {
+            mess = nv_maxlength.replace('{0}', valid.maxLen);
+        }
+        return _make_check_invalid(ipt, valid, valid.errMess || mess);
+    }
+    // Check bắt buộc dạng chọn checkbox, radio trên item cuối của cùng nhóm name
+    if ((valid.type === 'radio' || valid.type === 'checkbox')) {
+        const checked = $('[name="' + ipt.attr('name') + '"]:checked', form).length;
+        if (checked < valid.min || checked > valid.max) {
+            let mess;
+            if (valid.min < 1) {
+                mess = nv_maxcheck.replace('{0}', valid.max);
+            } else if (valid.max < 1) {
+                mess = nv_mincheck.replace('{0}', valid.min);
+            } else {
+                mess = nv_rangecheck.replace('{0}', valid.min).replace('{1}', valid.max);
+            }
+            return _make_check_invalid(ipt, valid, valid.errMess || mess);
+        }
     }
     // Check rule
     if (valid.type == 'email' && !nv_mailfilter.test(trim(ipt.val()))) {
-        return _make_check_invalid(ipt, nv_email);
+        return _make_check_invalid(ipt, valid, valid.errMess || nv_email);
     }
+}
+
+/**
+ * Focus vào input bị lỗi đầu tiên trong form hoặc input chỉ định
+ *
+ * @param {JQuery} form
+ * @param {JQuery | undefined} ipt
+ * @returns {Boolean}
+ */
+function _focus_error(form, ipt) {
+    const invalid = form.find('.is-invalid').first();
+    if (invalid.length < 1) {
+        return true;
+    }
+    const type = (invalid.attr('type') || 'text').toLowerCase();
+    if (type !== 'radio' && type !== 'checkbox') {
+        invalid.focus();
+    } else {
+        const rect = invalid[0].getBoundingClientRect();
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            invalid[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    return false;
 }
 
 /**
@@ -69,18 +162,28 @@ function nv_precheck_form(form) {
     $('.is-valid', form).removeClass('is-valid');
     $('.invalid-tooltip, .valid-feedback', form).text('');
 
+    const processedNames = new Set();
     $('[data-valid]', form).each(function() {
-        _check_invalid($(this));
+        let $el = $(this);
+        let type = $el.attr('type');
+        let name = $el.attr('name');
+        if (!name) {
+            return;
+        }
+        if ((type === 'radio' || type === 'checkbox') && name) {
+            // Checkbox và radio cùng name kiểm tra và xử lý 1 lần trên phần tử cuối cùng
+            if (processedNames.has(name)) {
+                return;
+            }
+            processedNames.add(name);
+            let $lastInGroup = $('[name="' + name + '"]', form).last();
+            _check_invalid($lastInGroup);
+        } else {
+            _check_invalid($el);
+        }
     });
 
-    const invalid = form.find('.invalid-tooltip:visible, .valid-feedback:visible').first();
-    const iptBefore = invalid.prev('[data-valid]');
-    if (iptBefore.length > 0) {
-        iptBefore.focus();
-        return false;
-    }
-
-    return true;
+    return _focus_error(form);
 }
 
 $(function() {
@@ -94,58 +197,6 @@ $(function() {
             sClock.text(nv_format_date(sClock.data('format'), newDate));
         }, 1000);
     }
-
-    // Validate dạng mặc định: Check rule trước khi submit form
-    const checkDIpt = (input) => {
-        const ipt = $(input);
-        const err = $(input).next();
-        const value = trim(ipt.val());
-        if (
-            !err.length ||
-            (!err.is('.invalid-feedback') && !err.is('.invalid-tooltip')) ||
-            typeof ipt.data('error-mess') === 'undefined' ||
-            ipt.data('error-mess') === ''
-        ) {
-            return 0;
-        }
-        if (
-            value === '' ||
-            (typeof ipt.attr('minlength') !== 'undefined' && value.length < parseInt(ipt.attr('minlength'))) ||
-            (typeof ipt.attr('maxlength') !== 'undefined' && value.length > parseInt(ipt.attr('maxlength')))
-        ) {
-            ipt.addClass('is-invalid');
-            err.text(ipt.data('error-mess'));
-            return 1;
-        }
-        return 0;
-    };
-    $('body').on('submit', '[data-toggle="valid-dform"]', function(e) {
-        const form = $(this);
-        let invalid = 0;
-        $('[required]', form).each(function() {
-            invalid += checkDIpt(this);
-        });
-        if (invalid > 0) {
-            e.preventDefault();
-        }
-    });
-    $('body').on('keyup change', '[required]', function(e) {
-        if (e.type === 'keyup' && e.keyCode === 13) {
-            return;
-        }
-
-        const input = $(this);
-        const form = input.closest('form');
-        if (!form.length || !form.is('[data-toggle="valid-dform"]')) {
-            return;
-        }
-        input.removeClass('is-invalid');
-
-        const err = input.next();
-        if (err.length && (err.is('.invalid-feedback') || err.is('.invalid-tooltip'))) {
-            err.text('');
-        }
-    });
 
     // Thanh menu ngang mặc định
     const menu = $('[data-toggle="main-nav"]');
@@ -361,13 +412,7 @@ $(function() {
         e.preventDefault();
 
         const form = $(this);
-
-        if ($('.is-invalid:visible', form).length > 0) {
-            let ipt = $('.is-invalid:visible:first', form);
-            if (ipt.is('.input-group')) {
-                ipt = $('input:first', ipt);
-            }
-            ipt.focus();
+        if (!_focus_error(form)) {
             return;
         }
 
@@ -381,98 +426,113 @@ $(function() {
             }
         }
 
-        const formData = new FormData(form[0]);
-        $('input, textarea, select, button', form).prop('disabled', true);
-
-        $.ajax({
-            url: form.attr('action'),
-            type: (form.attr('method') || 'POST'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            cache: false,
-            success: function(respon) {
-                // Gửi form thành công
-                if (respon.status == 'OK' || respon.status == 'ok' || respon.status == 'success') {
-                    let cb;
-                    const callback = form.data('callback');
-                    if ('function' === typeof callback) {
-                        cb = callback(respon);
-                    } else if ('string' == typeof callback && "function" === typeof window[callback]) {
-                        cb = window[callback](respon);
-                    }
-                    if (cb === 0 || cb === false) {
-                        return;
-                    }
-                    let timeout = 0;
-                    if (respon.mess) {
-                        nukeviet.toast(respon.mess, respon.warning ? 'warning' : 'success');
-                        timeout = respon.timeout ? respon.timeout : 2000;
-                    }
-                    if (respon.redirect) {
-                        setTimeout(() => {
-                            window.location.href = respon.redirect;
-                        }, timeout);
-                    } else if (respon.refresh) {
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, timeout);
-                    } else {
-                        setTimeout(() => {
-                            $('input, textarea, select, button', form).prop('disabled', false);
-                            if (typeof(CKEDITOR) !== 'undefined') {
-                                for (let instance in CKEDITOR.instances) {
-                                    CKEDITOR.instances[instance].setReadOnly(false);
-                                }
-                            }
-                        }, 1000);
-                    }
+        const processSuccess = (respon) => {
+            if (respon.status == 'OK' || respon.status == 'ok' || respon.status == 'success') {
+                let cb;
+                const callback = form.data('callback');
+                if ('function' === typeof callback) {
+                    cb = callback(respon);
+                } else if ('string' == typeof callback && "function" === typeof window[callback]) {
+                    cb = window[callback](respon);
+                }
+                if (cb === 0 || cb === false) {
                     return;
                 }
-                // Gửi form thất bại
-                $('input, textarea, select, button', form).prop('disabled', false);
-                if (respon.tab) {
-                    bootstrap.Tab.getOrCreateInstance(document.getElementById(respon.tab)).show();
+                let timeout = 0;
+                if (respon.mess) {
+                    nukeviet.toast(respon.mess, respon.warning ? 'warning' : 'success');
+                    timeout = respon.timeout ? respon.timeout : 2000;
                 }
-                if (respon.input) {
-                    let eleCtn = null;
-                    if (respon.input_parent) {
-                        // Trường hợp nhiều input cùng tên có chỉ định ra thẻ cha của nó
-                        eleCtn = $(respon.input_parent, form);
-                    } else {
-                        eleCtn = form;
-                    }
-                    let ele = $('[name^=' + respon.input + ']', eleCtn);
-                    if (ele.length) {
-                        _check_invalid(ele, respon.mess, true);
-                        return;
-                    }
+                if (respon.redirect) {
+                    setTimeout(() => {
+                        window.location.href = respon.redirect;
+                    }, timeout);
+                } else if (respon.refresh) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, timeout);
+                } else {
+                    setTimeout(() => {
+                        $('input, textarea, select, button', form).prop('disabled', false);
+                        if (typeof(CKEDITOR) !== 'undefined') {
+                            for (let instance in CKEDITOR.instances) {
+                                CKEDITOR.instances[instance].setReadOnly(false);
+                            }
+                        }
+                    }, 1000);
                 }
-                nukeviet.toast(respon.mess, 'error');
-            },
-            error: function(xhr, text, err) {
-                $('input, textarea, select, button', form).prop('disabled', false);
-                nukeviet.toast(err || text, 'error');
-                console.log(xhr, text, err);
+                return;
             }
-        });
-    });
-
-    $(document).on('change keyup', '[data-toggle="ajax-form"] select', function() {
-        $(this).removeClass('is-invalid is-valid');
-        if ($(this).parent().is('.input-group')) {
-            $(this).parent().removeClass('is-invalid is-valid');
+            // Gửi form thất bại
+            $('input, textarea, select, button', form).prop('disabled', false);
+            if (respon.tab) {
+                bootstrap.Tab.getOrCreateInstance(document.getElementById(respon.tab)).show();
+            }
+            if (respon.input) {
+                let eleCtn = null;
+                if (respon.input_parent) {
+                    // Trường hợp nhiều input cùng tên có chỉ định ra thẻ cha của nó
+                    eleCtn = $(respon.input_parent, form);
+                } else {
+                    eleCtn = form;
+                }
+                let ele = $('[name^=' + respon.input + ']', eleCtn);
+                if (ele.length) {
+                    _check_invalid(ele, respon.mess, true);
+                    return;
+                }
+            }
+            nukeviet.toast(respon.mess, 'error');
+        };
+        const processError = (xhr, text, err) => {
+            $('input, textarea, select, button', form).prop('disabled', false);
+            nukeviet.toast(err || text, 'error');
+            console.log(xhr, text, err);
+        };
+        const ajOptions = {
+            url: form.attr('action'),
+            type: (form.attr('method') || 'POST').toUpperCase(),
+            dataType: 'json',
+            cache: false,
+            success: processSuccess,
+            error: processError
+        };
+        if (ajOptions.type === 'POST') {
+            ajOptions.data = (new FormData(form[0]));
+            ajOptions.processData = false;
+            ajOptions.contentType = false;
+        } else {
+            ajOptions.data = form.serialize();
         }
+        $('input, textarea, select, button', form).prop('disabled', true);
+        $.ajax(ajOptions);
     });
 
-    $(document).on('change keyup', '[data-toggle="ajax-form"] [type="text"], [data-toggle="ajax-form"] [type="password"], [data-toggle="ajax-form"] [type="number"], [data-toggle="ajax-form"] [type="email"], [data-toggle="ajax-form"] textarea', function(e) {
+    $(document).on('change keyup', '[data-valid]', function(e) {
         if (e.type === "keyup" && e.which === 13) {
             return;
         }
-        let pr = $(this).parent();
-        let prAlso = $(this).parent().is('.input-group');
-        $(this).removeClass('is-invalid is-valid');
-        if (prAlso) pr.removeClass('is-invalid is-valid');
+
+        const ipt = $(this);
+        const form = ipt.closest('form');
+        if (form.length < 1 || (!form.is('[data-toggle="ajax-form"]') && !form.is('[data-precheck="nv_precheck_form"]'))) {
+            return;
+        }
+        const type = (ipt.attr('type') || 'text').toLowerCase();
+
+        if (type === 'radio' || type === 'checkbox') {
+            $('[name="' + ipt.attr('name') + '"]', form).removeClass('is-invalid is-valid');
+            return;
+        } else if (ipt.is('select')) {
+            ipt.removeClass('is-invalid is-valid');
+            if (ipt.parent().is('.input-group')) {
+                ipt.parent().removeClass('is-invalid is-valid');
+            }
+        } else {
+            let pr = ipt.parent();
+            let prAlso = ipt.parent().is('.input-group');
+            ipt.removeClass('is-invalid is-valid');
+            if (prAlso) pr.removeClass('is-invalid is-valid');
+        }
     });
 });
