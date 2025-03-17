@@ -63,9 +63,6 @@ if (!nv_function_exists('nv_block_voting')) {
         global $nv_Cache, $db, $site_mods, $global_config, $nv_Lang;
 
         $module = $block_config['module'];
-        if (!isset($site_mods[$module])) {
-            return '';
-        }
 
         // Lấy hết các khảo sát đang hoạt động
         $sql = 'SELECT vid, question, link, acceptcm, active_captcha, groups_view, publ_time, exp_time

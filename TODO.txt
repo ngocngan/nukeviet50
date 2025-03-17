@@ -84,8 +84,22 @@ check node_modules/bootstrap/scss/bootstrap.scss xem khác với version cũ ra 
 -- Voting
 --------------------------
 
-Chạy sql này để tìm xem giao diện bạn có dùng block global.voting_random.php không
-SELECT * FROM `nv4_vi_blocks_groups` WHERE `file_name` LIKE 'global.voting_random.php'
-SELECT * FROM `nv4_en_blocks_groups` WHERE `file_name` LIKE 'global.voting_random.php'
+Chạy sql này để chuyển block voting_random sang voting
 
-Nếu có vào quản lý block tìm các block đó sửa nó sang block global.voting.php với kiểu hiển thị là "Ngẫu nhiên"
+SET @configValue = 'a:2:{s:3:"vid";i:0;s:9:"show_type";s:6:"random";}';
+UPDATE nv5_vi_blocks_groups
+SET file_name = 'global.voting.php',
+    config = @configValue
+WHERE file_name = 'global.voting_random.php'
+AND module IN (
+    SELECT title FROM nv5_vi_modules WHERE module_file='voting'
+);
+UPDATE nv5_en_blocks_groups
+SET file_name = 'global.voting.php',
+    config = @configValue
+WHERE file_name = 'global.voting_random.php'
+AND module IN (
+    SELECT title FROM nv5_en_modules WHERE module_file='voting'
+);
+
+Trộn code xong rồi lấy tools/future2default/voting-blocks các tệp trong này chép qua giao diện bạn đang dùng

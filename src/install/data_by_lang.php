@@ -705,12 +705,13 @@ $blockGroups = [
             ],
             [
                 'module' => 'voting',
-                'file_name' => 'global.voting_random.php',
-                'title' => $install_lang['blocks_groups']['voting']['global.voting_random'],
+                'file_name' => 'global.voting.php',
+                'title' => $install_lang['blocks_groups']['voting']['global.voting'],
                 'template' => 'primary',
                 'active' => '1',
                 'groups_view' => '6',
-                'all_func' => 1
+                'all_func' => 1,
+                'config' => 'a:2:{s:3:"vid";i:0;s:9:"show_type";s:6:"random";}'
             ],
             [
                 'module' => 'news',
