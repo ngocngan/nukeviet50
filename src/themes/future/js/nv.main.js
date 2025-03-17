@@ -28,14 +28,7 @@ function _make_check_invalid(ipt, data, message) {
         element = $(`<div class="invalid-${data.errType}"></div>`).insertAfter(ipt.next().is('label') ? ipt.next() : ipt);
     }
     element.text(message);
-
-    if ((data.type === 'radio' || data.type === 'checkbox')) {
-        // Lỗi tất cả input cùng name nhưng tip ở item cuối cùng
-        $('[name="' + ipt.attr('name') + '"]', form).addClass('is-invalid');
-    } else {
-        ipt.addClass('is-invalid');
-    }
-
+    $(_get_input_name(ipt), form).addClass('is-invalid');
     return element;
 }
 
@@ -44,10 +37,9 @@ function _make_check_invalid(ipt, data, message) {
  *
  * @param {JQuery} ipt
  * @param {String | undefined | null} customMess Thông báo tùy chỉnh hay mặc định
- * @param {Boolean | undefined} focus
  * @returns {JQuery | null}
  */
-function _check_invalid(ipt, customMess, focus) {
+function _check_invalid(ipt, customMess) {
     if (ipt.is('.is-invalid')) {
         return;
     }
@@ -82,7 +74,6 @@ function _check_invalid(ipt, customMess, focus) {
         errType: $(ipt).data('error-type') || 'tooltip'
     };
     const form = ipt.closest('form');
-    focus && ipt.focus(); // FIXME
     if (customMess && customMess.length > 0) {
         return _make_check_invalid(ipt, valid, customMess);
     }
@@ -104,7 +95,7 @@ function _check_invalid(ipt, customMess, focus) {
     }
     // Check bắt buộc dạng chọn checkbox, radio trên item cuối của cùng nhóm name
     if ((valid.type === 'radio' || valid.type === 'checkbox')) {
-        const checked = $('[name="' + ipt.attr('name') + '"]:checked', form).length;
+        const checked = $(_get_input_name(ipt), form).filter(':checked').length;
         if (checked < valid.min || checked > valid.max) {
             let mess;
             if (valid.min < 1) {
@@ -121,6 +112,26 @@ function _check_invalid(ipt, customMess, focus) {
     if (valid.type == 'email' && !nv_mailfilter.test(trim(ipt.val()))) {
         return _make_check_invalid(ipt, valid, valid.errMess || nv_email);
     }
+}
+
+/**
+ * Xác định name thẻ input trong trường hợp có multiple
+ *
+ * @param {JQuery} ipt
+ * @returns {String}
+ */
+function _get_input_name(ipt) {
+    const name = ipt.attr('name');
+    const matches = name.match(/\[/g);
+    const groupCount = matches ? matches.length : 0;
+
+    if (groupCount > 1) {
+        return `[name^="${name.replace(/\[[^\]]*\]$/, '')}"]`;
+    }
+    if (groupCount === 1) {
+        return `[name^="${name.split('[')[0]}["]`;
+    }
+    return `[name="${name}"]`;
 }
 
 /**
@@ -163,24 +174,14 @@ function nv_precheck_form(form) {
     $('.invalid-tooltip, .valid-feedback', form).text('');
 
     const processedNames = new Set();
-    $('[data-valid]', form).each(function() {
-        let $el = $(this);
-        let type = $el.attr('type');
-        let name = $el.attr('name');
-        if (!name) {
+    $('[data-valid][name]', form).each(function() {
+        const ipt = $(this);
+        const sName = _get_input_name(ipt);
+        if (processedNames.has(sName)) {
             return;
         }
-        if ((type === 'radio' || type === 'checkbox') && name) {
-            // Checkbox và radio cùng name kiểm tra và xử lý 1 lần trên phần tử cuối cùng
-            if (processedNames.has(name)) {
-                return;
-            }
-            processedNames.add(name);
-            let $lastInGroup = $('[name="' + name + '"]', form).last();
-            _check_invalid($lastInGroup);
-        } else {
-            _check_invalid($el);
-        }
+        processedNames.add(sName);
+        _check_invalid($(sName, form).last());
     });
 
     return _focus_error(form);
@@ -431,9 +432,9 @@ $(function() {
                 let cb;
                 const callback = form.data('callback');
                 if ('function' === typeof callback) {
-                    cb = callback(respon);
+                    cb = callback(respon, form);
                 } else if ('string' == typeof callback && "function" === typeof window[callback]) {
-                    cb = window[callback](respon);
+                    cb = window[callback](respon, form);
                 }
                 if (cb === 0 || cb === false) {
                     return;
@@ -469,16 +470,10 @@ $(function() {
                 bootstrap.Tab.getOrCreateInstance(document.getElementById(respon.tab)).show();
             }
             if (respon.input) {
-                let eleCtn = null;
-                if (respon.input_parent) {
-                    // Trường hợp nhiều input cùng tên có chỉ định ra thẻ cha của nó
-                    eleCtn = $(respon.input_parent, form);
-                } else {
-                    eleCtn = form;
-                }
-                let ele = $('[name^=' + respon.input + ']', eleCtn);
-                if (ele.length) {
-                    _check_invalid(ele, respon.mess, true);
+                const ipt = respon.input.includes('[') ? $('[name^="' + respon.input + '"]', form) : $('[name="' + respon.input + '"]', form);
+                if (ipt.length) {
+                    _check_invalid(ipt.last(), respon.mess);
+                    _focus_error(form);
                     return;
                 }
             }
@@ -521,7 +516,7 @@ $(function() {
         const type = (ipt.attr('type') || 'text').toLowerCase();
 
         if (type === 'radio' || type === 'checkbox') {
-            $('[name="' + ipt.attr('name') + '"]', form).removeClass('is-invalid is-valid');
+            $(_get_input_name(ipt), form).removeClass('is-invalid is-valid');
             return;
         } else if (ipt.is('select')) {
             ipt.removeClass('is-invalid is-valid');
