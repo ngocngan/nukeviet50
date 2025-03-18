@@ -16,27 +16,42 @@ if (!defined('NV_IS_MOD_VOTING')) {
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
 $vid = $nv_Request->get_int('vid', 'get,post', 0);
 
-//  Danh sách bình chọn
+// Danh sách bình chọn
 if (empty($vid)) {
     $canonicalUrl = getCanonicalUrl($page_url, true, true);
 
     $page_title = $module_info['site_title'];
     $key_words = $module_info['keywords'];
 
-    $sql = 'SELECT vid, question, link, acceptcm, active_captcha, groups_view, publ_time, exp_time FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE act=1 ORDER BY publ_time DESC';
+    $sql = 'SELECT vid, question, link, acceptcm, active_captcha, groups_view, publ_time, exp_time
+    FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE act=1 ORDER BY publ_time DESC';
     $list = $nv_Cache->db($sql, 'vid', 'voting');
 
     $allowed = [];
     $is_update = [];
 
     if (!empty($list)) {
-        $a = 0;
         foreach ($list as $row) {
             if ($row['exp_time'] > 0 and $row['exp_time'] < NV_CURRENTTIME) {
                 $is_update[] = $row['vid'];
             } elseif ($row['publ_time'] <= NV_CURRENTTIME and nv_user_in_groups($row['groups_view'])) {
-                $allowed[$a] = $row;
-                ++$a;
+                $sql = 'SELECT id, vid, title, url FROM ' . NV_PREFIXLANG . '_' . $site_mods['voting']['module_data'] . '_rows
+                WHERE vid = ' . $row['vid'] . ' ORDER BY id ASC';
+                $items = $nv_Cache->db($sql, '', $module_name);
+
+                $allowed[] = [
+                    'checkss' => md5($row['vid'] . NV_CHECK_SESSION),
+                    'accept' => (int) $row['acceptcm'],
+                    'active_captcha' => (int) $row['active_captcha'],
+                    'errsm' => (int) $row['acceptcm'] > 1 ? $nv_Lang->getModule('voting_warning_all', (int) $row['acceptcm']) : $nv_Lang->getModule('voting_warning_accept1'),
+                    'vid' => $row['vid'],
+                    'question' => (empty($row['link'])) ? $row['question'] : '<a target="_blank" href="' . $row['link'] . '">' . $row['question'] . '</a>',
+                    'action' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name,
+                    'langresult' => $nv_Lang->getModule('voting_result'),
+                    'langsubmit' => $nv_Lang->getModule('voting_hits'),
+                    'publtime' => nv_datetime_format($row['publ_time'], 1, 0),
+                    'items' => $items
+                ];
             }
         }
     }
@@ -50,61 +65,9 @@ if (empty($vid)) {
         $nv_Cache->delMod($module_name);
     }
 
+    $contents = '';
     if (!empty($allowed)) {
-        $xtpl = new XTemplate('main.tpl', get_module_tpl_dir('main.tpl'));
-        $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
-
-        foreach ($allowed as $current_voting) {
-            $voting_array = [
-                'checkss' => md5($current_voting['vid'] . NV_CHECK_SESSION),
-                'accept' => (int) $current_voting['acceptcm'],
-                'active_captcha' => (int) $current_voting['active_captcha'],
-                'errsm' => (int) $current_voting['acceptcm'] > 1 ? $nv_Lang->getModule('voting_warning_all', (int) $current_voting['acceptcm']) : $nv_Lang->getModule('voting_warning_accept1'),
-                'vid' => $current_voting['vid'],
-                'question' => (empty($current_voting['link'])) ? $current_voting['question'] : '<a target="_blank" href="' . $current_voting['link'] . '">' . $current_voting['question'] . '</a>',
-                'action' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name,
-                'langresult' => $nv_Lang->getModule('voting_result'),
-                'langsubmit' => $nv_Lang->getModule('voting_hits'),
-                'publtime' => nv_datetime_format($current_voting['publ_time'], 1, 0)
-            ];
-            $xtpl->assign('VOTING', $voting_array);
-
-            $sql = 'SELECT id, vid, title, url FROM ' . NV_PREFIXLANG . '_' . $site_mods['voting']['module_data'] . '_rows WHERE vid = ' . $current_voting['vid'] . ' ORDER BY id ASC';
-            $list = $nv_Cache->db($sql, '', $module_name);
-
-            foreach ($list as $row) {
-                if (!empty($row['url'])) {
-                    $row['title'] = '<a target="_blank" href="' . $row['url'] . '">' . $row['title'] . '</a>';
-                }
-                $xtpl->assign('RESULT', $row);
-                if ((int) $current_voting['acceptcm'] > 1) {
-                    $xtpl->parse('main.loop.resultn');
-                } else {
-                    $xtpl->parse('main.loop.result1');
-                }
-            }
-
-            if ($voting_array['active_captcha']) {
-                if ($module_captcha == 'recaptcha' and $global_config['recaptcha_ver'] == 3) {
-                    $xtpl->parse('main.loop.recaptcha3');
-                } elseif (($module_captcha == 'recaptcha' and $global_config['recaptcha_ver'] == 2) or $module_captcha == 'captcha') {
-                    if ($module_captcha == 'recaptcha' and $global_config['recaptcha_ver'] == 2) {
-                        $xtpl->assign('RECAPTCHA_ELEMENT', 'recaptcha' . nv_genpass(8));
-                        $xtpl->assign('N_CAPTCHA', $nv_Lang->getGlobal('securitycode1'));
-                        $xtpl->parse('main.loop.has_captcha.recaptcha');
-                    } else {
-                        $xtpl->assign('N_CAPTCHA', $nv_Lang->getGlobal('securitycode'));
-                        $xtpl->parse('main.loop.has_captcha.basic');
-                    }
-                    $xtpl->parse('main.loop.has_captcha');
-                }
-            }
-
-            $xtpl->parse('main.loop');
-        }
-
-        $xtpl->parse('main');
-        $contents = $xtpl->text('main');
+        $contents = voting_main($allowed);
     }
 
     include NV_ROOTDIR . '/includes/header.php';
@@ -264,20 +227,14 @@ while ($row2 = $result->fetch()) {
     $vrow[] = $row2;
 }
 
-$pubtime = nv_datetime_format($row['publ_time']);
-$lang = [
-    'total' => $nv_Lang->getModule('voting_total'),
-    'counter' => $nv_Lang->getModule('voting_counter'),
-    'publtime' => $nv_Lang->getModule('voting_pubtime')
-];
 $voting = [
     'question' => $row['question'],
     'total' => $totalvote,
-    'pubtime' => $pubtime,
+    'pubtime' => nv_datetime_format($row['publ_time']),
     'row' => $vrow,
-    'lang' => $lang,
     'note' => $note,
-    'is_error' => $is_error
+    'is_error' => $is_error,
+    'ajax' => $nv_Request->get_int('nv_ajax_voting', 'post', 0)
 ];
 
 $contents = voting_result($voting);
@@ -286,7 +243,7 @@ $page_title = $row['question'];
 $page_url .= '&amp;vid=' . $vid;
 $canonicalUrl = getCanonicalUrl($page_url);
 
-if ($nv_Request->get_int('nv_ajax_voting', 'post', 0)) {
+if ($voting['ajax']) {
     nv_jsonOutput([
         'status' => 'ok',
         'mess' => '',

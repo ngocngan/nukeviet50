@@ -16,7 +16,7 @@
  */
 function votingProcessResult(data, form) {
     $('input, textarea, select, button', form).prop('disabled', false);
-    modalShow('', data.html);
+    modalShow(form.data('result-title'), data.html);
     if (form.data('related-btn')) {
         $(`#${form.data('related-btn')}`).prop('disabled', false);
     }

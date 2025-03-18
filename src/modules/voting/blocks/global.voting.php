@@ -118,7 +118,7 @@ if (!nv_function_exists('nv_block_voting')) {
         $tpl->assign('TEMPLATE', $block_theme);
         $tpl->assign('LANG', $nv_Lang);
         $tpl->assign('MODULE', $module);
-        $tpl->assign('CONFIG', $block_config);
+        $tpl->assign('UNIQUEID', $block_config['bid']);
         $tpl->assign('GCONFIG', $global_config);
 
         $voting_array = [
@@ -128,9 +128,9 @@ if (!nv_function_exists('nv_block_voting')) {
             'errsm' => (int) $current_voting['acceptcm'] > 1 ? $nv_Lang->getModule('voting_warning_all', (int) $current_voting['acceptcm']) : $nv_Lang->getModule('voting_warning_accept1'),
             'vid' => $current_voting['vid'],
             'question' => (empty($current_voting['link'])) ? $current_voting['question'] : '<a target="_blank" href="' . $current_voting['link'] . '">' . $current_voting['question'] . '</a>',
+            'items' => $list,
         ];
         $tpl->assign('VOTING', $voting_array);
-        $tpl->assign('ITEMS', $list);
         $tpl->assign('MODULE_CAPTCHA', nv_module_captcha($module));
 
         $content = $tpl->fetch('global.voting.tpl');

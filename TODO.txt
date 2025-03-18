@@ -102,4 +102,4 @@ AND module IN (
     SELECT title FROM nv5_en_modules WHERE module_file='voting'
 );
 
-Trộn code xong rồi lấy tools/future2default/voting-blocks các tệp trong này chép qua giao diện bạn đang dùng
+Trộn code xong rồi lấy tools/future2default/voting các tệp trong này chép qua giao diện bạn đang dùng
