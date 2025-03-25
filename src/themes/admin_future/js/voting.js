@@ -57,19 +57,18 @@ $(function () {
         $.ajax({
             type: 'POST',
             cache: false,
-            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=voting&' + nv_fc_variable + '=main&vid=' + btn.data('vid') + '&checkss=' + btn.data('checkss') + '&lid=0',
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=voting&vid=' + btn.data('vid'),
             data: {
                 nv_ajax_voting: 1
             },
-            dataType: 'html',
+            dataType: 'json',
             success: function (res) {
                 icon.removeClass('fa-spinner fa-spin-pulse').addClass(icon.data('icon'));
-                var r_split = res.split('_');
-                if (r_split[0] === 'ERROR') {
-                    nvToast(r_split[1], 'error');
-                } else {
-                    modalShow(btn.data('title'), res);
+                if (res.status !== 'ok') {
+                    nukeviet.toast(res.mess, 'error');
+                    return 0;
                 }
+                modalShow(btn.data('title'), res.html);
             },
             error: function (xhr, text, err) {
                 icon.removeClass('fa-spinner fa-spin-pulse').addClass(icon.data('icon'));
