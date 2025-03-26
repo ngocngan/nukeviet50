@@ -396,20 +396,29 @@ $(document).ready(function() {
         $('#adv-form').collapse('hide');
     }
 
-    $('input[name="open_source"]').change(function() {
-        if ($(this).is(':checked')) {
-            $('#content_bodytext_required').addClass('hidden');
-        } else {
-            $('#content_bodytext_required').removeClass('hidden');
-        }
-    });
-
     // Duy trì trạng thái sửa bài viết
     if (typeof CFG.is_edit_news != "undefined" && CFG.is_edit_news == true) {
         timer_check_takeover = setTimeout(function() {
             nv_timer_check_takeover(CFG.id);
         }, 10000);
     }
+
+    // Toggle trạng thái bắt buộc của nội dung bài viết
+    function checkReqBHtml() {
+        const form = $('#form-news-content');
+        const reqBHtml = (trim($('[name="sourcetext"]', form).val()) == ''|| !$('[name="external_link"]', form).is(':checked')) ? true : false;
+        if (reqBHtml) {
+            $('#content_bodytext_required').show();
+            return;
+        }
+        $('#content_bodytext_required').hide();
+    }
+    $('[name="external_link"]').on('change', function() {
+        checkReqBHtml();
+    });
+    $('#AjaxSourceText').on('change', function() {
+        checkReqBHtml();
+    });
 
     // Kiểm tra form đăng bài viết
     $('#form-news-content').on('submit', function(e) {
@@ -438,10 +447,12 @@ $(document).ready(function() {
             return;
         }
 
+        const reqBHtml = (trim($('[name="sourcetext"]', form).val()) == ''|| !$('[name="external_link"]', form).is(':checked')) ? true : false;
+
         // Nội dung bài viết
         let editorid = form.data('mdata') + '_bodyhtml';
         if (typeof CKEDITOR != "undefined" && CKEDITOR.instances[editorid]) {
-            if (trim(CKEDITOR.instances[editorid].getData()) == '') {
+            if (reqBHtml && trim(CKEDITOR.instances[editorid].getData()) == '') {
                 e.preventDefault();
                 $(form).find("#show_error").css('display', 'block');
                 $("#show_error", form).html(form.data('ebodytext'));
@@ -452,7 +463,7 @@ $(document).ready(function() {
             }
         }
         if (typeof window.nveditor != "undefined" && window.nveditor[editorid]) {
-            if (trim(window.nveditor[editorid].getData()) == '') {
+            if (reqBHtml && trim(window.nveditor[editorid].getData()) == '') {
                 e.preventDefault();
                 $(form).find("#show_error").css('display', 'block');
                 $("#show_error", form).html(form.data('ebodytext'));
