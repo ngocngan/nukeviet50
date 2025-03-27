@@ -1,0 +1,18 @@
+/**
+ * NukeViet Content Management System
+ * @version 5.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
+ */
+.user-bldropdown {
+  width: calc(250px + 2rem);
+  max-width: calc(100vw - 1rem);
+  padding: 1rem 1rem 0 1rem;
+}
+.user-bldropdown .no-avatar {
+  width: 80px;
+  height: 80px;
+}
+/*# sourceMappingURL=users.d.rtl.css.map */

@@ -685,10 +685,27 @@ function addition_module_assets(string $module, string $type): void
 
     // Thứ tự load các giao diện của mỗi file
     $dir_allowed = [];
-    $dir_allowed[$global_config['module_theme']] = $global_config['module_theme'];
-    if (!isset($dir_allowed[$global_config['site_theme']])) {
-        $dir_allowed[$global_config['site_theme']] = $global_config['site_theme'];
+
+    // Nếu module của block này chọn cố định giao diện mobile và đang chế độ mobile thì ưu tiên nó
+    if ($global_config['current_theme_type'] == 'm' and !empty($site_mods[$module]['mobile']) and
+        !str_starts_with($site_mods[$module]['mobile'], ':')
+    ) {
+        $dir_allowed[$site_mods[$module]['mobile']] = $site_mods[$module]['mobile'];
     }
+    /**
+     * Ưu tiên tiếp theo dành cho giao diện nếu cấu hình của module
+     * với điều kiện không ở chế độ mobile và giao diện mobile không được chọn là  "Giao diện PC theo cấu hình site"
+     */
+    if (!empty($site_mods[$module]['theme']) and !(
+        $global_config['current_theme_type'] == 'm' and $site_mods[$module]['mobile'] == ':pcsite'
+    )) {
+        $dir_allowed[$site_mods[$module]['theme']] = $site_mods[$module]['theme'];
+    }
+    // Ưu tiên giao diện của site
+    $dir_allowed[$global_config['site_theme']] = $global_config['site_theme'];
+    // Rồi đến giao diện của module mà block đặt vào
+    $dir_allowed[$global_config['module_theme']] = $global_config['module_theme'];
+    // Cuối cùng lấy ở giao diện mặc định
     if (!isset($dir_allowed[NV_DEFAULT_SITE_THEME])) {
         $dir_allowed[NV_DEFAULT_SITE_THEME] = NV_DEFAULT_SITE_THEME;
     }
