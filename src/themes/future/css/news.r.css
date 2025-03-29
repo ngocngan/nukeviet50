@@ -167,4 +167,25 @@
   z-index: 2;
 }
 
+.catbox .thumbnail-lg {
+  display: block;
+  height: 0;
+  padding-bottom: var(--nv-aspect-ratio, 75.47%);
+  position: relative;
+}
+.catbox .thumbnail-lg span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.catbox .thumbnail-lg span img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
 /*# sourceMappingURL=news.r.css.map */

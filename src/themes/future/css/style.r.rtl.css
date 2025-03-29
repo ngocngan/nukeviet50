@@ -25767,6 +25767,33 @@ readers do not read off random characters that represent icons */
   -webkit-box-orient: vertical;
 }
 
+.badge-new svg {
+  display: inline-block;
+  vertical-align: -0.125em;
+  fill: currentcolor;
+  width: 1em;
+  height: 1em;
+  margin: 0 -3px;
+  animation: badge-new-shake 1s infinite ease-in-out;
+}
+
+@keyframes badge-new-shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 .site-user-inform .inform-toggle, .topbar .socal-icons a, .topbar .contact-icons a:not(.dropdown-item), .topbar .topbar-search .search-icon, .site-header-mobile .toggle-main-nav {
   color: var(--nv-header-link-color);
   transition: color 0.15s ease-in-out;

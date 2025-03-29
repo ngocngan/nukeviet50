@@ -72,3 +72,23 @@
     -webkit-box-orient: vertical;
   }
 }
+
+.badge-new {
+  svg {
+    display: inline-block;
+    vertical-align: -.125em;
+    fill: currentcolor;
+    width: 1em;
+    height: 1em;
+    margin: 0 -3px;
+    animation: badge-new-shake 1s infinite ease-in-out;
+  }
+}
+
+@keyframes badge-new-shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  50% { transform: rotate(-20deg); }
+  75% { transform: rotate(20deg); }
+  100% { transform: rotate(0deg); }
+}

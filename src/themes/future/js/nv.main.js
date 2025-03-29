@@ -530,4 +530,13 @@ $(function() {
             if (prAlso) pr.removeClass('is-invalid is-valid');
         }
     });
+
+    // Tooltip
+    ([...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map(tipEle => new bootstrap.Tooltip(tipEle)));
+
+    // Popover
+    ([...document.querySelectorAll('[data-bs-toggle="popover"]')].map(popEle => new bootstrap.Popover(popEle)));
+
+    // Default toasts
+    ([...document.querySelectorAll('.toast')].map(toastEl => new bootstrap.Toast(toastEl)));
 });

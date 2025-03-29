@@ -161,3 +161,28 @@
     }
   }
 }
+
+// Box chuyên mục tin tức
+.catbox {
+  .thumbnail-lg {
+    display: block;
+    height: 0;
+    padding-bottom: var(--nv-aspect-ratio, 75.47%);
+    position: relative;
+
+    span {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}

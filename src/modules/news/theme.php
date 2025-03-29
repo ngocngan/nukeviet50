@@ -437,15 +437,35 @@ function viewcat_top($array_catcontent, $generate_page)
 }
 
 /**
- * viewsubcat_main()
+ * Giao diện tin theo chuyên mục, tin khác nằm phải (end), trái (start), dưới
  *
- * @param string $viewcat
+ * @param string $viewcat Một trong các giá trị sau:
+ *   - "viewcat_main_left"
+ *   - "viewcat_main_right"
+ *   - "viewcat_main_bottom"
  * @param array  $array_cat
  * @return string
  */
 function viewsubcat_main($viewcat, $array_cat)
 {
     global $module_name, $site_mods, $global_array_cat, $nv_Lang, $module_config, $module_info, $home;
+
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(get_module_tpl_dir($viewcat . '.tpl'));
+    $tpl->registerPlugin('modifier', 'ddatetime', 'nv_datetime_format');
+    $tpl->registerPlugin('modifier', 'dnumber', 'nv_number_format');
+    $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('HOME', $home);
+    $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
+    $tpl->assign('ARRAY_CATS', $array_cat);
+    $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
+
+    $imgratio = round(($module_config[$module_name]['homewidth'] / ($module_config[$module_name]['homeheight'] ?: $module_config[$module_name]['homewidth'])) * 100, 2);
+    $tpl->assign('IMGRATIO', $imgratio);
+
+    return $tpl->fetch($viewcat . '.tpl');
+
+
 
     $xtpl = new XTemplate($viewcat . '.tpl', get_module_tpl_dir($viewcat . '.tpl'));
     $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
@@ -1360,7 +1380,7 @@ function sendmail_themme($sendmail)
         $xtpl->assign('RECAPTCHA_ELEMENT', 'recaptcha' . nv_genpass(8));
         $xtpl->assign('N_CAPTCHA', $nv_Lang->getGlobal('securitycode1'));
         $xtpl->parse('main.recaptcha');
-    } 
+    }
     // Nếu dùng turnstile
     elseif ($module_captcha == 'turnstile') {
         $xtpl->parse('main.turnstile');

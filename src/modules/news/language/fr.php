@@ -228,6 +228,7 @@ $lang_module['numlinks'] = 'Nombre de liens';
 $lang_module['numcomments'] = 'Nombre de commentaire';
 $lang_module['numtags'] = 'Nombre de tags';
 $lang_module['newday'] = 'Icone des nouvelles (par jour)';
+$lang_module['newpost'] = 'New';
 $lang_module['hitstotal'] = 'Nombre de regard';
 $lang_module['checkall'] = 'Sélectionner tout';
 $lang_module['uncheckall'] = 'Désélectionner tout';

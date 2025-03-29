@@ -232,6 +232,20 @@ if (empty($contents)) {
 
         foreach ($global_array_cat as $_catid => $array_cat_i) {
             if ($array_cat_i['parentid'] == 0 and $array_cat_i['status'] == 1) {
+                // Xử lý list các chuyên mục con cấp 1
+                $array_cat_i['subcats'] = [];
+                if ($array_cat_i['numsubcat'] > 0) {
+                    $catids = explode(',', $array_cat_i['subcatid']);
+                    foreach ($catids as $_value) {
+                        if (isset($global_array_cat[$_value]) and !empty($global_array_cat[$_value]['status'])) {
+                            $array_cat_i['subcats'][$_value] = [
+                                'title' => $global_array_cat[$_value]['title'],
+                                'link' => $global_array_cat[$_value]['link'],
+                            ];
+                        }
+                    }
+                }
+
                 $array_cat[$key] = $array_cat_i;
                 $featured = 0;
                 if ($array_cat_i['featured'] != 0) {
