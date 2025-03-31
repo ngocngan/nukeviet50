@@ -4,7 +4,7 @@
     <div class="container py-4">
         [THEME_ERROR_INFO]
         [HEADER]
-        <div class="row">
+        <div class="row g-3">
             <aside class="main-start">
                 <div class="vstack vstack-blocks">
                     [START_SIDEBAR]

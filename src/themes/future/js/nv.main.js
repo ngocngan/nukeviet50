@@ -532,7 +532,12 @@ $(function() {
     });
 
     // Tooltip
-    ([...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map(tipEle => new bootstrap.Tooltip(tipEle)));
+    ([...document.querySelectorAll('[data-bs-toggle="tooltip"]')].map(tipEle => {
+        const dataToggle = tipEle.getAttribute('data-toggle');
+        if (!dataToggle || !dataToggle.startsWith('tooltip')) {
+            new bootstrap.Tooltip(tipEle);
+        }
+    }));
 
     // Popover
     ([...document.querySelectorAll('[data-bs-toggle="popover"]')].map(popEle => new bootstrap.Popover(popEle)));

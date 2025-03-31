@@ -258,6 +258,7 @@ if (empty($contents)) {
 
                         $item['newday'] = $array_cat_i['newday'];
                         $item['link'] = $array_cat_i['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                        $item['hometext_clean'] = nv_clean60(strip_tags($item['hometext']), $module_config[$module_name]['tooltip_length'], true);
                         $array_cat[$key]['content'][] = $item;
                         $featured = $item['id'];
                     }
@@ -280,6 +281,7 @@ if (empty($contents)) {
 
                     $item['newday'] = $array_cat_i['newday'];
                     $item['link'] = $array_cat_i['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                    $item['hometext_clean'] = nv_clean60(strip_tags($item['hometext']), $module_config[$module_name]['tooltip_length'], true);
                     $array_cat[$key]['content'][] = $item;
                 }
 

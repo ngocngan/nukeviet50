@@ -218,17 +218,39 @@ function nv_archive_content_module($id, $listcatid)
 }
 
 /**
- * Lấy nút sửa bài viết
+ * Lấy HTML nút sửa bài viết hoặc link sửa bài viết nếu có quyền
+ * không có quyền trả về chuỗi rỗng
  *
  * @param array $info cần có ít nhất id, và listcatid
+ * @param bool $link_only
  * @return string
  */
-function nv_link_edit_page(array $info)
+function nv_link_edit_page(array $info, bool $link_only = false)
 {
     global $nv_Lang, $module_name;
 
-    if (!isset($info['id']) or !isset($info['listcatid'])) {
+    if (!nv_check_edit_page($info)) {
         return '';
+    }
+
+    $link = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=content&amp;id=' . $info['id'];
+    if ($link_only) {
+        return $link;
+    }
+
+    return '<a class="btn btn-primary btn-xs btn_edit" href="' . $link . '"><i class="fa fa-edit fa-fw"></i> ' . $nv_Lang->getGlobal('edit') . '</a>';
+}
+
+/**
+ * Kiểm tra quyền sửa bài viết
+ *
+ * @param array $info cần có ít nhất id, và listcatid
+ * @return boolean
+ */
+function nv_check_edit_page(array $info)
+{
+    if (!isset($info['id']) or !isset($info['listcatid'])) {
+        return false;
     }
     if (defined('NV_SYSTEM') and !defined('NV_IS_ADMIN_MODULE')) {
         global $admin_permissions;
@@ -237,12 +259,10 @@ function nv_link_edit_page(array $info)
 
         // Kiểm tra quyền sửa bài
         if (count(array_intersect($listcatid, $admin_permissions['edit_content'] ?? [])) == 0) {
-            return '';
+            return false;
         }
     }
-
-    $link = '<a class="btn btn-primary btn-xs btn_edit" href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=content&amp;id=' . $info['id'] . '"><i class="fa fa-edit fa-fw"></i> ' . $nv_Lang->getGlobal('edit') . '</a>';
-    return $link;
+    return true;
 }
 
 /**
@@ -250,14 +270,39 @@ function nv_link_edit_page(array $info)
  *
  * @param array $info cần có ít nhất id, và listcatid
  * @param int $detail
- * @return string
+ * @param bool $link_only
+ * @return string|array
  */
-function nv_link_delete_page(array $info, int $detail = 0)
+function nv_link_delete_page(array $info, int $detail = 0, bool $link_only = false)
 {
     global $nv_Lang;
 
+    if (!nv_check_delete_page($info)) {
+        return $link_only ? [] : '';
+    }
+    $link_info = [
+        'id' => $info['id'],
+        'checkss' => md5($info['id'] . NV_CHECK_SESSION),
+        'detail' => $detail
+    ];
+    if ($link_only) {
+        return $link_info;
+    }
+
+    $link = '<a class="btn btn-danger btn-xs" href="#" data-toggle="nv_del_content" data-id="' . $info['id'] . '" data-checkss="' . $link_info['checkss'] . '" data-adminurl="' . NV_BASE_ADMINURL . '" data-detail="' . $detail . '"><em class="fa fa-trash-o margin-right"></em> ' . $nv_Lang->getGlobal('delete') . '</a>';
+    return $link;
+}
+
+/**
+ * Kiểm tra quyền xóa bài viết
+ *
+ * @param array $info
+ * @return bool
+ */
+function nv_check_delete_page(array $info)
+{
     if (!isset($info['id']) or !isset($info['listcatid'])) {
-        return '';
+        return false;
     }
     if (defined('NV_SYSTEM') and !defined('NV_IS_ADMIN_MODULE')) {
         global $admin_permissions;
@@ -266,12 +311,10 @@ function nv_link_delete_page(array $info, int $detail = 0)
 
         // Kiểm tra quyền sửa bài
         if (count(array_intersect($listcatid, $admin_permissions['del_content'] ?? [])) == 0) {
-            return '';
+            return false;
         }
     }
-
-    $link = '<a class="btn btn-danger btn-xs" href="#" data-toggle="nv_del_content" data-id="' . $info['id'] . '" data-checkss="' . md5($info['id'] . NV_CHECK_SESSION) . '" data-adminurl="' . NV_BASE_ADMINURL . '" data-detail="' . $detail . '"><em class="fa fa-trash-o margin-right"></em> ' . $nv_Lang->getGlobal('delete') . '</a>';
-    return $link;
+    return true;
 }
 
 /**

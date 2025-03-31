@@ -74,6 +74,8 @@
 }
 
 .badge-new {
+  --#{$prefix}badge-font-size: .7em;
+
   svg {
     display: inline-block;
     vertical-align: -.125em;

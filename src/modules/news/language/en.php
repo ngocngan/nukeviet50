@@ -648,3 +648,4 @@ $lang_module['show_tags'] = 'Sort tags';
 $lang_module['show_random'] = 'Random';
 $lang_module['show_featured'] = 'Popular';
 $lang_module['show_tags_num'] = 'Number of tags displayed';
+$lang_module['admtools'] = 'Admin tools';

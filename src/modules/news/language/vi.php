@@ -649,3 +649,4 @@ $lang_module['show_tags'] = 'Sắp xếp tags';
 $lang_module['show_random'] = 'Ngẫu nhiên';
 $lang_module['show_featured'] = 'Phổ biến';
 $lang_module['show_tags_num'] = 'Số tags hiển thị';
+$lang_module['admtools'] = 'Công cụ dành cho quản trị viên';

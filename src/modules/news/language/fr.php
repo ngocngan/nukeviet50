@@ -648,3 +648,4 @@ $lang_module['show_tags'] = 'Afficher les tags';
 $lang_module['show_random'] = 'Aléatoire';
 $lang_module['show_featured'] = 'Populaire';
 $lang_module['show_tags_num'] = 'Nombre de tags affichés';
+$lang_module['admtools'] = 'Outils pour les administrateurs';

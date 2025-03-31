@@ -25767,6 +25767,9 @@ readers do not read off random characters that represent icons */
   -webkit-box-orient: vertical;
 }
 
+.badge-new {
+  --bs-badge-font-size: .7em;
+}
 .badge-new svg {
   display: inline-block;
   vertical-align: -0.125em;

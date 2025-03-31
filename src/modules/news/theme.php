@@ -452,12 +452,16 @@ function viewsubcat_main($viewcat, $array_cat)
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(get_module_tpl_dir($viewcat . '.tpl'));
+    $tpl->registerPlugin('modifier', 'ddate', 'nv_date_format');
     $tpl->registerPlugin('modifier', 'ddatetime', 'nv_datetime_format');
     $tpl->registerPlugin('modifier', 'dnumber', 'nv_number_format');
+    $tpl->registerPlugin('modifier', 'editAllowed', 'nv_link_edit_page');
+    $tpl->registerPlugin('modifier', 'deleteAllowed', 'nv_link_delete_page');
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('HOME', $home);
     $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('ARRAY_CATS', $array_cat);
+    $tpl->assign('MCONFIG', $module_config[$module_name]);
     $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
 
     $imgratio = round(($module_config[$module_name]['homewidth'] / ($module_config[$module_name]['homeheight'] ?: $module_config[$module_name]['homewidth'])) * 100, 2);
