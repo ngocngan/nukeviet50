@@ -26925,6 +26925,10 @@ body {
   gap: 1.5rem;
 }
 
+.nv-block > .block-body > p:last-child {
+  margin-bottom: 0;
+}
+
 .nv-block-default > .block-heading {
   border-bottom: 0.25rem solid var(--bs-border-color);
   position: relative;

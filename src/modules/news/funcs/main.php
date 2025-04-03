@@ -246,6 +246,10 @@ if (empty($contents)) {
                     }
                 }
 
+                $array_cat_i['block_arrs'] = empty($array_cat_i['ad_block_cat']) ? [] : array_map('intval', explode(',', $array_cat_i['ad_block_cat']));
+                $array_cat_i['block_top'] = in_array(1, $array_cat_i['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($array_cat_i['catid'], 1)) : '';
+                $array_cat_i['block_bottom'] = in_array(2, $array_cat_i['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($array_cat_i['catid'], 2)) : '';
+
                 $array_cat[$key] = $array_cat_i;
                 $featured = 0;
                 if ($array_cat_i['featured'] != 0) {

@@ -2,6 +2,16 @@
   gap: $block-spacer;
 }
 
+.nv-block {
+  >.block-body {
+    >p:last-child {
+      // Ckeditor 5 luôn có thẻ p, do đó nếu block html
+      // chỉ có 1 dòng thì đừng cho nó cách dưới
+      margin-bottom: 0;
+    }
+  }
+}
+
 .nv-block-default {
   >.block-heading {
     border-bottom: .25rem solid var(--#{$prefix}border-color);

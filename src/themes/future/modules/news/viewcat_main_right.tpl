@@ -56,6 +56,12 @@
                 </ul>
                 {/if}
             </div>
+            {* Quảng cáo phụ bên trên *}
+            {if not empty($datacat.block_top)}
+            <div class="mb-2 top-ads">
+                {$datacat.block_top}
+            </div>
+            {/if}
             {* Phần nội dung chuyên mục *}
             <div class="catbox-contents">
                 {assign var="numitems" value=count($datacat.content)}
@@ -226,6 +232,12 @@
                 {/if}
             </div>
         </div>
+        {* Quảng cáo phụ bên dưới *}
+        {if not empty($datacat.block_bottom)}
+        <div class="mt-2 bottom-ads">
+            {$datacat.block_bottom}
+        </div>
+        {/if}
     </div>
     {/if}
     {/foreach}
