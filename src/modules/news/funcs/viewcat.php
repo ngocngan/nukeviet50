@@ -186,7 +186,29 @@ if (empty($contents)) {
             $array_catid = explode(',', $global_array_cat[$catid]['subcatid']);
 
             foreach ($array_catid as $catid_i) {
+                if (!isset($global_array_cat[$catid_i]) or $global_array_cat[$catid_i]['status'] != 1) {
+                    continue;
+                }
                 $array_cat_other[$key] = $global_array_cat[$catid_i];
+
+                // Xử lý list các chuyên mục con cấp 1
+                $array_cat_other[$key]['subcats'] = [];
+                if ($array_cat_other[$key]['numsubcat'] > 0) {
+                    $catids = explode(',', $array_cat_other[$key]['subcatid']);
+                    foreach ($catids as $_value) {
+                        if (isset($global_array_cat[$_value]) and !empty($global_array_cat[$_value]['status'])) {
+                            $array_cat_other[$key]['subcats'][$_value] = [
+                                'title' => $global_array_cat[$_value]['title'],
+                                'link' => $global_array_cat[$_value]['link'],
+                            ];
+                        }
+                    }
+                }
+
+                $array_cat_other[$key]['block_arrs'] = empty($array_cat_other[$key]['ad_block_cat']) ? [] : array_map('intval', explode(',', $array_cat_other[$key]['ad_block_cat']));
+                $array_cat_other[$key]['block_top'] = in_array(1, $array_cat_other[$key]['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($array_cat_other[$key]['catid'], 1)) : '';
+                $array_cat_other[$key]['block_bottom'] = in_array(2, $array_cat_other[$key]['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($array_cat_other[$key]['catid'], 2)) : '';
+
                 $db_slave->sqlreset()
                     ->select('id, catid, listcatid, topicid, admin_id, author, sourceid, addtime, edittime, publtime, title, alias, hometext, homeimgfile, homeimgalt, homeimgthumb, allowed_rating, external_link, hitstotal, hitscm, total_rating, click_rating')
                     ->from(NV_PREFIXLANG . '_' . $module_data . '_' . $catid_i);
@@ -201,6 +223,7 @@ if (empty($contents)) {
 
                         $item['newday'] = $global_array_cat[$catid_i]['newday'];
                         $item['link'] = $global_array_cat[$catid_i]['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                        $item['hometext_clean'] = nv_clean60(strip_tags($item['hometext']), $module_config[$module_name]['tooltip_length'], true);
                         $array_cat_other[$key]['content'][] = $item;
                         $featured = $item['id'];
                     }
@@ -219,6 +242,7 @@ if (empty($contents)) {
 
                     $item['newday'] = $global_array_cat[$catid_i]['newday'];
                     $item['link'] = $global_array_cat[$catid_i]['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                    $item['hometext_clean'] = nv_clean60(strip_tags($item['hometext']), $module_config[$module_name]['tooltip_length'], true);
                     $array_cat_other[$key]['content'][] = $item;
                 }
 
