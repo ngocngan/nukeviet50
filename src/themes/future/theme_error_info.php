@@ -63,10 +63,6 @@ $errortype = [
         $nv_Lang->getGlobal('error_notice'),
         'info'
     ],
-    E_STRICT => [
-        $nv_Lang->getGlobal('error_notice'),
-        'info'
-    ],
     E_RECOVERABLE_ERROR => [
         $nv_Lang->getGlobal('error_error'),
         'danger'
@@ -80,6 +76,12 @@ $errortype = [
         'warning'
     ]
 ];
+if (version_compare(PHP_VERSION, '8.4.0', '<')) {
+    $errortype[E_STRICT] = [
+        $nv_Lang->getGlobal('error_notice'),
+        'info'
+    ];
+}
 
 $tpl_dir = get_tpl_dir($php_dir, 'default', '/system/error_info.tpl');
 
