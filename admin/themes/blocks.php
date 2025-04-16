@@ -74,12 +74,10 @@ if (file_exists(NV_ROOTDIR . '/themes/' . $selectthemes . '/config.ini')) {
         $xtpl->parse('main.module');
     }
 
-    $a = 0;
-    //load position file
-    $xml = simplexml_load_file(NV_ROOTDIR . '/themes/' . $selectthemes . '/config.ini');
-    $content = $xml->xpath('positions');
-    $positions = $content[0]->position;
+    // Tên các khối block trong giao diện
+    $positions = nv_get_blocks($selectthemes, false);
 
+    // Số block đã thêm tại mỗi vị trí
     $blocks_positions = [];
     $sth = $db->prepare('SELECT position, COUNT(*) FROM ' . NV_BLOCKS_TABLE . '_groups WHERE theme = :theme GROUP BY position');
     $sth->bindParam(':theme', $selectthemes, PDO::PARAM_STR);
@@ -107,11 +105,11 @@ if (file_exists(NV_ROOTDIR . '/themes/' . $selectthemes . '/config.ini')) {
             $xtpl->parse('main.loop.weight');
         }
 
-        for ($i = 0, $count = sizeof($positions); $i < $count; ++$i) {
+        foreach ($positions as $position) {
             $xtpl->assign('POSITION', [
-                'key' => (string) $positions[$i]->tag,
-                'selected' => ($row['position'] == $positions[$i]->tag) ? ' selected="selected"' : '',
-                'title' => (string) $positions[$i]->name
+                'key' => $position['tag'],
+                'selected' => ($row['position'] == $position['tag']) ? ' selected="selected"' : '',
+                'title' => (empty($position['module']) ? '' : ((isset($site_mods[$position['module']]) ? $site_mods[$position['module']]['custom_title'] : $position['module']) . ': ')) . $position['name']
             ]);
             $xtpl->parse('main.loop.position');
         }

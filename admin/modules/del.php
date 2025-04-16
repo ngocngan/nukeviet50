@@ -92,6 +92,9 @@ if (!empty($modname) and preg_match($global_config['check_module'], $modname) an
         $sth->bindParam(':module', $modname, PDO::PARAM_STR);
         $sth->execute();
 
+        // Xóa vị trí block tùy chỉnh
+        nv_purge_blocks($modname);
+
         $check_exit_mod = false;
 
         $result = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language where setup=1');

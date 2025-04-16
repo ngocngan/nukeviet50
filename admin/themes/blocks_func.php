@@ -13,6 +13,10 @@ if (!defined('NV_IS_FILE_THEMES')) {
     exit('Stop!!!');
 }
 
+/**
+ * Trang quản lý các block theo từng module
+ */
+
 $select_options = [];
 $theme_array = nv_scandir(NV_ROOTDIR . '/themes', [
     $global_config['check_theme'],
@@ -95,8 +99,7 @@ while (list($f_id, $f_custom_title) = $sth->fetch(3)) {
     $xtpl->parse('main.function');
 }
 
-$a = 0;
-
+// Số block đã thêm tại mỗi vị trí
 $blocks_positions = [];
 $sth = $db->prepare('SELECT t1.position, COUNT(*)
 	FROM ' . NV_BLOCKS_TABLE . '_groups t1
@@ -110,12 +113,8 @@ while (list($position, $numposition) = $sth->fetch(3)) {
     $blocks_positions[$position] = $numposition;
 }
 
-// load position file
-$xml = simplexml_load_file(NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/config.ini');
-$content = $xml->xpath('positions');
-//array
-$positions = $content[0]->position;
-//object
+// Đọc vị trí block của giao diện
+$positions = nv_get_blocks($selectthemes, false);
 
 $sth = $db->prepare('SELECT t1.*, t2.func_id, t2.weight as bweight
 	FROM ' . NV_BLOCKS_TABLE . '_groups t1
@@ -144,11 +143,11 @@ while ($row = $sth->fetch()) {
         $xtpl->parse('main.loop.order');
     }
 
-    for ($i = 0, $count = sizeof($positions); $i < $count; ++$i) {
+    foreach ($positions as $position) {
         $xtpl->assign('POSITION', [
-            'key' => (string) $positions[$i]->tag,
-            'selected' => ($row['position'] == $positions[$i]->tag) ? ' selected="selected"' : '',
-            'title' => (string) $positions[$i]->name
+            'key' => $position['tag'],
+            'selected' => ($row['position'] == $position['tag']) ? ' selected="selected"' : '',
+            'title' => (empty($position['module']) ? '' : ((isset($site_mods[$position['module']]) ? $site_mods[$position['module']]['custom_title'] : $position['module']) . ': ')) . $position['name']
         ]);
         $xtpl->parse('main.loop.position');
     }

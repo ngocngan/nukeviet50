@@ -159,7 +159,15 @@ a.text-white {
 }
 
 .mt-5 {
-    margin-top: 25px;
+    margin-top: 25px!important;
+}
+
+.mt-0 {
+    margin-top: 0!important;
+}
+
+.pb-0 {
+    padding-bottom: 0!important;
 }
 
 .pointer,

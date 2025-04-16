@@ -433,30 +433,13 @@ function viewsubcat_main($viewcat, $array_cat)
             $catid = (int) ($array_row_i['catid']);
             $array_row_i['ad_block_cat'] = isset($array_row_i['ad_block_cat']) ? explode(',', $array_row_i['ad_block_cat']) : [];
 
-            $_block_topcat_by_id = '[' . strtoupper($module_name) . '_TOPCAT_' . $array_row_i['catid'] . ']';
             if (in_array('1', $array_row_i['ad_block_cat'], true)) {
-                if (!nv_check_block_topcat_news($array_row_i['catid'])) {
-                    nv_add_block_topcat_news($array_row_i['catid']);
-                }
-                $xtpl->assign('BLOCK_TOPCAT', $_block_topcat_by_id);
+                $xtpl->assign('BLOCK_TOPCAT', nv_tag2pos_block(nv_get_blcat_tag($array_row_i['catid'], 1)));
                 $xtpl->parse('main.listcat.block_topcat');
-            } else {
-                if (nv_check_block_topcat_news($array_row_i['catid'])) {
-                    nv_remove_block_topcat_news($array_row_i['catid']);
-                }
             }
-
-            $_block_bottomcat_by_id = '[' . strtoupper($module_name) . '_BOTTOMCAT_' . $array_row_i['catid'] . ']';
             if (in_array('2', $array_row_i['ad_block_cat'], true)) {
-                if (!nv_check_block_block_botcat_news($array_row_i['catid'])) {
-                    nv_add_block_botcat_news($array_row_i['catid']);
-                }
-                $xtpl->assign('BLOCK_BOTTOMCAT', $_block_bottomcat_by_id);
+                $xtpl->assign('BLOCK_BOTTOMCAT', nv_tag2pos_block(nv_get_blcat_tag($array_row_i['catid'], 2)));
                 $xtpl->parse('main.listcat.block_bottomcat');
-            } else {
-                if (nv_check_block_block_botcat_news($array_row_i['catid'])) {
-                    nv_remove_block_botcat_news($array_row_i['catid']);
-                }
             }
 
             if ($array_row_i['subcatid'] != '') {
@@ -684,35 +667,15 @@ function viewcat_two_column($array_content, $array_catpage)
 
             // Block Top
             $array_catpage_i['ad_block_cat'] = isset($array_catpage_i['ad_block_cat']) ? explode(',', $array_catpage_i['ad_block_cat']) : [];
-            if (($a + 1) % 2) {
-                $_block_topcat_by_id = '[' . strtoupper($module_name) . '_TOPCAT_' . $array_catpage_i['catid'] . ']';
-                if (in_array('1', $array_catpage_i['ad_block_cat'], true)) {
-                    if (!nv_check_block_topcat_news($array_catpage_i['catid'])) {
-                        nv_add_block_topcat_news($array_catpage_i['catid']);
-                    }
-                    $xtpl->assign('BLOCK_TOPCAT', $_block_topcat_by_id);
-                    $xtpl->parse('main.loopcat.block_topcat');
-                } else {
-                    if (nv_check_block_topcat_news($array_catpage_i['catid'])) {
-                        nv_remove_block_topcat_news($array_catpage_i['catid']);
-                    }
-                }
+            if (($a + 1) % 2 and in_array('1', $array_catpage_i['ad_block_cat'], true)) {
+                $xtpl->assign('BLOCK_TOPCAT', nv_tag2pos_block(nv_get_blcat_tag($array_catpage_i['catid'], 1)));
+                $xtpl->parse('main.loopcat.block_topcat');
             }
 
             // Block Bottom
-            if ($a % 2) {
-                $_block_bottomcat_by_id = '[' . strtoupper($module_name) . '_BOTTOMCAT_' . $array_catpage_i['catid'] . ']';
-                if (in_array('2', $array_catpage_i['ad_block_cat'], true)) {
-                    if (!nv_check_block_block_botcat_news($array_catpage_i['catid'])) {
-                        nv_add_block_botcat_news($array_catpage_i['catid']);
-                    }
-                    $xtpl->assign('BLOCK_BOTTOMCAT', $_block_bottomcat_by_id);
-                    $xtpl->parse('main.loopcat.block_bottomcat');
-                } else {
-                    if (nv_check_block_block_botcat_news($array_catpage_i['catid'])) {
-                        nv_remove_block_botcat_news($array_catpage_i['catid']);
-                    }
-                }
+            if ($a % 2 and in_array('2', $array_catpage_i['ad_block_cat'], true)) {
+                $xtpl->assign('BLOCK_BOTTOMCAT', nv_tag2pos_block(nv_get_blcat_tag($array_catpage_i['catid'], 2)));
+                $xtpl->parse('main.loopcat.block_bottomcat');
             }
 
             $xtpl->parse('main.loopcat');
@@ -722,7 +685,6 @@ function viewcat_two_column($array_content, $array_catpage)
 
     // Theo chu de
     $xtpl->parse('main');
-
     return $xtpl->text('main');
 }
 

@@ -569,8 +569,8 @@ class XTemplate
      * @example {name.key} {name.key2} {name.key3} in template
      *
      * @access public
-     * @param string / array / object $name Variable to assign $val to
-     * @param string / array / object $val Value to assign to $name
+     * @param string | array | object $name Variable to assign $val to
+     * @param string | array | object $val Value to assign to $name
      * @param boolean $reset_array Reset the variable array if $val is an array
      */
     public function assign($name, $val = '', $reset_array = true)

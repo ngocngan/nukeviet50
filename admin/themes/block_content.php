@@ -399,10 +399,8 @@ while (list($id_i, $func_custom_name_i, $in_module_i) = $func_result->fetch(3)) 
     $aray_mod_func[$in_module_i][] = ['id' => $id_i, 'func_custom_name' => $func_custom_name_i];
 }
 
-// Load position file
-$xml = @simplexml_load_file(NV_ROOTDIR . '/themes/' . $selectthemes . '/config.ini') or nv_info_die($lang_global['error_404_title'], $lang_module['block_error_fileconfig_title'], $lang_module['block_error_fileconfig_content'], 404);
-$xmlpositions = $xml->xpath('positions');
-$positions = $xmlpositions[0]->position;
+// Đọc vị trí các block của giao diện
+$positions = nv_get_blocks($selectthemes, false);
 
 if ($row['bid'] != 0) {// Canh bao tach block khoi nhom
     $xtpl->parse('main.block_group_notice');
@@ -454,11 +452,12 @@ for ($i = 1; $i <= 4; ++$i) {
     $xtpl->parse('main.active_device');
 }
 
-for ($i = 0, $count = sizeof($positions); $i < $count; ++$i) {
+foreach ($positions as $position) {
     $xtpl->assign('POSITION', [
-        'key' => (string) $positions[$i]->tag,
-        'selected' => ($row['position'] == $positions[$i]->tag) ? ' selected="selected"' : '',
-        'title' => (string) $positions[$i]->name]);
+        'key' => $position['tag'],
+        'selected' => ($row['position'] == $position['tag']) ? ' selected="selected"' : '',
+        'title' => (empty($position['module']) ? '' : ((isset($site_mods[$position['module']]) ? $site_mods[$position['module']]['custom_title'] : $position['module']) . ': ')) . $position['name']
+    ]);
     $xtpl->parse('main.position');
 }
 

@@ -15,54 +15,36 @@ if (!defined('NV_IS_FILE_THEMES')) {
 
 $theme1 = $nv_Request->get_title('theme1', 'get');
 $theme2 = $nv_Request->get_title('theme2', 'get');
-
-$position1 = $position2 = [];
+$contents = '';
 
 if (preg_match($global_config['check_theme'], $theme1) and preg_match($global_config['check_theme'], $theme2) and $theme1 != $theme2 and file_exists(NV_ROOTDIR . '/themes/' . $theme1 . '/config.ini') and file_exists(NV_ROOTDIR . '/themes/' . $theme2 . '/config.ini')) {
-    // theme 1
-    $xml = @simplexml_load_file(NV_ROOTDIR . '/themes/' . $theme1 . '/config.ini') or nv_info_die($lang_global['error_404_title'], $lang_module['block_error_fileconfig_title'], $lang_module['block_error_fileconfig_content'], 404);
+    // Theme nguồn
+    $position1 = array_column(nv_get_blocks($theme1, false), 'tag');
 
-    $content = $xml->xpath('positions');
-    //array
-    $positions = $content[0]->position;
-    //object
-
-    for ($i = 0, $count = sizeof($positions); $i < $count; ++$i) {
-        $position1[] = $positions[$i]->tag;
-    }
-
-    // theme 2
-    $xml = @simplexml_load_file(NV_ROOTDIR . '/themes/' . $theme2 . '/config.ini') or nv_info_die($lang_global['error_404_title'], $lang_module['block_error_fileconfig_title'], $lang_module['block_error_fileconfig_content'], 404);
-
-    $content = $xml->xpath('positions');
-    //array
-    $positions = $content[0]->position;
-    //object
-
-    for ($i = 0, $count = sizeof($positions); $i < $count; ++$i) {
-        $position2[] = $positions[$i]->tag;
-    }
-
-    $diffarray = array_diff($position1, $position2);
-    $diffarray = array_diff($position1, $diffarray);
+    // Theme đích
+    $positions = nv_get_blocks($theme2, false);
+    $position2 = array_column($positions, 'tag');
 
     $xtpl = new XTemplate('loadposition.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('GLANG', $lang_global);
 
-    for ($i = 0, $count = sizeof($diffarray); $i < $count; ++$i) {
-        $position1[] = $positions[$i]->tag;
+    $position_intersect = array_intersect($position1, $position2);
+    foreach ($positions as $position) {
+        if (!in_array($position['tag'], $position_intersect, true)) {
+            continue;
+        }
 
-        $xtpl->assign('NAME', (string) $positions[$i]->tag);
-        $xtpl->assign('VALUE', (string) $positions[$i]->name);
+        $xtpl->assign('NAME', $position['name']);
+        $xtpl->assign('VALUE', $position['tag']);
 
         $xtpl->parse('main.loop');
     }
 
     $xtpl->parse('main');
     $contents = $xtpl->text('main');
-
-    include NV_ROOTDIR . '/includes/header.php';
-    echo $contents;
-    include NV_ROOTDIR . '/includes/footer.php';
 }
+
+include NV_ROOTDIR . '/includes/header.php';
+echo $contents;
+include NV_ROOTDIR . '/includes/footer.php';

@@ -263,6 +263,7 @@ function nv_get_firstimage($contents)
  *
  * @param int $catid
  * @return bool
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_check_block_topcat_news($catid)
 {
@@ -289,6 +290,7 @@ function nv_check_block_topcat_news($catid)
  *
  * @param int $catid
  * @return bool
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_check_block_block_botcat_news($catid)
 {
@@ -315,6 +317,7 @@ function nv_check_block_block_botcat_news($catid)
  *
  * @param int $catid
  * @return bool|void
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_add_block_topcat_news($catid)
 {
@@ -363,6 +366,7 @@ function nv_add_block_topcat_news($catid)
  *
  * @param int $catid
  * @return bool|void
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_add_block_botcat_news($catid)
 {
@@ -411,6 +415,7 @@ function nv_add_block_botcat_news($catid)
  *
  * @param int $catid
  * @return bool|void
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_remove_block_topcat_news($catid)
 {
@@ -454,6 +459,7 @@ function nv_remove_block_topcat_news($catid)
  *
  * @param int $catid
  * @return bool|void
+ * @deprecated Will be removed in the 5.0.00 version
  */
 function nv_remove_block_botcat_news($catid)
 {
@@ -724,4 +730,16 @@ function nv_save_history($post_old, $post_new)
     }
 
     return $change_fields;
+}
+
+/**
+ * Lấy tên block tùy chỉnh của chuyên mục
+ *
+ * @param int $catid
+ * @param int $pos 1 là bên trên, 2 là bên dưới
+ * @return string
+ */
+function nv_get_blcat_tag(int $catid, int $pos = 1): string
+{
+    return $pos == 1 ? ('TCAT' . $catid) : ('BCAT' . $catid);
 }

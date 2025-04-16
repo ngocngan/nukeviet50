@@ -17,14 +17,8 @@ $checkss = $nv_Request->get_string('checkss', 'post');
 $theme = $nv_Request->get_string('selectthemes', 'cookie', $global_config['site_theme']);
 
 if (!empty($theme) and $checkss == md5($theme . NV_CHECK_SESSION)) {
-    // load position file
-    $xml = simplexml_load_file(NV_ROOTDIR . '/themes/' . $theme . '/config.ini');
-    $position = $xml->xpath('positions');
-    $positions = $position[0]->position;
-    $array_pos = [];
-    for ($j = 0, $count = sizeof($positions); $j < $count; ++$j) {
-        $array_pos[] = trim($positions[$j]->tag);
-    }
+    // Lấy vị trí các block trong giao diện
+    $array_pos = array_column(nv_get_blocks($theme, false), 'tag');
 
     // Cap nhat block hien thi toan site cho cac function moi phat sinh - Danh cho lap trinh vien
     $array_bid = [];
