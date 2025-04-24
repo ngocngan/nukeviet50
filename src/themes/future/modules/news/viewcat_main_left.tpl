@@ -66,9 +66,9 @@
             <div class="catbox-contents">
                 {assign var="numitems" value=count($datacat.content)}
                 {if $numitems gt 1}
-                {* Có 1 tin mới + tin bên phải (end) *}
+                {* Có 1 tin mới + tin bên trái (start) ở giao diện mobile thì tin trái cho xuống dưới *}
                 <div class="row g-3">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 order-first order-lg-last">
                         {* Tin mới nhất *}
                         {assign var="row" value=$datacat.content[0]}
                         {if not empty($row.imghome)}
@@ -115,7 +115,7 @@
                             {$row.hometext}
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 order-last order-lg-first">
                         {* Các tin khác *}
                         <ul class="list-unstyled vstack gap-3 mb-0">
                             {assign var="stt" value=0}

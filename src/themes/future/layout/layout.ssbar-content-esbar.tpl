@@ -1,10 +1,10 @@
 {include file='header_only.tpl'}
 {include file='header_extended.tpl'}
 <div class="main-content">
-    <div class="container py-4">
+    <div class="container g-4 py-4">
         [THEME_ERROR_INFO]
         [HEADER]
-        <div class="row g-3">
+        <div class="row g-4">
             <aside class="main-start">
                 <div class="vstack vstack-blocks">
                     [START_SIDEBAR]

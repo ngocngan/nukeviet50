@@ -1,6 +1,7 @@
 .article-headline {
   display: flex;
   gap: 1rem;
+  margin-bottom: .5rem;
 
   @include media-breakpoint-down($theme-layout-breakpoint) {
     flex-wrap: wrap;

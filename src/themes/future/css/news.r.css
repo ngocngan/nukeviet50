@@ -9,6 +9,7 @@
 .article-headline {
   display: flex;
   gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 @media (max-width: 991.98px) {
   .article-headline {

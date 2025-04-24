@@ -9,6 +9,7 @@
 .article-headline {
   display: flex;
   gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 .article-headline > div {
   flex: 0 0 calc(50% - 0.5rem);
