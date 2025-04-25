@@ -71,6 +71,7 @@ function nv_site_theme($contents, $full = true)
     $tpl->assign('MODULE_NAME', $module_name);
     $tpl->assign('OP', $op);
     $tpl->assign('MODULE_CONTENT', $contents);
+    $tpl->assign('H1_EXISTS', preg_match("/<h1[^\>]*\>/i", $contents));
 
     // Meta-tags
     $metatags = nv_html_meta_tags(false);
@@ -288,12 +289,6 @@ function nv_site_theme($contents, $full = true)
             'href' => NV_STATIC_URL . $global_config['site_banner']
         ];
         $xtpl->assign('BANNER_SRC', NV_STATIC_URL . $global_config['site_banner']);
-    }
-
-    if (preg_match("/<h1[^\>]*\>/i", $contents)) {
-        $xtpl->parse('main.site_name_span');
-    } else {
-        $xtpl->parse('main.site_name_h1');
     }
 
     // Only full theme

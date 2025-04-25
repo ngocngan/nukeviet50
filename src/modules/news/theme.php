@@ -358,7 +358,8 @@ function viewcat_page_new($array_catpage, $array_cat_other, $generate_page)
 }
 
 /**
- * viewcat_top()
+ * Phần mở đầu của chuyên mục đối với kiểu hiển thị theo chuyên mục, tin khác
+ * nằm phải (end), trái (start), dưới
  *
  * @param array  $array_catcontent
  * @param string $generate_page
@@ -448,7 +449,7 @@ function viewcat_top($array_catcontent, $generate_page)
  */
 function viewsubcat_main($viewcat, $array_cat)
 {
-    global $module_name, $site_mods, $nv_Lang, $module_config, $home;
+    global $module_name, $site_mods, $nv_Lang, $module_config, $home, $op;
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(get_module_tpl_dir($viewcat . '.tpl'));
@@ -460,26 +461,51 @@ function viewsubcat_main($viewcat, $array_cat)
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('HOME', $home);
     $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
-    $tpl->assign('ARRAY_CATS', $array_cat);
+    $tpl->assign('OP', $op);
     $tpl->assign('MCONFIG', $module_config[$module_name]);
     $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
 
     $imgratio = round(($module_config[$module_name]['homewidth'] / ($module_config[$module_name]['homeheight'] ?: $module_config[$module_name]['homewidth'])) * 100, 2);
     $tpl->assign('IMGRATIO', $imgratio);
 
+    $tpl->assign('ARRAY_CATS', $array_cat);
+
     return $tpl->fetch($viewcat . '.tpl');
 }
 
 /**
- * viewcat_two_column()
+ * Xem theo chuyên mục thành 2 cột
  *
- * @param array $array_content
- * @param array $array_catpage
+ * @param array $array_content Danh sách bài viết thuộc chuyên mục nếu có
+ * @param array $array_catpage Danh sách chuyên mục con
  * @return string
  */
 function viewcat_two_column($array_content, $array_catpage)
 {
-    global $site_mods, $module_name, $module_upload, $module_config, $module_info, $global_array_cat, $catid, $page, $home;
+    global $site_mods, $module_name, $module_upload, $module_config, $module_info, $global_array_cat, $catid, $page, $home, $nv_Lang, $op;
+
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(get_module_tpl_dir('viewcat_two_column.tpl'));
+    $tpl->registerPlugin('modifier', 'ddate', 'nv_date_format');
+    $tpl->registerPlugin('modifier', 'ddatetime', 'nv_datetime_format');
+    $tpl->registerPlugin('modifier', 'dnumber', 'nv_number_format');
+    $tpl->registerPlugin('modifier', 'editAllowed', 'nv_link_edit_page');
+    $tpl->registerPlugin('modifier', 'deleteAllowed', 'nv_link_delete_page');
+    $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('HOME', $home);
+    $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
+    $tpl->assign('OP', $op);
+    $tpl->assign('MCONFIG', $module_config[$module_name]);
+    $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
+
+    $imgratio = round(($module_config[$module_name]['homewidth'] / ($module_config[$module_name]['homeheight'] ?: $module_config[$module_name]['homewidth'])) * 100, 2);
+    $tpl->assign('IMGRATIO', $imgratio);
+
+    $tpl->assign('ARRAY_CATS', $array_catpage);
+
+    return $tpl->fetch('viewcat_two_column.tpl');
+
+
 
     $xtpl = new XTemplate('viewcat_two_column.tpl', get_module_tpl_dir('viewcat_two_column.tpl'));
     $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);

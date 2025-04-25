@@ -8,7 +8,9 @@
         <div class="catbox">
             {* Phần tiêu đề mỗi chuyên mục *}
             <div class="catbox-header mb-3 d-flex border-bottom border-4 border-primary align-items-center">
-                <a href="{$datacat.link}" class="text-bg-primary px-2 py-1 fw-medium">{$datacat.title}</a>
+                <h2 class="mb-0 fs-4">
+                    <a href="{$datacat.link}" class="text-bg-primary px-2 py-1 fw-medium d-block">{$datacat.title}</a>
+                </h2>
                 {if $datacat.numsubcat gt 0}
                 <ul class="list-inline mb-0 ms-auto">
                     {assign var="stt" value=0}
@@ -82,7 +84,9 @@
                             <li class="list-inline-item"><i class="fa-regular fa-clock"></i> {1|ddate:$row.publtime}</li>
                         </ul>
                         <div class="fs-5 fw-medium mb-1">
-                            <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}>{$row.title}</a>
+                            <h3 class="mb-0 fs-5 d-inline">
+                                <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}>{$row.title}</a>
+                            </h3>
                             {if $smarty.const.NV_IS_MODADMIN}
                             {assign var="linkEdit" value=$row|editAllowed:true}
                             {assign var="linkDelete" value=$row|deleteAllowed:0:true}
@@ -135,12 +139,14 @@
                                             <li class="list-inline-item"><i class="fa-regular fa-clock"></i> {1|ddate:$row.publtime}</li>
                                         </ul>
                                         <div class="fw-medium lh-sm">
-                                            <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}
-                                                {if not empty($MCONFIG.showtooltip)}
-                                                data-toggle="tooltipArticle" data-hometext="{$row.hometext_clean}" data-alt="{$row.homeimgalt ?: $row.title}" data-img="{$row.imghome}"
-                                                data-bs-toggle="tooltip" data-bs-placement="{$MCONFIG.tooltip_position}"
-                                                {/if}
-                                            >{$row.title}</a>
+                                            <h3 class="mb-0 fs-6 d-inline">
+                                                <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}
+                                                    {if not empty($MCONFIG.showtooltip)}
+                                                    data-toggle="tooltipArticle" data-hometext="{$row.hometext_clean}" data-alt="{$row.homeimgalt ?: $row.title}" data-img="{$row.imghome}"
+                                                    data-bs-toggle="tooltip" data-bs-placement="{$MCONFIG.tooltip_position}"
+                                                    {/if}
+                                                >{$row.title}</a>
+                                            </h3>
                                             {if $smarty.const.NV_IS_MODADMIN}
                                             {assign var="linkEdit" value=$row|editAllowed:true}
                                             {assign var="linkDelete" value=$row|deleteAllowed:0:true}
@@ -191,7 +197,9 @@
                     {/if}
                     <div class="col-12{if not empty($row.imghome)} col-sm-8 col-lg-6{/if}">
                         <div class="fs-5 fw-medium mb-1">
-                            <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}>{$row.title}</a>
+                            <h3 class="mb-0 fs-5 d-inline">
+                                <a class="link-body-emphasis" href="{$row.link}"{if $row.external_link} target="_blank"{/if}>{$row.title}</a>
+                            </h3>
                             {if $smarty.const.NV_IS_MODADMIN}
                             {assign var="linkEdit" value=$row|editAllowed:true}
                             {assign var="linkDelete" value=$row|deleteAllowed:0:true}

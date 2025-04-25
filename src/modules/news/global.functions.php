@@ -575,16 +575,18 @@ function nv_save_history($post_old, $post_new)
 }
 
 /**
- * get_homeimgfile()
+ * Bổ sung thêm một số thông tin cho bài viết để xem trên frontend
  *
  * @param mixed  $item
  * @param string $imghome_key
  * @param string $imgmobile_key
  */
-function get_homeimgfile(&$item, $imghome_key = 'imghome', $imgmobile_key = 'imgmobile')
+function extend_articles(&$item, $imghome_key = 'imghome', $imgmobile_key = 'imgmobile')
 {
-    global $module_upload;
+    global $module_upload, $module_config, $module_name;
 
+    // Ảnh nhỏ cho bài đăng desktop, mobile
+    $item[$imghome_key] = $item[$imgmobile_key] = '';
     if ($item['homeimgthumb'] == 1) {
         //image thumb
         $item[$imghome_key] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $item['homeimgfile'];
@@ -605,6 +607,42 @@ function get_homeimgfile(&$item, $imghome_key = 'imghome', $imgmobile_key = 'img
     } else {
         $item[$imghome_key] = $item[$imgmobile_key] = '';
     }
+
+    // Cắt ngắn mô tả ngắn gọn theo cấu hình
+    $item['hometext_clean'] = '';
+    if (isset($item['hometext'])) {
+        $item['hometext_clean'] = nv_clean60(strip_tags($item['hometext']), $module_config[$module_name]['tooltip_length'], true);
+    }
+}
+
+/**
+ * Bổ sung thêm một số thông tin cần thiết cho chuyên mục khi xem trên frontend
+ *
+ * @param array $cat
+ * @return void
+ */
+function extend_categories(array &$cat): void
+{
+    global $global_array_cat;
+
+    // Xử lý list các chuyên mục con cấp 1
+    $cat['subcats'] = [];
+    if ($cat['numsubcat'] > 0) {
+        $catids = explode(',', $cat['subcatid']);
+        foreach ($catids as $_value) {
+            if (isset($global_array_cat[$_value]) and !empty($global_array_cat[$_value]['status'])) {
+                $cat['subcats'][$_value] = [
+                    'title' => $global_array_cat[$_value]['title'],
+                    'link' => $global_array_cat[$_value]['link'],
+                ];
+            }
+        }
+    }
+
+    // Vị trí block tùy chỉnh
+    $cat['block_arrs'] = empty($cat['ad_block_cat']) ? [] : array_map('intval', explode(',', $cat['ad_block_cat']));
+    $cat['block_top'] = in_array(1, $cat['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($cat['catid'], 1)) : '';
+    $cat['block_bottom'] = in_array(2, $cat['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($cat['catid'], 2)) : '';
 }
 
 /**

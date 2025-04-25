@@ -312,8 +312,7 @@ if ($st_links > 0) {
 
     $related = $db_slave->query($db_slave->sql());
     while ($row = $related->fetch()) {
-        $row['imghome'] = $row['imgmobile'] = '';
-        get_homeimgfile($row);
+        extend_articles($row);
 
         $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$catid]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
         $related_new_array[] = [
@@ -339,8 +338,7 @@ if ($st_links > 0) {
 
     $related = $db_slave->query($db_slave->sql());
     while ($row = $related->fetch()) {
-        $row['imghome'] = $row['imgmobile'] = '';
-        get_homeimgfile($row);
+        extend_articles($row);
 
         $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$catid]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
         $related_array[] = [
@@ -565,8 +563,7 @@ if ($news_contents['related_pos'] != 0 and !empty($news_contents['related_ids'])
 
     $result = $db_slave->query($db_slave->sql());
     while ($row = $result->fetch()) {
-        $row['imghome'] = $row['imgmobile'] = '';
-        get_homeimgfile($row);
+        extend_articles($row);
 
         $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
         $news_contents['related_articles'][] = [

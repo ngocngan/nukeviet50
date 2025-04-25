@@ -150,8 +150,7 @@ if (isset($array_op[1])) {
             ->limit($numberlink);
         $result = $db_slave->query($db_slave->sql());
         while ($item = $result->fetch()) {
-            $item['imghome'] = $item['imgmobile'] = '';
-            get_homeimgfile($item);
+            extend_articles($item);
 
             $item['newday'] = 3;
             $item['alt'] = !empty($item['homeimgalt']) ? $item['homeimgalt'] : $item['title'];
