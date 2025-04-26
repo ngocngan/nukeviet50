@@ -251,7 +251,7 @@ if (empty($contents)) {
         $contents = viewcat_top($array_catcontent, $generate_page);
         $contents .= call_user_func('viewsubcat_main', $viewcat, $array_cat_other);
     } elseif ($viewcat == 'viewcat_two_column') {
-        // Cac bai viet phan dau
+        // Các bài viết của chuyên mục này
         $array_catcontent = [];
 
         $db_slave->sqlreset()
@@ -271,10 +271,11 @@ if (empty($contents)) {
                 $featured = $item['id'];
             }
         }
+
         if ($featured) {
-            $db_slave->where('status= 1 AND id!=' . $featured)->limit($array_cat_i['numlinks'] - 1);
+            $db_slave->where('status= 1 AND id!=' . $featured)->limit($global_array_cat[$catid]['numlinks'] - 1);
         } else {
-            $db_slave->where('status= 1')->limit($array_cat_i['numlinks']);
+            $db_slave->where('status= 1')->limit($global_array_cat[$catid]['numlinks']);
         }
 
         $db_slave->order($order_articles_by . ' DESC')->offset(($page - 1) * $per_page);
@@ -287,28 +288,30 @@ if (empty($contents)) {
             $array_catcontent[] = $item;
         }
         unset($sql, $result);
-        // Het cac bai viet phan dau
 
-        // cac bai viet cua cac chu de con
+        // Các chuyên mục con
         $key = 0;
         $array_catid = explode(',', $global_array_cat[$catid]['subcatid']);
 
         foreach ($array_catid as $catid_i) {
-            $array_cat_other[$key] = $global_array_cat[$catid_i];
+            $array_cat_i = $global_array_cat[$catid_i];
+            extend_categories($array_cat_i);
+            $array_cat_other[$key] = $array_cat_i;
+
             $db_slave->sqlreset()
                 ->select('id, listcatid, topicid, admin_id, author, sourceid, addtime, edittime, publtime, title, alias, hometext, homeimgfile, homeimgalt, homeimgthumb, allowed_rating, external_link, hitstotal, hitscm, total_rating, click_rating')
                 ->from(NV_PREFIXLANG . '_' . $module_data . '_' . $catid_i)
                 ->where('status=1');
 
             $featured = 0;
-            if ($global_array_cat[$catid_i]['featured'] != 0) {
-                $db_slave->where('id=' . $global_array_cat[$catid_i]['featured'] . ' and status= 1');
+            if ($array_cat_i['featured'] != 0) {
+                $db_slave->where('id=' . $array_cat_i['featured'] . ' and status= 1');
                 $result = $db_slave->query($db_slave->sql());
                 while ($item = $result->fetch()) {
                     extend_articles($item);
 
-                    $item['newday'] = $global_array_cat[$catid_i]['newday'];
-                    $item['link'] = $global_array_cat[$catid_i]['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                    $item['newday'] = $array_cat_i['newday'];
+                    $item['link'] = $array_cat_i['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
                     $array_cat_other[$key]['content'][] = $item;
                     $featured = $item['id'];
                 }
@@ -328,16 +331,20 @@ if (empty($contents)) {
             while ($item = $result->fetch()) {
                 extend_articles($item);
 
-                $item['newday'] = $global_array_cat[$catid_i]['newday'];
-                $item['link'] = $global_array_cat[$catid_i]['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
+                $item['newday'] = $array_cat_i['newday'];
+                $item['link'] = $array_cat_i['link'] . '/' . $item['alias'] . '-' . $item['id'] . $global_config['rewrite_exturl'];
                 $array_cat_other[$key]['content'][] = $item;
             }
 
-            ++$key;
+            // Chỉ lấy những chuyên mục con có bài viết
+            if (empty($array_cat_other[$key]['content'])) {
+                unset($array_cat_other[$key]);
+            } else {
+                ++$key;
+            }
         }
 
         unset($sql, $result);
-        //Het cac bai viet cua cac chu de con
         $contents = call_user_func($viewcat, $array_catcontent, $array_cat_other);
     } elseif ($viewcat == 'viewcat_grid_new' or $viewcat == 'viewcat_grid_old') {
         $order_by = ($viewcat == 'viewcat_grid_new') ? $order_articles_by . ' DESC, addtime DESC' : $order_articles_by . ' ASC, addtime ASC';

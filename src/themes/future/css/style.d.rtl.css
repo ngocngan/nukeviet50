@@ -26367,6 +26367,10 @@ body {
     transform: rotate(0deg);
   }
 }
+.col-hide-empty:empty {
+  display: none;
+}
+
 .site-user-inform .inform-toggle, .topbar .socal-icons a, .topbar .contact-icons a:not(.dropdown-item), .topbar .topbar-search .search-icon, .site-header-mobile .toggle-main-nav {
   color: var(--nv-header-link-color);
   transition: color 0.15s ease-in-out;

@@ -623,7 +623,7 @@ function extend_articles(&$item, $imghome_key = 'imghome', $imgmobile_key = 'img
  */
 function extend_categories(array &$cat): void
 {
-    global $global_array_cat;
+    global $global_array_cat, $module_upload;
 
     // Xử lý list các chuyên mục con cấp 1
     $cat['subcats'] = [];
@@ -643,6 +643,12 @@ function extend_categories(array &$cat): void
     $cat['block_arrs'] = empty($cat['ad_block_cat']) ? [] : array_map('intval', explode(',', $cat['ad_block_cat']));
     $cat['block_top'] = in_array(1, $cat['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($cat['catid'], 1)) : '';
     $cat['block_bottom'] = in_array(2, $cat['block_arrs'], true) ? nv_tag2pos_block(nv_get_blcat_tag($cat['catid'], 2)) : '';
+
+    // Ảnh bìa cho chuyên mục
+    if (!empty($cat['image'])) {
+        $cat['image_thumb'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $cat['image'];
+        $cat['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $cat['image'];
+    }
 }
 
 /**

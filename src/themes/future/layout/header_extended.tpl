@@ -72,8 +72,8 @@
                                 <img src="{$smarty.const.NV_BASE_SITEURL}{$GCONFIG.site_logo}" alt="{$GCONFIG.site_name}">
                             </a>
                             {if not $H1_EXISTS}
-                            <h1 aria-hidden="true" class="visually-hidden">{$GCONFIG.site_name}</h1>
-                            <span aria-hidden="true" class="visually-hidden">{$GCONFIG.site_description}</span>
+                            <h1 aria-hidden="true" class="visually-hidden">{$THEME_PAGE_TITLE}</h1>
+                            <p aria-hidden="true" class="visually-hidden">{$GCONFIG.site_description}</p>
                             {/if}
                         </div>
                         <div class="banner flex-shrink-1 d-none d-lg-block">

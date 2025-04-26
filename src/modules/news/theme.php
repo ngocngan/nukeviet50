@@ -495,6 +495,7 @@ function viewcat_two_column($array_content, $array_catpage)
     $tpl->assign('HOME', $home);
     $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('OP', $op);
+    $tpl->assign('MODULE_UPLOAD', $module_upload);
     $tpl->assign('MCONFIG', $module_config[$module_name]);
     $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
 
@@ -502,26 +503,16 @@ function viewcat_two_column($array_content, $array_catpage)
     $tpl->assign('IMGRATIO', $imgratio);
 
     $tpl->assign('ARRAY_CATS', $array_catpage);
+    $tpl->assign('ARRAY_POSTS', $array_content);
+
+    // Hiển thị mô tả chuyên mục
+    $show_description = ($catid and (($global_array_cat[$catid]['viewdescription'] and $page == 1) or $global_array_cat[$catid]['viewdescription'] == 2));
+    $tpl->assign('SHOW_DESCRIPTION', $show_description);
+    if ($show_description) {
+        $tpl->assign('INFO_CAT', $global_array_cat[$catid]);
+    }
 
     return $tpl->fetch('viewcat_two_column.tpl');
-
-
-
-    $xtpl = new XTemplate('viewcat_two_column.tpl', get_module_tpl_dir('viewcat_two_column.tpl'));
-    $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
-    $xtpl->assign('IMGWIDTH0', $module_config[$module_name]['homewidth']);
-
-    if ($catid and (($global_array_cat[$catid]['viewdescription'] and $page == 1) or $global_array_cat[$catid]['viewdescription'] == 2)) {
-        $xtpl->assign('CONTENT', $global_array_cat[$catid]);
-        if ($global_array_cat[$catid]['image']) {
-            $xtpl->assign('HOMEIMG1', NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $global_array_cat[$catid]['image']);
-            $xtpl->parse('main.viewdescription.image');
-        }
-        $xtpl->parse('main.viewdescription');
-    } elseif (!$home) {
-        $xtpl->assign('PAGE_TITLE', nv_html_page_title(false));
-        $xtpl->parse('main.h1');
-    }
 
     // Bai viet o phan dau
     if (!empty($array_content)) {
@@ -575,95 +566,6 @@ function viewcat_two_column($array_content, $array_catpage)
 
         $xtpl->parse('main.catcontent');
     }
-
-    // Theo chu de
-    $a = 0;
-
-    foreach ($array_catpage as $key => $array_catpage_i) {
-        $number_content = isset($array_catpage[$key]['content']) ? count($array_catpage[$key]['content']) : 0;
-        if ($number_content > 0) {
-            $array_catpage_i['rss'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['rss'] . '/' . $array_catpage_i['alias'];
-            $xtpl->assign('CAT', $array_catpage_i);
-            $xtpl->assign('ID', ($a + 1));
-
-            $array_content_i = $array_catpage_i['content'][0];
-            $newday = $array_content_i['publtime'] + (86400 * $array_content_i['newday']);
-            $array_content_i['hometext'] = nv_clean60(strip_tags($array_content_i['hometext']), 200);
-            $array_content_i['publtime'] = nv_datetime_format($array_content_i['publtime']);
-
-            if ($array_content_i['external_link']) {
-                $array_content_i['target_blank'] = 'target="_blank"';
-            }
-
-            $xtpl->assign('CONTENT', $array_content_i);
-
-            if ($array_content_i['imghome'] != '') {
-                $xtpl->assign('HOMEIMG01', $array_content_i['imghome']);
-                $xtpl->assign('HOMEIMGALT01', !empty($array_content_i['homeimgalt']) ? $array_content_i['homeimgalt'] : $array_content_i['title']);
-                $xtpl->parse('main.loopcat.content.image');
-            }
-
-            if (defined('NV_IS_MODADMIN')) {
-                $adminlink = trim(nv_link_edit_page($array_content_i) . ' ' . nv_link_delete_page($array_content_i));
-                if (!empty($adminlink)) {
-                    $xtpl->assign('ADMINLINK', $adminlink);
-                    $xtpl->parse('main.loopcat.content.adminlink');
-                }
-            }
-
-            if ($newday >= NV_CURRENTTIME) {
-                $xtpl->parse('main.loopcat.content.newday');
-            }
-
-            if (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']) {
-                $xtpl->parse('main.loopcat.content.comment');
-            }
-
-            $xtpl->parse('main.loopcat.content');
-
-            if ($number_content > 1) {
-                for ($index = 1; $index < $number_content; ++$index) {
-                    if ($newday >= NV_CURRENTTIME) {
-                        $xtpl->parse('main.loopcat.other.newday');
-                        $xtpl->assign('CLASS', 'icon_new_small');
-                    } else {
-                        $xtpl->assign('CLASS', 'icon_list');
-                    }
-
-                    $array_catpage_i['content'][$index]['hometext_clean'] = nv_clean60(strip_tags($array_catpage_i['content'][$index]['hometext']), $module_config[$module_name]['tooltip_length'], true);
-                    $xtpl->assign('CONTENT', $array_catpage_i['content'][$index]);
-
-                    if ($module_config[$module_name]['showtooltip']) {
-                        $xtpl->assign('TOOLTIP_POSITION', $module_config[$module_name]['tooltip_position']);
-                        $xtpl->parse('main.loopcat.other.tooltip');
-                    }
-
-                    $xtpl->parse('main.loopcat.other');
-                }
-            }
-
-            // Block Top
-            $array_catpage_i['ad_block_cat'] = isset($array_catpage_i['ad_block_cat']) ? explode(',', $array_catpage_i['ad_block_cat']) : [];
-            if (($a + 1) % 2 and in_array('1', $array_catpage_i['ad_block_cat'], true)) {
-                $xtpl->assign('BLOCK_TOPCAT', nv_tag2pos_block(nv_get_blcat_tag($array_catpage_i['catid'], 1)));
-                $xtpl->parse('main.loopcat.block_topcat');
-            }
-
-            // Block Bottom
-            if ($a % 2 and in_array('2', $array_catpage_i['ad_block_cat'], true)) {
-                $xtpl->assign('BLOCK_BOTTOMCAT', nv_tag2pos_block(nv_get_blcat_tag($array_catpage_i['catid'], 2)));
-                $xtpl->parse('main.loopcat.block_bottomcat');
-            }
-
-            $xtpl->parse('main.loopcat');
-            ++$a;
-        }
-    }
-
-    // Theo chu de
-    $xtpl->parse('main');
-
-    return $xtpl->text('main');
 }
 
 /**
