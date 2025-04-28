@@ -367,7 +367,7 @@ function viewcat_page_new($array_catpage, $array_cat_other, $generate_page)
  */
 function viewcat_top($array_catcontent, $generate_page)
 {
-    global $site_mods, $module_name, $module_upload, $module_config, $global_array_cat, $catid, $page;
+    global $site_mods, $module_name, $module_upload, $module_config, $global_array_cat, $catid, $page, $home;
 
     $xtpl = new XTemplate('viewcat_top.tpl', get_module_tpl_dir('viewcat_top.tpl'));
     $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
@@ -380,6 +380,9 @@ function viewcat_top($array_catcontent, $generate_page)
             $xtpl->parse('main.viewdescription.image');
         }
         $xtpl->parse('main.viewdescription');
+    } elseif (!$home) {
+        $xtpl->assign('PAGE_TITLE', nv_html_page_title(false));
+        $xtpl->parse('main.h1');
     }
 
     // Cac bai viet phan dau
@@ -445,9 +448,11 @@ function viewcat_top($array_catcontent, $generate_page)
  *   - "viewcat_main_right"
  *   - "viewcat_main_bottom"
  * @param array  $array_cat
+ * @param array  $array_articles
+ * @param string  $generate_page
  * @return string
  */
-function viewsubcat_main($viewcat, $array_cat)
+function viewsubcat_main($viewcat, $array_cat, $array_articles = [], $generate_page = '')
 {
     global $module_name, $site_mods, $nv_Lang, $module_config, $home, $op;
 
@@ -477,12 +482,13 @@ function viewsubcat_main($viewcat, $array_cat)
  * Xem theo chuyên mục thành 2 cột
  *
  * @param array $array_content Danh sách bài viết thuộc chuyên mục nếu có
+ * @param string $generate_page
  * @param array $array_catpage Danh sách chuyên mục con
  * @return string
  */
-function viewcat_two_column($array_content, $array_catpage)
+function viewcat_two_column($array_content, $generate_page, $array_catpage)
 {
-    global $site_mods, $module_name, $module_upload, $module_config, $module_info, $global_array_cat, $catid, $page, $home, $nv_Lang, $op;
+    global $site_mods, $module_name, $module_config, $module_info, $home;
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(get_module_tpl_dir('viewcat_two_column.tpl'));
@@ -516,55 +522,10 @@ function viewcat_two_column($array_content, $array_catpage)
 
     // Bai viet o phan dau
     if (!empty($array_content)) {
-        foreach ($array_content as $key => $array_content_i) {
-            $newday = $array_content_i['publtime'] + (86400 * $array_content_i['newday']);
-            $array_content_i['publtime'] = nv_datetime_format($array_content_i['publtime']);
-
-            if ($array_content_i['external_link']) {
-                $array_content_i['target_blank'] = 'target="_blank"';
-            }
-
-            $xtpl->assign('NEWSTOP', $array_content_i);
-
-            if ($key == 0) {
-                if ($array_content_i['imghome'] != '') {
-                    $xtpl->assign('HOMEIMG0', $array_content_i['imghome']);
-                    $xtpl->assign('HOMEIMGALT0', $array_content_i['homeimgalt']);
-                    $xtpl->parse('main.catcontent.content.image');
-                }
-
-                if (defined('NV_IS_MODADMIN')) {
-                    $adminlink = trim(nv_link_edit_page($array_content_i) . ' ' . nv_link_delete_page($array_content_i));
-                    if (!empty($adminlink)) {
-                        $xtpl->assign('ADMINLINK', $adminlink);
-                        $xtpl->parse('main.catcontent.content.adminlink');
-                    }
-                }
-
-                if ($newday >= NV_CURRENTTIME) {
-                    $xtpl->parse('main.catcontent.content.newday');
-                }
-
-                if (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']) {
-                    $xtpl->parse('main.catcontent.content.comment');
-                }
-
-                $xtpl->parse('main.catcontent.content');
-            } else {
-                if ($newday >= NV_CURRENTTIME) {
-                    $xtpl->parse('main.catcontent.other.newday');
-                }
-
-                if ($module_config[$module_name]['showtooltip']) {
-                    $xtpl->assign('TOOLTIP_POSITION', $module_config[$module_name]['tooltip_position']);
-                    $xtpl->parse('main.catcontent.other.tooltip');
-                }
-
-                $xtpl->parse('main.catcontent.other');
-            }
-        }
-
+        $xtpl->assign('CATCONTENT_HTML', viewcat_top($array_content, $generate_page));
         $xtpl->parse('main.catcontent');
+    } elseif (!$home) {
+        $xtpl->parse('main.h1');
     }
 }
 
