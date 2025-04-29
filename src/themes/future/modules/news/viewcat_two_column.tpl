@@ -1,5 +1,5 @@
 {* Hiển thị tra mô tả của chuyên mục *}
-{if $SHOW_DESCRIPTION}
+{if $SHOW_DESCRIPTION and empty($HTML_POSTS)}
 <div class="card mb-4">
     <div class="card-body">
         <h1>{$INFO_CAT.title}</h1>
@@ -12,9 +12,9 @@
 {/if}
 <div class="vstack gap-4">
     {* Phần viết các bài viết đầu chuyên mục *}
-    {if not empty($ARRAY_POSTS)}
-    <div class="d-noxne">
-        FIXME
+    {if not empty($HTML_POSTS)}
+    <div class="cat-top-articles">
+        {$HTML_POSTS}
     </div>
     {/if}
     {* Phần viết các chuyên mục *}

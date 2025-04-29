@@ -1,5 +1,20 @@
-{if not $HOME}
-<h1 class="visually-hidden">{$PAGE_TITLE}</h1>
+{* Hiển thị tra mô tả của chuyên mục *}
+{if $SHOW_DESCRIPTION and empty($HTML_POSTS)}
+<div class="card mb-4">
+    <div class="card-body">
+        <h1>{$INFO_CAT.title}</h1>
+        {if not empty($INFO_CAT.image)}
+        <img src="{$smarty.const.NV_BASE_SITEURL}{$smarty.const.NV_FILES_DIR}/{$MODULE_UPLOAD}/{$INFO_CAT.image}" class="img-thumbnail fw-150 me-2 mb-1 float-start" alt="{$INFO_CAT.title}">
+        {/if}
+        <p class="mb-0">{$INFO_CAT.description}</p>
+    </div>
+</div>
+{/if}
+{* Phần viết các bài viết đầu chuyên mục *}
+{if not empty($HTML_POSTS)}
+<div class="cat-top-articles">
+    {$HTML_POSTS}
+</div>
 {/if}
 <div class="row g-3">
     {foreach from=$ARRAY_CATS item=datacat}

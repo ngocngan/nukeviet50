@@ -454,7 +454,7 @@ function viewcat_top($array_catcontent, $generate_page)
  */
 function viewsubcat_main($viewcat, $array_cat, $array_articles = [], $generate_page = '')
 {
-    global $module_name, $site_mods, $nv_Lang, $module_config, $home, $op;
+    global $module_name, $site_mods, $nv_Lang, $module_config, $home, $op, $catid, $global_array_cat, $page, $module_upload;
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(get_module_tpl_dir($viewcat . '.tpl'));
@@ -467,6 +467,7 @@ function viewsubcat_main($viewcat, $array_cat, $array_articles = [], $generate_p
     $tpl->assign('HOME', $home);
     $tpl->assign('PAGE_TITLE', nv_html_page_title(false));
     $tpl->assign('OP', $op);
+    $tpl->assign('MODULE_UPLOAD', $module_upload);
     $tpl->assign('MCONFIG', $module_config[$module_name]);
     $tpl->assign('COMMENT_ENABLED', (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm']) and $module_config[$module_name]['activecomm']));
 
@@ -474,6 +475,14 @@ function viewsubcat_main($viewcat, $array_cat, $array_articles = [], $generate_p
     $tpl->assign('IMGRATIO', $imgratio);
 
     $tpl->assign('ARRAY_CATS', $array_cat);
+    $tpl->assign('HTML_POSTS', empty($array_articles) ? '' : viewcat_top($array_articles, $generate_page));
+
+    // Hiển thị mô tả chuyên mục
+    $show_description = ($catid and (($global_array_cat[$catid]['viewdescription'] and $page == 1) or $global_array_cat[$catid]['viewdescription'] == 2));
+    $tpl->assign('SHOW_DESCRIPTION', $show_description);
+    if ($show_description) {
+        $tpl->assign('INFO_CAT', $global_array_cat[$catid]);
+    }
 
     return $tpl->fetch($viewcat . '.tpl');
 }
@@ -488,7 +497,7 @@ function viewsubcat_main($viewcat, $array_cat, $array_articles = [], $generate_p
  */
 function viewcat_two_column($array_content, $generate_page, $array_catpage)
 {
-    global $site_mods, $module_name, $module_config, $module_info, $home;
+    global $site_mods, $module_name, $module_config, $nv_Lang, $home, $op, $module_upload, $catid, $global_array_cat, $page;
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(get_module_tpl_dir('viewcat_two_column.tpl'));
@@ -509,7 +518,7 @@ function viewcat_two_column($array_content, $generate_page, $array_catpage)
     $tpl->assign('IMGRATIO', $imgratio);
 
     $tpl->assign('ARRAY_CATS', $array_catpage);
-    $tpl->assign('ARRAY_POSTS', $array_content);
+    $tpl->assign('HTML_POSTS', empty($array_content) ? '' : viewcat_top($array_content, $generate_page));
 
     // Hiển thị mô tả chuyên mục
     $show_description = ($catid and (($global_array_cat[$catid]['viewdescription'] and $page == 1) or $global_array_cat[$catid]['viewdescription'] == 2));
@@ -519,14 +528,6 @@ function viewcat_two_column($array_content, $generate_page, $array_catpage)
     }
 
     return $tpl->fetch('viewcat_two_column.tpl');
-
-    // Bai viet o phan dau
-    if (!empty($array_content)) {
-        $xtpl->assign('CATCONTENT_HTML', viewcat_top($array_content, $generate_page));
-        $xtpl->parse('main.catcontent');
-    } elseif (!$home) {
-        $xtpl->parse('main.h1');
-    }
 }
 
 /**
