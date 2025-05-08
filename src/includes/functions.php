@@ -1054,8 +1054,8 @@ function nv_monthname($i)
 /**
  * nv_unhtmlspecialchars()
  *
- * @param string $string
- * @return string
+ * @param string|int|float|array $string
+ * @return string|int|float|array
  */
 function nv_unhtmlspecialchars($string)
 {
@@ -1069,7 +1069,7 @@ function nv_unhtmlspecialchars($string)
         foreach ($array_keys as $key) {
             $string[$key] = nv_unhtmlspecialchars($string[$key]);
         }
-    } else {
+    } elseif (is_string($string)) {
         $search = ['&amp;', '&#039;', '&quot;', '&lt;', '&gt;', '&#x005C;', '&#x002F;', '&#40;', '&#41;', '&#42;', '&#91;', '&#93;', '&#33;', '&#x3D;', '&#x23;', '&#x25;', '&#x5E;', '&#x3A;', '&#x7B;', '&#x7D;', '&#x60;', '&#x7E;'];
         $replace = ['&', '\'', '"', '<', '>', '\\', '/', '(', ')', '*', '[', ']', '!', '=', '#', '%', '^', ':', '{', '}', '`', '~'];
 
@@ -2888,7 +2888,7 @@ function nv_sys_mods($lang = '')
  * nv_site_mods()
  *
  * @param string $lang
- * @return array|null
+ * @return array|void
  */
 function nv_site_mods($lang = '')
 {
