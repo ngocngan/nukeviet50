@@ -12,7 +12,7 @@
     {/foreach}
     <script data-show="inline" type="text/javascript" src="{$smarty.const.NV_BASE_SITEURL}themes/{$GCONFIG.module_theme}/js/nv.head.js"></script>
     {foreach from=$HTML_JS item=js}
-    <script{if $js.ext} src="{$js.content}"{/if}>{if not $js.ext}{$smarty.const.PHP_EOL}{$js.content}{$smarty.const.PHP_EOL}{/if}</script>
+    <script{if not empty($js.type)} type="{$js.type}"{/if}{if $js.ext} src="{$js.content}"{/if}>{if not $js.ext}{$smarty.const.PHP_EOL}{$js.content}{$smarty.const.PHP_EOL}{/if}</script>
     {/foreach}
 </head>
 
