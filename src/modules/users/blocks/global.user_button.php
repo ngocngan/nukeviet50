@@ -43,6 +43,7 @@ if (defined('NV_IS_USER')) {
     $tpl->assign('MODULE_NAME', $module_name);
 } elseif (defined('SSO_SERVER') and (defined('NV_IS_USER_FORUM') or NV_MY_DOMAIN != SSO_REGISTER_DOMAIN)) { // phpcs:ignore
     $url = NukeViet\Client\Sso::getLoginUrl(empty($page_url) ? urlRewriteWithDomain(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA, NV_MY_DOMAIN) : urlRewriteWithDomain($page_url, NV_MY_DOMAIN));
+    $url = nv_apply_hook('', 'modify_sso_login_url', [$url], $url);
     $tpl->assign('LINK_LOGIN', $url);
 } else {
     $tpl->assign('NV_REDIRECT', nv_redirect_encrypt(empty($page_url) ? urlRewriteWithDomain(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA, NV_MY_DOMAIN) : urlRewriteWithDomain($page_url, NV_MY_DOMAIN)));
