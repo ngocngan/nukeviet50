@@ -1783,7 +1783,7 @@ function nv_alias_page($title, $base_url, $num_items, $per_page, $on_page, $add_
     } else {
         for ($i = 2; $i < $total_pages + 1; ++$i) {
             if ($i == $on_page) {
-                $page_string .= '<li' . $li_active_class . '><a' . $a_class . ' href="javascript:void(0)">' . $i . '</a><li>';
+                $page_string .= '<li' . $li_active_class . '><a' . $a_class . ' href="javascript:void(0)">' . $i . '</a></li>';
             } else {
                 $rel = ($i > $on_page) ? 'next' : 'prev';
                 $page_string .= '<li' . $li_class . '><a' . $a_class . ' rel="' . $rel . '" title="' . $title . ' ' . $i . '" href="' . $base_url . '/page-' . $i . '">' . $i . '</a></li>';
