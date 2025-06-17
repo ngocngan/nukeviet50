@@ -123,8 +123,8 @@ if (!empty($module_config[$module_name]['report_active']) and (!empty($module_co
 $page_title = $module_info['site_title'];
 $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
 
-$contents = '';
-$cache_file = '';
+$contents = $cache_file = '';
+$schemas = $desc = $kw = [];
 $isMob = ((!empty($global_config['mobile_theme']) and $module_info['template'] == $global_config['mobile_theme']) or ($client_info['is_mobile'] and $global_config['current_theme_type'] != 'd'));
 $viewcat = $isMob ? $module_config[$module_name]['mobile_indexfile'] : $module_config[$module_name]['indexfile'];
 $no_generate = ['viewcat_none', 'viewcat_main_left', 'viewcat_main_right', 'viewcat_main_bottom', 'viewcat_two_column'];
@@ -147,23 +147,25 @@ if (!defined('NV_IS_MODADMIN') and $page < 5) {
     $cache_file = NV_LANG_DATA . '_' . $module_info['template'] . '-' . $op . '-' . $viewcat . '-' . $page . '-' . NV_CACHE_PREFIX . '.cache';
     // phpcs:ignore
     if (($cache = $nv_Cache->getItem($module_name, $cache_file, 3600)) != false) {
-        $_contents = explode('|', $cache, 3);
-        if (count($_contents) == 3) {
-            [$desc, $kw, $contents] = $_contents;
-        }
+        $cache = json_decode($cache, true);
+        $contents = $cache['html'];
+        $schemas = $cache['schemas'];
+        $desc = $cache['description'];
+        $kw = $cache['keyword'];
     }
+    unset($cache);
 }
 
 if (empty($contents)) {
-    $desc = [];
-    $kw = [];
     $show_no_image = $module_config[$module_name]['show_no_image'];
     $array_catpage = [];
     $array_cat_other = [];
+    $show_schema = false;
 
     if ($viewcat == 'viewcat_none') {
         $contents = '';
     } elseif ($viewcat == 'viewcat_page_new' or $viewcat == 'viewcat_page_old') {
+        $show_schema = true;
         $order_by = ($viewcat == 'viewcat_page_new') ? $order_articles_by . ' DESC, addtime DESC' : $order_articles_by . ' ASC, addtime ASC';
         $db_slave->sqlreset()
             ->select('COUNT(*)')
@@ -349,6 +351,7 @@ if (empty($contents)) {
         unset($sql, $result);
         $contents = viewcat_two_column($array_content, '', $array_catpage);
     } elseif ($viewcat == 'viewcat_grid_new' or $viewcat == 'viewcat_grid_old') {
+        $show_schema = true;
         $order_by = ($viewcat == 'viewcat_grid_new') ? $order_articles_by . '  DESC' : $order_articles_by . '  ASC';
         $db_slave->sqlreset()
             ->select('COUNT(*) ')
@@ -388,6 +391,7 @@ if (empty($contents)) {
     } elseif ($viewcat == 'viewcat_list_new' or $viewcat == 'viewcat_list_old') {
         // Xem theo tieu de
         $order_by = ($viewcat == 'viewcat_list_new') ? $order_articles_by . ' DESC, addtime DESC' : $order_articles_by . ' ASC, addtime ASC';
+        $show_schema = true;
 
         $db_slave->sqlreset()
             ->select('COUNT(*) ')
@@ -426,12 +430,47 @@ if (empty($contents)) {
         $contents = call_user_func($viewcat, $array_catpage, 0, ($page - 1) * $per_page, $generate_page);
     }
 
-    $desc = !empty($desc) ? implode(', ', $desc) : '';
-    $kw = !empty($kw) ? implode(', ', $kw) : '';
+    // CollectionPage nếu như không hiển thị theo dạng chuyên mục
+    if ($show_schema and !empty($array_catpage)) {
+        $schemas_items = get_schema_colpage_items($array_catpage);
+        $schemas = [
+            '@context' => 'https://schema.org',
+            '@type' => 'CollectionPage',
+            'name' => $module_info['custom_title'],
+            'headline' => $module_info['site_title'] ?: $module_info['custom_title'],
+            'description' => $module_info['description'] ?: $module_info['custom_title'],
+            'url' => $canonicalUrl,
+            'inLanguage' => NV_LANG_DATA,
+            'mainEntity' => [
+                '@type' => 'ItemList',
+                'itemListElement' => $schemas_items,
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => $global_config['site_name'],
+                'url' => NV_MY_DOMAIN
+            ],
+        ];
+        if (!empty($global_config['site_logo'])) {
+            $schemas['publisher']['logo'] = [
+                '@type' => 'ImageObject',
+                'url' => NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo']
+            ];
+        }
+    }
 
     if (!defined('NV_IS_MODADMIN') and $contents != '' and $cache_file != '') {
-        $nv_Cache->setItem($module_name, $cache_file, $desc . '|' . $kw . '|' . $contents);
+        $nv_Cache->setItem($module_name, $cache_file, json_encode([
+            'html' => $contents,
+            'schemas' => $schemas,
+            'description' => $desc,
+            'keyword' => $kw
+        ]));
     }
+}
+
+if (!empty($schemas)) {
+    $nv_schemas[] = $schemas;
 }
 
 if ($page > 1) {
@@ -439,12 +478,12 @@ if ($page > 1) {
 }
 
 if (empty($module_info['description']) and !empty($desc)) {
-    $description = $module_info['site_title'] . ': ' . $desc;
+    $description = $module_info['site_title'] . ': ' . implode(', ', $desc);
 }
 
 $key_words = $module_info['keywords'];
 if (empty($key_words) and !empty($kw)) {
-    $key_words = $kw;
+    $key_words = implode(', ', $kw);
 }
 
 include NV_ROOTDIR . '/includes/header.php';
