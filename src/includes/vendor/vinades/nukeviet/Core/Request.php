@@ -311,6 +311,7 @@ class Request
 
         $this->remote_ip = !empty($ip) ? $ip : Ips::$remote_ip;
         if (Ips::ip2long($this->remote_ip) === false) {
+            http_response_code(403);
             trigger_error(Ips::INCORRECT_IP, 256);
         }
 
@@ -488,6 +489,7 @@ class Request
                 }
 
                 if (!$crossAllowedVariables) {
+                    http_response_code(403);
                     trigger_error(Request::REQUEST_BLOCKED, 256);
                 }
             }
@@ -532,6 +534,7 @@ class Request
                  * Nếu sai thì từ chối truy vấn
                  */
                 unset($_SERVER['HTTP_ORIGIN']);
+                http_response_code(403);
                 trigger_error(Request::INCORRECT_ORIGIN, 256);
             }
         } else {
@@ -623,6 +626,7 @@ class Request
     private function sessionStart($https_only)
     {
         if (headers_sent() or connection_status() != 0 or connection_aborted()) {
+            http_response_code(500);
             trigger_error(Request::IS_HEADERS_SENT, 256);
         }
 

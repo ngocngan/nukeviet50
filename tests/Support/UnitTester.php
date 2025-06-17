@@ -21,6 +21,7 @@ namespace Tests\Support;
 */
 class UnitTester extends \Codeception\Actor
 {
+    // phpcs:ignore
     use _generated\UnitTesterActions;
 
     /**
@@ -57,6 +58,40 @@ class UnitTester extends \Codeception\Actor
                         ) {
                             $file_list[] = preg_replace('/^\//', '', $base_dir . '/' . $v);
                         }
+                }
+            }
+        }
+
+        return $file_list;
+    }
+
+    /**
+     * Liệt kê tất cả các file PHP
+     *
+     * @param string $dir
+     * @param string $base_dir
+     * @return string[]
+     */
+    public function listPhpFile($dir = '', $base_dir = '')
+    {
+        $file_list = [];
+
+        if (is_dir($dir)) {
+            $array_filedir = scandir($dir);
+
+            foreach ($array_filedir as $v) {
+                if ($v == '.' or $v == '..') {
+                    continue;
+                }
+
+                if (is_dir($dir . '/' . $v)) {
+                    foreach ($this->listPhpFile($dir . '/' . $v, $base_dir . '/' . $v) as $file) {
+                        $file_list[] = $file;
+                    }
+                } else {
+                    if (preg_match('/\.php$/', $v)) {
+                        $file_list[] = preg_replace('/^\//', '', $base_dir . '/' . $v);
+                    }
                 }
             }
         }

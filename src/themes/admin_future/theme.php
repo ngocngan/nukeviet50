@@ -169,7 +169,7 @@ function nv_admin_theme(?string $contents, $head_site = 1)
             $css_module = $theme_tpl . '/css/' . $module_file . '.css';
         }
     }
-    $tpl->assign('CSS_MODULE', NV_STATIC_URL . 'themes/' . $css_module);
+    $tpl->assign('CSS_MODULE', $css_module ? (NV_STATIC_URL . 'themes/' . $css_module) : '');
 
     // JS riêng của module
     $theme_tpl = get_tpl_dir([$admin_info['admin_theme'], NV_DEFAULT_ADMIN_THEME], '', '/js/' . $module_file . '.js');
