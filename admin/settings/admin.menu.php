@@ -29,10 +29,10 @@ $submenu['smtp'] = $lang_module['smtp_config'];
 
 if ($site_fulladmin) {
     $submenu['headers'] = $lang_module['headers'];
+    $submenu['security'] = $lang_module['security'];
 }
 
 if (defined('NV_IS_GODADMIN')) {
-    $submenu['security'] = $lang_module['security'];
     $submenu['plugin'] = $lang_module['plugin'];
     $submenu['cronjobs'] = $lang_global['mod_cronjobs'];
     $submenu['ftp'] = $lang_module['ftp_config'];

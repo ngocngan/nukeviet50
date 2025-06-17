@@ -70,6 +70,7 @@ $lang_module['captcha_'] = 'Không sử dụng';
 $lang_module['captcha_captcha'] = 'Captcha hình';
 $lang_module['captcha_recaptcha'] = 'reCaptcha';
 $lang_module['captcha_type_recaptcha_note'] = 'reCaptcha sẽ bị thay bằng Captcha hình cho đến khi bạn khai báo Site key và Secret key của reCaptcha';
+$lang_module['captcha_type_recaptcha_note1'] = '. Vui lòng liên hệ bộ phận hỗ trợ nếu bạn cần sitekey hoặc recaptcha không hoạt động';
 $lang_module['select_all_as'] = 'Chọn tất cả là';
 $lang_module['captcha_area'] = 'Khu vực áp dụng captcha của module Thành viên';
 $lang_module['captcha_area_a'] = 'Admin đăng nhập';

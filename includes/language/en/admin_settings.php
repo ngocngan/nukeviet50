@@ -68,6 +68,7 @@ $lang_module['captcha_'] = 'Don\'t use';
 $lang_module['captcha_captcha'] = 'Image-Captcha';
 $lang_module['captcha_recaptcha'] = 'reCaptcha';
 $lang_module['captcha_type_recaptcha_note'] = 'reCaptcha will be replaced with Image-Captcha until you declare the Site key and Secret key of reCaptcha.';
+$lang_module['captcha_type_recaptcha_note1'] = '. Please contact support if you need a sitekey or if reCAPTCHA is not working';
 $lang_module['select_all_as'] = 'Select for all modules';
 $lang_module['captcha_area'] = 'Areas where captcha of Users module is applied';
 $lang_module['captcha_area_a'] = 'Where admin login';

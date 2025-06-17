@@ -20,15 +20,16 @@ if ($site_fulladmin) {
 }
 if (defined('NV_IS_GODADMIN')) {
     $allow_func[] = 'ftp';
-    $allow_func[] = 'security';
     $allow_func[] = 'cronjobs';
     $allow_func[] = 'cronjobs_add';
     $allow_func[] = 'cronjobs_edit';
     $allow_func[] = 'cronjobs_del';
     $allow_func[] = 'cronjobs_act';
     $allow_func[] = 'plugin';
-    $allow_func[] = 'security';
     $allow_func[] = 'variables';
+}
+if (defined('NV_IS_GODADMIN') or (defined('NV_IS_SPADMIN') and $global_config['idsite'] > 0)) {
+    $allow_func[] = 'security';
 }
 
 $menu_top = [

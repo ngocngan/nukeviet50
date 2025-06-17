@@ -14,13 +14,14 @@
 
 <div class="clearfix">
     <ul class="nav nav-tabs setting-tabnav" role="tablist" id="settingTabs">
-        <li role="presentation" class="{TAB0_ACTIVE}"><a href="#settingBasic" aria-controls="settingBasic" aria-offsets="0" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=0">{LANG.security}</a></li>
-        <li role="presentation" class="{TAB1_ACTIVE}"><a href="#settingFlood" aria-controls="settingFlood" aria-offsets="1" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=1">{LANG.flood_blocker}</a></li>
-        <li role="presentation" class="{TAB2_ACTIVE}"><a href="#settingCaptcha" aria-controls="settingCaptcha" aria-offsets="2" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=2">{LANG.captcha}</a></li>
-        <li role="presentation" class="{TAB3_ACTIVE}"><a href="#settingIp" aria-controls="settingIp" aria-offsets="3" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=3">{LANG.banip}</a></li>
-        <li role="presentation" class="{TAB4_ACTIVE}"><a href="#settingCORS" aria-controls="settingCORS" aria-offsets="4" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=4">{LANG.cors}</a></li>
+        <!-- BEGIN: tab_0 --><li role="presentation" class="{TAB0_ACTIVE}"><a href="#settingBasic" aria-controls="settingBasic" aria-offsets="0" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=0">{LANG.security}</a></li><!-- END: tab_0 -->
+        <!-- BEGIN: tab_1 --><li role="presentation" class="{TAB1_ACTIVE}"><a href="#settingFlood" aria-controls="settingFlood" aria-offsets="1" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=1">{LANG.flood_blocker}</a></li><!-- END: tab_1 -->
+        <!-- BEGIN: tab_2 --><li role="presentation" class="{TAB2_ACTIVE}"><a href="#settingCaptcha" aria-controls="settingCaptcha" aria-offsets="2" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=2">{LANG.captcha}</a></li><!-- END: tab_2 -->
+        <!-- BEGIN: tab_3 --><li role="presentation" class="{TAB3_ACTIVE}"><a href="#settingIp" aria-controls="settingIp" aria-offsets="3" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=3">{LANG.banip}</a></li><!-- END: tab_3 -->
+        <!-- BEGIN: tab_4 --><li role="presentation" class="{TAB4_ACTIVE}"><a href="#settingCORS" aria-controls="settingCORS" aria-offsets="4" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=4">{LANG.cors}</a></li><!-- END: tab_4 -->
     </ul>
     <div class="tab-content">
+        <!-- BEGIN: tabcontent_0 -->
         <div role="tabpanel" class="tab-pane{TAB0_ACTIVE}" id="settingBasic">
             <div class="setting-tabcontent clearfix">
                 <form action="{FORM_ACTION}" method="post">
@@ -141,6 +142,8 @@
                 </form>
             </div>
         </div>
+        <!-- END: tabcontent_0 -->
+        <!-- BEGIN: tabcontent_1 -->
         <div role="tabpanel" class="tab-pane{TAB1_ACTIVE}" id="settingFlood">
             <div class="setting-tabcontent clearfix">
                 <form action="{FORM_ACTION}" method="post">
@@ -294,8 +297,11 @@
                 </form>
             </div>
         </div>
+        <!-- END: tabcontent_1 -->
+        <!-- BEGIN: tabcontent_2 -->
         <div role="tabpanel" class="tab-pane{TAB2_ACTIVE}" id="settingCaptcha">
             <div class="setting-tabcontent clearfix">
+                <!-- BEGIN: admincfg -->
                 <form action="{FORM_ACTION}" method="post">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover table-first">
@@ -367,8 +373,8 @@
                     </div>
                     <input type="hidden" name="selectedtab" value="{SELECTEDTAB}"/>
                 </form>
-
-                <div class="row">
+                <!-- END: admincfg -->
+                <div class="row mt-3">
                     <form action="{FORM_ACTION}" method="post" class="col-sm-12" data-recaptcha-sitekey="{RECAPTCHA_SITEKEY}" data-recaptcha-secretkey="{RECAPTCHA_SECRETKEY}">
                         <div class="panel panel-default">
                             <div class="panel-heading"><strong>{LANG.captcha_for_module}</strong></div>
@@ -478,6 +484,8 @@
                 </div>
             </div>
         </div>
+        <!-- END: tabcontent_2 -->
+        <!-- BEGIN: tabcontent_3 -->
         <div role="tabpanel" class="tab-pane{TAB3_ACTIVE}" id="settingIp">
             <div class="setting-tabcontenttop">
                 <!-- BEGIN: listip -->
@@ -611,6 +619,8 @@
                 </form>
             </div>
         </div>
+        <!-- END: tabcontent_3 -->
+        <!-- BEGIN: tabcontent_4 -->
         <div role="tabpanel" class="tab-pane{TAB4_ACTIVE}" id="settingCORS">
             <div class="setting-tabcontent clearfix">
                 <form action="{FORM_ACTION}" method="post">
@@ -695,6 +705,7 @@
                 </form>
             </div>
         </div>
+        <!-- END: tabcontent_4 -->
     </div>
 </div>
 <input type="hidden" name="gselectedtab" value="{SELECTEDTAB}"/>

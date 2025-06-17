@@ -29,6 +29,12 @@ $captcha_comm_list = [
     2 => $lang_module['captcha_comm_2'],
     3 => $lang_module['captcha_comm_3']
 ];
+if (defined('NV_IS_GODADMIN')) {
+    $allowed_tabs = [0, 1, 2, 3, 4];
+} else {
+    $allowed_tabs = [2];
+    $lang_module['captcha_type_recaptcha_note'] .= $lang_module['captcha_type_recaptcha_note1'];
+}
 
 $recaptcha_type_array = ['image' => $lang_module['recaptcha_type_image'], 'audio' => $lang_module['recaptcha_type_audio']];
 $admin_2step_array = ['code', 'facebook', 'google', 'zalo'];
@@ -38,16 +44,14 @@ $array_iptypes = [
 ];
 
 $errormess = '';
-$selectedtab = $nv_Request->get_int('selectedtab', 'get,post', 0);
-if ($selectedtab < 0 or $selectedtab > 4) {
-    $selectedtab = 0;
-}
+$selectedtab = $nv_Request->get_int('selectedtab', 'get,post', $allowed_tabs[0]);
+!in_array($selectedtab, $allowed_tabs, true) && $selectedtab = $allowed_tabs[0];
 
 $array_config_global = $array_config_define = $array_config_cross = [];
 $checkss = md5(NV_CHECK_SESSION . '_' . $module_name . '_' . $op . '_' . $admin_info['userid']);
 
 // Xử lý các thiết lập cơ bản
-if ($nv_Request->isset_request('submitbasic', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('submitbasic', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $proxy_blocker = $nv_Request->get_int('proxy_blocker', 'post');
     if (isset($proxy_blocker_array[$proxy_blocker])) {
         $array_config_global['proxy_blocker'] = $proxy_blocker;
@@ -157,7 +161,7 @@ if ($nv_Request->isset_request('submitbasic', 'post') and $checkss == $nv_Reques
 $array_config_flood = [];
 
 // Xử lý phần chống Flood
-if ($nv_Request->isset_request('submitflood', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('submitflood', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $array_config_flood['is_flood_blocker'] = (int) $nv_Request->get_bool('is_flood_blocker', 'post');
     $array_config_flood['max_requests_60'] = $nv_Request->get_int('max_requests_60', 'post');
     $array_config_flood['max_requests_300'] = $nv_Request->get_int('max_requests_300', 'post');
@@ -187,7 +191,7 @@ $array_config_captcha = [];
 $array_define_captcha = [];
 
 // Xử lý phần captcha
-if ($nv_Request->isset_request('submitcaptcha', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('submitcaptcha', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $array_config_captcha['recaptcha_ver'] = $nv_Request->get_int('recaptcha_ver', 'post', 2);
 
     $array_config_captcha['recaptcha_sitekey'] = $nv_Request->get_title('recaptcha_sitekey', 'post', '');
@@ -292,7 +296,7 @@ if ($nv_Request->isset_request('captcommarea', 'post') and $checkss == $nv_Reque
 $lang_module['two_step_verification_note'] = sprintf($lang_module['two_step_verification_note'], $lang_module['two_step_verification0'], NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=users&amp;' . NV_OP_VARIABLE . '=groups');
 
 // Xử lý thiết lập CORS, Anti CSRF
-if ($nv_Request->isset_request('submitcors', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('submitcors', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $array_config_cross['crosssite_restrict'] = (int) $nv_Request->get_bool('crosssite_restrict', 'post', false);
     $array_config_cross['crossadmin_restrict'] = (int) $nv_Request->get_bool('crossadmin_restrict', 'post', false);
 
@@ -372,22 +376,18 @@ $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE 
 $xtpl->assign('SELECTEDTAB', $selectedtab);
 $xtpl->assign('CHECKSS', $checkss);
 
-for ($i = 0; $i <= 4; ++$i) {
-    $xtpl->assign('TAB' . $i . '_ACTIVE', $i == $selectedtab ? ' active' : '');
-}
-
 // Xử lý các IP bị cấm
 $error = [];
 $cid = $nv_Request->get_int('id', 'get');
 $del = $nv_Request->get_int('del', 'get');
 
-if (!empty($del) and !empty($cid) and $checkss == $nv_Request->get_string('checkss', 'get')) {
+if (defined('NV_IS_GODADMIN') and !empty($del) and !empty($cid) and $checkss == $nv_Request->get_string('checkss', 'get')) {
     $db->query('DELETE FROM ' . $db_config['prefix'] . '_ips WHERE type=0 AND id=' . $cid);
     nv_save_file_ips(0);
     nv_htmlOutput('OK');
 }
 
-if ($nv_Request->isset_request('save', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('save', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $ip_version = $nv_Request->get_int('ip_version', 'post', 4);
     $cid = $nv_Request->get_int('cid', 'post', 0);
     $ip = $nv_Request->get_title('ip', 'post', '');
@@ -483,13 +483,13 @@ $flid = $nv_Request->get_int('flid', 'get,post', 0);
 $fldel = $nv_Request->get_int('fldel', 'get,post', 0);
 $array_flip = [];
 
-if (!empty($fldel) and !empty($flid) and $checkss == $nv_Request->get_string('checkss', 'get,post')) {
+if (defined('NV_IS_GODADMIN') and !empty($fldel) and !empty($flid) and $checkss == $nv_Request->get_string('checkss', 'get,post')) {
     $db->query('DELETE FROM ' . $db_config['prefix'] . '_ips WHERE type=1 AND id=' . $flid);
     nv_save_file_ips(1);
     nv_htmlOutput('OK');
 }
 
-if ($nv_Request->isset_request('submitfloodip', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
+if (defined('NV_IS_GODADMIN') and $nv_Request->isset_request('submitfloodip', 'post') and $checkss == $nv_Request->get_string('checkss', 'post')) {
     $array_flip['ip_version'] = $nv_Request->get_int('fip_version', 'post', 4);
     $array_flip['flip'] = $nv_Request->get_title('flip', 'post', '');
     $array_flip['flarea'] = 1;
@@ -622,7 +622,7 @@ foreach ($proxy_blocker_array as $proxy_blocker_i => $proxy_blocker_v) {
     $xtpl->assign('PROXYSELECTED', ($array_config_global['proxy_blocker'] == $proxy_blocker_i) ? ' selected="selected"' : '');
     $xtpl->assign('PROXYOP', $proxy_blocker_i);
     $xtpl->assign('PROXYVALUE', $proxy_blocker_v);
-    $xtpl->parse('main.proxy_blocker');
+    $xtpl->parse('main.tabcontent_0.proxy_blocker');
 }
 $xtpl->assign('REFERER_BLOCKER', ($array_config_global['str_referer_blocker']) ? ' checked="checked"' : '');
 $xtpl->assign('ANTI_IFRAME', $array_config_define['nv_anti_iframe'] ? ' checked="checked"' : '');
@@ -636,39 +636,44 @@ $xtpl->assign('LOGIN_TIME_TRACKING', $array_config_global['login_time_tracking']
 $xtpl->assign('LOGIN_TIME_BAN', $array_config_global['login_time_ban']);
 $xtpl->assign('DOMAINS_WHITELIST', $array_config_global['domains_whitelist']);
 
-$xtpl->assign('RECAPTCHA_SITEKEY', $array_config_captcha['recaptcha_sitekey']);
-$xtpl->assign('RECAPTCHA_SECRETKEY', $array_config_captcha['recaptcha_secretkey'] ? $crypt->decrypt($array_config_captcha['recaptcha_secretkey']) : '');
+if (defined('NV_IS_GODADMIN')) {
+    $xtpl->assign('RECAPTCHA_SITEKEY', $array_config_captcha['recaptcha_sitekey']);
+    $xtpl->assign('RECAPTCHA_SECRETKEY', $array_config_captcha['recaptcha_secretkey'] ? $crypt->decrypt($array_config_captcha['recaptcha_secretkey']) : '');
 
-foreach ($recaptcha_type_array as $recaptcha_type_key => $recaptcha_type_title) {
-    $array = [
-        'value' => $recaptcha_type_key,
-        'select' => ($array_config_captcha['recaptcha_type'] == $recaptcha_type_key) ? ' selected="selected"' : '',
-        'text' => $recaptcha_type_title
-    ];
-    $xtpl->assign('RECAPTCHA_TYPE', $array);
-    $xtpl->parse('main.recaptcha_type');
+    foreach ($recaptcha_type_array as $recaptcha_type_key => $recaptcha_type_title) {
+        $array = [
+            'value' => $recaptcha_type_key,
+            'select' => ($array_config_captcha['recaptcha_type'] == $recaptcha_type_key) ? ' selected="selected"' : '',
+            'text' => $recaptcha_type_title
+        ];
+        $xtpl->assign('RECAPTCHA_TYPE', $array);
+        $xtpl->parse('main.tabcontent_2.admincfg.recaptcha_type');
+    }
+
+    foreach ($recaptcha_vers as $ver) {
+        $array = [
+            'value' => $ver,
+            'select' => ($ver == $array_config_captcha['recaptcha_ver']) ? ' selected="selected"' : ''
+        ];
+        $xtpl->assign('OPTION', $array);
+        $xtpl->parse('main.tabcontent_2.admincfg.recaptcha_ver');
+    }
+
+    for ($i = 2; $i < 10; ++$i) {
+        $array = [
+            'value' => $i,
+            'select' => ($i == $array_define_captcha['nv_gfx_num']) ? ' selected="selected"' : '',
+            'text' => $i
+        ];
+        $xtpl->assign('OPTION', $array);
+        $xtpl->parse('main.tabcontent_2.admincfg.nv_gfx_num');
+    }
+    $xtpl->assign('NV_GFX_WIDTH', $array_define_captcha['nv_gfx_width']);
+    $xtpl->assign('NV_GFX_HEIGHT', $array_define_captcha['nv_gfx_height']);
+
+    $xtpl->parse('main.tabcontent_2.admincfg');
 }
 
-foreach ($recaptcha_vers as $ver) {
-    $array = [
-        'value' => $ver,
-        'select' => ($ver == $array_config_captcha['recaptcha_ver']) ? ' selected="selected"' : ''
-    ];
-    $xtpl->assign('OPTION', $array);
-    $xtpl->parse('main.recaptcha_ver');
-}
-
-for ($i = 2; $i < 10; ++$i) {
-    $array = [
-        'value' => $i,
-        'select' => ($i == $array_define_captcha['nv_gfx_num']) ? ' selected="selected"' : '',
-        'text' => $i
-    ];
-    $xtpl->assign('OPTION', $array);
-    $xtpl->parse('main.nv_gfx_num');
-}
-$xtpl->assign('NV_GFX_WIDTH', $array_define_captcha['nv_gfx_width']);
-$xtpl->assign('NV_GFX_HEIGHT', $array_define_captcha['nv_gfx_height']);
 $xtpl->assign('NV_ALLOWED_HTML_TAGS', $array_config_define['nv_allowed_html_tags']);
 
 $mask_text_array = [];
@@ -694,8 +699,8 @@ foreach ($array_iptypes as $_key => $_value) {
         'f_selected' => $_key == $array_flip['ip_version'] ? ' selected="selected"' : '',
         'b_selected' => $_key == $ip_version ? ' selected="selected"' : '',
     ]);
-    $xtpl->parse('main.ip_version');
-    $xtpl->parse('main.fip_version');
+    $xtpl->parse('main.tabcontent_3.ip_version');
+    $xtpl->parse('main.tabcontent_1.fip_version');
 }
 
 if ($array_flip['ip_version'] == 4) {
@@ -721,8 +726,8 @@ for ($i = 1; $i <= 128; ++$i) {
         'f_selected' => $i == $array_flip['flmask6'] ? ' selected="selected"' : '',
         'b_selected' => $i == $mask6 ? ' selected="selected"' : '',
     ]);
-    $xtpl->parse('main.flmask6');
-    $xtpl->parse('main.mask6');
+    $xtpl->parse('main.tabcontent_1.flmask6');
+    $xtpl->parse('main.tabcontent_3.mask6');
 }
 
 // Danh sách các IP cấm
@@ -741,10 +746,10 @@ while (list($dbid, $dbip, $dbmask, $dbarea, $dbbegintime, $dbendtime) = $result-
         'url_delete' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&selectedtab=3&amp;del=1&amp;id=' . $dbid . '&checkss=' . $checkss
     ]);
 
-    $xtpl->parse('main.listip.loop');
+    $xtpl->parse('main.tabcontent_3.listip.loop');
 }
 if ($i) {
-    $xtpl->parse('main.listip');
+    $xtpl->parse('main.tabcontent_3.listip');
 }
 
 $xtpl->assign('BANIP_TITLE', ($cid) ? $lang_module['banip_title_edit'] : $lang_module['banip_title_add']);
@@ -778,10 +783,10 @@ while (list($dbid, $dbip, $dbmask, $dbarea, $dbbegintime, $dbendtime) = $result-
         'url_delete' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&selectedtab=1&amp;fldel=1&amp;flid=' . $dbid . '&amp;checkss=' . $checkss
     ]);
 
-    $xtpl->parse('main.noflips.loop');
+    $xtpl->parse('main.tabcontent_1.noflips.loop');
 }
 if ($i) {
-    $xtpl->parse('main.noflips');
+    $xtpl->parse('main.tabcontent_1.noflips');
 }
 
 $xtpl->assign('NOFLOODIP_TITLE', !empty($flcid) ? $lang_module['noflood_ip_edit'] : $lang_module['noflood_ip_add']);
@@ -806,7 +811,7 @@ for ($i = 0; $i <= 3; ++$i) {
         'selected' => $i == $array_config_global['two_step_verification'] ? ' selected="selected"' : ''
     ];
     $xtpl->assign('TWO_STEP_VERIFICATION', $two_step_verification);
-    $xtpl->parse('main.two_step_verification');
+    $xtpl->parse('main.tabcontent_0.two_step_verification');
 }
 
 foreach ($admin_2step_array as $admin_2step) {
@@ -819,13 +824,13 @@ foreach ($admin_2step_array as $admin_2step) {
 
     if ($admin_2step == 'facebook' or $admin_2step == 'google') {
         $xtpl->assign('LINK_CONFIG', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=users&amp;' . NV_OP_VARIABLE . '=config&amp;oauth_config=' . $admin_2step);
-        $xtpl->parse('main.admin_2step_opt.link_config');
+        $xtpl->parse('main.tabcontent_0.admin_2step_opt.link_config');
     } elseif ($admin_2step == 'zalo') {
         $xtpl->assign('LINK_CONFIG', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=zalo&amp;' . NV_OP_VARIABLE . '=settings');
-        $xtpl->parse('main.admin_2step_opt.link_config');
+        $xtpl->parse('main.tabcontent_0.admin_2step_opt.link_config');
     }
 
-    $xtpl->parse('main.admin_2step_opt');
+    $xtpl->parse('main.tabcontent_0.admin_2step_opt');
 
     $admin_2step_default = [
         'key' => $admin_2step,
@@ -833,7 +838,7 @@ foreach ($admin_2step_array as $admin_2step) {
         'selected' => $array_config_global['admin_2step_default'] == $admin_2step ? ' selected="selected"' : ''
     ];
     $xtpl->assign('ADMIN_2STEP_DEFAULT', $admin_2step_default);
-    $xtpl->parse('main.admin_2step_default');
+    $xtpl->parse('main.tabcontent_0.admin_2step_default');
 }
 
 // Cấu hình hiển thị captcha cho từng module
@@ -849,13 +854,13 @@ foreach ($site_mods as $title => $mod) {
                 'sel' => (!empty($captcha_type) and $captcha_type == $val) ? ' selected="selected"' : '',
                 'title' => $lang_module['captcha_' . $val]
             ]);
-            $xtpl->parse('main.mod.opt');
+            $xtpl->parse('main.tabcontent_2.mod.opt');
         }
 
         if ($captcha_type != 'recaptcha' or ($captcha_type == 'recaptcha' and !empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']))) {
-            $xtpl->parse('main.mod.dnone');
+            $xtpl->parse('main.tabcontent_2.mod.dnone');
         }
-        $xtpl->parse('main.mod');
+        $xtpl->parse('main.tabcontent_2.mod');
     }
 }
 
@@ -867,7 +872,7 @@ foreach ($captcha_area_list as $area) {
         'title' => $lang_module['captcha_area_' . $area]
     ];
     $xtpl->assign('CAPTCHAAREA', $captcha_area);
-    $xtpl->parse('main.captcha_area');
+    $xtpl->parse('main.tabcontent_2.captcha_area');
 }
 
 // Đối tượng áp dụng captcha khi tham gia Bình luận
@@ -876,7 +881,7 @@ foreach ($captcha_comm_list as $i => $title_i) {
         'val' => $i,
         'title' => $title_i
     ]);
-    $xtpl->parse('main.optAll');
+    $xtpl->parse('main.tabcontent_2.optAll');
 }
 
 foreach ($site_mods as $title => $mod) {
@@ -890,10 +895,16 @@ foreach ($site_mods as $title => $mod) {
                 'title' => $title_i,
                 'sel' => $i == $module_config[$title]['captcha_area_comm'] ? ' selected="selected"' : ''
             ]);
-            $xtpl->parse('main.modcomm.opt');
+            $xtpl->parse('main.tabcontent_2.modcomm.opt');
         }
-        $xtpl->parse('main.modcomm');
+        $xtpl->parse('main.tabcontent_2.modcomm');
     }
+}
+
+foreach ($allowed_tabs as $tab_id) {
+    $xtpl->assign('TAB' . $tab_id . '_ACTIVE', $tab_id == $selectedtab ? ' active' : '');
+    $xtpl->parse('main.tab_' . $tab_id);
+    $xtpl->parse('main.tabcontent_' . $tab_id);
 }
 
 $xtpl->parse('main');
