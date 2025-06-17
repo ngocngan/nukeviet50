@@ -32,7 +32,11 @@ $sth->execute();
 
 $array_data = [];
 while (list($title, $link) = $sth->fetch(3)) {
-    $array_data[] = ['label' => $title . ': ' . $link, 'value' => $link];
+    if (empty($link)) {
+        $array_data[] = ['label' => $title, 'value' => $title];
+    } else {
+        $array_data[] = ['label' => $title . ': ' . $link, 'value' => $link];
+    }
 }
 
 nv_jsonOutput($array_data);
