@@ -93,7 +93,7 @@ if ($tokend_confirm_password != $tokend) {
     nv_redirect_location(nv_redirect_decrypt($nv_redirect));
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

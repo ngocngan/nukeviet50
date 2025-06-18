@@ -128,7 +128,7 @@ $keyhtml = nv_htmlspecialchars($key);
 
 $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
 $is_search = false;
-$canonicalUrl = getCanonicalUrl($page_url, false, false);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 if (!empty($key)) {
     $base_url .= '&q=' . urlencode($key);

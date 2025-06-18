@@ -18,7 +18,7 @@ $vid = $nv_Request->get_int('vid', 'get,post', 0);
 
 // Danh sách bình chọn
 if (empty($vid)) {
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $page_title = $module_info['site_title'];
     $key_words = $module_info['keywords'];

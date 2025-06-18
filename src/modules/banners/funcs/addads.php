@@ -163,7 +163,7 @@ if ($nv_Request->isset_request('confirm', 'post')) {
 
 $contents = nv_banner_theme_addads($global_array_uplans, $page_url);
 $page_title = $nv_Lang->getModule('client_addads');
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

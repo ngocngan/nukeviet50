@@ -203,7 +203,7 @@ if (isset($array_op[1]) and !empty($array_op[1])) {
 
     $contents = nv_memberslist_theme($users_array, $orderby, $sortby, $array_order_new, $generate_page);
 
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 }
 
 include NV_ROOTDIR . '/includes/header.php';

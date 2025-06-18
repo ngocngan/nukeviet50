@@ -67,7 +67,7 @@ if ($num_items) {
     $contents = nv_theme_statistics_allos($os_list, $generate_page);
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

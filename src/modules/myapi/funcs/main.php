@@ -130,7 +130,7 @@ $api_user = get_api_user();
 $page_title = $nv_Lang->getModule('main_title');
 $key_words = $module_info['keywords'];
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = main_theme($type, $roleCount, $roleList, $api_user, $generate_page);
 

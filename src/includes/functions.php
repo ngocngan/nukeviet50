@@ -2046,9 +2046,11 @@ function check_endurl_variables(&$request_query)
  */
 function getPageUrl($page_url, $is_query_check, $is_abs_check, &$request_uri = '')
 {
+    // Rewrite $page_url và cắt domain nếu nó tồn tại
     $url_rewrite = nv_url_rewrite($page_url, true);
     str_starts_with($url_rewrite, NV_MY_DOMAIN) && $url_rewrite = substr($url_rewrite, strlen(NV_MY_DOMAIN));
 
+    // Phân tích url đã rewrite được ra path và query
     $url_rewrite_check = str_replace('&amp;', '&', $url_rewrite);
     $url_rewrite_check = urldecode($url_rewrite_check);
     $url_rewrite_check = preg_replace_callback('/[^:\/@?&=#]+/usD', function ($matches) {
@@ -2058,7 +2060,8 @@ function getPageUrl($page_url, $is_query_check, $is_abs_check, &$request_uri = '
     $url_parts['path'] = urldecode($url_parts['path']);
     !isset($url_parts['query']) && $url_parts['query'] = '';
 
-    $request_uri = nv_url_rewrite($_SERVER['REQUEST_URI'], true);
+    // Xử lý $_SERVER['REQUEST_URI'] cắt domain nếu nó tồn tại, phân tích ra path và query
+    $request_uri = $_SERVER['REQUEST_URI'];
     str_starts_with($request_uri, NV_MY_DOMAIN) && $request_uri = substr($request_uri, strlen(NV_MY_DOMAIN));
     $request_parts = parse_url($request_uri);
     $request_parts['path'] = urldecode($request_parts['path']);
@@ -2092,7 +2095,7 @@ function getPageUrl($page_url, $is_query_check, $is_abs_check, &$request_uri = '
 }
 
 /**
- * getCanonicalUrl()
+ * Lấy biến canonical URL và kiểm soát việc chuyển hướng
  *
  * @param string $page_url    Đường dẫn tuyệt đối từ thư mục gốc đến trang
  * @param bool   $query_check So sánh query của $page_url với query của $_SERVER['REQUEST_URI']
@@ -2104,13 +2107,19 @@ function getCanonicalUrl($page_url, $query_check = false, $abs_comp = false)
     global $home, $global_config;
 
     if ($home) {
+        // Cắt tên miền nếu nó tồn tại trong $page_url
         $page_url = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA, true);
         str_starts_with($page_url, NV_MY_DOMAIN) && $page_url = substr($page_url, strlen(NV_MY_DOMAIN));
 
-        $request_uri = nv_url_rewrite($_SERVER['REQUEST_URI'], true);
+        // Cắt tên miền nếu nó tồn tại trong $_SERVER['REQUEST_URI']
+        $request_uri = $_SERVER['REQUEST_URI'];
         str_starts_with($request_uri, NV_MY_DOMAIN) && $request_uri = substr($request_uri, strlen(NV_MY_DOMAIN));
+        if (!$query_check) {
+            $request_uri = preg_replace('/\?.*/', '', $request_uri);
+        }
 
-        if ($request_uri != NV_BASE_SITEURL and $request_uri != $page_url) {
+        $check_url = $query_check ? $page_url : preg_replace('/\?.*/', '', $page_url);
+        if ($request_uri != NV_BASE_SITEURL and $request_uri != $check_url) {
             nv_redirect_location($page_url);
         }
 

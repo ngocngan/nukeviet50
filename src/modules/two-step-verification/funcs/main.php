@@ -208,7 +208,7 @@ if ($nv_Request->isset_request('downloadcode', 'get') and $nv_Request->get_title
 // In code ra
 if ($array_op[0] ?? '' == 'print') {
     $page_url .= '&amp;' . NV_OP_VARIABLE . '=print';
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $contents = nv_theme_print_code($array_data['backupcodes']);
     include NV_ROOTDIR . '/includes/header.php';

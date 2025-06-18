@@ -47,7 +47,7 @@ if (!empty($alias)) {
         $page_url .= '/page-' . $page;
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $array_mod_title[] = [
         'catid' => 0,
@@ -114,7 +114,7 @@ if (!empty($alias)) {
 
     $contents = topic_theme($topic_array, $topic_other_array, $generate_page, $page_title, $description, $topic_image);
 } else {
-    $canonicalUrl = getCanonicalUrl($page_url, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $page_title = $module_info['funcs'][$op]['func_site_title'];
     $key_words = $module_info['keywords'];

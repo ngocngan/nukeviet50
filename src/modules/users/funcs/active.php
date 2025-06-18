@@ -156,7 +156,7 @@ $info .= '[<a href="' . $nv_redirect . '">' . $nv_Lang->getModule('redirect_to_l
 $contents = user_info_exit($info);
 $contents .= '<meta http-equiv="refresh" content="5;url=' . $nv_redirect . '" />';
 
-$canonicalUrl = getCanonicalUrl($page_url, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

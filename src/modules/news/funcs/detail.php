@@ -78,7 +78,7 @@ if ($nv_Request->isset_request('pdf', 'get')) {
 
 // Kiểm tra URL, không cho đánh tùy ý phần alias
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$news_contents['catid']]['alias'] . '/' . $news_contents['alias'] . '-' . $news_contents['id'] . $global_config['rewrite_exturl'];
-$news_contents['link'] = $canonicalUrl = getCanonicalUrl($page_url, true);
+$news_contents['link'] = $canonicalUrl = getCanonicalUrl($page_url);
 if (!empty($localversions)) {
     $localversions[NV_LANG_DATA] = $canonicalUrl;
     foreach ($localversions as $l => $u) {

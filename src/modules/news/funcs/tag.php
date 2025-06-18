@@ -46,7 +46,7 @@ if (!empty($row)) {
         $page_title .= NV_TITLEBAR_DEFIS . $nv_Lang->getGlobal('page') . ' ' . $page;
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $array_mod_title[] = [
         'catid' => 0,

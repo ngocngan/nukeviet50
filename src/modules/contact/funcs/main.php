@@ -348,7 +348,7 @@ if ($is_specific) {
     $supporters = !empty($supporters[0]) ? $supporters[0] : '';
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = contact_main_theme($array_content, $is_specific, $current_departments, $categories, $supporters, $page_url, NV_CHECK_SESSION);
 

@@ -98,7 +98,7 @@ if (!empty($array_op[2]) and $array_op[2] == 'review' and $array_op[1] == 'compl
         $nv_Request->unset_request('sso_redirect_' . $module_data, 'session');
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
     $contents = nv_theme_review_2step($array_data);
 
     include NV_ROOTDIR . '/includes/header.php';
@@ -131,7 +131,7 @@ if (!empty($array_op[1]) and $array_op[1] == 'complete') {
         $array_data['redirect'] .= '&amp;nv_redirect=' . $nv_redirect;
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
     $contents = nv_theme_complete_2step($backupcodes, $array_data);
 
     include NV_ROOTDIR . '/includes/header.php';
@@ -198,7 +198,7 @@ if ($checkss == NV_CHECK_SESSION) {
     ]);
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = nv_theme_config_2step($secretkey, $nv_redirect);
 
