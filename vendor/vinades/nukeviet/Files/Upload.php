@@ -1070,7 +1070,7 @@ class Upload
             $return['is_img'] = $this->is_img;
             $return['is_svg'] = $this->is_svg;
             if ($this->is_img) {
-                if (function_exists('exif_read_data')) {
+                if (function_exists('exif_read_data') and in_array($this->file_extension, ['jpg', 'jpeg'], true) and IMAGETYPE_JPEG === exif_imagetype($savepath . $filename)) {
                     // Check/fix image rotation
                     // https://stackoverflow.com/questions/34287437/
                     $exif = exif_read_data($savepath . $filename);

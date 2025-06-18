@@ -19,7 +19,11 @@
                 <tbody>
                     <tr>
                         <td>{LANG.upload_logo}</td>
-                        <td><input type="text" class="w350 form-control pull-left" style="margin-right: 5px" value="{AUTOLOGOSIZE.upload_logo}" id="upload_logo" name="upload_logo"><input type="button" name="selectimg" value="{LANG.selectimg}" class="btn btn-info"></td>
+                        <td>
+                            <input type="text" class="w350 form-control pull-left" style="margin-right: 5px" value="{AUTOLOGOSIZE.upload_logo}" id="upload_logo" name="upload_logo">
+                            <input type="button" name="selectimg" value="{LANG.selectimg}" class="btn btn-info">
+                            <div class="text-muted help-block mb-0">{LOGO_EXTS_NOTE}</div>
+                        </td>
                     </tr>
                     <tr>
                         <td>{LANG.imagewith} &lt; = 150px</td>

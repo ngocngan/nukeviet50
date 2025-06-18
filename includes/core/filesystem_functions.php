@@ -744,18 +744,43 @@ function nv_is_image($img)
 }
 
 /**
- * nv_ImageInfo()
- * Function xuat ra cac thong tin ve IMAGE de dua vao HTML (src, width, height).
+ * Danh sách các phần mở rộng ảnh được hỗ trợ bởi GD.
  *
- * @param string $original_name
- *                                duong dan tuyet doi den file goc (bat buoc)
- * @param int    $width
- *                                chieu rong xuat ra HTML (neu bang 0 se xuat ra kich thuoc thuc)
- * @param bool   $is_create_thumb
- *                                Neu chieu rong cua hinh lon hon $width, co the tao thumbnail
- * @param string $thumb_path
- *                                neu tao thumbnail thi chi ra thu muc chua file thumbnail nay
  * @return array
+ */
+function nv_editable_imgexts(): array
+{
+    $gdInfo = gd_info();
+    $extensions = [];
+    $map = [
+        'JPEG Support'      => ['jpg', 'jpeg'],
+        'PNG Support'       => ['png'],
+        'GIF Read Support'  => ['gif'],
+        'WebP Support'      => ['webp'],
+        'BMP Support'       => ['bmp'],
+        'XBM Support'       => ['xbm'],
+        'WBMP Support'      => ['wbmp'],
+    ];
+
+    foreach ($map as $key => $extList) {
+        if (!empty($gdInfo[$key])) {
+            foreach ($extList as $ext) {
+                $extensions[] = $ext;
+            }
+        }
+    }
+
+    return array_unique($extensions);
+}
+
+/**
+ * Xuất ra các thông tin về ảnh để đưa vào HTML (src, width, height).
+ *
+ * @param string $original_name Duong dan tuyet doi den file goc (bat buoc)
+ * @param int    $width Chieu rong xuat ra HTML (neu bang 0 se xuat ra kich thuoc thuc)
+ * @param bool   $is_create_thumb Neu chieu rong cua hinh lon hon $width, co the tao thumbnail
+ * @param string $thumb_path Neu tao thumbnail thi chi ra thu muc chua file thumbnail nay
+ * @return array|false
  */
 function nv_ImageInfo($original_name, $width = 0, $is_create_thumb = false, $thumb_path = '')
 {

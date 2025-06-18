@@ -24,11 +24,12 @@ $array_logo_position = [
     'topLeft' => $lang_module['logopostopleft'],
     'topCenter' => $lang_module['logopostopcenter']
 ];
+$logo_exts = nv_editable_imgexts();
 
 if ($nv_Request->isset_request('save', 'post')) {
     $upload_logo = $nv_Request->get_title('upload_logo', 'post', '');
 
-    if (!empty($upload_logo) and !nv_is_url($upload_logo) and nv_is_file($upload_logo)) {
+    if (!empty($upload_logo) and !nv_is_url($upload_logo) and nv_is_file($upload_logo) and in_array(nv_getextension($upload_logo), $logo_exts, true)) {
         $lu = strlen(NV_BASE_SITEURL);
         $upload_logo = substr($upload_logo, $lu);
     } else {
@@ -92,6 +93,7 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('OP', $op);
 $xtpl->assign('AUTOLOGOSIZE', $array_autologosize);
+$xtpl->assign('LOGO_EXTS_NOTE', sprintf($lang_module['upload_logo_ext'], implode(', ', $logo_exts)));
 
 $a = 0;
 $xtpl->assign('CLASS', '');
