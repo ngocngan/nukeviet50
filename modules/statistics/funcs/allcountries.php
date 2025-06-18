@@ -27,7 +27,7 @@ if ($num_items) {
     $base_url = $page_url;
     $page = $nv_Request->get_int('page', 'get', 1);
     $per_page = 50;
-    
+
     if ($page > 1) {
         $page_url .= '&amp;page=' . $page;
     }
@@ -65,7 +65,7 @@ if ($num_items) {
     $contents = nv_theme_statistics_allcountries($num_items, $countries_list, $cts);
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

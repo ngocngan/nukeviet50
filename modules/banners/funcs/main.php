@@ -30,7 +30,7 @@ foreach ($global_array_plans as $row) {
 
 $page_title = $module_info['site_title'];
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = nv_banner_theme_main($contents, $manament);
 

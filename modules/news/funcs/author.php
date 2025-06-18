@@ -40,7 +40,7 @@ if ($page > 1) {
     $page_title .= NV_TITLEBAR_DEFIS . $lang_global['page'] . ' ' . $page;
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $array_mod_title[] = [
     'catid' => 0,

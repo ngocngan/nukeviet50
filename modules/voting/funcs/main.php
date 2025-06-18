@@ -18,7 +18,7 @@ $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DA
 $vid = $nv_Request->get_int('vid', 'get', 0);
 
 if (empty($vid)) {
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $page_title = $module_info['site_title'];
     $key_words = $module_info['keywords'];

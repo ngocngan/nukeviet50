@@ -32,7 +32,7 @@ $contents = '';
 $mod_title = $page_title = sprintf($lang_module['refererbysite'], $host);
 $key_words = $module_info['keywords'];
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&host=' . $host;
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $cts = [];
 $cts['caption'] = $page_title;

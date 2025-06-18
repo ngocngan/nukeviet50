@@ -37,7 +37,7 @@ if (isset($array_op[1])) {
         $page_url .= '/page-' . $page;
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $array_mod_title[] = [
         'catid' => 0,
@@ -120,7 +120,7 @@ if (isset($array_op[1])) {
     $page_title = $module_info['funcs']['groups']['func_site_title'];
     $key_words = $module_info['keywords'];
     $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['groups'];
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $array_cat = [];
     $key = 0;

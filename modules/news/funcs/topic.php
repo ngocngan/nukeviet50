@@ -47,7 +47,7 @@ if (!empty($alias)) {
         $page_url .= '/page-' . $page;
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     $array_mod_title[] = [
         'catid' => 0,

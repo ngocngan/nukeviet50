@@ -72,7 +72,7 @@ if ($nv_Request->isset_request('showcode_' . $module_data, 'session')) {
     $nv_Request->unset_request('showcode_' . $module_data, 'session');
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = nv_theme_info_2step($backupcodes, $autoshowcode);
 

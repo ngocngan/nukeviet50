@@ -43,7 +43,7 @@ if ($page > 1) {
     }
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $page_title = (!empty($global_array_cat[$catid]['titlesite'])) ? $global_array_cat[$catid]['titlesite'] : $global_array_cat[$catid]['title'];
 $key_words = $global_array_cat[$catid]['keywords'];

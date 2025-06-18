@@ -165,7 +165,7 @@ if ($page > 1) {
     $is_search = true;
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 if ($is_search) {
     $nv_BotManager->setPrivate();
 }

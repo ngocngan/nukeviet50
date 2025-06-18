@@ -48,7 +48,7 @@ if (!defined('NV_IS_ADMIN') and !$global_config['allowuserlogin']) {
     }
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

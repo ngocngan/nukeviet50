@@ -177,7 +177,7 @@ if (!empty($module_captcha)) {
 $xtpl->parse('main');
 $contents .= $xtpl->text('main');
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

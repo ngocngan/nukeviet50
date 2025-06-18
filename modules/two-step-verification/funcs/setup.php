@@ -111,7 +111,7 @@ if ($checkss == NV_CHECK_SESSION) {
     ]);
 }
 
-$canonicalUrl = getCanonicalUrl($page_url, true, true);
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $contents = nv_theme_config_2step($secretkey, $nv_redirect);
 

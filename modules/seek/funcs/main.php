@@ -73,7 +73,7 @@ if ($nv_Request->isset_request('q', 'get')) {
         $page_url .= '&page=' . $search['page'];
     }
 
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 
     if ($search['len_key'] < NV_MIN_SEARCH_LENGTH) {
         $search['is_error'] = true;
@@ -120,7 +120,7 @@ if ($nv_Request->isset_request('q', 'get')) {
         }
     }
 } else {
-    $canonicalUrl = getCanonicalUrl($page_url, true, true);
+    $canonicalUrl = getCanonicalUrl($page_url);
 }
 
 $contents = search_main_theme($is_search, $search, $array_mod);
