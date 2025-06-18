@@ -24,14 +24,15 @@ $current_year = date('Y', NV_CURRENTTIME);
 $current_day = date('j', NV_CURRENTTIME);
 $current_number_of_days = date('t', NV_CURRENTTIME);
 $current_dayofweek = date('l', NV_CURRENTTIME);
+$current_hour = (int) date('G', NV_CURRENTTIME);
 
-//Thong ke theo nam
+// Thống kê theo năm
 $max = 0;
 $total = 0;
 $year_list = [];
 $result = $db->query('SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='year' ORDER BY c_val");
 while (list($year, $count) = $result->fetch(3)) {
-    $year_list[$year] = $count;
+    $year_list[$year] = $current_year < $year ? null : $count;
     if ($count > $max) {
         $max = $count;
     }
@@ -45,20 +46,20 @@ $ctsy['current_year'] = $current_year;
 $ctsy['max'] = $max;
 $ctsy['total'] = [$lang_global['total'], number_format($total, 0, ',', '.')];
 
-// theo thang
+// Thống kê theo tháng
 $month_list = [];
 $month_list['Jan'] = ['fullname' => $lang_global['january'], 'count' => 0];
-$month_list['Feb'] = ['fullname' => $lang_global['february'], 'count' => 0];
-$month_list['Mar'] = ['fullname' => $lang_global['march'], 'count' => 0];
-$month_list['Apr'] = ['fullname' => $lang_global['april'], 'count' => 0];
-$month_list['May'] = ['fullname' => $lang_global['may'], 'count' => 0];
-$month_list['Jun'] = ['fullname' => $lang_global['june'], 'count' => 0];
-$month_list['Jul'] = ['fullname' => $lang_global['july'], 'count' => 0];
-$month_list['Aug'] = ['fullname' => $lang_global['august'], 'count' => 0];
-$month_list['Sep'] = ['fullname' => $lang_global['september'], 'count' => 0];
-$month_list['Oct'] = ['fullname' => $lang_global['october'], 'count' => 0];
-$month_list['Nov'] = ['fullname' => $lang_global['november'], 'count' => 0];
-$month_list['Dec'] = ['fullname' => $lang_global['december'], 'count' => 0];
+$month_list['Feb'] = ['fullname' => $lang_global['february'], 'count' => $current_month_num < 2 ? null : 0];
+$month_list['Mar'] = ['fullname' => $lang_global['march'], 'count' => $current_month_num < 3 ? null : 0];
+$month_list['Apr'] = ['fullname' => $lang_global['april'], 'count' => $current_month_num < 4 ? null : 0];
+$month_list['May'] = ['fullname' => $lang_global['may'], 'count' => $current_month_num < 5 ? null : 0];
+$month_list['Jun'] = ['fullname' => $lang_global['june'], 'count' => $current_month_num < 6 ? null : 0];
+$month_list['Jul'] = ['fullname' => $lang_global['july'], 'count' => $current_month_num < 7 ? null : 0];
+$month_list['Aug'] = ['fullname' => $lang_global['august'], 'count' => $current_month_num < 8 ? null : 0];
+$month_list['Sep'] = ['fullname' => $lang_global['september'], 'count' => $current_month_num < 9 ? null : 0];
+$month_list['Oct'] = ['fullname' => $lang_global['october'], 'count' => $current_month_num < 10 ? null : 0];
+$month_list['Nov'] = ['fullname' => $lang_global['november'], 'count' => $current_month_num < 11 ? null : 0];
+$month_list['Dec'] = ['fullname' => $lang_global['december'], 'count' => $current_month_num < 12 ? null : 0];
 
 $month_list2 = array_chunk($month_list, $current_month_num, true);
 $month_list2 = $month_list2[0];
@@ -84,8 +85,7 @@ $ctsm['current_month'] = date('M', NV_CURRENTTIME);
 $ctsm['max'] = $max;
 $ctsm['total'] = [$lang_global['total'], number_format($total, 0, ',', '.')];
 
-// ngay trong thang
-
+// Thống kê theo ngày trong tháng
 $max = 0;
 $total = 0;
 $day_list = [];
@@ -93,7 +93,7 @@ $day_list = [];
 $sql = 'SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='day' AND c_val <= " . $current_number_of_days . ' ORDER BY c_val';
 $result = $db->query($sql);
 while (list($day, $count) = $result->fetch(3)) {
-    $day_list[$day] = $count;
+    $day_list[$day] = $day <= $current_day ? $count : null;
     if ($count > $max) {
         $max = $count;
     }
@@ -108,7 +108,7 @@ $ctsdm['max'] = $max;
 $ctsdm['total'] = [$lang_global['total'], number_format($total, 0, ',', '.')];
 $ctsdm['numrows'] = $current_number_of_days;
 
-// ngay trong tuan
+// Ngày trong tuần
 $dayofweek_list = [];
 $dayofweek_list['Sunday'] = ['fullname' => $lang_global['sunday'], 'count' => 0];
 $dayofweek_list['Monday'] = ['fullname' => $lang_global['monday'], 'count' => 0];
@@ -149,7 +149,7 @@ $hour_list = [];
 $sql = 'SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='hour' ORDER BY c_val";
 $result = $db->query($sql);
 while (list($hour, $count) = $result->fetch(3)) {
-    $hour_list[$hour] = $count;
+    $hour_list[$hour] = $hour > $current_hour ? null : $count;
     if ($count > $max) {
         $max = $count;
     }
@@ -163,7 +163,7 @@ $ctsh['current_hour'] = date('H', NV_CURRENTTIME);
 $ctsh['max'] = $max;
 $ctsh['total'] = [$lang_global['total'], number_format($total, 0, ',', '.')];
 
-// quoc gia
+// Theo quốc gia
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='country' AND c_count!=0")->order('c_count DESC')->limit(10);
 $result = $db->query($db->sql());
 
@@ -200,7 +200,7 @@ $ctsc['others'] = [
     $lang_module['viewall']
 ];
 
-// trinh duyet
+// Theo trình duyệt
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='browser' AND c_count!=0")->order('c_count DESC');
 $result = $db->query($db->sql());
 
@@ -233,7 +233,7 @@ $ctsb['others'] = [
     $lang_module['viewall']
 ];
 
-// he dieu hanh
+// Theo hệ điều hành
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='os' AND c_count!=0")->order('c_count DESC')->limit(10);
 $result = $db->query($db->sql());
 
