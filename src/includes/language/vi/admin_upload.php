@@ -113,6 +113,7 @@ $lang_module['addlogo'] = 'Thêm Logo';
 $lang_module['addlogosave'] = 'Lưu thay đổi';
 $lang_module['notlogo'] = 'Lỗi: không tìm thấy logo. Có thể bạn chưa cấu hình chèn logo hoặc file đã bị xóa';
 $lang_module['upload_logo'] = 'Logo được chèn vào ảnh';
+$lang_module['upload_logo_ext'] = 'Phần mở rộng được phép của logo là: <strong>%s</strong>';
 $lang_module['upload_logo_pos'] = 'Vị trí của logo';
 $lang_module['selectimg'] = 'Chọn hình ảnh';
 $lang_module['autologo'] = 'Tự động chèn Logo vào ảnh của các module';

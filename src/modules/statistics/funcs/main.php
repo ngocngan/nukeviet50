@@ -22,16 +22,17 @@ $current_month_num = date('n', NV_CURRENTTIME);
 $current_year = date('Y', NV_CURRENTTIME);
 $current_day = date('j', NV_CURRENTTIME);
 $current_number_of_days = date('t', NV_CURRENTTIME);
+$current_hour = (int) date('G', NV_CURRENTTIME);
 
 $monthlist = array_map('trim', explode(',', $nv_Lang->getModule('statbyday_of_months')));
 $current_month_str = $monthlist[((int) $current_month_num - 1)];
 
-//Thong ke theo nam
+// Thống kê theo năm
 $total = 0;
 $year_list = [];
 $result = $db->query('SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='year' ORDER BY c_val");
 while ([$year, $count] = $result->fetch(3)) {
-    $year_list[$year] = $count;
+    $year_list[$year] = $current_year < $year ? null : $count;
     $total += $count;
 }
 
@@ -41,20 +42,20 @@ $ctsy['total'] = nv_number_format($total);
 $ctsy['dataLabel'] = implode('_', array_keys($year_list));
 $ctsy['dataValue'] = implode('_', $year_list);
 
-// theo thang
+// Thống kê theo tháng của năm
 $month_list = [];
 $month_list['Jan'] = ['fullname' => $nv_Lang->getGlobal('january'), 'count' => 0];
-$month_list['Feb'] = ['fullname' => $nv_Lang->getGlobal('february'), 'count' => 0];
-$month_list['Mar'] = ['fullname' => $nv_Lang->getGlobal('march'), 'count' => 0];
-$month_list['Apr'] = ['fullname' => $nv_Lang->getGlobal('april'), 'count' => 0];
-$month_list['May'] = ['fullname' => $nv_Lang->getGlobal('may'), 'count' => 0];
-$month_list['Jun'] = ['fullname' => $nv_Lang->getGlobal('june'), 'count' => 0];
-$month_list['Jul'] = ['fullname' => $nv_Lang->getGlobal('july'), 'count' => 0];
-$month_list['Aug'] = ['fullname' => $nv_Lang->getGlobal('august'), 'count' => 0];
-$month_list['Sep'] = ['fullname' => $nv_Lang->getGlobal('september'), 'count' => 0];
-$month_list['Oct'] = ['fullname' => $nv_Lang->getGlobal('october'), 'count' => 0];
-$month_list['Nov'] = ['fullname' => $nv_Lang->getGlobal('november'), 'count' => 0];
-$month_list['Dec'] = ['fullname' => $nv_Lang->getGlobal('december'), 'count' => 0];
+$month_list['Feb'] = ['fullname' => $nv_Lang->getGlobal('february'), 'count' => $current_month_num < 2 ? null : 0];
+$month_list['Mar'] = ['fullname' => $nv_Lang->getGlobal('march'), 'count' => $current_month_num < 3 ? null : 0];
+$month_list['Apr'] = ['fullname' => $nv_Lang->getGlobal('april'), 'count' => $current_month_num < 4 ? null : 0];
+$month_list['May'] = ['fullname' => $nv_Lang->getGlobal('may'), 'count' => $current_month_num < 5 ? null : 0];
+$month_list['Jun'] = ['fullname' => $nv_Lang->getGlobal('june'), 'count' => $current_month_num < 6 ? null : 0];
+$month_list['Jul'] = ['fullname' => $nv_Lang->getGlobal('july'), 'count' => $current_month_num < 7 ? null : 0];
+$month_list['Aug'] = ['fullname' => $nv_Lang->getGlobal('august'), 'count' => $current_month_num < 8 ? null : 0];
+$month_list['Sep'] = ['fullname' => $nv_Lang->getGlobal('september'), 'count' => $current_month_num < 9 ? null : 0];
+$month_list['Oct'] = ['fullname' => $nv_Lang->getGlobal('october'), 'count' => $current_month_num < 10 ? null : 0];
+$month_list['Nov'] = ['fullname' => $nv_Lang->getGlobal('november'), 'count' => $current_month_num < 11 ? null : 0];
+$month_list['Dec'] = ['fullname' => $nv_Lang->getGlobal('december'), 'count' => $current_month_num < 12 ? null : 0];
 
 $month_list2 = array_chunk($month_list, $current_month_num, true);
 $month_list2 = $month_list2[0];
@@ -81,13 +82,13 @@ $ctsm['total'] = nv_number_format($total);
 $ctsm['dataLabel'] = implode('_', $data_label);
 $ctsm['dataValue'] = implode('_', $data_value);
 
-// ngay trong thang
+// Thống kê theo ngày trong tháng
 $total = 0;
 $day_list = [];
 $sql = 'SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='day' AND c_val <= " . $current_number_of_days . ' ORDER BY c_val';
 $result = $db->query($sql);
 while ([$day, $count] = $result->fetch(3)) {
-    $day_list[$day] = $count;
+    $day_list[$day] = $day <= $current_day ? $count : null;
     $total += $count;
 }
 
@@ -97,7 +98,7 @@ $ctsdm['total'] = nv_number_format($total);
 $ctsdm['dataLabel'] = implode('_', array_keys($day_list));
 $ctsdm['dataValue'] = implode('_', $day_list);
 
-// ngay trong tuan
+// Ngày trong tuần
 $dayofweek_list = [];
 $dayofweek_list['Sunday'] = ['fullname' => $nv_Lang->getGlobal('sunday'), 'count' => 0];
 $dayofweek_list['Monday'] = ['fullname' => $nv_Lang->getGlobal('monday'), 'count' => 0];
@@ -136,7 +137,7 @@ $hour_list = [];
 $sql = 'SELECT c_val,c_count FROM ' . NV_COUNTER_GLOBALTABLE . " WHERE c_type='hour' ORDER BY c_val";
 $result = $db->query($sql);
 while ([$hour, $count] = $result->fetch(3)) {
-    $hour_list[$hour] = $count;
+    $hour_list[$hour] = $hour > $current_hour ? null : $count;
     $total += $count;
 }
 
@@ -146,7 +147,7 @@ $ctsh['total'] = nv_number_format($total);
 $ctsh['dataLabel'] = implode('_', array_keys($hour_list));
 $ctsh['dataValue'] = implode('_', $hour_list);
 
-// quoc gia
+// Theo quốc gia
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='country' AND c_count!=0")->order('c_count DESC')->limit(10);
 $result = $db->query($db->sql());
 
@@ -174,7 +175,7 @@ $ctsc['max'] = $max;
 $ctsc['others'] = nv_number_format($others);
 $ctsc['others_url'] = NV_BASE_MOD_URL . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['allcountries'];
 
-// trinh duyet
+// Theo trình duyệt
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='browser' AND c_count!=0")->order('c_count DESC');
 $result = $db->query($db->sql());
 
@@ -203,7 +204,7 @@ $ctsb['max'] = $max;
 $ctsb['others'] = nv_number_format($others);
 $ctsb['others_url'] = NV_BASE_MOD_URL . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['allbrowsers'];
 
-// he dieu hanh
+// Theo hệ điều hành
 $db->sqlreset()->select('c_val,c_count, last_update')->from(NV_COUNTER_GLOBALTABLE)->where("c_type='os' AND c_count!=0")->order('c_count DESC')->limit(10);
 $result = $db->query($db->sql());
 

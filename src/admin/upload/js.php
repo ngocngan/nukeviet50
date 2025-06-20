@@ -36,13 +36,15 @@ $logo_size_m = 0;
 $logo_size_l = 0;
 
 if (!empty($global_config['upload_logo']) and file_exists(NV_ROOTDIR . '/' . $global_config['upload_logo'])) {
-    $upload_logo = NV_BASE_SITEURL . $global_config['upload_logo'];
-    $logo_size = getimagesize(NV_ROOTDIR . '/' . $global_config['upload_logo']);
-    $logo_width = intval($logo_size[0]);
-    $logo_height = intval($logo_size[1]);
-    $logo_size_s = floatval($global_config['autologosize1']);
-    $logo_size_m = floatval($global_config['autologosize2']);
-    $logo_size_l = floatval($global_config['autologosize3']);
+    $logo_size = nv_ImageInfo(NV_ROOTDIR . '/' . $global_config['upload_logo']);
+    if ($logo_size) {
+        $upload_logo = NV_BASE_SITEURL . $global_config['upload_logo'];
+        $logo_width = intval($logo_size['width']);
+        $logo_height = intval($logo_size['height']);
+        $logo_size_s = floatval($global_config['autologosize1']);
+        $logo_size_m = floatval($global_config['autologosize2']);
+        $logo_size_l = floatval($global_config['autologosize3']);
+    }
 }
 $tpl->assign('UPLOAD_LOGO', $upload_logo);
 $tpl->assign('LOGO_WIDTH', $logo_width);

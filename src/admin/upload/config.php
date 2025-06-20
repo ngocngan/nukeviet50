@@ -24,6 +24,7 @@ $array_logo_position = [
     'topLeft' => $nv_Lang->getModule('logopostopleft'),
     'topCenter' => $nv_Lang->getModule('logopostopcenter')
 ];
+$logo_exts = nv_editable_imgexts();
 
 if ($nv_Request->isset_request('save', 'post')) {
     $data = [
@@ -37,7 +38,7 @@ if ($nv_Request->isset_request('save', 'post')) {
         'tinify_api' => $nv_Request->get_title('tinify_api', 'post', '')
     ];
 
-    if (!empty($data['upload_logo']) and !nv_is_url($data['upload_logo']) and nv_is_file($data['upload_logo'])) {
+    if (!empty($data['upload_logo']) and !nv_is_url($data['upload_logo']) and nv_is_file($data['upload_logo']) and in_array(nv_getextension($data['upload_logo']), $logo_exts, true)) {
         $lu = strlen(NV_BASE_SITEURL);
         $data['upload_logo'] = substr($data['upload_logo'], $lu);
     } else {
@@ -98,6 +99,7 @@ $tpl->assign('GCONFIG', $global_config);
 $tpl->assign('AUTOLOGOSIZE', $array_autologosize);
 $tpl->assign('LOGO_POSITION', $array_logo_position);
 $tpl->assign('SITE_MODS', $site_mods);
+$tpl->assign('LOGO_EXTS', $logo_exts);
 
 if ($global_config['autologomod'] == 'all') {
     $autologomod = [];

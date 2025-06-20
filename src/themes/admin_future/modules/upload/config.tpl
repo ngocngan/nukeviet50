@@ -9,6 +9,7 @@
                         <input class="form-control" type="text" name="upload_logo" id="upload_logo" value="{$AUTOLOGOSIZE.upload_logo}" maxlength="250">
                         <button type="button" data-toggle="selectfile" data-target="upload_logo" data-path="" data-currentpath="images" data-type="image" class="btn btn-secondary" title="{$LANG->getGlobal('browse_image')}" aria-label="{$LANG->getGlobal('browse_image')}"><i class="fa-regular fa-folder-open"></i></button>
                     </div>
+                    <div class="form-text">{$LANG->getModule('upload_logo_ext', $LOGO_EXTS|join:', ')}</div>
                 </div>
             </div>
             <div class="row mb-3">

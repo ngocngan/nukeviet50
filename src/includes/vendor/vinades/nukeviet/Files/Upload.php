@@ -1041,6 +1041,8 @@ class Upload
                 // Check/fix image rotation
                 $orientation = 0;
                 if (Site::class_exists('Imagick')) {
+                    /** @disregard P1009 */
+                    // phpcs:ignore
                     $_img = new \Imagick($savepath . $filename);
                     $exifProp = $_img->getImageProperties("exif:*");
                     if (isset($exifProp['exif:Orientation'])) {
@@ -1360,7 +1362,6 @@ class Upload
         if (!empty($cainfo)) {
             curl_setopt($curlHandle, CURLOPT_CAINFO, $cainfo);
         }
-        curl_setopt($curlHandle, CURLOPT_BINARYTRANSFER, true);
 
         if (curl_exec($curlHandle) === false) {
             fclose($fp);
@@ -1740,12 +1741,13 @@ class Upload
             $cmd = ($iswin) ? "for %F in (\"$file\") do @echo %~zF" : "stat -c%s \"$file\"";
             @exec($cmd, $output);
             if (is_array($output) and is_numeric($size = trim(implode("\n", $output)))) {
-                return $size;
+                return (int) $size;
             }
         }
         // Try the Windows COM interface
         if ($iswin and Site::class_exists('COM')) {
             try {
+                // phpcs:ignore
                 $fsobj = new COM('Scripting.FileSystemObject');
                 $filecal = $fsobj->GetFile(realpath($file));
                 $size = $filecal->Size;

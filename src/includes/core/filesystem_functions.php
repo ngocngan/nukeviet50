@@ -754,13 +754,42 @@ function nv_is_image($img)
 }
 
 /**
- * nv_ImageInfo()
- * Function xuat ra cac thong tin ve IMAGE de dua vao HTML (src, width, height).
+ * Danh sách các phần mở rộng ảnh được hỗ trợ bởi GD.
  *
- * @param string $original_name duong dan tuyet doi den file goc (bat buoc)
- * @param int    $width chieu rong xuat ra HTML (neu bang 0 se xuat ra kich thuoc thuc)
+ * @return array
+ */
+function nv_editable_imgexts(): array
+{
+    $gdInfo = gd_info();
+    $extensions = [];
+    $map = [
+        'JPEG Support'      => ['jpg', 'jpeg'],
+        'PNG Support'       => ['png'],
+        'GIF Read Support'  => ['gif'],
+        'WebP Support'      => ['webp'],
+        'BMP Support'       => ['bmp'],
+        'XBM Support'       => ['xbm'],
+        'WBMP Support'      => ['wbmp'],
+    ];
+
+    foreach ($map as $key => $extList) {
+        if (!empty($gdInfo[$key])) {
+            foreach ($extList as $ext) {
+                $extensions[] = $ext;
+            }
+        }
+    }
+
+    return array_unique($extensions);
+}
+
+/**
+ * Xuất ra các thông tin về ảnh để đưa vào HTML (src, width, height).
+ *
+ * @param string $original_name Duong dan tuyet doi den file goc (bat buoc)
+ * @param int    $width Chieu rong xuat ra HTML (neu bang 0 se xuat ra kich thuoc thuc)
  * @param bool   $is_create_thumb Neu chieu rong cua hinh lon hon $width, co the tao thumbnail
- * @param string $thumb_path neu tao thumbnail thi chi ra thu muc chua file thumbnail nay
+ * @param string $thumb_path Neu tao thumbnail thi chi ra thu muc chua file thumbnail nay
  * @return array|false
  */
 function nv_ImageInfo($original_name, $width = 0, $is_create_thumb = false, $thumb_path = '')
@@ -777,21 +806,52 @@ function nv_ImageInfo($original_name, $width = 0, $is_create_thumb = false, $thu
     $original_name = str_replace('\\', '/', $original_name);
     $original_name = rtrim($original_name, '\\/');
 
+    $allowed_exts = ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'webp'];
+    if (!$is_create_thumb) {
+        $allowed_exts[] = 'svg';
+    }
     unset($matches);
-    if (!preg_match('/^' . nv_preg_quote(NV_ROOTDIR) . '\/(([a-z0-9\-\_\/]+\/)*([a-z0-9\-\_\.]+)(\.(gif|jpg|jpeg|png|bmp|webp)))$/i', $original_name, $matches)) {
+    if (!preg_match('/^' . nv_preg_quote(NV_ROOTDIR) . '\/(([a-z0-9\-\_\/]+\/)*([a-z0-9\-\_\.]+)(\.(' . implode('|', $allowed_exts) . ')))$/i', $original_name, $matches)) {
         return false;
     }
 
     $imageinfo = [];
-
-    $size = @getimagesize($original_name);
-    if (!$size or !isset($size[0]) or !isset($size[1]) or !$size[0] or !$size[1]) {
-        return false;
-    }
-
     $imageinfo['orig_src'] = $imageinfo['src'] = NV_BASE_SITEURL . $matches[1];
-    $imageinfo['orig_width'] = $imageinfo['width'] = $size[0];
-    $imageinfo['orig_height'] = $imageinfo['height'] = $size[1];
+
+    $ext = nv_getextension($original_name);
+    if ($ext == 'svg') {
+        // Đọc SVG
+        if (($xml = @simplexml_load_file($original_name)) === false) {
+            return false;
+        }
+
+        $attr = $xml->attributes();
+        if (!isset($attr['width']) and !isset($attr['height']) and !isset($attr['viewBox'])) {
+            return false;
+        }
+
+        if (isset($attr['width']) and isset($attr['height'])) {
+            $imageinfo['orig_width'] = $imageinfo['width'] = (int) ($attr['width']);
+            $imageinfo['orig_height'] = $imageinfo['height'] = (int) ($attr['height']);
+        } elseif (isset($attr['viewBox'])) {
+            $viewBox = explode(' ', (string) $attr['viewBox']);
+            if (!isset($viewBox[3])) {
+                return false;
+            }
+            $imageinfo['orig_width'] = $imageinfo['width'] = (int) ($viewBox[2]);
+            $imageinfo['orig_height'] = $imageinfo['height'] = (int) ($viewBox[3]);
+        } else {
+            return false;
+        }
+    } else {
+        // Đọc các định dạng ảnh khác
+        $size = @getimagesize($original_name);
+        if (!$size or !isset($size[0]) or !isset($size[1]) or !$size[0] or !$size[1]) {
+            return false;
+        }
+        $imageinfo['orig_width'] = $imageinfo['width'] = $size[0];
+        $imageinfo['orig_height'] = $imageinfo['height'] = $size[1];
+    }
 
     if ($width) {
         $imageinfo['width'] = $width;
