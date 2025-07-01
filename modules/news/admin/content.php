@@ -245,15 +245,20 @@ if ($rowcontent['id'] == 0) {
             foreach ($arr_catid as $catid_i) {
                 if (isset($array_cat_admin[$admin_id][$catid_i])) {
                     if ($array_cat_admin[$admin_id][$catid_i]['admin'] == 1) {
+                        // Toàn quyền
                         ++$check_edit;
                     } else {
                         if ($array_cat_admin[$admin_id][$catid_i]['edit_content'] == 1) {
+                            // Có quyền sửa
                             ++$check_edit;
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and $status == 5) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and ($status == 5 or $status == 6)) {
+                            // Quyền duyệt bài và bài đang chờ duyệt, từ chối duyệt
                             ++$check_edit;
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 2)) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 9 or $status == 2)) {
+                            // Quyền đăng bài và bài bài đang tắt, chờ đăng, chuyển đăng, từ chối đăng
                             ++$check_edit;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $rowcontent['admin_id'] == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $rowcontent['admin_id'] == $admin_id) {
+                            // Quyền tạo bài và bài đang tắt, nháp, chuyển duyệt, từ chối duyệt
                             ++$check_edit;
                         }
                     }
@@ -510,9 +515,14 @@ if ($is_submit_form) {
     } elseif ($nv_Request->isset_request('status5', 'post')) {
         // Chuyển duyệt bài
         $rowcontent['status'] = 5;
-    } else {
-        // Gui, cho bien tap
+    } elseif ($nv_Request->isset_request('status6', 'post')) {
+        // Từ chối duyệt bài
         $rowcontent['status'] = 6;
+    } elseif ($nv_Request->isset_request('status9', 'post')) {
+        // Từ chối đăng bài
+        $rowcontent['status'] = 9;
+    } else {
+        $rowcontent['status'] = 4;
     }
 
     $message_error_show = $lang_module['permissions_pub_error'];
@@ -1581,22 +1591,36 @@ if (!$is_submit_form and $total_news_current == NV_MIN_MEDIUM_SYSTEM_ROWS and $r
 
 $status_save = true;
 
-// Gioi han quyen
+// Xử lý các nút submit theo quyền
 if ($rowcontent['status'] == 1 and $rowcontent['id'] > 0) {
+    // Bài đã đăng thì chỉ có nút lưu
     $xtpl->parse('main.status_save');
 } else {
+    // Lưu thay đổi, lưu nháp
     $xtpl->parse('main.status_4');
+
     if (!empty($array_cat_pub_content)) {
-        // neu co quyen dang bai
+        // Đăng bài nếu có quyền
         $xtpl->parse('main.status_1');
     }
     if (!empty($array_censor_content) and $rowcontent['status'] != 8) {
-        // neu co quyen duyet bai thi
+        // Chuyển đăng bài
         $xtpl->parse('main.status_8');
     }
 
     if ($rowcontent['status'] != 5) {
+        // Chuyển duyệt bài
         $xtpl->parse('main.status_5');
+    }
+
+    // Từ chối duyệt
+    if (!empty($array_censor_content) and in_array($rowcontent['status'], [5, 7])) {
+        $xtpl->parse('main.status_6');
+    }
+
+    // Từ chối đăng
+    if (!empty($array_cat_pub_content) and in_array($rowcontent['status'], [8, 10])) {
+        $xtpl->parse('main.status_9');
     }
 }
 

@@ -45,7 +45,8 @@ if (!empty($del_array)) {
                     } else {
                         if ($array_cat_admin[$admin_id][$catid_i]['del_content'] == 1) {
                             ++$check_del;
-                        } elseif (($status == 0 or $status == 4) and $post_id == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $post_id == $admin_id) {
+                            // Xoá chính bài mình đăng khi nó bị đình chỉ hoặc nháp, chuyển duyệt, từ chối duyệt
                             ++$check_del;
                         }
                     }

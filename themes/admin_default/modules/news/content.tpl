@@ -407,6 +407,13 @@
         <!-- BEGIN:status_1 -->
         <input class="btn btn-primary submit-post" name="status1" type="submit" value="{LANG.publtime}" />
         <!-- END:status_1 -->
+
+        <!-- BEGIN: status_6 -->
+        <input class="btn btn-default submit-post" name="status6" type="submit" value="{LANG.status_6}">
+        <!-- END: status_6 -->
+        <!-- BEGIN: status_9 -->
+        <input class="btn btn-default submit-post" name="status9" type="submit" value="{LANG.status_9}">
+        <!-- END: status_9 -->
         <br />
     </div>
 </form>
