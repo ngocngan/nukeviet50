@@ -876,8 +876,7 @@ foreach ($arr_search_date as $key => $val) {
 $order2 = ($order == 'asc') ? 'desc' : 'asc';
 $ord_sql = ' r.' . $ordername . ' ' . $order;
 
-$array_editdata = [];
-$internal_authors = [];
+$array_editdata = $internal_authors = [];
 
 if (!empty($array_ids)) {
     // Lấy số tags
@@ -914,6 +913,16 @@ if (!empty($array_ids)) {
             'href' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;q=' . urlencode($_row['alias']) . '&amp;stype=author&amp;checkss=' . NV_CHECK_SESSION,
             'pseudonym' => $_row['pseudonym']
         ];
+    }
+
+    // Xác định lý do từ chối bài viết
+    $db_slave->sqlreset()
+        ->select('id, reject_reason')
+        ->from(NV_PREFIXLANG . '_' . $module_data . '_detail')
+        ->where('id IN (' . implode(',', $array_ids) . ')');
+    $result = $db_slave->query($db_slave->sql());
+    while ($_row = $result->fetch()) {
+        $data[$_row['id']]['reject_reason'] = $_row['reject_reason'];
     }
 }
 
@@ -1101,6 +1110,11 @@ foreach ($data as $row) {
         if ($loadhistory == $row['id']) {
             $loadhistory_id = $row['id'];
         }
+    }
+
+    // Hiển thị nguyên nhân từ chối bài viết
+    if (in_array($row['status_id'], [6, 9], true) and !empty($row['reject_reason'])) {
+        $xtpl->parse('main.loop.reject_reason');
     }
 
     $xtpl->parse('main.loop');

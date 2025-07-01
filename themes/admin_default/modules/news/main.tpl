@@ -147,6 +147,24 @@
                         <!-- BEGIN: text -->
                         <strong><em>{LANG.status_4}</em></strong>:
                         <!-- END: text -->
+                        <!-- BEGIN: reject_reason -->
+                        <a href="#md-reject-reason-{ROW.id}" data-toggle="modal" title="{LANG.reject_reason_view}" aria-label="{LANG.reject_reason_view}"><i data-toggle="tooltip" data-trigger="hover" title="{LANG.reject_reason_view}" class="fa fa-exclamation-circle" aria-hidden="true"></i></a>
+                        <!-- START FORFOOTER -->
+                        <div class="modal fade" tabindex="-1" role="dialog" id="md-reject-reason-{ROW.id}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="{GLANG.cancel}"><span aria-hidden="true">&times;</span></button>
+                                        <h2 class="mb-0"><strong>{LANG.reject_reason}</strong></h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        {ROW.reject_reason}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END FORFOOTER -->
+                        <!-- END: reject_reason -->
                         <a target="_blank" href="{ROW.link}" id="id_{ROW.id}" title="{ROW.title}">{ROW.title_clean}</a>
                     </td>
                     <td class="text-center">{ROW.publtime}</td>

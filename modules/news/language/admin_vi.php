@@ -421,3 +421,6 @@ $lang_module['type_new_weight'] = 'Nhập thứ tự mới trong khoảng từ 1
 $lang_module['total'] = 'Tất cả';
 $lang_module['hide_author'] = 'Không hiển thị công khai tên tác giả bên ngoài';
 $lang_module['hide_inauthor'] = 'Không hiển thị công khai tên tác giả thuộc quyền quản lý';
+$lang_module['reject_reason'] = 'Nguyên nhân từ chối';
+$lang_module['reject_reason_error'] = 'Xin mời nhập nguyên nhân từ chối';
+$lang_module['reject_reason_view'] = 'Nhấp để xem nguyên nhân từ chối của bài viết này';

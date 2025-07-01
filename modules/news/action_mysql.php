@@ -237,6 +237,7 @@ $sql_create_module[] = 'CREATE TABLE IF NOT EXISTS ' . $db_config['prefix'] . '_
   keywords varchar(255) default '',
   sourcetext varchar(255) default '',
   files TEXT NULL,
+  reject_reason text NULL DEFAULT NULL COMMENT 'Nguyên nhân từ chối',
   imgposition tinyint(1) NOT NULL default '1',
   layout_func varchar(100) DEFAULT '',
   copyright tinyint(1) NOT NULL default '0',

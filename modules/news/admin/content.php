@@ -198,7 +198,8 @@ $rowcontent = [
     'instant_template' => '',
     'instant_creatauto' => 0,
     'mode' => 'add',
-    'voicedata' => []
+    'voicedata' => [],
+    'reject_reason' => ''
 ];
 
 $rowcontent['topictext'] = '';
@@ -719,6 +720,15 @@ if ($is_submit_form) {
         $error[] = $lang_module['error_bodytext'];
     }
 
+    $rowcontent['reject_reason'] = $nv_Request->get_string('reject_reason', 'post', '');
+    $rowcontent['reject_reason'] = nv_nl2br(nv_htmlspecialchars(strip_tags($rowcontent['reject_reason'])));
+    if (empty($rowcontent['reject_reason']) and in_array($rowcontent['status'], [6, 9], true)) {
+        $error[] = $lang_module['reject_reason_error'];
+    }
+    if (!in_array($rowcontent['status'], [6, 9, 5, 8, 10, 7], true)) {
+        $rowcontent['reject_reason'] = '';
+    }
+
     if (!empty($error)) {
         // Nếu có lỗi thì chuyển sang trạng thái đăng nháp, cho đến khi nào đủ thông tin mới cho xuất bản
         $rowcontent['status'] = 4;
@@ -905,7 +915,7 @@ if ($is_submit_form) {
 
                 $stmt = $db->prepare('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_detail (
                     id, titlesite, description, bodyhtml, voicedata, keywords, sourcetext,
-                    files, imgposition, layout_func, copyright, allowed_send,
+                    files, reject_reason, imgposition, layout_func, copyright, allowed_send,
                     allowed_print, allowed_save
                 ) VALUES (
                     ' . $rowcontent['id'] . ',
@@ -916,6 +926,7 @@ if ($is_submit_form) {
                     :keywords,
                     :sourcetext,
                     :files,
+                    :reject_reason,
                     ' . $rowcontent['imgposition'] . ',
                     :layout_func,
                     ' . $rowcontent['copyright'] . ',
@@ -927,6 +938,7 @@ if ($is_submit_form) {
                 $voicedata = empty($rowcontent['voicedata']) ? '' : json_encode($rowcontent['voicedata']);
 
                 $stmt->bindParam(':files', $rowcontent['files'], PDO::PARAM_STR);
+                $stmt->bindParam(':reject_reason', $rowcontent['reject_reason'], PDO::PARAM_STR, strlen($rowcontent['reject_reason']));
                 $stmt->bindParam(':titlesite', $rowcontent['titlesite'], PDO::PARAM_STR);
                 $stmt->bindParam(':layout_func', $rowcontent['layout_func'], PDO::PARAM_STR);
                 $stmt->bindParam(':description', $rowcontent['description'], PDO::PARAM_STR, strlen($rowcontent['description']));
@@ -946,7 +958,7 @@ if ($is_submit_form) {
                 unset($ct_query);
                 if ($module_config[$module_name]['elas_use'] == 1) {
                     /* connect to elasticsearch */
-                    $body_contents = $db_slave->query('SELECT bodyhtml, sourcetext, imgposition, copyright, allowed_send, allowed_print, allowed_save FROM ' . NV_PREFIXLANG . '_' . $module_data . '_detail where id=' . $rowcontent['id'])->fetch();
+                    $body_contents = $db_slave->query('SELECT bodyhtml, sourcetext, reject_reason, imgposition, copyright, allowed_send, allowed_print, allowed_save FROM ' . NV_PREFIXLANG . '_' . $module_data . '_detail where id=' . $rowcontent['id'])->fetch();
                     $rowcontent = array_merge($rowcontent, $body_contents);
 
                     $rowcontent['unsigned_title'] = nv_EncString($rowcontent['title']);
@@ -1040,6 +1052,7 @@ if ($is_submit_form) {
                     keywords=:keywords,
                     sourcetext=:sourcetext,
                     files=:files,
+                    reject_reason=:reject_reason,
                     imgposition=' . (int) ($rowcontent['imgposition']) . ',
                     layout_func=:layout_func,
                     copyright=' . (int) ($rowcontent['copyright']) . ',
@@ -1051,6 +1064,7 @@ if ($is_submit_form) {
                 $voicedata = empty($rowcontent['voicedata']) ? '' : json_encode($rowcontent['voicedata']);
 
                 $sth->bindParam(':files', $rowcontent['files'], PDO::PARAM_STR);
+                $sth->bindParam(':reject_reason', $rowcontent['reject_reason'], PDO::PARAM_STR, strlen($rowcontent['reject_reason']));
                 $sth->bindParam(':titlesite', $rowcontent['titlesite'], PDO::PARAM_STR);
                 $sth->bindParam(':layout_func', $rowcontent['layout_func'], PDO::PARAM_STR, strlen($rowcontent['layout_func']));
                 $sth->bindParam(':description', $rowcontent['description'], PDO::PARAM_STR, strlen($rowcontent['description']));
@@ -1270,6 +1284,7 @@ if (!empty($module_config[$module_name]['htmlhometext'])) {
 }
 $rowcontent['bodyhtml'] = htmlspecialchars(nv_editor_br2nl($rowcontent['bodyhtml']));
 $rowcontent['alias'] = ($rowcontent['status'] == 4 and empty($rowcontent['title'])) ? '' : $rowcontent['alias'];
+$rowcontent['reject_reason'] = !empty($rowcontent['reject_reason']) ? nv_br2nl($rowcontent['reject_reason']) : '';
 
 if (!empty($rowcontent['homeimgfile']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'])) {
     $rowcontent['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'];
@@ -1614,12 +1629,12 @@ if ($rowcontent['status'] == 1 and $rowcontent['id'] > 0) {
     }
 
     // Từ chối duyệt
-    if (!empty($array_censor_content) and in_array($rowcontent['status'], [5, 7])) {
+    if (!empty($array_censor_content) and in_array($rowcontent['status'], [5, 6, 7])) {
         $xtpl->parse('main.status_6');
     }
 
     // Từ chối đăng
-    if (!empty($array_cat_pub_content) and in_array($rowcontent['status'], [8, 10])) {
+    if (!empty($array_cat_pub_content) and in_array($rowcontent['status'], [8, 9, 10])) {
         $xtpl->parse('main.status_9');
     }
 }

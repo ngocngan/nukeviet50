@@ -421,8 +421,8 @@ $(document).ready(function() {
     });
 
     // Kiểm tra form đăng bài viết
-    $('#form-news-content').on('submit', function(e) {
-        let form = $(this);
+    function validateContentForm(e) {
+        let form = $('#form-news-content');
         $(".has-error", form).removeClass("has-error");
 
         // Tiêu đề bài viết
@@ -432,7 +432,7 @@ $(document).ready(function() {
             $(".tooltip-current", form).removeClass("tooltip-current");
             $(iptTitle).addClass("tooltip-current").attr("data-current-mess", $(iptTitle).attr("data-mess"));
             nv_validErrorShow(iptTitle);
-            return;
+            return false;
         }
 
         // Chuyên mục
@@ -444,7 +444,7 @@ $(document).ready(function() {
             $('html,body').animate({
                 scrollTop: $("#show_error").offset().top
             }, 200);
-            return;
+            return false;
         }
 
         const reqBHtml = (trim($('[name="sourcetext"]', form).val()) == ''|| !$('[name="external_link"]', form).is(':checked')) ? true : false;
@@ -459,7 +459,7 @@ $(document).ready(function() {
                 $('html,body').animate({
                     scrollTop: $("#show_error").offset().top
                 }, 200);
-                return;
+                return false;
             }
         }
         if (typeof window.nveditor != "undefined" && window.nveditor[editorid]) {
@@ -470,8 +470,43 @@ $(document).ready(function() {
                 $('html,body').animate({
                     scrollTop: $("#show_error").offset().top
                 }, 200);
-                return;
+                return false;
             }
+        }
+
+        return true;
+    }
+
+    $('#form-news-content').on('submit', function(e) {
+        validateContentForm(e);
+    });
+
+    // Xử lý từ chối bài viết
+    const mReject = $('#modal-confirm-reject');
+    $('.submit-reject').on('click', function(e) {
+        e.preventDefault();
+        // Kiểm tra form trước khi nhập lí do từ chối
+        const checkForm = validateContentForm(e);
+        if (checkForm) {
+            mReject.append('<input type="hidden" id="reject_status_tmp" name="status' + $(this).data('type') + '" value="1">');
+            mReject.modal('show');
+        }
+    });
+    mReject.on('shown.bs.modal', function() {
+        $('#reject_reason').focus();
+    });
+    mReject.on('hide.bs.modal', function() {
+        const iptSubmit = $('#reject_status_tmp');
+        if (iptSubmit.length) {
+            iptSubmit.remove();
+        }
+    });
+    $('[name="save_reject"]').on('click', function(e) {
+        if (trim($('#reject_reason').val()) == '') {
+            e.preventDefault();
+            $('#reject_reason').focus();
+            alert($(this).data('error'));
+            return false;
         }
     });
 });

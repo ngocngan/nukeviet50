@@ -409,12 +409,26 @@
         <!-- END:status_1 -->
 
         <!-- BEGIN: status_6 -->
-        <input class="btn btn-default submit-post" name="status6" type="submit" value="{LANG.status_6}">
+        <input class="btn btn-default submit-post submit-reject" data-type="6" type="button" value="{LANG.status_6}">
         <!-- END: status_6 -->
         <!-- BEGIN: status_9 -->
-        <input class="btn btn-default submit-post" name="status9" type="submit" value="{LANG.status_9}">
+        <input class="btn btn-default submit-post submit-reject" data-type="9" type="button" value="{LANG.status_9}">
         <!-- END: status_9 -->
         <br />
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-confirm-reject">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label for="reject_reason">{LANG.reject_reason} <span class="text-danger">(*)</span>:</label>
+                    <textarea class="form-control" id="reject_reason" name="reject_reason" rows="5" placeholder="{LANG.reject_reason_placeholder}" style="width: 100%;">{rowcontent.reject_reason}</textarea>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary" name="save_reject" data-error="{LANG.reject_reason_error}">{GLANG.submit}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{GLANG.cancel}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 <div id="message"></div>
@@ -459,7 +473,7 @@ $(window).on('load', function() {
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery/jquery.cookie.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}themes/admin_default/js/news_content.js"></script>
-<!-- END:main -->
+<!-- END: main -->
 
 <!-- BEGIN: editing -->
 <div class="text-center">

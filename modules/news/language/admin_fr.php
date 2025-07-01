@@ -420,3 +420,6 @@ $lang_module['type_new_weight'] = 'Entrez un nouveau poids de 1 à';
 $lang_module['total'] = 'Totale';
 $lang_module['hide_author'] = 'Ne pas afficher publiquement le nom de l\'auteur externe';
 $lang_module['hide_inauthor'] = 'Ne pas afficher publiquement le nom interne externe';
+$lang_module['reject_reason'] = 'Raison du refus';
+$lang_module['reject_reason_error'] = 'Veuillez saisir la raison du refus';
+$lang_module['reject_reason_view'] = 'Cliquez pour voir la raison du refus de cet article';
