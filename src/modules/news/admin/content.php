@@ -297,7 +297,8 @@ $rowcontent = [
     'related_ids' => '',
     'related_pos' => 2,
     'uuid' => '',
-    'schema_type' => $module_config[$module_name]['schema_type']
+    'schema_type' => $module_config[$module_name]['schema_type'],
+    'reject_reason' => ''
 ];
 
 $page_title = $nv_Lang->getModule('content_add');
@@ -343,15 +344,20 @@ if ($rowcontent['id'] == 0) {
             foreach ($arr_catid as $catid_i) {
                 if (isset($array_cat_admin[$admin_id][$catid_i])) {
                     if ($array_cat_admin[$admin_id][$catid_i]['admin'] == 1) {
+                        // Toàn quyền
                         ++$check_edit;
                     } else {
                         if ($array_cat_admin[$admin_id][$catid_i]['edit_content'] == 1) {
+                            // Có quyền sửa
                             ++$check_edit;
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and $status == 5) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and ($status == 5 or $status == 6)) {
+                            // Quyền duyệt bài và bài đang chờ duyệt, từ chối duyệt
                             ++$check_edit;
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 2)) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 9 or $status == 2)) {
+                            // Quyền đăng bài và bài bài đang tắt, chờ đăng, chuyển đăng, từ chối đăng
                             ++$check_edit;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $rowcontent['admin_id'] == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $rowcontent['admin_id'] == $admin_id) {
+                            // Quyền tạo bài và bài đang tắt, nháp, chuyển duyệt, từ chối duyệt
                             ++$check_edit;
                         }
                     }
@@ -645,9 +651,14 @@ if ($is_submit_form) {
     } elseif ($nv_Request->isset_request('status5', 'post')) {
         // Chuyển duyệt bài
         $rowcontent['status'] = 5;
-    } else {
-        // Gui, cho bien tap
+    } elseif ($nv_Request->isset_request('status6', 'post')) {
+        // Từ chối duyệt bài
         $rowcontent['status'] = 6;
+    } elseif ($nv_Request->isset_request('status9', 'post')) {
+        // Từ chối đăng bài
+        $rowcontent['status'] = 9;
+    } else {
+        $rowcontent['status'] = 4;
     }
 
     $message_error_show = $nv_Lang->getModule('permissions_pub_error');
@@ -855,6 +866,15 @@ if ($is_submit_form) {
     $rowcontent['schema_type'] = $nv_Request->get_title('schema_type', 'post', '');
     if (!array_key_exists($rowcontent['schema_type'], $schema_types)) {
         $rowcontent['schema_type'] = 'newsarticle';
+    }
+
+    $rowcontent['reject_reason'] = $nv_Request->get_string('reject_reason', 'post', '');
+    $rowcontent['reject_reason'] = nv_nl2br(nv_htmlspecialchars(strip_tags($rowcontent['reject_reason'])));
+    if (empty($rowcontent['reject_reason']) and in_array($rowcontent['status'], [6, 9], true)) {
+        $error[] = $nv_Lang->getModule('reject_reason_error');
+    }
+    if (!in_array($rowcontent['status'], [6, 9, 5, 8, 10, 7], true)) {
+        $rowcontent['reject_reason'] = '';
     }
 
     // Xử lý tự động lưu
@@ -1112,7 +1132,7 @@ if ($is_submit_form) {
 
                 $stmt = $db->prepare('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_detail (
                     id, titlesite, description, bodyhtml, voicedata, keywords, sourcetext,
-                    files, imgposition, layout_func, copyright,
+                    files, reject_reason, imgposition, layout_func, copyright,
                     allowed_send, allowed_print, allowed_save, auto_nav, group_view, localization,
                     related_ids, related_pos, schema_type
                 ) VALUES (
@@ -1124,6 +1144,7 @@ if ($is_submit_form) {
                     :keywords,
                     :sourcetext,
                     :files,
+                    :reject_reason,
                     ' . $rowcontent['imgposition'] . ',
                     :layout_func,
                     ' . $rowcontent['copyright'] . ',
@@ -1142,6 +1163,7 @@ if ($is_submit_form) {
                 $localization = empty($rowcontent['localversions']) ? '' : json_encode($rowcontent['localversions']);
 
                 $stmt->bindParam(':files', $rowcontent['files'], PDO::PARAM_STR);
+                $stmt->bindParam(':reject_reason', $rowcontent['reject_reason'], PDO::PARAM_STR, strlen($rowcontent['reject_reason']));
                 $stmt->bindParam(':titlesite', $rowcontent['titlesite'], PDO::PARAM_STR);
                 $stmt->bindParam(':layout_func', $rowcontent['layout_func'], PDO::PARAM_STR);
                 $stmt->bindParam(':description', $rowcontent['description'], PDO::PARAM_STR, strlen($rowcontent['description']));
@@ -1163,7 +1185,7 @@ if ($is_submit_form) {
                 unset($ct_query);
                 if ($module_config[$module_name]['elas_use'] == 1) {
                     /* connect to elasticsearch */
-                    $body_contents = $db_slave->query('SELECT bodyhtml, sourcetext, imgposition, copyright, allowed_send, allowed_print, allowed_save, auto_nav FROM ' . NV_PREFIXLANG . '_' . $module_data . '_detail where id=' . $rowcontent['id'])->fetch();
+                    $body_contents = $db_slave->query('SELECT bodyhtml, sourcetext, reject_reason, imgposition, copyright, allowed_send, allowed_print, allowed_save, auto_nav FROM ' . NV_PREFIXLANG . '_' . $module_data . '_detail where id=' . $rowcontent['id'])->fetch();
                     $rowcontent = array_merge($rowcontent, $body_contents);
 
                     $rowcontent['unsigned_title'] = nv_EncString($rowcontent['title']);
@@ -1257,6 +1279,7 @@ if ($is_submit_form) {
                     keywords=:keywords,
                     sourcetext=:sourcetext,
                     files=:files,
+                    reject_reason=:reject_reason,
                     imgposition=' . (int) ($rowcontent['imgposition']) . ',
                     layout_func=:layout_func,
                     copyright=' . (int) ($rowcontent['copyright']) . ',
@@ -1275,6 +1298,7 @@ if ($is_submit_form) {
                 $localization = empty($rowcontent['localversions']) ? '' : json_encode($rowcontent['localversions']);
 
                 $sth->bindParam(':files', $rowcontent['files'], PDO::PARAM_STR);
+                $sth->bindParam(':reject_reason', $rowcontent['reject_reason'], PDO::PARAM_STR, strlen($rowcontent['reject_reason']));
                 $sth->bindParam(':titlesite', $rowcontent['titlesite'], PDO::PARAM_STR);
                 $sth->bindParam(':layout_func', $rowcontent['layout_func'], PDO::PARAM_STR, strlen($rowcontent['layout_func']));
                 $sth->bindParam(':description', $rowcontent['description'], PDO::PARAM_STR, strlen($rowcontent['description']));
@@ -1498,6 +1522,7 @@ if (!empty($module_config[$module_name]['htmlhometext'])) {
 }
 $rowcontent['bodyhtml'] = htmlspecialchars(nv_editor_br2nl($rowcontent['bodyhtml']));
 $rowcontent['alias'] = ($rowcontent['status'] == 4 and empty($rowcontent['title'])) ? '' : $rowcontent['alias'];
+$rowcontent['reject_reason'] = !empty($rowcontent['reject_reason']) ? nv_br2nl($rowcontent['reject_reason']) : '';
 
 if (!empty($rowcontent['homeimgfile']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'])) {
     $rowcontent['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'];

@@ -590,7 +590,27 @@
         <button class="btn btn-primary submit-post" type="submit" name="status5" value="1">{$LANG->getModule('status_5')}</button>
         {/if}
         <button class="btn btn-warning submit-post" type="submit" name="status4" value="1">{$LANG->getModule('save_temp')}</button>
+        {if not empty($CATS_CENSOR) and in_array($DATA.status, [5, 6, 7], true)}
+        <button class="btn btn-secondary submit-post submit-reject" data-type="6" type="button">{$LANG->getModule('status_6')}</button>
         {/if}
+        {if not empty($CATS_PUBLIC) and in_array($DATA.status, [8, 9, 10], true)}
+        <button class="btn btn-secondary submit-post submit-reject" data-type="9" type="button">{$LANG->getModule('status_9')}</button>
+        {/if}
+        {/if}
+    </div>
+    <div class="modal fade" id="modal-confirm-reject" tabindex="-1" aria-labelledby="modal-confirm-reject-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label for="reject_reason" class="form-label">{$LANG->getModule('reject_reason')} <span class="text-danger">(*)</span>:</label>
+                    <textarea class="form-control" id="reject_reason" name="reject_reason" rows="5">{$DATA.reject_reason}</textarea>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary" name="save_reject" data-error="{$LANG->getModule('reject_reason_error')}">{$LANG->getGlobal('submit')}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{$LANG->getGlobal('close')}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 <div class="alert alert-warning mt-3 mb-0 d-none" role="alert" id="realtime-notice"></div>

@@ -227,6 +227,24 @@
                                 {if $row.status_id eq 4}
                                 <i class="fa-solid fa-compass-drafting" aria-label="{$LANG->getModule('status_4')}" title="{$LANG->getModule('status_4')}" data-bs-toggle="tooltip" data-bs-trigger="hover"></i>
                                 {/if}
+                                {if in_array($row.status_id, [6, 9]) and not empty($row.reject_reason)}
+                                <a href="#md-reject-reason-{$row.id}" data-bs-toggle="modal" title="{$LANG->getModule('reject_reason_view')}" aria-label="{$LANG->getModule('reject_reason_view')}"><i data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-title="{$LANG->getModule('reject_reason_view')}" class="fa-solid fa-circle-exclamation"></i></a>
+                                <!-- START FORFOOTER -->
+                                <div class="modal fade" tabindex="-1" id="md-reject-reason-{$row.id}" aria-hidden="true" aria-labelledby="md-reject-reason-{$row.id}-label">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="modal-title fw-medium fs-5" id="md-reject-reason-{$row.id}-label">{$LANG->getModule('reject_reason')}</div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{$LANG->getGlobal('close')}"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {$row.reject_reason}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END FORFOOTER -->
+                                {/if}
                                 <a target="_blank" href="{$row.link}" title="{$row.title}">{$row.title}</a>
                             </div>
                         </td>

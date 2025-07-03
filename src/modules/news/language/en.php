@@ -653,3 +653,6 @@ $lang_module['show_random'] = 'Random';
 $lang_module['show_featured'] = 'Popular';
 $lang_module['show_tags_num'] = 'Number of tags displayed';
 $lang_module['admtools'] = 'Admin tools';
+$lang_module['reject_reason'] = 'Reason for rejection';
+$lang_module['reject_reason_error'] = 'Please enter the reason for rejection';
+$lang_module['reject_reason_view'] = 'Click to view the reason for rejection of this article';

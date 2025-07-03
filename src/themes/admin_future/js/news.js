@@ -1122,8 +1122,7 @@ $(function () {
             }
             return required;
         }
-
-        formContent.on('submit', function(e) {
+        function validateContentForm(e) {
             // Kiểm tra tiêu đề
             const iptTitle = $('[name="title"]', formContent);
             let errorCount = 0;
@@ -1153,7 +1152,11 @@ $(function () {
                     $(catids[0]).focus();
                 }
             }
+            return errorCount;
+        }
 
+        formContent.on('submit', function(e) {
+            let errorCount = validateContentForm(e);
             if (errorCount > 0) {
                 e.preventDefault();
             } else if (contentTimer) {
@@ -1214,6 +1217,36 @@ $(function () {
                 }
             });
         }
+
+        // Xử lý nút từ chối bài viết
+        const mReject = $('#modal-confirm-reject');
+        const mdReject = bootstrap.Modal.getOrCreateInstance(mReject[0]);
+        $('.submit-reject').on('click', function(e) {
+            e.preventDefault();
+            // Kiểm tra form trước khi nhập nguyên nhân từ chối
+            const checkForm = validateContentForm(e);
+            if (checkForm <= 0) {
+                mReject.append('<input type="hidden" id="reject_status_tmp" name="status' + $(this).data('type') + '" value="1">');
+                mdReject.show();
+            }
+        });
+        mReject[0].addEventListener('shown.bs.modal', () => {
+            $('#reject_reason').focus();
+        });
+        mReject[0].addEventListener('hide.bs.modal', () => {
+            const iptSubmit = $('#reject_status_tmp');
+            if (iptSubmit.length) {
+                iptSubmit.remove();
+            }
+        });
+        $('[name="save_reject"]').on('click', function(e) {
+            if (trim($('#reject_reason').val()) == '') {
+                e.preventDefault();
+                $('#reject_reason').focus();
+                nukeviet.toast($(this).data('error'), 'error');
+                return false;
+            }
+        });
 
         // Check real-time khi hover vào các nút submit
         $('.submit-post', formContent).hover(function() {

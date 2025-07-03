@@ -308,8 +308,7 @@ if (defined('NV_IS_ADMIN_MODULE')) {
     $array_list_action['declined'] = $nv_Lang->getModule('declined');
 }
 
-$array_editdata = [];
-$internal_authors = [];
+$array_editdata = $internal_authors = [];
 
 if (!empty($module_config[$module_name]['elas_use'])) {
     // Ket noi den csdl elastic
@@ -620,18 +619,23 @@ if (!empty($module_config[$module_name]['elas_use'])) {
                             if ($status) {
                                 $_permission_action['exptime'] = true;
                             }
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and $status == 0) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 9 or $status == 2)) {
+                            // Quyền đăng bài và bài đang dừng, chuyển đăng, từ chối đăng, hẹn đăng
                             ++$check_edit;
                             $_permission_action['publtime'] = true;
                             $_permission_action['re-published'] = true;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $post_id == $admin_id) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and ($status == 5 or $status == 6)) {
+                            // Bài chờ duyệt thì được xử lý trong quá trình duyệt
+                            ++$check_edit;
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $post_id == $admin_id) {
+                            // Bài của mình đăng, đang đình chỉ chờ duyệt, đã duyệt thì được sửa và chuyển lại chờ duyệt
                             ++$check_edit;
                             $_permission_action['waiting'] = true;
                         }
 
                         if ($array_cat_admin[$admin_id][$catid_i]['del_content'] == 1) {
                             ++$check_del;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $post_id == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $post_id == $admin_id) {
                             ++$check_del;
                             $_permission_action['waiting'] = true;
                         }
@@ -841,20 +845,23 @@ if (!empty($module_config[$module_name]['elas_use'])) {
                             if ($status) {
                                 $_permission_action['exptime'] = true;
                             }
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 2)) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['pub_content'] == 1 and ($status == 0 or $status == 8 or $status == 9 or $status == 2)) {
+                            // Quyền đăng bài và bài đang dừng, chuyển đăng, từ chối đăng, hẹn đăng
                             ++$check_edit;
                             $_permission_action['publtime'] = true;
                             $_permission_action['re-published'] = true;
-                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and $status == 5) {
+                        } elseif ($array_cat_admin[$admin_id][$catid_i]['app_content'] == 1 and ($status == 5 or $status == 6)) {
+                            // Bài chờ duyệt thì được xử lý trong quá trình duyệt
                             ++$check_edit;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $post_id == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $post_id == $admin_id) {
+                            // Bài của mình đăng, đang đình chỉ chờ duyệt, đã duyệt thì được sửa và chuyển lại chờ duyệt
                             ++$check_edit;
                             $_permission_action['waiting'] = true;
                         }
 
                         if ($array_cat_admin[$admin_id][$catid_i]['del_content'] == 1) {
                             ++$check_del;
-                        } elseif (($status == 0 or $status == 4 or $status == 5) and $post_id == $admin_id) {
+                        } elseif (($status == 0 or $status == 4 or $status == 5 or $status == 6) and $post_id == $admin_id) {
                             ++$check_del;
                             $_permission_action['waiting'] = true;
                         }
@@ -946,6 +953,16 @@ if (!empty($array_ids)) {
             'href' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;q=' . urlencode($_row['alias']) . '&amp;stype=author&amp;checkss=' . NV_CHECK_SESSION,
             'pseudonym' => $_row['pseudonym']
         ];
+    }
+
+    // Xác định lý do từ chối bài viết
+    $db_slave->sqlreset()
+        ->select('id, reject_reason')
+        ->from(NV_PREFIXLANG . '_' . $module_data . '_detail')
+        ->where('id IN (' . implode(',', $array_ids) . ')');
+    $result = $db_slave->query($db_slave->sql());
+    while ($_row = $result->fetch()) {
+        $data[$_row['id']]['reject_reason'] = $_row['reject_reason'];
     }
 }
 
