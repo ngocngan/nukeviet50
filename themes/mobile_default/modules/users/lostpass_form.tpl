@@ -8,7 +8,7 @@
                     <input type="text" class="required form-control" placeholder="{GLANG.username_email}" value="" name="userField" maxlength="100" data-pattern="/^(.){3,}$/" onkeypress="validErrorHidden(this);" data-mess="{LANG.lostpass_no_info1}">
                 </div>
             </div>
-            
+
             <!-- BEGIN: captcha -->
             <div class="form-group">
                 <div class="middle text-right clearfix">
@@ -16,19 +16,18 @@
                 </div>
             </div>
             <!-- END: captcha -->
-            
+
             <!-- BEGIN: recaptcha -->
             <div class="form-group">
                 <div class="middle text-right clearfix">
                     <div class="nv-recaptcha-default">
                         <div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha" data-pnum="5" data-btnselector="[type=submit]"></div>
-                        <input type="hidden" value="" name="gcaptcha_session"/>
                     </div>
                 </div>
             </div>
             <!-- END: recaptcha -->
         </div>
-        
+
         <div class="step2" style="display:none">
             <div class="form-group">
                 <div class="input-group">
@@ -37,7 +36,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="step3" style="display:none">
             <div class="form-group">
                 <div class="input-group">
@@ -46,7 +45,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="step4" style="display:none">
             <div class="form-group">
                 <div class="input-group">
@@ -54,7 +53,7 @@
                     <input type="password" autocomplete="off" class="form-control" placeholder="{LANG.pass_new}" value="" name="new_password" maxlength="100" data-pattern="/^(.){3,}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.password_empty}">
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
@@ -62,10 +61,11 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="text-center margin-bottom-lg">
-             <input type="hidden" name="step" value="step1" />
-             <input type="hidden" name="checkss" value="{DATA.checkss}" />
+            <input type="hidden" name="step" value="step1" />
+            <input type="hidden" name="checkss" value="{DATA.checkss}" />
+            <input type="hidden" value="" name="gcaptcha_session"/>
             <!-- BEGIN: redirect --><input name="nv_redirect" value="{REDIRECT}" type="hidden" /><!-- END: redirect -->
             <button class="bsubmit btn btn-primary" type="submit">{LANG.lostpass_submit}</button>
        	</div>
