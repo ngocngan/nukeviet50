@@ -13,9 +13,6 @@ if (!defined('NV_ADMIN')) {
     exit('Stop!!!');
 }
 
-if (defined('NV_IS_GODADMIN')) {
+if (defined('NV_IS_GODADMIN') or (!empty($global_config['idsite']) and defined('NV_IS_SPADMIN'))) {
     $submenu['settings'] = $lang_module['settings'];
-
-} elseif (defined('NV_IS_SPADMIN') and $global_config['idsite']) {
-
 }

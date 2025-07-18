@@ -43,7 +43,7 @@ foreach ($list as $row) {
     $admin_mods[$row['module']] = $row;
 }
 if (!defined('NV_IS_GODADMIN') and empty($global_config['idsite'])) {
-    unset($admin_mods['seotools']);
+    unset($admin_mods['seotools'], $admin_mods['zalo']);
 }
 
 // Chặn BOT index và follow khu vực quản trị
