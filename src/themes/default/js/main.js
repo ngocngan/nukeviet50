@@ -107,11 +107,6 @@ function ftipShow(a, b, callback) {
     ftip_active = true;
 };
 
-function openID_load(a) {
-    nv_open_browse($(a).attr("href"), "NVOPID", 550, 500, "resizable=no,scrollbars=1,toolbar=no,location=no,titlebar=no,menubar=0,location=no,status=no");
-    return !1
-}
-
 // QR-code
 function qrcodeLoad(a) {
     var b = new Image,
@@ -324,12 +319,6 @@ $(function() {
                 "tip" == b ? tipShow(this, a) : ftipShow(this, a)
             }
         }
-    });
-
-    //Đăng nhập bằng OpenID
-    $('body').on('click', '[data-toggle=openID_load]', function(e) {
-        e.preventDefault();
-        openID_load(this)
     });
 
     // Chọn giao diện

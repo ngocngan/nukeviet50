@@ -1076,6 +1076,16 @@ $(function() {
             }, false);
         }
     }
+
+    // Đăng nhập bằng OpenID
+    $('body').on('click', '[data-toggle=openID_load]', function(e) {
+        e.preventDefault();
+        if (isInAppBrowser() || isAppleDevice()) {
+            window.location.href = $(this).attr('href');
+            return;
+        }
+        nv_open_browse($(this).attr('href'), "NVOPID", 550, 500, "resizable=no,scrollbars=1,toolbar=no,location=no,titlebar=no,menubar=0,location=no,status=no");
+    });
 });
 
 $(window).on('load', function() {
