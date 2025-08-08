@@ -30,9 +30,19 @@ class Image
     public $gmaxX = 0;
     public $gmaxY = 0;
     public $error = '';
-    public $createImage = false;
+
+    /**
+     * @var GdImage|null
+     */
+    public $createImage = null;
+
     public $create_Image_info = [];
+
+    /**
+     * @var GdImage|false
+     */
     public $logoimg = false;
+
     public $is_destroy = false;
     public $is_createWorkingImage = false;
 
@@ -61,7 +71,7 @@ class Image
         $this->gmaxX = (int) $gmaxX;
         $this->gmaxY = (int) $gmaxY;
         $this->error = '';
-        $this->createImage = false;
+        $this->createImage = null;
         $this->create_Image_info = [];
         $this->fileinfo = $this->is_image($this->filename);
         $this->error = $this->check_file();
@@ -524,7 +534,7 @@ class Image
 
                     $transparent_index = imagecolortransparent($this->createImage);
                     if ($transparent_index >= 0) {
-                        $t_c = imagecolorsforindex($this->createImage, $transparent_index);
+                        $t_c = imagecolorsforindex($this->createImage, min($transparent_index, imagecolorstotal($this->createImage) - 1));
                         $transparent_index = imagecolorallocate($workingImage, $t_c['red'], $t_c['green'], $t_c['blue']);
                         if (false !== $transparent_index and imagefill($workingImage, 0, 0, $transparent_index)) {
                             imagecolortransparent($workingImage, $transparent_index);
