@@ -22,6 +22,8 @@
     --nv-font-size-md: 14px;
     --nv-font-size-lg: 16px;
     --nv-font-size-xxl: 22px;
+    --ck-z-default: 100;
+    --ck-z-panel: calc(var(--ck-z-default) + 999);
 }
 
 @font-face {

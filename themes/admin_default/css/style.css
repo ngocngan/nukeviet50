@@ -7,6 +7,11 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
+:root {
+    --ck-z-default: 100;
+    --ck-z-panel: calc(var(--ck-z-default) + 999);
+}
+
 /* ==========================================================================
  Chrome Frame prompt
  ========================================================================== */
