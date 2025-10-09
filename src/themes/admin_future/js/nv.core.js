@@ -586,7 +586,6 @@ $(function() {
     /**
      * Đoạn xử lý các nút mở trình quản lý file
      */
-    let initPicker = false;
     function showPicker(btn) {
         let options = {};
         options.path = btn.data('path') ? btn.data('path') : '';
@@ -612,7 +611,7 @@ $(function() {
         script.src = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&langinterface=' + nv_lang_interface + '&' + nv_name_variable + '=upload&' + nv_fc_variable + '=js&t=' + nv_cache_timestamp;
         script.async = true;
         document.body.appendChild(script);
-        initPicker = true;
+        window.nvPickerLoad = true;
     }
 
     // Tải trước uploader nếu có nút selectfile
@@ -626,7 +625,7 @@ $(function() {
         const btn = $(this);
 
         // Load thư viện nếu chưa có
-        if (!initPicker && (typeof nukeviet == 'undefined' || !nukeviet.Picker)) {
+        if (!window.nvPickerLoad && (typeof nukeviet == 'undefined' || !nukeviet.Picker)) {
             loadPicker();
         }
         // Xử lý trong trường hợp uploader chưa được tải sẵn (các DOM động)
