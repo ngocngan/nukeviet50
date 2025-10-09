@@ -26,6 +26,13 @@
     --ck-z-panel: calc(var(--ck-z-default) + 999);
 }
 
+.ck {
+    --ck-content-font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    --ck-content-font-size: 13px;
+    --ck-content-font-color: #333;
+    --ck-content-line-height: 1.42857143;
+}
+
 @font-face {
     font-family: 'NukeVietIcons';
     src: url('../../default/fonts/NukeVietIcons.woff2') format('woff2'),
