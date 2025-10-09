@@ -144,13 +144,7 @@ $(document).ready(function() {
     if (commentform.length) {
         // Gửi comment khi ấn Ctrl + Enter
         var data = commentform.data();
-        if (data.editor) {
-            window.nveditor["commentcontent"].editing.view.document.on('keydown', (event, data) => {
-                if (data.ctrlKey && data.keyCode == 13) {
-                    commentform.submit();
-                }
-            });
-        } else {
+        if (!data.editor) {
             $('#commentcontent').on("keydown", function(e) {
                 if (e.ctrlKey && e.keyCode == 13) {
                     commentform.submit();
