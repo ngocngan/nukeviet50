@@ -1,5 +1,4 @@
 <?php
-
 /**
  * MaskNum.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,8 +15,8 @@
 
 namespace Com\Tecnick\Barcode\Type\Square\QrCode;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Data;
 
 /**
  * Com\Tecnick\Barcode\Type\Square\QrCode\MaskNum
@@ -26,7 +25,7 @@ use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
@@ -35,10 +34,10 @@ abstract class MaskNum
     /**
      * Make Mask Number
      *
-     * @param int   $maskNo Mask number
-     * @param int   $width  Width
-     * @param array $frame  Frame
-     * @param int   $mask   Mask
+     * @param int  $maskNo Mask number
+     * @param int  $width  Width
+     * @param int  $frame  Frame
+     * @param int  $mask   Mask
      *
      * @return int mask number
      */
@@ -75,7 +74,7 @@ abstract class MaskNum
                 if (ord($frame[$ypos][$xpos]) & 0x80) {
                     $bitMask[$ypos][$xpos] = 0;
                 } else {
-                    $maskFunc = call_user_func(array($this, 'mask' . $maskNo), $xpos, $ypos);
+                    $maskFunc = call_user_func(array($this, 'mask'.$maskNo), $xpos, $ypos);
                     $bitMask[$ypos][$xpos] = (($maskFunc == 0) ? 1 : 0);
                 }
             }

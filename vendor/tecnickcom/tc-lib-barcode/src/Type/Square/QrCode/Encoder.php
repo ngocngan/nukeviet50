@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Encoder.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,9 +15,9 @@
 
 namespace Com\Tecnick\Barcode\Type\Square\QrCode;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Data;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
 
 /**
  * Com\Tecnick\Barcode\Type\Square\QrCode\Encoder
@@ -27,12 +26,117 @@ use Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
 class Encoder extends \Com\Tecnick\Barcode\Type\Square\QrCode\Init
 {
+    /**
+     * Data code
+     *
+     * @var array
+     */
+    protected $datacode = array();
+
+    /**
+     * Error correction code
+     *
+     * @var array
+     */
+    protected $ecccode = array();
+
+    /**
+     * Blocks
+     *
+     * @var array
+     */
+    protected $blocks;
+
+    /**
+     * Reed-Solomon blocks
+     *
+     * @var array
+     */
+    protected $rsblocks = array(); //of RSblock
+
+    /**
+     * Counter
+     *
+     * @var int
+     */
+    protected $count;
+
+    /**
+     * Data length
+     *
+     * @var int
+     */
+    protected $dataLength;
+
+    /**
+     * Error correction length
+     *
+     * @var int
+     */
+    protected $eccLength;
+
+    /**
+     * Value bv1
+     *
+     * @var int
+     */
+    protected $bv1;
+
+    /**
+     * Width.
+     *
+     * @var int
+     */
+    protected $width;
+
+    /**
+     * Frame
+     *
+     * @var array
+     */
+    protected $frame;
+
+    /**
+     * Horizontal bit position
+     *
+     * @var int
+     */
+    protected $xpos;
+
+    /**
+     * Vertical bit position
+     *
+     * @var int
+     */
+    protected $ypos;
+
+    /**
+     * Direction
+     *
+     * @var int
+     */
+    protected $dir;
+
+    /**
+     * Single bit value
+     *
+     * @var int
+     */
+    protected $bit;
+
+    /**
+     * Reed-Solomon items
+     *
+     * @va array
+     */
+    protected $rsitems = array();
+
     /**
      * Encode mask
      *
@@ -59,7 +163,7 @@ class Encoder extends \Com\Tecnick\Barcode\Type\Square\QrCode\Init
         $this->ypos = ($this->width - 1);
         $this->dir = -1;
         $this->bit = -1;
-
+        
         // interleaved data and ecc codes
         for ($idx = 0; $idx < ($this->dataLength + $this->eccLength); $idx++) {
             $code = $this->getCode();
@@ -98,20 +202,20 @@ class Encoder extends \Com\Tecnick\Barcode\Type\Square\QrCode\Init
     /**
      * Return Reed-Solomon block code
      *
-     * @return int rsblocks
+     * @return array rsblocks
      */
     protected function getCode()
     {
         if ($this->count < $this->dataLength) {
             $row = ($this->count % $this->blocks);
-            $col = floor($this->count / $this->blocks);
+            $col = ($this->count / $this->blocks);
             if ($col >= $this->rsblocks[0]['dataLength']) {
                 $row += $this->bv1;
             }
             $ret = $this->rsblocks[$row]['data'][$col];
         } elseif ($this->count < ($this->dataLength + $this->eccLength)) {
             $row = (($this->count - $this->dataLength) % $this->blocks);
-            $col = floor(($this->count - $this->dataLength) / $this->blocks);
+            $col = (($this->count - $this->dataLength) / $this->blocks);
             $ret = $this->rsblocks[$row]['ecc'][$col];
         } else {
             return 0;

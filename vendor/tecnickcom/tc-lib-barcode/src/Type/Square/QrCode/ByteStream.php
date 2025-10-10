@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ByteStream.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,10 +15,10 @@
 
 namespace Com\Tecnick\Barcode\Type\Square\QrCode;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Estimate;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Data;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Estimate;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
 
 /**
  * Com\Tecnick\Barcode\Type\Square\QrCode\ByteStream
@@ -28,12 +27,36 @@ use Com\Tecnick\Barcode\Type\Square\QrCode\Spec;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
 class ByteStream extends \Com\Tecnick\Barcode\Type\Square\QrCode\Encode
 {
+    /**
+     * Encoding mode
+     *
+     * @var int
+     */
+    protected $hint = 2;
+
+    /**
+     * QR code version.
+     * The Size of QRcode is defined as version. Version is an integer value from 1 to 40.
+     * Version 1 is 21*21 matrix. And 4 modules increases whenever 1 version increases.
+     * So version 40 is 177*177 matrix.
+     *
+     * @var int
+     */
+    public $version = 0;
+
+    /**
+     * Error correction level
+     *
+     * @var int
+     */
+    protected $level = 0;
+
     /**
      * Initialize
      *
@@ -177,7 +200,7 @@ class ByteStream extends \Com\Tecnick\Barcode\Type\Square\QrCode\Encode
     public function encodeBitStream($inputitem, $version)
     {
         $inputitem['bstream'] = array();
-        $specObj = new Spec();
+        $specObj = new Spec;
         $words = $specObj->maximumWords($inputitem['mode'], $version);
         if ($inputitem['size'] > $words) {
             $st1 = $this->newInputItem($inputitem['mode'], $words, $inputitem['data']);
@@ -193,19 +216,19 @@ class ByteStream extends \Com\Tecnick\Barcode\Type\Square\QrCode\Encode
             $inputitem['bstream'] = $this->appendBitstream($inputitem['bstream'], $st2['bstream']);
         } else {
             switch ($inputitem['mode']) {
-                case Data::ENC_MODES['NM']:
+                case Data::$encodingModes['NM']:
                     $inputitem = $this->encodeModeNum($inputitem, $version);
                     break;
-                case Data::ENC_MODES['AN']:
+                case Data::$encodingModes['AN']:
                     $inputitem = $this->encodeModeAn($inputitem, $version);
                     break;
-                case Data::ENC_MODES['8B']:
+                case Data::$encodingModes['8B']:
                     $inputitem = $this->encodeMode8($inputitem, $version);
                     break;
-                case Data::ENC_MODES['KJ']:
+                case Data::$encodingModes['KJ']:
                     $inputitem = $this->encodeModeKanji($inputitem, $version);
                     break;
-                case Data::ENC_MODES['ST']:
+                case Data::$encodingModes['ST']:
                     $inputitem = $this->encodeModeStructure($inputitem);
                     break;
             }
@@ -223,10 +246,10 @@ class ByteStream extends \Com\Tecnick\Barcode\Type\Square\QrCode\Encode
     protected function appendPaddingBit($bstream)
     {
         if (is_null($bstream)) {
-            return array();
+            return null;
         }
         $bits = count($bstream);
-        $specObj = new Spec();
+        $specObj = new Spec;
         $maxwords = $specObj->getDataLength($this->version, $this->level);
         $maxbits = $maxwords * 8;
         if ($maxbits == $bits) {

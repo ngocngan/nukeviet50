@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ErrorCorrection.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -25,7 +24,7 @@ namespace Com\Tecnick\Barcode\Type\Square\Datamatrix;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
@@ -38,7 +37,7 @@ class ErrorCorrection
      * @param int   $numb Second number to multiply.
      * @param array $log  Log table.
      * @param array $alog Anti-Log table.
-     * @param int   $ngf  Number of Factors of the Reed-Solomon polynomial.
+     * @param array $ngf  Number of Factors of the Reed-Solomon polynomial.
      *
      * @return int product
      */
@@ -68,19 +67,19 @@ class ErrorCorrection
         $log = array(0);
         $alog = array(1);
         $this->genLogs($log, $alog, $ngf, $vpp);
-
+        
         // generate the polynomial coefficients (c)
         $plc = array_fill(0, ($ncc + 1), 0);
         $plc[0] = 1;
         for ($i = 1; $i <= $ncc; ++$i) {
-            $plc[$i] = $plc[($i - 1)];
+            $plc[$i] = $plc[($i-1)];
             for ($j = ($i - 1); $j >= 1; --$j) {
                 $plc[$j] = $plc[($j - 1)] ^ $this->getGFProduct($plc[$j], $alog[$i], $log, $alog, $ngf);
             }
             $plc[0] = $this->getGFProduct($plc[0], $alog[$i], $log, $alog, $ngf);
         }
         ksort($plc);
-
+        
         // total number of data codewords
         $num_wd = ($nbk * $ncw);
         // total number of error codewords
@@ -117,7 +116,7 @@ class ErrorCorrection
      * Generate the log ($log) and antilog ($alog) tables
      *
      * @param array $log  Log table
-     * @param array $alog Anti-Log table
+     * @param arrya $alog Anti-Log table
      * @param int   $ngf  Number of fields on log/antilog table (power of 2).
      * @param int   $vpp  The value of its prime modulus polynomial (301 for ECC200).
      */

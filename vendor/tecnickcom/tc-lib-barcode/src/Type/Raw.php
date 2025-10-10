@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Raw.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,7 +15,7 @@
 
 namespace Com\Tecnick\Barcode\Type;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
 
 /**
  * Com\Tecnick\Barcode\Type\Raw
@@ -28,7 +27,7 @@ use Com\Tecnick\Barcode\Exception as BarcodeException;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
@@ -37,7 +36,7 @@ class Raw extends \Com\Tecnick\Barcode\Type
     /**
      * Get the pre-formatted code
      *
-     * @return array
+     * @return string
      */
     protected function getCodeRows()
     {

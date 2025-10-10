@@ -1,5 +1,4 @@
 <?php
-
 /**
  * InputItem.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,8 +15,8 @@
 
 namespace Com\Tecnick\Barcode\Type\Square\QrCode;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Data;
 
 /**
  * Com\Tecnick\Barcode\Type\Square\QrCode\InputItem
@@ -26,24 +25,12 @@ use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2010-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2010-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
 abstract class InputItem extends \Com\Tecnick\Barcode\Type\Square\QrCode\Estimate
 {
-    /**
-     * Look up the alphabet-numeric conversion table (see JIS X0510:2004, pp.19)
-     *
-     * @param int $chr Character value
-     *
-     * @return int
-     */
-    public function lookAnTable($chr)
-    {
-        return (($chr > 127) ? -1 : Data::AN_TABLE[$chr]);
-    }
-
     /**
      * Append data to an input object.
      * The data is copied and appended to the input object.
@@ -106,15 +93,15 @@ abstract class InputItem extends \Com\Tecnick\Barcode\Type\Square\QrCode\Estimat
             return false;
         }
         switch ($mode) {
-            case Data::ENC_MODES['NM']:
+            case Data::$encodingModes['NM']:
                 return $this->checkModeNum($size, $data);
-            case Data::ENC_MODES['AN']:
+            case Data::$encodingModes['AN']:
                 return $this->checkModeAn($size, $data);
-            case Data::ENC_MODES['KJ']:
+            case Data::$encodingModes['KJ']:
                 return $this->checkModeKanji($size, $data);
-            case Data::ENC_MODES['8B']:
+            case Data::$encodingModes['8B']:
                 return true;
-            case Data::ENC_MODES['ST']:
+            case Data::$encodingModes['ST']:
                 return true;
         }
         return false;
@@ -124,7 +111,7 @@ abstract class InputItem extends \Com\Tecnick\Barcode\Type\Square\QrCode\Estimat
      * checkModeNum
      *
      * @param int $size
-     * @param array $data
+     * @param int $data
      *
      * @return boolean true or false
      */
@@ -142,7 +129,7 @@ abstract class InputItem extends \Com\Tecnick\Barcode\Type\Square\QrCode\Estimat
      * checkModeAn
      *
      * @param int $size
-     * @param array $data
+     * @param int $data
      *
      * @return boolean true or false
      */
@@ -160,7 +147,7 @@ abstract class InputItem extends \Com\Tecnick\Barcode\Type\Square\QrCode\Estimat
      * checkModeKanji
      *
      * @param int $size
-     * @param array $data
+     * @param int $data
      *
      * @return boolean true or false
      */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * QrCode.php
  *
@@ -7,7 +6,7 @@
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  *
@@ -16,11 +15,11 @@
 
 namespace Com\Tecnick\Barcode\Type\Square;
 
-use Com\Tecnick\Barcode\Exception as BarcodeException;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Data;
-use Com\Tecnick\Barcode\Type\Square\QrCode\ByteStream;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Split;
-use Com\Tecnick\Barcode\Type\Square\QrCode\Encoder;
+use \Com\Tecnick\Barcode\Exception as BarcodeException;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Data;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\ByteStream;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Split;
+use \Com\Tecnick\Barcode\Type\Square\QrCode\Encoder;
 
 /**
  * Com\Tecnick\Barcode\Type\Square\QrCode
@@ -31,7 +30,7 @@ use Com\Tecnick\Barcode\Type\Square\QrCode\Encoder;
  * @category    Library
  * @package     Barcode
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2015-2023 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2015-2016 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-barcode
  */
@@ -79,7 +78,7 @@ class QrCode extends \Com\Tecnick\Barcode\Type\Square
      * If false, checks all masks available,
      * otherwise the value indicates the number of masks to be checked, mask id are random
      *
-     * @var int|bool
+     * @var int
      */
     protected $random_mask = false;
 
@@ -121,18 +120,17 @@ class QrCode extends \Com\Tecnick\Barcode\Type\Square
     protected function setParameters()
     {
         parent::setParameters();
-
         // level
-        if (!isset($this->params[0]) || !array_key_exists($this->params[0], Data::ECC_LEVELS)) {
+        if (!isset($this->params[0]) || !isset(Data::$errCorrLevels[$this->params[0]])) {
             $this->params[0] = 'L';
         }
-        $this->level = Data::ECC_LEVELS[$this->params[0]];
+        $this->level = Data::$errCorrLevels[$this->params[0]];
 
         // hint
-        if (!isset($this->params[1]) || !array_key_exists($this->params[1], Data::ENC_MODES)) {
+        if (!isset($this->params[1]) || !isset(Data::$encodingModes[$this->params[1]])) {
             $this->params[1] = '8B';
         }
-        $this->hint = Data::ENC_MODES[$this->params[1]];
+        $this->hint = Data::$encodingModes[$this->params[1]];
 
         // version
         if (!isset($this->params[2]) || ($this->params[2] < 0) || ($this->params[2] > Data::QRSPEC_VERSION_MAX)) {
@@ -230,16 +228,16 @@ class QrCode extends \Com\Tecnick\Barcode\Type\Square
      *
      * @param string $data Data
      *
-     * @return string
+     * @return
      */
     protected function toUpper($data)
     {
         $len = strlen($data);
         $pos = 0;
-
+        
         while ($pos < $len) {
             $mode = $this->bsObj->getEncodingMode($data, $pos);
-            if ($mode == Data::ENC_MODES['KJ']) {
+            if ($mode == Data::$encodingModes['KJ']) {
                 $pos += 2;
             } else {
                 if ((ord($data[$pos]) >= ord('a')) && (ord($data[$pos]) <= ord('z'))) {
