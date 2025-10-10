@@ -465,7 +465,9 @@ function nv_load_current_date() {
             buttonImageOnly: true
         });
         $("input[name=default_date]").removeAttr("disabled");
-        $("input[name=default_date]").focus();
+        if ($("input[name=default_date]").is(':visible')) {
+            $("input[name=default_date]").focus();
+        }
     }
 }
 

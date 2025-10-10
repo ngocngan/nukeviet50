@@ -177,7 +177,15 @@
             <tbody>
                 <tr>
                     <td>{LANG.field_default_value}:</td>
-                    <td><label> <input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}> {LANG.field_current_date}</label><label> <input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.field_default_date}</label>&nbsp;<input class="form-control date" style="width:100px" type="text" value="{DATAFORM.default_date}" name="default_date"></td>
+                    <td>
+                        <label>
+                            <input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}> {LANG.field_current_date}
+                        </label>
+                        <label>
+                            <input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.field_default_date}
+                        </label>
+                        <input class="form-control date" style="width:100px" type="text" value="{DATAFORM.default_date}" name="default_date">
+                    </td>
                 </tr>
                 <tr>
                     <td>{LANG.field_min_date}:</td>
