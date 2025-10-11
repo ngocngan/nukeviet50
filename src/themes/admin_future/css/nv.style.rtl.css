@@ -25287,6 +25287,13 @@ readers do not read off random characters that represent icons */
   --nv-form-check-input-disabled-border-color: #666;
 }
 
+.ck {
+  --ck-content-font-family: var(--bs-font-sans-serif);
+  --ck-content-font-size: var(--bs-body-font-size);
+  --ck-content-font-color: var(--bs-body-color);
+  --ck-content-line-height: var(--bs-body-line-height);
+}
+
 [data-bs-theme=dark] .ps .ps__rail-x:hover,
 [data-bs-theme=dark] .ps .ps__rail-y:hover,
 [data-bs-theme=dark] .ps .ps__rail-x:focus,
@@ -28201,12 +28208,19 @@ span.flatpickr-weekday {
   border-bottom-color: var(--bs-border-color);
 }
 
+:root {
+  --fmm-zindex-backdrop: 1058;
+  --fmm-zindex: 1059;
+  --fmd-zindex-backdrop: 1060;
+  --fmd-zindex: 1061;
+}
+
 .fmm-backdrop,
 .fmd-backdrop {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 1058;
+  z-index: var(--fmm-zindex-backdrop);
   width: 100vw;
   height: 100vh;
   background-color: #000;
@@ -28217,7 +28231,7 @@ span.flatpickr-weekday {
 }
 
 .fmd-backdrop {
-  z-index: 1060;
+  z-index: var(--fmd-zindex-backdrop);
 }
 
 .fmm,
@@ -28225,7 +28239,7 @@ span.flatpickr-weekday {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 1059;
+  z-index: var(--fmm-zindex);
   display: none;
   width: 100%;
   height: 100%;
@@ -28235,15 +28249,15 @@ span.flatpickr-weekday {
 }
 
 .fmd {
-  z-index: 1061;
+  z-index: var(--fmd-zindex);
 }
 
 .fmd-open .select2-dropdown {
-  --bs-dropdown-zindex: 1061;
+  --bs-dropdown-zindex: var(--fmd-zindex);
 }
 
 .fmm-open .dropdown-menu-fms {
-  --bs-dropdown-zindex: 1059;
+  --bs-dropdown-zindex: var(--fmm-zindex);
 }
 
 .fmm-dialog,

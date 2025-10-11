@@ -3194,6 +3194,7 @@ function nv_redirect_location($url, $error_code = 301, $noreferrer = false)
     if ($noreferrer) {
         header('Referrer-Policy: no-referrer');
     }
+    $url = nv_apply_hook('', 'nv_redirect_location', [$url, $error_code, $noreferrer], $url);
     header('Location: ' . str_replace('&amp;', '&', nv_url_rewrite($url, true)));
     exit(0);
 }
