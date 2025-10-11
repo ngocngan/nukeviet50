@@ -48,17 +48,3 @@ function searchPatternByLang($str)
 
     return strtr($str, $unicode);
 }
-
-/**
- * searchKeywordforSQL()
- *
- * @param string $keyword
- * @return string
- */
-function searchKeywordforSQL($keyword)
-{
-    global $db;
-
-    $keyword = $db->regexpescape($keyword);
-    return searchPatternByLang(nv_EncString($keyword));
-}
