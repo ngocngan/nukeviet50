@@ -126,19 +126,6 @@ if ($nv_Request->get_title('checkss', 'post') == $checkss) {
 
         if ($action_account != 2) {
             nv_groups_del_user($row['lev'], $admin_id);
-
-            // Cập nhật lại nhóm nếu không xóa tài khoản
-            if ($row_user['group_id'] == $row['lev']) {
-                // Nếu nhóm mặc định là quản trị này thì chuyển về thành viên chính thức
-                $row_user['group_id'] = 4;
-            }
-            $row_user['in_groups'] = explode(',', $row_user['in_groups']);
-            $row_user['in_groups'] = array_diff($row_user['in_groups'], [$row['lev']]);
-            $row_user['in_groups'] = array_filter(array_unique(array_map('trim', $row_user['in_groups'])));
-            $row_user['in_groups'] = empty($row_user['in_groups']) ? '' : implode(',', $row_user['in_groups']);
-
-            $sql = 'UPDATE ' . NV_USERS_GLOBALTABLE . ' SET group_id=' . $row_user['group_id'] . ', in_groups=' . $db->quote($row_user['in_groups']) . ' WHERE userid=' . $admin_id;
-            $db->query($sql);
         }
         nv_insert_logs(NV_LANG_DATA, $module_name, $lang_module['nv_admin_del'], 'Username: ' . $row_user['username'] . ', ' . $array_action_account[$action_account], $admin_info['userid']);
 

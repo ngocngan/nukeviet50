@@ -374,13 +374,7 @@ if ($nv_Request->isset_request('gid,uid', 'post')) {
         exit($lang_module['search_not_result']);
     }
 
-    // Update for table users
-    $in_groups = [];
-    $result_gru = $db->query('SELECT group_id FROM ' . NV_MOD_TABLE . '_groups_users WHERE userid=' . $uid);
-    while ($row_gru = $result_gru->fetch()) {
-        $in_groups[] = $row_gru['group_id'];
-    }
-    $db->exec('UPDATE ' . NV_MOD_TABLE . " SET in_groups='" . implode(',', $in_groups) . "', last_update=" . NV_CURRENTTIME . ' WHERE userid=' . $uid);
+    $db->exec('UPDATE ' . NV_MOD_TABLE . " SET last_update=" . NV_CURRENTTIME . ' WHERE userid=' . $uid);
 
     $nv_Cache->delMod($module_name);
     nv_insert_logs(NV_LANG_DATA, $module_name, $lang_module['addMemberToGroup'], 'Member Id: ' . $uid . ' group ID: ' . $gid, $user_info['userid']);
@@ -429,14 +423,7 @@ if ($nv_Request->isset_request('gid,exclude', 'post')) {
     if (!nv_groups_del_user($gid, $uid, $module_data)) {
         exit($lang_module['UserNotInGroup']);
     }
-
-    // Update for table users
-    $in_groups = [];
-    $result_gru = $db->query('SELECT group_id FROM ' . NV_MOD_TABLE . '_groups_users WHERE userid=' . $uid);
-    while ($row_gru = $result_gru->fetch()) {
-        $in_groups[] = $row_gru['group_id'];
-    }
-    $db->query('UPDATE ' . NV_MOD_TABLE . " SET in_groups='" . implode(',', $in_groups) . "', last_update=" . NV_CURRENTTIME . ' WHERE userid=' . $uid);
+    $db->query('UPDATE ' . NV_MOD_TABLE . " SET last_update=" . NV_CURRENTTIME . ' WHERE userid=' . $uid);
 
     $nv_Cache->delMod($module_name);
     nv_insert_logs(NV_LANG_DATA, $module_name, $lang_module['exclude_user2'], 'Member Id: ' . $uid . ' group ID: ' . $gid, $user_info['userid']);
