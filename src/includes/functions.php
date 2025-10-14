@@ -740,7 +740,7 @@ function nv_user_in_groups($groups_view)
 }
 
 /**
- * nv_groups_add_user()
+ * Thêm thành viên vào nhóm
  *
  * @param int    $group_id
  * @param int    $userid
@@ -757,37 +757,58 @@ function nv_groups_add_user($group_id, $userid, $approved = 1, $mod_data = 'user
 
     $_mod_table = ($mod_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $mod_data;
     $query = $db->query('SELECT COUNT(*) FROM ' . $_mod_table . ' WHERE userid=' . $userid);
-    if ($query->fetchColumn()) {
-        try {
-            $db->query('INSERT INTO ' . $_mod_table . '_groups_users (
-                group_id, userid, approved, data, time_requested, time_approved
-            ) VALUES (
-                ' . $group_id . ', ' . $userid . ', ' . $approved . ", '" . $global_config['idsite'] . "',
-                " . NV_CURRENTTIME . ', ' . ($approved ? NV_CURRENTTIME : 0) . '
-            )');
-            if ($approved) {
-                $db->query('UPDATE ' . $_mod_table . '_groups SET numbers = numbers+1 WHERE group_id=' . $group_id);
-            }
-
-            return true;
-        } catch (PDOException $e) {
-            if ($group_id <= 3) {
-                $data = $db->query('SELECT data FROM ' . $_mod_table . '_groups_users WHERE group_id=' . $group_id . ' AND userid=' . $userid)->fetchColumn();
-                $data = ($data != '') ? explode(',', $data) : [];
-                $data[] = $global_config['idsite'];
-                $data = implode(',', array_unique(array_map('intval', $data)));
-                $db->query('UPDATE ' . $_mod_table . "_groups_users SET data = '" . $data . "' WHERE group_id=" . $group_id . ' AND userid=' . $userid);
-
-                return true;
-            }
-        }
+    if (!$query->fetchColumn()) {
+        return false;
     }
 
-    return false;
+    try {
+        $db->query('INSERT INTO ' . $_mod_table . '_groups_users (
+            group_id, userid, approved, data, time_requested, time_approved
+        ) VALUES (
+            ' . $group_id . ', ' . $userid . ', ' . $approved . ", '" . $global_config['idsite'] . "',
+            " . NV_CURRENTTIME . ', ' . ($approved ? NV_CURRENTTIME : 0) . '
+        )');
+        if ($approved) {
+            $db->query('UPDATE ' . $_mod_table . '_groups SET numbers = numbers+1 WHERE group_id=' . $group_id);
+        }
+    } catch (Throwable $e) {
+        if ($group_id > 3) {
+            return false;
+        }
+
+        $data = $db->query('SELECT data FROM ' . $_mod_table . '_groups_users WHERE group_id=' . $group_id . ' AND userid=' . $userid)->fetchColumn();
+        $data = ($data != '') ? explode(',', $data) : [];
+        $data[] = $global_config['idsite'];
+        $data = implode(',', array_unique(array_map('intval', $data)));
+        $db->query('UPDATE ' . $_mod_table . "_groups_users SET data = '" . $data . "' WHERE group_id=" . $group_id . ' AND userid=' . $userid);
+    }
+
+    // Cập nhật lại danh sách nhóm cho user
+    if ($approved) {
+        $sql = "SELECT group_id FROM " . $_mod_table . "_groups_users WHERE userid=" . $userid . " AND approved=1";
+        $in_groups = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+        $in_groups = array_map('intval', $in_groups);
+
+        // Loại bỏ nhóm mới nếu thêm quản trị hoặc thành viên chính thức
+        if (in_array($group_id, [1, 2, 3, 4])) {
+            $in_groups = array_diff($in_groups, [7]);
+        }
+        // Luôn luôn bổ sung nhóm thành viên chính thức nếu không phải thành viên mới
+        if (!in_array(7, $in_groups)) {
+            $in_groups[] = 4;
+        }
+
+        $in_groups = array_unique($in_groups);
+        $in_groups = empty($in_groups) ? '' : implode(',', $in_groups);
+
+        $db->query('UPDATE ' . $_mod_table . ' SET in_groups = ' . $db->quote($in_groups) . ' WHERE userid=' . $userid);
+    }
+
+    return true;
 }
 
 /**
- * nv_groups_del_user()
+ * Loại bỏ thành viên khỏi nhóm
  *
  * @param int    $group_id
  * @param int    $userid
@@ -803,32 +824,67 @@ function nv_groups_del_user($group_id, $userid, $mod_data = 'users')
 
     $_mod_table = ($mod_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $mod_data;
     $row = $db->query('SELECT data, approved FROM ' . $_mod_table . '_groups_users WHERE group_id=' . $group_id . ' AND userid=' . $userid)->fetch();
-    if (!empty($row)) {
-        $set_number = false;
-        if ($group_id > 3) {
-            $set_number = true;
-        } else {
-            $data = str_replace(',' . $global_config['idsite'] . ',', '', ',' . $row['data'] . ',');
-            $data = trim($data, ',');
-            if ($data == '') {
-                $set_number = true;
-            } else {
-                $db->query('UPDATE ' . $_mod_table . "_groups_users SET data = '" . $data . "' WHERE group_id=" . $group_id . ' AND userid=' . $userid);
-            }
-        }
-
-        if ($set_number) {
-            $db->query('DELETE FROM ' . $_mod_table . '_groups_users WHERE group_id = ' . $group_id . ' AND userid = ' . $userid);
-
-            if ($row['approved']) {
-                $db->query('UPDATE ' . $_mod_table . '_groups SET numbers = numbers-1 WHERE group_id=' . $group_id);
-            }
-        }
-
-        return true;
+    if (empty($row)) {
+        return false;
     }
 
-    return false;
+    $sql = 'SELECT userid, group_id FROM ' . $_mod_table . ' WHERE userid=' . $userid;
+    $user = $db->query($sql)->fetch();
+    if (empty($user)) {
+        return false;
+    }
+
+    $set_number = false;
+    if ($group_id > 3) {
+        $set_number = true;
+    } else {
+        $data = str_replace(',' . $global_config['idsite'] . ',', '', ',' . $row['data'] . ',');
+        $data = trim($data, ',');
+        if ($data == '') {
+            $set_number = true;
+        } else {
+            $db->query('UPDATE ' . $_mod_table . "_groups_users SET data = '" . $data . "' WHERE group_id=" . $group_id . ' AND userid=' . $userid);
+        }
+    }
+
+    if ($set_number) {
+        $db->query('DELETE FROM ' . $_mod_table . '_groups_users WHERE group_id = ' . $group_id . ' AND userid = ' . $userid);
+
+        if ($row['approved']) {
+            $db->query('UPDATE ' . $_mod_table . '_groups SET numbers = numbers-1 WHERE group_id=' . $group_id);
+        }
+    }
+
+    // Cập nhật lại danh sách nhóm cho user
+    $sql = "SELECT group_id FROM " . $_mod_table . "_groups_users WHERE userid=" . $userid . " AND approved=1";
+    $in_groups = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+    $in_groups = array_map('intval', $in_groups);
+
+    // Xử lý lại nhóm chính nếu xóa khỏi nhóm này
+    $new_group_id = $user['group_id'];
+    if ($new_group_id == $group_id) {
+        $new_group_id = 4;
+
+        // Tìm nhóm chính theo luật ưu tiên thành viên mới => quản trị cấp tăng dần, mặc định thành viên chính thức
+        $groups = [7, 3, 2, 1];
+        foreach ($groups as $g) {
+            if (in_array($g, $in_groups, true)) {
+                $new_group_id = $g;
+            }
+        }
+    }
+
+    // Luôn luôn bổ sung nhóm thành viên chính thức nếu không phải thành viên mới
+    if (!in_array(7, $in_groups)) {
+        $in_groups[] = 4;
+    }
+
+    $in_groups = array_unique($in_groups);
+    $in_groups = empty($in_groups) ? '' : implode(',', $in_groups);
+
+    $db->query('UPDATE ' . $_mod_table . ' SET in_groups = ' . $db->quote($in_groups) . ', group_id=' . $new_group_id . ' WHERE userid=' . $userid);
+
+    return true;
 }
 
 /**
