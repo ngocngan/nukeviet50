@@ -1,5 +1,27 @@
 CHANGE LOG: NUKEVIET CMS
 http://nukeviet.vn
+NUKEVIET 4.5.07
+- CKEditor 5 v47.0.0 and remove CKEditor 4
+- PDF.js 3.11.174
+- Fix warning error in nv_is_image function when checking webp files
+- Fix download database backup files during upgrade
+- Add feature to force re-login when editing account in admin area
+- Adjust the explanation for the "Developer Mode"
+- Fix the error in viewing attachments in the module news
+- Add custom block position feature
+- Add http_response_code before trigger_error
+- Fix banner module error when installing a new language
+- Improved source display in the admin panel of the news module
+- Improve the configuration for inserting logos into images
+- Fix the error in counting article views
+- Improved article review workflow in the news module
+- Fix password reset issue when using Recaptcha 3
+- Enhance the permission system for the Zalo module
+- Jquery UI 1.14.1
+- Update the versions of Composer libraries
+- DOMPurify 3.2.7 and 2.5.7
+- Remove function searchKeywordforSQL
+
 NUKEVIET 4.5.06
 - The default editor is Ckeditor 5 Classic
 - Change the name of DB backup files
