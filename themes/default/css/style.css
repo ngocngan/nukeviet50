@@ -604,7 +604,7 @@ div.check-box label [type='radio'] {
 }
 
 /* CKEditor 4 contents css */
-figure {
+figure:not(.table):not(.media):not(.nv-media) {
     position: relative;
     margin: 5px 0 10px 0;
     text-align: center;
