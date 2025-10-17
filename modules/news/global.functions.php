@@ -739,7 +739,7 @@ function nv_save_history($post_old, $post_new)
  * @param int $pos 1 là bên trên, 2 là bên dưới
  * @return string
  */
-function nv_get_blcat_tag(int $catid, int $pos = 1): string
+function nv_get_blcat_tag($catid, $pos = 1)
 {
     return $pos == 1 ? ('TCAT' . $catid) : ('BCAT' . $catid);
 }

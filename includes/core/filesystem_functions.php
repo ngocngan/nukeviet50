@@ -748,7 +748,7 @@ function nv_is_image($img)
  *
  * @return array
  */
-function nv_editable_imgexts(): array
+function nv_editable_imgexts()
 {
     $gdInfo = gd_info();
     $extensions = [];

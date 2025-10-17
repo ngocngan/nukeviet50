@@ -102,6 +102,10 @@ class Error
      */
     public function __construct($config)
     {
+        if (version_compare(PHP_VERSION, '8.4.0', '<')) {
+            $this->errortype[E_STRICT] = 'Strict Notice';
+        }
+
         $this->log_errors_list = $this->parse_error_num(isset($config['log_errors_list']) ? ((int) $config['log_errors_list']) : (version_compare(PHP_VERSION, '8.4.0', '<') ? (E_ALL | E_STRICT) : E_ALL));
         $this->display_errors_list = $this->parse_error_num(isset($config['display_errors_list']) ? ((int) $config['display_errors_list']) : E_ALL);
         $this->send_errors_list = $this->parse_error_num(isset($config['send_errors_list']) ? ((int) $config['send_errors_list']) : E_USER_ERROR);
@@ -118,10 +122,6 @@ class Error
             $this->error_log_fileext = $config['error_log_fileext'];
         } else {
             $this->error_log_fileext = Error::LOG_FILE_EXT_DEFAULT;
-        }
-
-        if (version_compare(PHP_VERSION, '8.4.0', '<')) {
-            $this->errortype[E_STRICT] = 'Strict Notice';
         }
 
         /*

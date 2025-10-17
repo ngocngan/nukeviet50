@@ -853,7 +853,7 @@ function nv_disable_site()
  * @param string $module
  * @return string
  */
-function nv_tag2pos_block(string $tag, string $module = '')
+function nv_tag2pos_block($tag, $module = '')
 {
     global $site_mods, $module_name;
     return '[' . strtoupper('CUSTOM_' . $site_mods[$module ?: $module_name]['module_data'] . '_' . $tag) . ']';
@@ -867,7 +867,7 @@ function nv_tag2pos_block(string $tag, string $module = '')
  * @param string $module
  * @return bool
  */
-function nv_register_block(string $tag, string $name = '', string $module = '')
+function nv_register_block($tag, $name = '', $module = '')
 {
     global $module_name, $site_mods, $nv_Cache, $db;
 
@@ -912,7 +912,7 @@ function nv_register_block(string $tag, string $name = '', string $module = '')
  * @param bool $all
  * @return bool
  */
-function nv_unregister_block(string $tag, string $module = '', bool $all = false)
+function nv_unregister_block($tag, $module = '', $all = false)
 {
     global $module_name, $site_mods, $nv_Cache, $db;
 
@@ -966,7 +966,7 @@ function nv_unregister_block(string $tag, string $module = '', bool $all = false
  * @param string $module
  * @return bool
  */
-function nv_purge_blocks(string $module = '')
+function nv_purge_blocks($module = '')
 {
     // Một cách gọi khác của nv_unregister_block tránh truyền vào tag rỗng dẫn đến xóa hết
     return nv_unregister_block('', $module, true);
@@ -980,7 +980,7 @@ function nv_purge_blocks(string $module = '')
  * @param bool $cache
  * @return array
  */
-function nv_get_blocks(string $theme, bool $cache = true)
+function nv_get_blocks($theme, $cache = true)
 {
     global $nv_Cache, $db;
 
