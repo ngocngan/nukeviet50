@@ -74,10 +74,6 @@ function nv_error_info()
             $lang_global['error_notice'],
             'comment.png'
         ],
-        E_STRICT => [
-            $lang_global['error_notice'],
-            'comment.png'
-        ],
         E_RECOVERABLE_ERROR => [
             $lang_global['error_error'],
             'bad.png'
@@ -91,6 +87,12 @@ function nv_error_info()
             'warning.png'
         ]
     ];
+    if (version_compare(PHP_VERSION, '8.4.0', '<')) {
+        $errortype[E_STRICT] = [
+            $lang_global['error_notice'],
+            'comment.png'
+        ];
+    }
 
     if (defined('NV_ADMIN') and file_exists(NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/system/error_info.tpl')) {
         $tpl_path = NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/system';

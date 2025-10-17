@@ -75,7 +75,6 @@ class Error
         E_USER_ERROR => 'User Error',
         E_USER_WARNING => 'User Warning',
         E_USER_NOTICE => 'User Notice',
-        E_STRICT => 'Runtime Notice',
         E_RECOVERABLE_ERROR => 'Catchable fatal error',
         E_DEPRECATED => 'Run-time notices',
         E_USER_DEPRECATED => 'User-generated warning message'
@@ -103,9 +102,9 @@ class Error
      */
     public function __construct($config)
     {
-        $this->log_errors_list = $this->parse_error_num((int) $config['log_errors_list']);
-        $this->display_errors_list = $this->parse_error_num((int) $config['display_errors_list']);
-        $this->send_errors_list = $this->parse_error_num((int) $config['send_errors_list']);
+        $this->log_errors_list = $this->parse_error_num(isset($config['log_errors_list']) ? ((int) $config['log_errors_list']) : (version_compare(PHP_VERSION, '8.4.0', '<') ? (E_ALL | E_STRICT) : E_ALL));
+        $this->display_errors_list = $this->parse_error_num(isset($config['display_errors_list']) ? ((int) $config['display_errors_list']) : E_ALL);
+        $this->send_errors_list = $this->parse_error_num(isset($config['send_errors_list']) ? ((int) $config['send_errors_list']) : E_USER_ERROR);
         $this->error_log_path = $this->get_error_log_path((string) $config['error_log_path']);
         $this->error_send_mail = (string) $config['error_send_email'];
         $this->error_set_logs = $config['error_set_logs'];
@@ -119,6 +118,10 @@ class Error
             $this->error_log_fileext = $config['error_log_fileext'];
         } else {
             $this->error_log_fileext = Error::LOG_FILE_EXT_DEFAULT;
+        }
+
+        if (version_compare(PHP_VERSION, '8.4.0', '<')) {
+            $this->errortype[E_STRICT] = 'Strict Notice';
         }
 
         /*
@@ -254,8 +257,14 @@ class Error
      */
     private function parse_error_num($num)
     {
-        if ($num > E_ALL + E_STRICT) {
-            $num = E_ALL + E_STRICT;
+        if (version_compare(PHP_VERSION, '8.4.0', '<')) {
+            if ($num > E_ALL + E_STRICT) {
+                $num = E_ALL + E_STRICT;
+            }
+        } else {
+            if ($num > E_ALL) {
+                $num = E_ALL;
+            }
         }
         if ($num < 0) {
             $num = 0;
