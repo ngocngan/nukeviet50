@@ -8,14 +8,7 @@
  * @license GNU/GPL version 2 or any later version
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
-register_shutdown_function(function() {
-    $error = error_get_last();
-    if ($error !== null) {
-        echo '<pre><code>';
-        echo htmlspecialchars(print_r($error, true));
-        die('</code></pre>');
-    }
-});
+
 if (!defined('NV_SYSTEM') and !defined('NV_ADMIN') and !defined('NV_WYSIWYG')) {
     header('Location: index.php');
     exit();
