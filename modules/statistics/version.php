@@ -21,8 +21,8 @@ $module_version = [
     'layoutdefault' => 'body:main,allreferers,allcountries,allbrowsers,allos,allbots',
     'is_sysmod' => 0,
     'virtual' => 2,
-    'version' => '4.5.06',
-    'date' => 'Saturday, July 20, 2024 4:00:00 PM GMT+07:00',
+    'version' => '4.5.07',
+    'date' => 'Friday, October 24, 2025 4:00:00 PM GMT+07:00',
     'author' => 'VINADES.,JSC <contact@vinades.vn>',
     'note' => ''
 ];
