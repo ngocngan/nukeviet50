@@ -22,7 +22,7 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
 function nv_groups_list($mod_data = 'users')
 {
     global $nv_Cache;
-    $cache_file = NV_LANG_DATA . '_groups_list_' . NV_CACHE_PREFIX . '.cache';
+    $cache_file = 'groups_list_' . NV_CACHE_PREFIX . '.cache';
     if (($cache = $nv_Cache->getItem($mod_data, $cache_file)) != false) {
         return unserialize($cache);
     }
@@ -196,7 +196,7 @@ function nv_save_file_config_global()
                 $content_config .= "\$global_config['" . $c_config_name . "'] = " . nv_var_export($value) . ";\n";
             }
         } elseif (in_array($c_config_name, $config_name_encrypted, true) and !empty($c_config_value)) {
-            $content_config .= "\$global_config['" . $c_config_name . "'] = " . $crypt->decrypt($c_config_value) . ";\n";
+            $content_config .= "\$global_config['" . $c_config_name . "'] = '" . ($crypt->decrypt($c_config_value) ?? '') . "';\n";
         } else {
             if (preg_match('/^(0|[1-9][0-9]*)$/', $c_config_value) and $c_config_name != 'facebook_client_id') {
                 $content_config .= "\$global_config['" . $c_config_name . "'] = " . $c_config_value . ";\n";
