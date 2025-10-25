@@ -218,9 +218,9 @@ class RedisCache extends Cache
             return [];
         }
 
-        $key = $this->key($moduleName, $sql . '_' . $this->keySuffix, $lang);
+        $keyCache = $this->key($moduleName, $sql . '_' . $this->keySuffix, $lang);
 
-        $list = $this->redis->get($key);
+        $list = $this->redis->get($keyCache);
         if ($list) {
             return $list;
         }
@@ -230,7 +230,7 @@ class RedisCache extends Cache
             return [];
         }
 
-        $this->set($key, $list, $ttl);
+        $this->set($keyCache, $list, $ttl);
 
         return $list;
     }

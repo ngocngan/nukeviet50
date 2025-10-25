@@ -652,3 +652,4 @@ $lang_module['redis_pass_note'] = 'Mật khẩu mặc định được để tr�
 $lang_module['cache_prefix'] = 'Tiền tố cache';
 $lang_module['cache_prefix_note'] = 'Nhập tiền tố nếu bạn sử dụng Memcached hoặc Redis và có nhiều website sử dụng chung máy chủ cache để tránh xung đột khóa cache giữa các website. Tiền tố gồm chữ cái a-z, số 0-9 và dấu gạch dưới (_), phải bắt đầu bằng chữ cái. File cache không sử dụng tiền tố này.';
 $lang_module['cache_prefix_invalid'] = 'Tiền tố cache không hợp lệ. Chỉ chấp nhận chữ cái a-z, số 0-9 và dấu gạch dưới (_) và phải bắt đầu bằng chữ cái.';
+$lang_module['cache_test_error'] = 'Lỗi kết nối đến máy chủ cache. Vui lòng kiểm tra lại các thông số cấu hình. Chi tiết lỗi: %s';

@@ -72,18 +72,6 @@ class Error
     ];
 
     /**
-     * @var array Thông báo một số lỗi dễ nhận biết hơn
-     */
-    private $track_fatal_error = [
-        '/includes/vendor/vinades/nukeviet/Cache/Redis.php' => [
-            ['/[\'|"]Redis[\'|"] not found/i', 'PHP Redis Extension does not exists!']
-        ],
-        '/includes/vendor/vinades/nukeviet/Cache/Memcached.php' => [
-            ['/[\'|"]Memcached[\'|"] not found/i', 'PHP Memcached Extension does not exists!']
-        ]
-    ];
-
-    /**
      * @var array Các vấn đề lỗi log lại nhưng không cần hiển thị cảnh báo lên
      */
     private $error_excluded = [
@@ -471,9 +459,6 @@ class Error
         if (!empty($error) and $error['type'] === E_ERROR | E_PARSE) {
             http_response_code(500);
 
-            $file = substr(str_replace('\\', '/', preg_replace(['/\\\\/', "/\/{2,}/"], '/', $error['file'])), strlen(NV_ROOTDIR . '/'));
-            $finded_track = false;
-
             $this->errno = $error['type'];
             $error['type'] .= ' (' . self::$errortype[$error['type']] . ')';
             $error['message'] = self::format_str($error['message']);
@@ -483,39 +468,23 @@ class Error
             $this->errline = $error['line'];
             $this->errid = md5(($this->errfile ?: '') . ($this->errline ?: '') . $this->errno);
 
-            // Một số lỗi đặc biệt, hiển thị lên để dễ nhận biết
-            if (isset($this->track_fatal_error[$error['file']])) {
-                foreach ($this->track_fatal_error[$error['file']] as $patterns) {
-                    if (preg_match($patterns[0], $error['message'])) {
-                        $finded_track = true;
-                        $this->errstr = $patterns[1];
-                        break;
-                    }
-                }
-            }
-
             $this->log_control();
 
-            // Only display some track fatal error!
-            if ($finded_track) {
-                $this->info_die();
-            } else {
-                if (NV_DEBUG) {
-                    exit('An error occurred while loading the page:<br /><pre><code>' . print_r($error, true) . '</code></pre>');
-                }
-
-                if (!empty($this->cfg['error_send_mail'])) {
-                    $strEncodedEmail = '';
-                    $strlen = strlen($this->cfg['error_send_mail']);
-                    for ($i = 0; $i < $strlen; ++$i) {
-                        $strEncodedEmail .= '&#' . ord(substr($this->cfg['error_send_mail'], $i)) . ';';
-                    }
-                    $email = '<a href="mailto:' . $strEncodedEmail . '">let us know</a>';
-                } else {
-                    $email = 'let us know';
-                }
-                exit('An error occurred while loading the page: ' . self::$errortype[$this->errno] . '(' . $this->errno . ').<br/>Please ' . $email . ' about this!');
+            if (NV_DEBUG) {
+                exit('An error occurred while loading the page:<br /><pre><code>' . print_r($error, true) . '</code></pre>');
             }
+
+            if (!empty($this->cfg['error_send_mail'])) {
+                $strEncodedEmail = '';
+                $strlen = strlen($this->cfg['error_send_mail']);
+                for ($i = 0; $i < $strlen; ++$i) {
+                    $strEncodedEmail .= '&#' . ord(substr($this->cfg['error_send_mail'], $i)) . ';';
+                }
+                $email = '<a href="mailto:' . $strEncodedEmail . '">let us know</a>';
+            } else {
+                $email = 'let us know';
+            }
+            exit('An error occurred while loading the page: ' . self::$errortype[$this->errno] . '(' . $this->errno . ').<br/>Please ' . $email . ' about this!');
         }
     }
 }
