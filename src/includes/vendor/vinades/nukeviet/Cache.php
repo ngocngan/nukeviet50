@@ -100,6 +100,51 @@ abstract class Cache
     }
 
     /**
+     * Kiểm tra kết nối đến hệ thống cache, trả về chuỗi 'success' nếu thành công, ngược lại trả về thông báo lỗi
+     *
+     * @param array $global_config
+     * @return string
+     */
+    public static function testInstance(array $global_config = []): string
+    {
+        $driver = $global_config['cached'] ?? 'files';
+        if ($driver === 'files') {
+            return 'success';
+        }
+        try {
+            $cache = self::createDriver($global_config);
+        } catch (\RuntimeException $e) {
+            return $e->getMessage();
+        }
+
+        if ($driver === 'memcached') {
+            /**
+             * @var Memcached
+             */
+            $instance = $cache->instance();
+            $check = $instance->getVersion();
+            if ($check === false or empty($check)) {
+                return 'Could not connect to Memcached server.';
+            }
+            return 'success';
+        }
+
+        if ($driver === 'redis') {
+            /**
+             * @var Redis
+             */
+            $instance = $cache->instance();
+            $check = $instance->ping();
+            if ($check !== true) {
+                return 'Could not connect to Redis server.';
+            }
+            return 'success';
+        }
+
+        return 'Driver ' . $driver . ' is not supported.';
+    }
+
+    /**
      * @param array $global_config
      * @throws \RuntimeException
      * @return Cache\FileCache|Cache\MemcachedCache|Cache\RedisCache

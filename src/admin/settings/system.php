@@ -254,6 +254,17 @@ if ($checkss == $nv_Request->get_string('checkss', 'post')) {
             ]);
         }
 
+        // Kiểm tra kết nối cache
+        $_config = $array_config_global;
+        $_config['redis_password'] = empty($_config['redis_password']) ? '' : $crypt->decrypt($_config['redis_password']);
+        $check = \NukeViet\Cache::testInstance($_config);
+        if ($check !== 'success') {
+            nv_jsonOutput([
+                'status' => 'error',
+                'mess' => $nv_Lang->getModule('cache_test_error', $check)
+            ]);
+        }
+
         $sth = $db->prepare('UPDATE ' . NV_CONFIG_GLOBALTABLE . " SET config_value = :config_value WHERE lang = 'sys' AND module = 'global' AND config_name = :config_name");
         foreach ($array_config_global as $config_name => $config_value) {
             $sth->bindParam(':config_name', $config_name, PDO::PARAM_STR, 30);

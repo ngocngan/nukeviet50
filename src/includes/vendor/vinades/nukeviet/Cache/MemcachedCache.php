@@ -192,9 +192,9 @@ class MemcachedCache extends Cache
             return [];
         }
 
-        $key = $this->key($moduleName, $sql . '_' . $this->keySuffix, $lang);
+        $keyCache = $this->key($moduleName, $sql . '_' . $this->keySuffix, $lang);
 
-        $list = $this->memcached->get($key);
+        $list = $this->memcached->get($keyCache);
         if ($list) {
             return $list;
         }
@@ -204,7 +204,7 @@ class MemcachedCache extends Cache
             return [];
         }
 
-        $this->memcached->set($key, $list, $ttl);
+        $this->memcached->set($keyCache, $list, $ttl);
 
         return $list;
     }
