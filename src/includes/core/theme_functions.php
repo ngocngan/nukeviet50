@@ -142,7 +142,7 @@ function nv_htmlOutput($html, $type = 'html', $custom_headers = [])
         $html_headers['X-Frame-Options'] = 'SAMEORIGIN';
     }
     if (!empty($global_config['nv_csp_act']) and !empty($global_config['nv_csp'])) {
-        $html_headers['Content-Security-Policy'] = nv_unhtmlspecialchars($global_config['nv_csp']);
+        $html_headers['Content-Security-Policy'] = parse_csp($global_config['nv_csp']);
     }
     if (!empty($global_config['nv_rp_act']) and !empty($global_config['nv_rp'])) {
         $html_headers['Referrer-Policy'] = $global_config['nv_rp'];
