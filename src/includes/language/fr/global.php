@@ -449,6 +449,7 @@ $lang_global['success_level'] = 'Succès';
 $lang_global['expand'] = 'Développer';
 $lang_global['collapse'] = 'Réduire';
 $lang_global['toggle_submenu'] = 'Basculer le sous-menu';
+$lang_global['view_more'] = 'Voir plus';
 $lang_global['country_AD'] = 'Andorre';
 $lang_global['country_AE'] = 'Arabes Unis';
 $lang_global['country_AF'] = 'Afghanistan';

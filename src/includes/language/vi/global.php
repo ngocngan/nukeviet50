@@ -449,6 +449,7 @@ $lang_global['success_level'] = 'Thành công';
 $lang_global['expand'] = 'Mở rộng';
 $lang_global['collapse'] = 'Thu gọn';
 $lang_global['toggle_submenu'] = 'Đóng mở menu con';
+$lang_global['view_more'] = 'Xem thêm';
 $lang_global['country_AD'] = 'Andorra';
 $lang_global['country_AE'] = 'Ả Rập Thống nhất';
 $lang_global['country_AF'] = 'Afghanistan';
