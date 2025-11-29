@@ -30,6 +30,100 @@ $sql_create_table[] = 'INSERT INTO ' . NV_AUTHORS_GLOBALTABLE . "_module (mid, m
 $sql_create_table[] = 'INSERT INTO ' . $db_config['prefix'] . "_upload_dir (did, dirname, time, thumb_type, thumb_width, thumb_height, thumb_quality) VALUES ('-1', '', 0, 3, 300, 300, 90)";
 $sql_create_table[] = 'UPDATE ' . $db_config['prefix'] . "_upload_dir SET did = '0' WHERE did = '-1'";
 
+$csp = [
+    'default-src' => ['self' => 1],
+    'script-src' => [
+        'self' => 1,
+        'unsafe-inline' => 1,
+        'unsafe-eval' => 1,
+        'hosts' => [
+            '*.google.com',
+            '*.google-analytics.com',
+            '*.googletagmanager.com',
+            '*.gstatic.com',
+            '*.facebook.com',
+            '*.facebook.net',
+            '*.twitter.com',
+            '*.zalo.me',
+            '*.zaloapp.com',
+            '*.tawk.to',
+            '*.cloudflareinsights.com',
+            '*.cloudflare.com'
+        ]
+    ],
+    'style-src' => [
+        'self' => 1,
+        'data' => 1,
+        'unsafe-inline' => 1,
+        'hosts' => [
+            '*.google.com',
+            '*.googleapis.com',
+            '*.tawk.to'
+        ]
+    ],
+    'img-src' => [
+        'self' => 1,
+        'data' => 1,
+        'hosts' => [
+            '*.twitter.com',
+            '*.google.com',
+            '*.googleapis.com',
+            '*.google-analytics.com',
+            '*.gstatic.com',
+            '*.facebook.com',
+            'tawk.link',
+            '*.tawk.to',
+            'static.nukeviet.vn'
+        ]
+    ],
+    'font-src' => [
+        'self' => 1,
+        'data' => 1,
+        'hosts' => [
+            '*.googleapis.com',
+            '*.gstatic.com',
+            '*.tawk.to'
+        ]
+    ],
+    'connect-src' => [
+        'self' => 1,
+        'hosts' => [
+            '*.google-analytics.com',
+            '*.zalo.me',
+            '*.tawk.to',
+            'wss://*.tawk.to',
+            '*.ckeditor.com',
+            '*.google.com'
+        ]
+    ],
+    'media-src' => [
+        'self' => 1,
+        'hosts' => [
+            '*.tawk.to'
+        ]
+    ],
+    'frame-src' => [
+        'self' => 1,
+        'hosts' => [
+            '*.google.com',
+            '*.youtube.com',
+            '*.facebook.com',
+            '*.facebook.net',
+            '*.twitter.com',
+            '*.zalo.me',
+            '*.live.com',
+            '*.cloudflare.com'
+        ]
+    ],
+    'form-action' => [
+        'self' => 1,
+        'hosts' => [
+            '*.google.com'
+        ]
+    ]
+];
+$csp = json_encode($csp, JSON_UNESCAPED_SLASHES);
+
 $sql_create_table[] = 'INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES
 ('sys', 'site', 'admin_theme', 'admin_default'),
 ('sys', 'site', 'online_upd', '1'),
@@ -84,7 +178,7 @@ $sql_create_table[] = 'INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, 
 ('sys', 'site', 'max_user_number', 0),
 ('sys', 'site', 'captcha_area', 'r,m,p'),
 ('sys', 'site', 'captcha_type', 'captcha'),
-('sys', 'site', 'nv_csp', '{\"default-src\":{\"self\":1},\"script-src\":{\"self\":1,\"unsafe-inline\":1,\"unsafe-eval\":1,\"hosts\":[\"*.google.com\",\"*.google-analytics.com\",\"*.googletagmanager.com\",\"*.gstatic.com\",\"*.facebook.com\",\"*.facebook.net\",\"*.twitter.com\",\"*.zalo.me\",\"*.zaloapp.com\",\"*.tawk.to\",\"*.cloudflareinsights.com\",\"*.cloudflare.com\"]},\"style-src\":{\"self\":1,\"data\":1,\"unsafe-inline\":1,\"hosts\":[\"*.google.com\",\"*.googleapis.com\",\"*.tawk.to\"]},\"img-src\":{\"self\":1,\"data\":1,\"hosts\":[\"*.twitter.com\",\"*.google.com\",\"*.googleapis.com\",\"*.google-analytics.com\",\"*.gstatic.com\",\"*.facebook.com\",\"tawk.link\",\"*.tawk.to\",\"static.nukeviet.vn\"]},\"font-src\":{\"self\":1,\"data\":1,\"hosts\":[\"*.googleapis.com\",\"*.gstatic.com\",\"*.tawk.to\"]},\"connect-src\":{\"self\":1,\"hosts\":[\"*.google-analytics.com\",\"*.zalo.me\",\"*.tawk.to\",\"wss:\\/\\/*.tawk.to\",\"*.ckeditor.com\"]},\"media-src\":{\"self\":1,\"hosts\":[\"*.tawk.to\"]},\"frame-src\":{\"self\":1,\"hosts\":[\"*.google.com\",\"*.youtube.com\",\"*.facebook.com\",\"*.facebook.net\",\"*.twitter.com\",\"*.zalo.me\",\"*.live.com\",\"*.cloudflare.com\"]},\"form-action\":{\"self\":1,\"hosts\":[\"*.google.com\"]}}'),
+('sys', 'site', 'nv_csp', '" . addslashes($csp) . "'),
 ('sys', 'site', 'nv_csp_act', '1'),
 ('sys', 'site', 'nv_csp_script_nonce', '0'),
 ('sys', 'site', 'nv_rp', 'no-referrer-when-downgrade, strict-origin-when-cross-origin'),

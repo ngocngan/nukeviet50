@@ -16,16 +16,17 @@ if (!defined('NV_MAINFILE')) {
 /**
  * nv_aleditor()
  *
- * @param string $textareaname
- * @param string $width
- * @param string $height
- * @param string $val
- * @param string $customtoolbar
- * @param string $path
- * @param string $currentpath
+ * @param string $textareaname Tên của thẻ textarea
+ * @param string $width Chiều rộng của trình soạn thảo, ví dụ '100%'
+ * @param string $height Chiều cao của trình soạn thảo, ví dụ '450px'
+ * @param string $val Nội dung khởi tạo ban đầu
+ * @param string $customtoolbar Chuỗi json_encode cấu hình toolbar, hoặc 'responsive' để tự động co dãn thanh toolbar
+ * @param string $path Thư mục upload file, bắt đầu từ NV_UPLOADS_DIR
+ * @param string $currentpath Thư mục hiện tại khi mở trình duyệt file, bắt đầu từ NV_UPLOADS_DIR, bỏ trống để lấy theo $path
+ * @param string $init_callback Tên hàm hoặc code js chạy sau khi khởi tạo editor xong nếu có
  * @return string
  */
-function nv_aleditor($textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '', $path = '', $currentpath = '')
+function nv_aleditor($textareaname, $width = '100%', $height = '450px', string $val = '', string $customtoolbar = '', string $path = '', string $currentpath = '', string $init_callback = ''): string
 {
     global $global_config, $module_upload, $module_data, $admin_info;
 
@@ -43,10 +44,14 @@ function nv_aleditor($textareaname, $width = '100%', $height = '450px', $val = '
 
     $create = [];
     $create[] = 'language: "' . NV_LANG_INTERFACE . '"';
-    $create[] = 'nukeviet: {
-        editorId: "' . $editor_id . '",
-        height: "' . $height . '"
-    }';
+
+    $nukeviet_config = [];
+    $nukeviet_config[] = 'editorId: "' . $editor_id . '"';
+    $nukeviet_config[] = 'height: "' . $height . '"';
+    if (!empty($init_callback)) {
+        $nukeviet_config[] = 'initCallback: ' . $init_callback;
+    }
+    $create[] = 'nukeviet: {' . implode(', ', $nukeviet_config) . '}';
 
     $custom_toolbar = false;
     $responsive_editor = $customtoolbar == 'responsive' ? true : false;
