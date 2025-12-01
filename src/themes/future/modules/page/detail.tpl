@@ -1,9 +1,37 @@
-<h1>{$DATA.title}</h1>
+<h1>
+    {$DATA.title}
+    {if $smarty.const.NV_IS_MODADMIN}
+    <span class="dropdown fs-6">
+        <a class="link-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-screwdriver-wrench"></i> <span class="visually-hidden">{$LANG->getModule('admtools')}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}=content&amp;id={$DATA.id}"><i class="fa-solid fa-pencil fa-fw text-center"></i> {$LANG->getGlobal('edit')}</a></li>
+            <li><a class="dropdown-item" href="#" data-toggle="nv_del_content" data-id="{$DATA.id}" data-checkss="{$DATA.admin_checkss}" data-adminurl="{$smarty.const.NV_BASE_ADMINURL}" data-detail="true"><i class="fa-solid fa-trash fa-fw text-center text-danger" data-icon="fa-trash"></i> {$LANG->getGlobal('delete')}</a></li>
+        </ul>
+    </span>
+    {/if}
+</h1>
 {if $smarty.const.NV_IS_MODADMIN and empty($DATA.status)}
 <div class="alert alert-warning" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> {$LANG->getModule('warning')}</div>
 {/if}
-{*
+{if not empty($OTHERS)}
+{* Danh sách các bài khác *}
+<hr>
+<ul>
+    <li>sdsd</li>
+</ul>
+{/if}
 
+
+
+
+
+
+
+
+
+{*
 <!-- BEGIN: main -->
 
 <div class="page panel panel-default">
@@ -49,12 +77,6 @@
         </div>
     </div>
 </div>
-<!-- BEGIN: adminlink -->
-<p class="text-center margin-bottom-lg">
-    <a class="btn btn-primary" href="{ADMIN_EDIT}"><em class="fa fa-edit fa-lg">&nbsp;</em>{GLANG.edit}</a>
-    <a class="btn btn-danger" href="#" data-toggle="nv_del_content" data-id="{CONTENT.id}" data-ss="{ADMIN_CHECKSS}" data-adminurl="{NV_BASE_ADMINURL}"><em class="fa fa-trash-o fa-lg">&nbsp;</em>{GLANG.delete}</a>
-</p>
-<!-- END: adminlink -->
 <!-- BEGIN: comment -->
 <div class="page panel panel-default">
     <div class="panel-body">

@@ -33,6 +33,7 @@ if ($page_config['viewtype'] == 2) {
 
     $rowdetail['number_add_time'] = $rowdetail['add_time'];
     $rowdetail['number_edit_time'] = $rowdetail['edit_time'] ?: $rowdetail['add_time'];
+    $rowdetail['admin_checkss'] = md5($rowdetail['id'] . NV_CHECK_SESSION);
 
     $schema = [
         '@context' => 'https://schema.org',

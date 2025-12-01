@@ -21,7 +21,7 @@ if (!defined('NV_IS_MOD_PAGE')) {
  * @param string $content_comment
  * @return string
  */
-function nv_page_main($row, $ab_links, $content_comment)
+function nv_page_main(array $row, array $ab_links, string $content_comment): string
 {
     global $module_name, $nv_Lang, $meta_property, $client_info, $page_config, $global_config;
 
@@ -29,6 +29,8 @@ function nv_page_main($row, $ab_links, $content_comment)
     $tpl->setTemplateDir(get_module_tpl_dir('detail.tpl'));
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('DATA', $row);
+    $tpl->assign('MODULE_NAME', $module_name);
+    $tpl->assign('OTHERS', $ab_links);
 
     return $tpl->fetch('detail.tpl');
 
