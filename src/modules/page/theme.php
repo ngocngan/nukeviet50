@@ -14,7 +14,7 @@ if (!defined('NV_IS_MOD_PAGE')) {
 }
 
 /**
- * nv_page_main()
+ * Giao diện chi tiết bài giới thiệu
  *
  * @param array  $row
  * @param array  $ab_links
@@ -23,7 +23,22 @@ if (!defined('NV_IS_MOD_PAGE')) {
  */
 function nv_page_main($row, $ab_links, $content_comment)
 {
-    global $module_name, $module_info, $meta_property, $client_info, $page_config, $global_config;
+    global $module_name, $nv_Lang, $meta_property, $client_info, $page_config, $global_config;
+
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(get_module_tpl_dir('detail.tpl'));
+    $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('DATA', $row);
+
+    return $tpl->fetch('detail.tpl');
+
+
+
+
+
+
+
+
 
     [$template, $dir] = get_module_tpl_dir('main.tpl', true);
     $xtpl = new XTemplate('main.tpl', $dir);

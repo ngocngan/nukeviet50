@@ -88,9 +88,19 @@ $main-columns: (
   content: 56%,
   end: 22%
 );
+$main-columns-lg: (
+  start: 30%,
+  content: 70%,
+  end: 30%
+);
 $main-nav-height: 3.125rem; // 50px
 $main-nav-submenu-width: 15.625rem; // 250px
 $main-nav-icon-min-width: 1.25rem; // 20px
+$main-mobile-columns-order: (
+  start: 2,
+  content: 1,
+  end: 3
+);
 
 // Header
 $header-height: 2.4375rem; // 39px

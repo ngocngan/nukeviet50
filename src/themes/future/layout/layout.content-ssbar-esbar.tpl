@@ -1,25 +1,25 @@
-<!-- BEGIN: main -->
-{FILE "header_only.tpl"}
-{FILE "header_extended.tpl"}
-<div class="row">
-    [HEADER]
-</div>
-<div class="row">
-    <div class="col-sm-12 col-md-13">
-        [TOP]
-        {MODULE_CONTENT}
-        [BOTTOM]
+{include file='header_only.tpl'}
+{include file='header_extended.tpl'}
+<div class="main-content">
+    <div class="container g-4 py-4">
+        [THEME_ERROR_INFO]
+        [HEADER]
+        <div class="row g-4">
+            <main class="main-content">
+                {$MODULE_CONTENT}
+            </main>
+            <aside class="main-start">
+                <div class="vstack vstack-blocks">
+                    [START_SIDEBAR]
+                </div>
+            </aside>
+            <aside class="main-end">
+                <div class="vstack vstack-blocks">
+                    [END_SIDEBAR]
+                </div>
+            </aside>
+        </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-sm-push-6 col-md-push-5">
-        [RIGHT]
-    </div>
-    <div class="col-sm-6 col-md-5 col-sm-pull-6 col-md-pull-6">
-        [LEFT]
-    </div>
 </div>
-<div class="row">
-    [FOOTER]
-</div>
-{FILE "footer_extended.tpl"}
-{FILE "footer_only.tpl"}
-<!-- END: main -->
+{include file='footer_extended.tpl'}
+{include file='footer_only.tpl'}

@@ -26608,6 +26608,18 @@ body {
   flex: 0 0 auto;
   width: 22%;
 }
+.main-content .main-start-lg {
+  flex: 0 0 auto;
+  width: 30%;
+}
+.main-content .main-content-lg {
+  flex: 0 0 auto;
+  width: 70%;
+}
+.main-content .main-end-lg {
+  flex: 0 0 auto;
+  width: 30%;
+}
 
 .main-nav {
   z-index: 400;

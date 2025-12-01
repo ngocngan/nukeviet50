@@ -26171,6 +26171,38 @@ readers do not read off random characters that represent icons */
     flex: 0 0 auto;
     width: 22%;
   }
+  .main-content .main-start-lg {
+    flex: 0 0 auto;
+    width: 30%;
+  }
+  .main-content .main-content-lg {
+    flex: 0 0 auto;
+    width: 70%;
+  }
+  .main-content .main-end-lg {
+    flex: 0 0 auto;
+    width: 30%;
+  }
+}
+@media (max-width: 991.98px) {
+  .main-content .main-start {
+    order: 2;
+  }
+  .main-content .main-start-lg {
+    order: 2;
+  }
+  .main-content .main-content {
+    order: 1;
+  }
+  .main-content .main-content-lg {
+    order: 1;
+  }
+  .main-content .main-end {
+    order: 3;
+  }
+  .main-content .main-end-lg {
+    order: 3;
+  }
 }
 
 .main-nav {
