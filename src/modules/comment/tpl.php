@@ -14,7 +14,7 @@ if (!defined('NV_MAINFILE')) {
 }
 
 /**
- * nv_theme_comment_module()
+ * Xử lý giao diện đầy đủ cho một khối bình luận
  *
  * @param string $module
  * @param string $area
@@ -27,13 +27,19 @@ if (!defined('NV_MAINFILE')) {
  * @param int    $header
  * @return string
  */
-function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $comment, $sortcomm, $form_login, $header = 1)
+function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $comment, $sortcomm, $form_login, $header = 1): string
 {
     global $global_config, $module_data, $module_config, $admin_info, $user_info, $nv_Lang, $module_name;
-    $nv_Lang->loadModule('comment', false, true);
+
     $template = get_tpl_dir($global_config['module_theme'], 'default', '/modules/comment/main.tpl');
     $templateCSS = get_tpl_dir($global_config['module_theme'], 'default', '/css/comment.css');
     $templateJS = get_tpl_dir($global_config['module_theme'], 'default', '/js/comment.js');
+
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $template . '/modules/comment');
+    $tpl->assign('LANG', $nv_Lang);
+
+    return $tpl->fetch('main.tpl');
 
     $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $template . '/modules/comment');
     $xtpl->assign('LANG', \NukeViet\Core\Language::$tmplang_module);
@@ -181,13 +187,11 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
     }
 
     $xtpl->parse('main');
-    $nv_Lang->changeLang();
-
     return $xtpl->text('main');
 }
 
 /**
- * nv_comment_module_data()
+ * Xử lý giao diện danh sách bình luận cấp 1
  *
  * @param string $module
  * @param array  $comment_array
@@ -274,7 +278,8 @@ function nv_comment_module_data($module, $comment_array, $is_delete, $allowed_co
 }
 
 /**
- * nv_comment_module_data_reply()
+ * Xử lý giao diện danh sách bình luận cấp con (reply)
+ * Đệ quy cho mọi cấp bên trong nữa
  *
  * @param string $module
  * @param array  $comment_array
