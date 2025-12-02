@@ -1,4 +1,4 @@
-<h1>
+<h1 class="mb-3">
     {$DATA.title}
     {if $smarty.const.NV_IS_MODADMIN}
     <span class="dropdown fs-6">
@@ -12,88 +12,77 @@
     </span>
     {/if}
 </h1>
+{if not empty($DATA.social)}
+<div class="mb-3 d-flex flex-wrap gap-3">
+    {if not empty($DATA.social.facebook)}
+    <div class="fb-like" data-href="{$DATA.link}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+    {/if}
+    {if not empty($DATA.social.twitter)}
+    <a href="http://twitter.com/share" class="twitter-share-button">Tweet</a>
+    {/if}
+    {if not empty($DATA.social.zalo)}
+    <div class="zalo-share-button" data-href="{$DATA.absolute_link}" data-oaid="{$GCONFIG.zaloOfficialAccountID}" data-layout="1" data-color="blue" data-customize=false></div>
+    {/if}
+</div>
+{/if}
 {if $smarty.const.NV_IS_MODADMIN and empty($DATA.status)}
+{* Thông báo khi admin xem bài đang đình chỉ *}
 <div class="alert alert-warning" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> {$LANG->getModule('warning')}</div>
+{/if}
+{if not empty($DATA.description)}
+{* Ảnh minh họa dạng bên trái mô tả, chỉ có nếu có mô tả ngắn gọn *}
+{if not empty($DATA.image) and $DATA.imageposition eq 1}
+<figure class="float-start me-3 mb-2 align-baseline">
+    <div style="width: {$DATA.thumb.width}px;">
+        <img role="button" data-bs-toggle="modal" data-bs-target="#imgpreview" alt="{$DATA.imagealt ?: $DATA.title}" src="{$DATA.thumb.src}" class="img-fluid">
+    </div>
+</figure>
+<div class="modal fade" id="imgpreview" tabindex="-1" aria-labelledby="imgpreviewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title fs-5 fw-medium" id="imgpreviewLabel">{$LANG->getModule('image')}: {$DATA.imagealt ?: $DATA.title}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{$LANG->getGlobal('close')}"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img alt="{$DATA.imagealt ?: $DATA.title}" src="{$DATA.img.src}" srcset="{$DATA.img.srcset}" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+{/if}
+{* Giới thiệu ngắn gọn của bài đăng *}
+<div class="article-intro mb-3 fw-medium">
+    {$DATA.description}
+</div>
+{/if}
+{* Ảnh minh họa dạng lớn *}
+{if not empty($DATA.image) and $DATA.imageposition eq 2}
+<figure class="image">
+    <img alt="{$DATA.imagealt ?: $DATA.title}" src="{$DATA.img.src}" srcset="{$DATA.img.srcset}" width="{$DATA.img.width}">
+    {if not empty($DATA.imagealt)}
+    <figcaption>{$DATA.imagealt}</figcaption>
+    {/if}
+</figure>
+{/if}
+{* Nội dung chi tiết của bài đăng *}
+<div class="clearfix"></div>
+<div class="article-body">
+    {$DATA.bodytext}
+</div>
+{if not empty($COMMENT)}
+{* Phần bình luận *}
+{$COMMENT}
 {/if}
 {if not empty($OTHERS)}
 {* Danh sách các bài khác *}
-<hr>
-<ul>
-    <li>sdsd</li>
+<hr class="my-4">
+<div class="h3 fs-medium border-start border-3 border-primary mb-3 ps-2">{$LANG->getModule('other_articles')}</div>
+<ul class="list-unstyled vstack gap-2">
+    {foreach from=$OTHERS item=other}
+    <li>
+        <i class="fa-solid fa-caret-right me-1"></i> <a href="{$other.link}" title="{$other.title}" class="link-body-emphasis">{$other.title}</a>
+    </li>
+    {/foreach}
 </ul>
 {/if}
-
-
-
-
-
-
-
-
-
-{*
-<!-- BEGIN: main -->
-
-<div class="page panel panel-default">
-    <div class="panel-body">
-        <h1 class="title margin-bottom-lg">{CONTENT.title}</h1>
-        <!-- BEGIN: socialbutton -->
-        <div class="margin-bottom">
-            <div style="display:flex;align-items:flex-start;">
-                <!-- BEGIN: facebook --><div class="margin-right"><div class="fb-like" style="float:left!important;margin-right:0!important" data-href="{CONTENT.link}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div></div><!-- END: facebook -->
-                <!-- BEGIN: twitter --><div class="margin-right"><a href="http://twitter.com/share" class="twitter-share-button">Tweet</a></div><!-- END: twitter -->
-                <!-- BEGIN: zalo --><div><div class="zalo-share-button" data-href="" data-oaid="{ZALO_OAID}" data-layout="1" data-color="blue" data-customize=false></div></div><!-- END: zalo -->
-            </div>
-        </div>
-        <!-- END: socialbutton -->
-
-        <!-- BEGIN: imageleft -->
-        <figure class="article left pointer" data-toggle="modalShowByObj" data-obj="#imgpreview">
-            <div style="width:{CONTENT.thumb.width}px;">
-                <img alt="{CONTENT.title}" src="{CONTENT.thumb.src}" class="img-thumbnail" />
-                <!-- BEGIN: alt --><figcaption>{CONTENT.imagealt}</figcaption><!-- END: alt -->
-            </div>
-        </figure>
-        <div id="imgpreview" style="display:none">
-            <p class="text-center"><img alt="{CONTENT.title}" src="{CONTENT.img.src}" srcset="{CONTENT.img.srcset}" class="img-thumbnail"/></p>
-        </div>
-        <!-- END: imageleft -->
-
-        <!-- BEGIN: description -->
-        <div class="hometext margin-bottom-lg">{CONTENT.description}</div>
-        <!-- END: description -->
-
-        <!-- BEGIN: imagecenter -->
-        <figure class="article center pointer" data-toggle="modalShowByObj">
-            <p class="text-center"><img alt="{CONTENT.title}" src="{CONTENT.img.src}" srcset="{CONTENT.img.srcset}" width="{CONTENT.img.width}" class="img-thumbnail" /></p>
-            <!-- BEGIN: alt --><figcaption>{CONTENT.imagealt}</figcaption><!-- END: alt -->
-        </figure>
-        <!-- END: imagecenter -->
-
-        <div class="clear"></div>
-
-        <div id="page-bodyhtml" class="bodytext margin-bottom-lg">
-            {CONTENT.bodytext}
-        </div>
-    </div>
-</div>
-<!-- BEGIN: comment -->
-<div class="page panel panel-default">
-    <div class="panel-body">
-    {CONTENT_COMMENT}
-    </div>
-</div>
-<!-- END: comment -->
-<!-- BEGIN: other -->
-<div class="page panel panel-default">
-    <div class="panel-body">
-        <ul class="nv-list-item">
-            <!-- BEGIN: loop -->
-            <li><em class="fa fa-angle-double-right">&nbsp;</em><h3><a title="{OTHER.title}" href="{OTHER.link}">{OTHER.title}</a></h3></li>
-            <!-- END: loop -->
-       </ul>
-    </div>
-</div>
-<!-- END: other -->
-<!-- END: main -->
-*}

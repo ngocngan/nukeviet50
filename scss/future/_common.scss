@@ -98,3 +98,7 @@
 .col-hide-empty:empty {
   display: none;
 }
+
+.align-baseline {
+  transform: translateY(calc(var(--#{$prefix}body-line-height) * 1rem / 4));
+}

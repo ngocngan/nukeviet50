@@ -34,6 +34,25 @@ if ($page_config['viewtype'] == 2) {
     $rowdetail['number_add_time'] = $rowdetail['add_time'];
     $rowdetail['number_edit_time'] = $rowdetail['edit_time'] ?: $rowdetail['add_time'];
     $rowdetail['admin_checkss'] = md5($rowdetail['id'] . NV_CHECK_SESSION);
+    $rowdetail['absolute_link'] = $canonicalUrl;
+
+    $rowdetail['social'] = [];
+    if ($rowdetail['socialbutton'] and !empty($page_config['socialbutton'])) {
+        if (str_contains($page_config['socialbutton'], 'facebook')) {
+            if (!empty($page_config['facebookapi'])) {
+                $meta_property['fb:app_id'] = $page_config['facebookapi'];
+                $meta_property['og:locale'] = (NV_LANG_DATA == 'vi') ? 'vi_VN' : 'en_US';
+            }
+
+            $rowdetail['social']['facebook'] = true;
+        }
+        if (str_contains($page_config['socialbutton'], 'twitter')) {
+            $rowdetail['social']['twitter'] = true;
+        }
+        if (str_contains($page_config['socialbutton'], 'zalo') and !empty($global_config['zaloOfficialAccountID'])) {
+            $rowdetail['social']['zalo'] = true;
+        }
+    }
 
     $schema = [
         '@context' => 'https://schema.org',

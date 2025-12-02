@@ -28,7 +28,7 @@ if (theme_file_exists($global_config['module_theme'] . '/modules/comment/tpl.php
  * @param int    $page
  * @param int    $sortcomm
  * @param string $base_url
- * @return array
+ * @return array|void
  */
 function nv_comment_data($module, $area, $id, $page, $sortcomm, $base_url)
 {
@@ -215,7 +215,7 @@ function nv_comment_load($module, $checkss, $area, $id, $allowed, $page, $status
 }
 
 /**
- * nv_comment_module()
+ * Lấy giao diện bình luận (html+js) để chèn vào vị trí nào đó
  *
  * @param string $module
  * @param string $checkss
