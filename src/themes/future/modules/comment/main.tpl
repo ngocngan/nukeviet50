@@ -1,10 +1,10 @@
-<div class="mt-4 mt-xl-5 comment-form-container" id="idcomment">
+<div class="mt-3 comment-form-container border-top pt-4 pt-xl-5" id="idcomment">
     <div class="d-flex align-items-center gap-3 justify-content-between mb-3 border-bottom pb-2">
         <div class="h3 mb-0">
             <i class="fa-regular fa-message me-1"></i> {$LANG->getModule('comment')}
         </div>
         <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" aria-label="">
+            <button class="btn btn-sm btn-outline-input" aria-label="">
                 <i class="fa-regular fa-eye"></i>
             </button>
             <select class="form-select form-select-sm flex-shrink-0 fw-125" data-toggle="nv_comment_sort_change" name="nv_comment_sort_change">
@@ -156,16 +156,16 @@
             </div>
             {/if}
 
-            <div class="form-group text-center">
-                <input type="button" value="{$LANG->getGlobal('reset')}" class="reset btn btn-default" data-toggle="commReset">
+            <div class="hstack gap-2 justify-content-center">
                 <input type="submit" value="{$LANG->getModule('comment_submit')}" class="btn btn-primary">
+                <input type="button" value="{$LANG->getGlobal('reset')}" class="btn btn-outline-secondary" data-toggle="commReset">
             </div>
         </form>
         <iframe class="d-none" id="submitcommentarea" name="submitcommentarea"></iframe>
         {elseif $FORM_LOGIN.display}
         {* Chưa có quyền bình luận nhưng có thể check quyền để bình luận *}
         <div class="alert alert-danger">
-            {if $FORM_LOGIN.node eq 'direct'}
+            {if $FORM_LOGIN.mode eq 'direct'}
             {* Thành viên đăng nhập trực tiếp *}
             <a title="{$LANG->getGlobal('loginsubmit')}" href="#" data-toggle="loginForm">{$LANG->getModule('comment_login', $FORM_LOGIN.groups.0)}</a>
             {else}
