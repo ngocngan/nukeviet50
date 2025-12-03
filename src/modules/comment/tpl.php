@@ -38,6 +38,72 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $template . '/modules/comment');
     $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('TEMPLATE', $template);
+    $tpl->assign('TEMPLATE_CSS', $templateCSS);
+    $tpl->assign('TEMPLATE_JS', $templateJS);
+    $tpl->assign('COMMENTCONTENT', $comment);
+    $tpl->assign('SORTCOMM', $sortcomm);
+    $tpl->assign('ALLOWED_COMM_BOOL', nv_user_in_groups($allowed_comm));
+    $tpl->assign('MCONFIG', $module_config[$module]);
+    $tpl->assign('GCONFIG', $global_config);
+    $tpl->assign('MODULE_COMM', $module);
+    $tpl->assign('AREA_COMM', $area);
+    $tpl->assign('ID_COMM', $id);
+    $tpl->assign('ALLOWED_COMM', $allowed_comm);
+    $tpl->assign('CHECKSS_COMM', $checkss);
+    $tpl->assign('HEADER', $header);
+
+    if (defined('NV_IS_USER')) {
+        $tpl->assign('NAME', $user_info['full_name']);
+        $tpl->assign('EMAIL', $user_info['email']);
+    }
+
+    // Xác định captcha
+    $captcha = (int) ($module_config[$module]['captcha_area_comm']);
+    $show_captcha = true;
+    if ($captcha == 0) {
+        $show_captcha = false;
+    } elseif ($captcha == 1 and defined('NV_IS_USER')) {
+        $show_captcha = false;
+    } elseif ($captcha == 2 and defined('NV_IS_MODADMIN')) {
+        if (defined('NV_IS_SPADMIN')) {
+            $show_captcha = false;
+        } else {
+            $adminscomm = array_map('intval', explode(',', $module_config[$module]['adminscomm']));
+            if (in_array((int) $admin_info['admin_id'], $adminscomm, true)) {
+                $show_captcha = false;
+            }
+        }
+    }
+
+    $captcha_type = (empty($module_config['comment']['captcha_type']) or in_array($module_config['comment']['captcha_type'], ['captcha', 'recaptcha', 'turnstile'], true)) ? $module_config['comment']['captcha_type'] : 'captcha';
+    if ($captcha_type == 'recaptcha' and (empty($global_config['recaptcha_sitekey']) or empty($global_config['recaptcha_secretkey']))) {
+        $captcha_type = 'captcha';
+    }
+    if ($captcha_type == 'turnstile' and (empty($global_config['turnstile_sitekey']) or empty($global_config['turnstile_secretkey']))) {
+        $captcha_type = 'captcha';
+    }
+    $tpl->assign('SHOW_CAPTCHA', $show_captcha);
+
+    $captcha_value = '';
+    if ($show_captcha) {
+        if ($captcha_type == 'recaptcha' and $global_config['recaptcha_ver'] == 3) {
+            $captcha_value = 'recaptcha3';
+        } elseif ($captcha_type == 'recaptcha' and $global_config['recaptcha_ver'] == 2) {
+            $captcha_value = 'recaptcha2';
+            // $xtpl->assign('GFX_NUM', -1);
+        } elseif ($captcha_type == 'captcha') {
+            $captcha_value = 'captcha';
+        } elseif ($captcha_type == 'turnstile') {
+            $captcha_value = 'turnstile';
+        } else {
+            // $xtpl->assign('GFX_NUM', 0);
+        }
+    } else {
+        // $xtpl->assign('GFX_NUM', 0);
+    }
+    $tpl->assign('CAPTCHA_VALUE', $captcha_value);
+    $tpl->assign('FORM_LOGIN', $form_login);
 
     return $tpl->fetch('main.tpl');
 
@@ -47,130 +113,11 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
     $xtpl->assign('TEMPLATE', $template);
     $xtpl->assign('TEMPLATE_CSS', $templateCSS);
     $xtpl->assign('TEMPLATE_JS', $templateJS);
-    $xtpl->assign('CHECKSS_COMM', $checkss);
-    $xtpl->assign('MODULE_COMM', $module);
+
     $xtpl->assign('MODULE_DATA', $module_data);
-    $xtpl->assign('AREA_COMM', $area);
-    $xtpl->assign('ID_COMM', $id);
-    $xtpl->assign('ALLOWED_COMM', $allowed_comm);
     $xtpl->assign('COMMENTCONTENT', $comment);
 
-    // Hiện không dùng, giữ lại để tương thích phiên bản cũ.
-    // $xtpl->assign('BASE_URL_COMM', $base_url);
-
-    if (defined('NV_COMM_ID')) {
-        $xtpl->parse('main.header');
-    }
-
-    // Order by comm
-    for ($i = 0; $i <= 2; ++$i) {
-        $xtpl->assign('OPTION', [
-            'key' => $i,
-            'title' => $nv_Lang->getModule('sortcomm_' . $i),
-            'selected' => ($i == $sortcomm) ? ' selected="selected"' : ''
-        ]);
-
-        $xtpl->parse('main.sortcomm');
-    }
-
-    $allowed_comm = nv_user_in_groups($allowed_comm);
     if ($allowed_comm) {
-        $xtpl->assign('FORM_ACTION', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=comment&amp;' . NV_OP_VARIABLE . '=post');
-
-        if (defined('NV_IS_USER')) {
-            $xtpl->assign('NAME', $user_info['full_name']);
-            $xtpl->assign('EMAIL', $user_info['email']);
-            $xtpl->assign('DISABLED', ' disabled="disabled"');
-        } else {
-            $xtpl->assign('NAME', '');
-            $xtpl->assign('EMAIL', '');
-            $xtpl->assign('DISABLED', '');
-        }
-
-        if (!empty($module_config[$module]['allowattachcomm'])) {
-            $xtpl->assign('ENCTYPE', ' enctype="multipart/form-data"');
-            $xtpl->parse('main.allowed_comm.attach');
-        }
-
-        if (!empty($module_config[$module]['alloweditorcomm'])) {
-            $xtpl->assign('EDITOR_COMM', 1);
-            if ($header) {
-                $replaces = [];
-                $replaces[] = "width:'100%', height:'200px', removePlugins: 'uploadfile,uploadimage,autosave', toolbar: 'User', format_tags: 'p;div;h2;h3;h4;h5;h6', forcePasteAsPlainText: true, tabSpaces: 0, fillEmptyBlocks: false";
-
-                $allowed_html_tags = ['b', 'blockquote', 'br', 'div', 'em', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'p', 'span', 'strong', 's', 'u', 'ul', 'ol'];
-                $allowedContent = [];
-                foreach ($allowed_html_tags as $tag) {
-                    $allowedContent[] = $tag . '[*]{*}(*)';
-                }
-                $replaces[] = "allowedContent:'" . implode(';', $allowedContent) . "'";
-                $replaces[] = "disallowedContent:'script; *[on*,action,background,codebase,dynsrc,lowsrc,allownetworking,allowscriptaccess,fscommand,seeksegmenttime]'";
-                $replaces = implode(', ', $replaces);
-                $xtpl->assign('NV_EDITORSDIR', NV_EDITORSDIR);
-                $xtpl->assign('TIMESTAMP', $global_config['timestamp']);
-                $xtpl->assign('REPLACES', $replaces);
-                $xtpl->parse('main.allowed_comm.editor');
-            }
-        } else {
-            $xtpl->assign('EDITOR_COMM', 0);
-        }
-
-        $captcha = (int) ($module_config[$module]['captcha_area_comm']);
-        $show_captcha = true;
-        if ($captcha == 0) {
-            $show_captcha = false;
-        } elseif ($captcha == 1 and defined('NV_IS_USER')) {
-            $show_captcha = false;
-        } elseif ($captcha == 2 and defined('NV_IS_MODADMIN')) {
-            if (defined('NV_IS_SPADMIN')) {
-                $show_captcha = false;
-            } else {
-                $adminscomm = array_map('intval', explode(',', $module_config[$module]['adminscomm']));
-                if (in_array((int) $admin_info['admin_id'], $adminscomm, true)) {
-                    $show_captcha = false;
-                }
-            }
-        }
-
-        $captcha_type = (empty($module_config['comment']['captcha_type']) or in_array($module_config['comment']['captcha_type'], ['captcha', 'recaptcha', 'turnstile'], true)) ? $module_config['comment']['captcha_type'] : 'captcha';
-        if ($captcha_type == 'recaptcha' and (empty($global_config['recaptcha_sitekey']) or empty($global_config['recaptcha_secretkey']))) {
-            $captcha_type = 'captcha';
-        }
-        if ($captcha_type == 'turnstile' and (empty($global_config['turnstile_sitekey']) or empty($global_config['turnstile_secretkey']))) {
-            $captcha_type = 'captcha';
-        }
-
-        if ($show_captcha) {
-            if ($captcha_type == 'recaptcha' and $global_config['recaptcha_ver'] == 3) {
-                $xtpl->parse('main.allowed_comm.recaptcha3');
-            } elseif ($captcha_type == 'recaptcha' and $global_config['recaptcha_ver'] == 2) {
-                $xtpl->assign('RECAPTCHA_ELEMENT', 'recaptcha' . nv_genpass(8));
-                $xtpl->assign('GFX_NUM', -1);
-                $xtpl->parse('main.allowed_comm.recaptcha');
-            } elseif ($captcha_type == 'captcha') {
-                $xtpl->assign('N_CAPTCHA', $nv_Lang->getGlobal('securitycode'));
-                $xtpl->parse('main.allowed_comm.captcha');
-            } elseif ($captcha_type == 'turnstile') {
-                $xtpl->parse('main.allowed_comm.turnstile');
-            } else {
-                $xtpl->assign('GFX_NUM', 0);
-            }
-        } else {
-            $xtpl->assign('GFX_NUM', 0);
-        }
-
-        if (!empty($global_config['data_warning']) or !empty($global_config['antispam_warning'])) {
-            if (!empty($global_config['data_warning'])) {
-                $xtpl->assign('DATA_USAGE_CONFIRM', !empty($global_config['data_warning_content']) ? $global_config['data_warning_content'] : $nv_Lang->getGlobal('data_warning_content'));
-                $xtpl->parse('main.allowed_comm.confirm.data_sending');
-            }
-
-            if (!empty($global_config['antispam_warning'])) {
-                $xtpl->assign('ANTISPAM_CONFIRM', !empty($global_config['antispam_warning_content']) ? $global_config['antispam_warning_content'] : $nv_Lang->getGlobal('antispam_warning_content'));
-                $xtpl->parse('main.allowed_comm.confirm.antispam');
-            }
-            $xtpl->parse('main.allowed_comm.confirm');
-        }
 
         $xtpl->parse('main.allowed_comm');
     } elseif ($form_login['display']) {
