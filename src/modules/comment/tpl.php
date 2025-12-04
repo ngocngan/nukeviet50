@@ -50,6 +50,7 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
     $tpl->assign('ALLOWED_COMM', $allowed_comm);
     $tpl->assign('CHECKSS_COMM', $checkss);
     $tpl->assign('HEADER', $header);
+    $tpl->assign('MODULE_DATA', $module_data);
 
     if (defined('NV_IS_USER')) {
         $tpl->assign('NAME', $user_info['full_name']);
@@ -112,7 +113,7 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
     $xtpl->assign('TEMPLATE_CSS', $templateCSS);
     $xtpl->assign('TEMPLATE_JS', $templateJS);
 
-    $xtpl->assign('MODULE_DATA', $module_data);
+
     $xtpl->assign('COMMENTCONTENT', $comment);
 
     if ($allowed_comm) {
