@@ -176,10 +176,6 @@
         {/if}
     </div>
 </div>
-{if {$smarty.const.NV_COMM_ID}}
-<script type="text/javascript" src="{$smarty.const.NV_STATIC_URL}themes/{$TEMPLATE_JS}/js/comment.js"></script>
-<link rel="StyleSheet" href="{$smarty.const.NV_STATIC_URL}themes/{$TEMPLATE_CSS}/css/comment.css" type="text/css">
-{/if}
 
 {*
 <!-- BEGIN: main -->

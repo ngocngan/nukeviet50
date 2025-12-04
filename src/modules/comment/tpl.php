@@ -31,16 +31,14 @@ function nv_theme_comment_module($module, $area, $id, $allowed_comm, $checkss, $
 {
     global $global_config, $module_data, $module_config, $admin_info, $user_info, $nv_Lang, $module_name;
 
+    addition_module_assets('comment', 'both');
+
     $template = get_tpl_dir($global_config['module_theme'], 'default', '/modules/comment/main.tpl');
-    $templateCSS = get_tpl_dir($global_config['module_theme'], 'default', '/css/comment.css');
-    $templateJS = get_tpl_dir($global_config['module_theme'], 'default', '/js/comment.js');
 
     $tpl = new \NukeViet\Template\NVSmarty();
     $tpl->setTemplateDir(NV_ROOTDIR . '/themes/' . $template . '/modules/comment');
     $tpl->assign('LANG', $nv_Lang);
     $tpl->assign('TEMPLATE', $template);
-    $tpl->assign('TEMPLATE_CSS', $templateCSS);
-    $tpl->assign('TEMPLATE_JS', $templateJS);
     $tpl->assign('COMMENTCONTENT', $comment);
     $tpl->assign('SORTCOMM', $sortcomm);
     $tpl->assign('ALLOWED_COMM_BOOL', nv_user_in_groups($allowed_comm));
