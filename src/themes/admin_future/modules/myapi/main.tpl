@@ -3,12 +3,23 @@
         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#credential_auth"><i class="fa-solid fa-shield-halved fa-lg text-danger"></i> {$LANG->getModule('authentication')}</button>
     </div>
     <div class="card">
-        <div class="card-header text-center border-bottom-0">
-            <div class="card-header-tabs">
+        <div class="card-header pt-3 border-bottom-0">
+            <div class="card-header-tabs d-none d-sm-block">
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a class="nav-link {if $TYPE == 'public'}active{/if}" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}">{$LANG->getModule('api_role_type_public2')}</a></li>
-                    <li class="nav-item"><a class="nav-link {if $TYPE == 'private'}active{/if}"" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;type=private">{$LANG->getModule('api_role_type_public2')}</a></li>
+                    <li class="nav-item"><a class="nav-link {if $TYPE == 'private'}active{/if}" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;type=private">{$LANG->getModule('api_role_type_private2')}</a></li>
                 </ul>
+            </div>
+            <div class="d-block d-sm-none">
+                <div class="dropdown">
+                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {$LANG->getModule($TYPE eq 'public' ? 'api_role_type_public2' : 'api_role_type_private2')}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}">{$LANG->getModule('api_role_type_public2')}</a></li>
+                        <li><a class="dropdown-item" href="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;type=private">{$LANG->getModule('api_role_type_private2')}</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -17,12 +28,12 @@
                 {$LANG->getModule('api_remote_off2')}
             </div>
             {/if}
-        
+
             {if empty($ROLE_COUNT)}
             <div class="alert alert-info text-center">
                 {$LANG->getModule('api_roles_empty')}
             </div>
-            {else} 
+            {else}
             <div class="table-responsive table-card mt-1">
                 <table class="table table-striped align-middle table-sticky mb-1">
                     <thead class="text-muted tableFloatingHeaderOriginal">
@@ -83,7 +94,7 @@
                                                 </div>
                                                 {/foreach}
                                                 {/if}
-        
+
                                                 <div>
                                                     <ul class="nav nav-tabs mb-3" role="tablist">
                                                         {assign var='FORLANGS' value=[]}
@@ -167,12 +178,27 @@
             </div>
             <div class="modal-body">
                 <div class="form-label">{$LANG->getModule('auth_method')}</div>
-                <ul class="nav nav-tabs mb-3">
+                {assign var='activeMethod' value=''}
+                <ul class="d-none d-sm-flex nav nav-tabs mb-3" id="credential_auth_tabs">
                     {foreach $METHODS as $KEY => $METHOD}
+                    {if empty($activeMethod)}
+                    {assign var='activeMethod' value=$METHOD.name}
+                    {/if}
                     <li class="nav-item" role="presentation"><a href="#{$METHOD.key}-panel" class="nav-link {$METHOD.active}" data-bs-toggle="tab" data-bs-target="#{$METHOD.key}-panel" type="button" aria-controls="{$METHOD.key}-panel"  role="tab">{$METHOD.name}</a></li>
                     {/foreach}
                 </ul>
-
+                <div class="d-block d-sm-none mb-3">
+                    <div class="dropdown">
+                        <button class="w-100 btn btn-secondary dropdown-toggle" type="button" data-toggle="credential_auth_dropdown_btn" data-bs-toggle="dropdown" aria-expanded="false">
+                            {$activeMethod}
+                        </button>
+                        <ul class="dropdown-menu">
+                            {foreach $METHODS as $KEY => $METHOD}
+                            <li><a class="dropdown-item" data-toggle="credential_auth_dropdown_item" href="#{$METHOD.key}-panel">{$METHOD.name}</a></li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                </div>
                 <div class="tab-content">
                     {foreach $METHODS as $KEY => $METHOD}
                     <div role="tabpanel" class="tab-pane {$METHOD.active}" id="{$METHOD.key}-panel">

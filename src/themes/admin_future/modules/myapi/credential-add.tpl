@@ -1,7 +1,7 @@
 {if empty($CREDENTIAL.userid)}
 <input type="hidden" name="add" value="1">
 <div class="row mb-4">
-    <label class="col-sm-3 col-form-label text-end">{$LANG->getModule('api_role_object_'|cat:$ROLE_OBJECT)}</label>
+    <label class="col-sm-3 col-form-label text-sm-end" for="getUser">{$LANG->getModule('api_role_object_'|cat:$ROLE_OBJECT)}</label>
     <div class="col-sm-9">
         <select class="form-select w-100" name="userid" id="getUser" data-get-user-url="{$smarty.const.NV_BASE_ADMINURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}={$OP}&amp;role_id={$ROLE_ID}&amp;action=getUser" data-placeholder="{$LANG->getModule('api_role_credential_search')}">
         </select>
@@ -12,10 +12,10 @@
 <input type="hidden" name="userid" value="{$CREDENTIAL.userid}">
 {/if}
 <div class="row mb-4">
-    <label class="col-sm-3 col-form-label text-end">{$LANG->getModule('api_role_credential_addtime')}</label>
+    <label class="col-sm-3 col-form-label text-sm-end" for="credential_add_adddate">{$LANG->getModule('api_role_credential_addtime')}</label>
     <div class="col-sm-9">
         <div class="input-group" style="width:fit-content">
-            <input type="text" class="form-control w-50 adddate" name="adddate" value="{$CREDENTIAL.adddate}" maxlength="10" placeholder="{$LANG->getModule('api_role_credential_addtime')}">
+            <input type="text" class="form-control w-50 adddate" id="credential_add_adddate" name="adddate" value="{$CREDENTIAL.adddate}" maxlength="10" placeholder="{$LANG->getModule('api_role_credential_addtime')}">
             <select name="addhour" class="form-select" style="width: fit-content">
                 {for $I = 0 to 23}
                 <option value="{$I}" {if $I == $CREDENTIAL.addhour}selected="selected"{/if}>{$I|string_format:"%'.02d"}</option>
@@ -31,10 +31,10 @@
     </div>
 </div>
 <div class="row mb-4">
-    <label class="col-sm-3 col-form-label text-end">{$LANG->getModule('endtime')}</label>
+    <label class="col-sm-3 col-form-label text-sm-end" for="credential_add_enddate">{$LANG->getModule('endtime')}</label>
     <div class="col-sm-9">
         <div class="input-group" style="width:fit-content">
-            <input type="text" class="form-control w-50 enddate" name="enddate" value="{$CREDENTIAL.enddate}" maxlength="10" placeholder="{$LANG->getModule('endtime')}">
+            <input type="text" class="form-control w-50 enddate" id="credential_add_enddate" name="enddate" value="{$CREDENTIAL.enddate}" maxlength="10" placeholder="{$LANG->getModule('endtime')}">
             <select name="endhour" class="form-select" style="width: fit-content">
                 {for $I = 0 to 23}
                 <option value="{$I}" {if $I == $CREDENTIAL.endhour}selected="selected"{/if}>{$I|string_format:"%'.02d"}</option>
@@ -50,9 +50,9 @@
     </div>
 </div>
 <div class="row mb-4">
-    <label class="col-sm-3 col-form-label text-end">{$LANG->getModule('quota')}</label>
+    <label class="col-sm-3 col-form-label text-sm-end" for="credential_add_quota">{$LANG->getModule('quota')}</label>
     <div class="col-sm-9">
-        <input type="number" class="form-control quota" name="quota" value="{$CREDENTIAL.quota}" maxlength="20" placeholder="{$LANG->getModule('quota')}" style="width: 150px;">
+        <input type="number" class="form-control quota" id="credential_add_quota" name="quota" value="{$CREDENTIAL.quota}" maxlength="20" placeholder="{$LANG->getModule('quota')}" style="width: 150px;">
         <div class="form-text">{$LANG->getModule('quota_note')}</div>
     </div>
 </div>

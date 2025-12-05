@@ -7,7 +7,7 @@
 <div class="alert alert-info text-center">
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
-    </div><br/><br/>
+    </div><br><br>
     {$LANG->getModule('api_roles_empty2')}
 </div>
 {else}
@@ -23,7 +23,7 @@
                 <div class="col-sm-7 col-xl-6 mb-2 mb-sm-0">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text">{$LANG->getModule('api_role')}</span>
-                        <select class="form-select role-id">
+                        <select class="form-select role-id" id="element_role_id">
                             <option value="-1">{$LANG->getModule('api_role_select')}</option>
                             {foreach $ROLE_LIST as $ROLE}
                             <option value="{$ROLE.role_id}" {if $ROLE.role_id == $ROLE_ID}selected="selected"{/if}>{$ROLE.role_title} ({$LANG->getModule('api_role_type')}: {$LANG->getModule('api_role_type_'|cat:$ROLE.role_type)}; {$LANG->getModule('api_role_object')}: {$LANG->getModule('api_role_object_'|cat:$ROLE.role_object)})</option>
@@ -45,7 +45,7 @@
                 {$LANG->getModule('api_role_credential_empty')}
             </div>
             {else}
-            <div class="mb-4">{$LANG->getModule('api_role_credential_count')}: {$CREDENTIAL_COUNT}</div>
+            <div class="mb-4">{$LANG->getModule('api_role_credential_count')}: <strong class="text-primary">{$CREDENTIAL_COUNT}</strong></div>
             <div class="table-responsive table-card">
                 <table class="table table-striped align-middle mb-1">
                     <thead>
@@ -63,12 +63,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach $CREDENTIAL_LIST as $CREDENTIAL}                
+                        {foreach $CREDENTIAL_LIST as $CREDENTIAL}
                         <tr class="item" data-userid="{$CREDENTIAL.userid}">
                             <td class="text-nowrap text-center">{$CREDENTIAL.userid}</td>
                             <td>
                                 {if !empty($CREDENTIAL.level)}
-                                <img alt="Admin level" src="{$smarty.const.NV_BASE_SITEURL}themes/{$GCONFIG.module_theme}/images/admin{$CREDENTIAL.level}.png" width="38" height="18" />
+                                <img alt="Admin level" src="{$smarty.const.NV_BASE_SITEURL}themes/{$GCONFIG.module_theme}/images/admin{$CREDENTIAL.level}.png" width="38" height="18">
                                 {/if}
                                 {$CREDENTIAL.username}
                             </td>
@@ -79,7 +79,7 @@
                             <td class="text-nowrap text-center">{$CREDENTIAL.access_count|nnum_format}</td>
                             <td class="text-nowrap text-center">{if !empty($CREDENTIAL.last_access)}{$CREDENTIAL.last_access|ddatetime}{/if}</td>
                             <td class="text-nowrap text-center">
-                                <select class="form-select change-status" style="width: 120px;">
+                                <select class="form-select change-status" style="width: 120px;" name="status">
                                     {assign var="STATUS_L" value=[$LANG->getModule('suspended'), $LANG->getModule('active')]}
                                     {foreach $STATUS_L as $K => $STATUS}
                                     <option value="{$K}" {if $K == $CREDENTIAL.status}selected="selected"{/if}>{$STATUS}</option>
@@ -88,8 +88,8 @@
                             </td>
                             <td class="text-nowrap text-center">
                                 <button type="button" class="btn btn-secondary" data-toggle="credential-edit" data-title="{$LANG->getModule('api_role_credential_edit')}: {$CREDENTIAL.username}" title="{$LANG->getGlobal('edit')}" aria-label="{$LANG->getGlobal('edit')}"><i class="fa-solid fa-pencil"></i></button>
-                                <button type="button" class="btn btn-secondary" data-toggle="changeAuth" title="{$LANG->getModule('authentication')}" aria-label="{$LANG->getModule('authentication')}"><i class="fa fa-shield-halved"></i></button>
-                                <button type="button" class="btn btn-secondary" data-toggle="credentialDel" data-confirm="{$LANG->getModule('deprivation_confirm')}" title="{$LANG->getModule('deprivation')}" aria-label="{$LANG->getModule('deprivation')}"><i class="fa-solid fa-ban"></i></button>
+                                <button type="button" class="btn btn-secondary text-primary" data-toggle="changeAuth" title="{$LANG->getModule('authentication')}" aria-label="{$LANG->getModule('authentication')}"><i class="fa fa-shield-halved"></i></button>
+                                <button type="button" class="btn btn-secondary text-danger" data-toggle="credentialDel" data-confirm="{$LANG->getModule('deprivation_confirm')}" title="{$LANG->getModule('deprivation')}" aria-label="{$LANG->getModule('deprivation')}"><i class="fa-solid fa-ban"></i></button>
                             </td>
                         </tr>
                         {/foreach}

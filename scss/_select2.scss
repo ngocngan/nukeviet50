@@ -347,6 +347,9 @@
 .input-group > .select2-container--default {
     width: auto !important;
     flex: 1 1 auto !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .input-group > .select2-container .select2-selection--single,
 .input-group > .select2-container--bootstrap5 .select2-selection--single,

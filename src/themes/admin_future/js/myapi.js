@@ -66,7 +66,12 @@ $(function() {
         var item = $(this).parents('.item'),
             newitem = item.clone();
         $('[name^=flood_rules_limit], [name^=flood_rules_interval]', newitem).val('');
-        item.after(newitem)
+        const ranId = nv_randomPassword(6);
+        $('.lbl_rule', newitem).attr('for', 'flood_rules_limit' + ranId);
+        $('.lbl_interval', newitem).attr('for', 'flood_rules_interval' + ranId);
+        $('.ipt_rule', newitem).attr('id', 'flood_rules_limit' + ranId);
+        $('.ipt_interval', newitem).attr('id', 'flood_rules_interval' + ranId);
+        item.after(newitem);
     });
     // Xóa flood rule
     $('#role').on('click', '.del-rule', function() {
@@ -150,7 +155,9 @@ $(function() {
             var role_id = parseInt($(this).val());
             window.location.href = credential_page_url + (credential_page_url.includes('?') ? '&' : '?') + 'role_id=' + role_id
         }).select2({
-            theme: 'bootstrap5'
+            language: nv_lang_interface,
+            dir: $('html').attr('dir'),
+            width: '100%'
         });
 
         // Thêm/sửa quyền truy cập API-role
@@ -184,7 +191,7 @@ $(function() {
             that.prop('disabled', true);
             $.ajax({
                 type: "POST",
-                url: credential_page_url + '&role_id=' + role_id + '&action=changeStatus',
+                url: credential_page_url + (credential_page_url.includes('?') ? '&' : '?') + 'role_id=' + role_id + '&action=changeStatus',
                 cache: !1,
                 data: 'userid=' + userid + '&checkss=' + checkss,
                 dataType: "json"
@@ -211,7 +218,7 @@ $(function() {
                 icon.removeClass(iconClass).addClass('fa-solid fa-spinner fa-spin-pulse');
                 $.ajax({
                     type: "POST",
-                    url: credential_page_url + '&role_id=' + role_id + '&action=del',
+                    url: credential_page_url + (credential_page_url.includes('?') ? '&' : '?') + 'role_id=' + role_id + '&action=del',
                     cache: !1,
                     data: 'userid=' + userid + '&checkss=' + checkss,
                     dataType: "json"
@@ -241,7 +248,21 @@ $(function() {
                 } else if ('OK' == a.status) {
                     $('#changeAuth .modal-title').text(a.title);
                     $('#changeAuth .modal-body').html(a.body);
-                    $('#changeAuth').modal('show')
+                    $('#changeAuth').modal('show');
+
+                    const ctn = $('#changeAuth');
+                    $('[data-toggle="tablist"]', ctn).each(function() {
+                        const tabEl = $(this)[0];
+                        tabEl.addEventListener('shown.bs.tab', event => {
+                            $('[data-toggle="credential_auth_dropdown_btn"]').text($(event.target).text());
+                        });
+                    });
+                    $('[data-toggle="credential_auth_dropdown_item"]', ctn).on('click', function(e) {
+                        e.preventDefault();
+                        const ele = ctn[0].querySelector('[data-toggle="tablist"] [data-bs-toggle="tab"][href="' + $(this).attr('href') + '"]');
+                        const tab = bootstrap.Tab.getOrCreateInstance(ele);
+                        tab.show();
+                    });
                 }
             })
         });
@@ -351,7 +372,8 @@ $(function() {
         e.select2({
             language: nv_lang_interface,
             dropdownParent: $('#credential-add'),
-            theme: 'bootstrap5',
+            dir: $('html').attr('dir'),
+            width: '100%',
             ajax: {
                 type: "POST",
                 url: get_user_url,
@@ -387,7 +409,7 @@ $(function() {
             }
         });
     }
-    
+
     if ($('#my-role-api').length) {
         var myroleapi = $('#my-role-api'),
             myroleapi_url = myroleapi.data('page-url');
@@ -490,9 +512,23 @@ $(function() {
                     }, 1000);
                 }
             })
-        })
+        });
+
+        // Xử lý chọn phương thức xác thực trên Mobile - Trang main
+        const authTabEles = document.querySelectorAll('#credential_auth_tabs [data-bs-toggle="tab"]');
+        for (const tabEl of authTabEles) {
+            tabEl.addEventListener('shown.bs.tab', event => {
+                $('[data-toggle="credential_auth_dropdown_btn"]').text($(event.target).text());
+            });
+        }
+        $('[data-toggle="credential_auth_dropdown_item"]').on('click', function(e) {
+            e.preventDefault();
+            const ele = document.querySelector('#credential_auth_tabs [data-bs-target="' + $(this).attr('href') + '"]');
+            const tab = bootstrap.Tab.getOrCreateInstance(ele);
+            tab.show();
+        });
     };
-    
+
     if ($('#logs').length) {
         var logs = $('#logs'),
             page_url = logs.data('page-url'),
@@ -579,11 +615,16 @@ $(function() {
             })
         });
 
-        $('.role-id, .command', logs).select2({theme: 'bootstrap5'});
+        $('.role-id, .command', logs).select2({
+            language: nv_lang_interface,
+            dir: $('html').attr('dir'),
+            width: '100%'
+        });
 
         $('.userid', logs).select2({
             language: nv_lang_interface,
-            allowClear: true,
+            dir: $('html').attr('dir'),
+            width: '100%',
             ajax: {
                 type: "POST",
                 url: page_url,

@@ -12,7 +12,7 @@
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-text">{$LANG->getModule('api_role_type')}</span>
-                                <select class="form-select role-type">
+                                <select class="form-select role-type" name="type">
                                     <option value="">{$LANG->getModule('all')}</option>
                                     {foreach $TYPES as $TYPE}
                                     <option value="{$TYPE}" {if $TYPE == $TYPE_API}selected="selected"{/if}>{$LANG->getModule("api_role_type_"|cat:$TYPE)}</option>
@@ -23,7 +23,7 @@
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-text">{$LANG->getModule('api_role_object')}</span>
-                                <select class="form-select role-object">
+                                <select class="form-select role-object" name="object">
                                     <option value="">{$LANG->getModule('all')}</option>
                                     {foreach $OBJECTS as $OBJECT}
                                     <option value="{$OBJECT}" {if $OBJECT == $OBJECT_API}selected="selected"{/if}>{$LANG->getModule("api_role_object_"|cat:$OBJECT)}</option>
@@ -68,7 +68,7 @@
                             <td class="text-nowrap text-center">{$ROLE.addtime|ddatetime}</td>
                             <td class="text-nowrap text-center">{if $ROLE.edittime}{$ROLE.edittime|ddatetime}{/if}</td>
                             <td class="text-nowrap text-center">
-                                <select class="form-select change-status" style="width: 120px;">
+                                <select class="form-select change-status" style="width: 120px;" name="role_status">
                                     {foreach [$LANG->getModule('inactive'), $LANG->getModule('active')] as $K_STATUS => $STATUS}
                                     <option value="{$K_STATUS}" {if $K_STATUS == $ROLE.status}selected="selected"{/if}>{$STATUS}</option>
                                     {/foreach}

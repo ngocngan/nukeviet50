@@ -64,37 +64,47 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('flood_blocker')}</div>
+                    <div class="col-sm-3 col-form-label text-sm-end pt-0">{$LANG->getModule('flood_blocker')}</div>
                     <div class="col-sm-8">
-                        <div class="items">
+                        <div class="d-none d-sm-block border-1 border-transparent border-solid mb-2 px-3">
+                            <div class="row g-3 ">
+                                <div class="col-5">{$LANG->getModule('flood_limit')}</div>
+                                <div class="col-7">{$LANG->getModule('flood_interval')}</div>
+                            </div>
+                        </div>
+                        <div class="border rounded-3 p-3 items vstack gap-3">
                             {if empty($DATA.flood_rules)}
                                 {append var='DATA' value=['' => ''] index='flood_rules'}
                             {/if}
+                            {assign var="stt" value=0}
                             {foreach $DATA.flood_rules as $INTERVAL => $LIMIT}
-                            <div class="flood_rule item mb-2 row gx-0 gy-1">
-                                <div class="col-12 col-lg-6 col-xxl-4">
-                                    <div class="input-group flex-nowrap">
-                                        <span class="input-group-text">{$LANG->getModule('flood_limit')}</span>
-                                        <input type="number" class="form-control rounded-end-0" name="flood_rules_limit[]" value="{$LIMIT}" maxlength="15">
-                                    </div>
+                            {assign var="stt" value=$stt+1}
+                            <div class="row g-3 flood_rule item">
+                                <div class="col-sm-5">
+                                    <label for="flood_rules_limit{$stt}" class="lbl_rule form-label d-block d-sm-none">{$LANG->getModule('flood_limit')}:</label>
+                                    <input type="number" class="form-control ipt_rule" id="flood_rules_limit{$stt}" name="flood_rules_limit[]" value="{$LIMIT}" maxlength="15">
                                 </div>
-                                <div class="col-12 col-lg-6 col-xxl-4">
-                                    <div class="input-group flex-nowrap">
-                                        <span class="input-group-text rounded-start-0">{$LANG->getModule('flood_interval')}</span>
-                                        <input type="number" class="form-control" name="flood_rules_interval[]" value="{if !empty($INTERVAL)}{math equation="round(x / y)" x=$INTERVAL y=60}{/if}" maxlength="10">
-                                        <span class="input-group-text border-start-0 rounded-end-0">{$LANG->getModule('minutes')}</span>
+                                <div class="col-sm-7 d-flex gap-3">
+                                    <div class="flex-fill">
+                                        <label for="flood_rules_interval{$stt}" class="lbl_interval form-label d-block d-sm-none">{$LANG->getModule('flood_interval')}:</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control ipt_interval" id="flood_rules_interval{$stt}" name="flood_rules_interval[]" value="{if !empty($INTERVAL)}{math equation="round(x / y)" x=$INTERVAL y=60}{/if}" maxlength="10">
+                                            <span class="input-group-text">{$LANG->getModule('minutes')}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-xxl-3">
-                                    <div class="input-group flex-nowrap">
-                                        <button class="btn btn-outline-secondary del-rule rounded-start-0" type="button" aria-label="{$LANG->getGlobal('add')}"><i class="fa-solid fa-minus"></i></button>
-                                        <button class="btn btn-outline-secondary add-rule" type="button" aria-label="{$LANG->getGlobal('delete')}"><i class="fa-solid fa-plus"></i></button>
+                                    <div class="flex-shrink-0 d-flex gap-1 align-items-end">
+                                        <div>
+                                            <button class="btn text-nowrap btn-secondary del-rule text-success" type="button" aria-label="{$LANG->getGlobal('add')}"><i class="fa-solid fa-minus"></i></button>
+                                        </div>
+                                        <div>
+                                            <button class="btn text-nowrap btn-secondary add-rule text-danger" type="button" aria-label="{$LANG->getGlobal('delete')}"><i class="fa-solid fa-plus"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             {/foreach}
                         </div>
-                        <div class="form-text">{$LANG->getModule('flood_blocker_note')}</div>
+                        <div class="form-text mt-2">{$LANG->getModule('flood_blocker_note')}</div>
                     </div>
                 </div>
                 <div class="row">

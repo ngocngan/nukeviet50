@@ -25774,6 +25774,14 @@ readers do not read off random characters that represent icons */
   display: inline-block;
 }
 
+.border-transparent {
+  border-color: transparent !important;
+}
+
+.border-solid {
+  border-style: solid !important;
+}
+
 [data-bs-theme=dark] .card,
 [data-theme=dark] .card {
   --bs-card-border-color: var(--bs-border-color-translucent);
@@ -27097,6 +27105,9 @@ p + .image-style-side {
 .input-group > .select2-container--default {
   width: auto !important;
   flex: 1 1 auto !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .input-group > .select2-container .select2-selection--single,
