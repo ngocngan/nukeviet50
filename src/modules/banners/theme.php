@@ -22,51 +22,16 @@ if (!defined('NV_SYSTEM')) {
  */
 function nv_banner_theme_main($contents)
 {
-    global $module_info, $manament, $nv_Lang, $global_array_uplans, $language_array;
+    global $nv_Lang, $manament, $language_array;
 
-    $xtpl = new XTemplate('home.tpl', get_module_tpl_dir('home.tpl'));
-    $xtpl->assign('LANG', \NukeViet\Core\Language::$lang_module);
-    $xtpl->assign('GLANG', \NukeViet\Core\Language::$lang_global);
+    $tpl = new \NukeViet\Template\NVSmarty();
+    $tpl->setTemplateDir(get_module_tpl_dir('home.tpl'));
+    $tpl->assign('LANG', $nv_Lang);
+    $tpl->assign('MANAGEMENT', $manament);
+    $tpl->assign('CONTENT', $contents);
+    $tpl->assign('LANGUAGE_ARRAY', $language_array);
 
-    if (!empty($contents)) {
-        $xtpl->assign('MAIN_PAGE_INFO', $nv_Lang->getModule('main_page_info'));
-        $xtpl->parse('main.if_banner_plan.info');
-
-        foreach ($contents as $row) {
-            $xtpl->clear_autoreset();
-            $xtpl->assign('PLAN_TITLE', $row['title']);
-            $xtpl->assign('PLAN_LANG_NAME', ((!empty($row['blang'])) ? $language_array[$row['blang']]['name'] : $nv_Lang->getModule('blang_all')));
-            $xtpl->assign('PLAN_SIZE_NAME', $row['width'] . ' x ' . $row['height'] . 'px');
-            $xtpl->assign('PLAN_FORM_NAME', ($nv_Lang->existsModule('form_' . $row['form']) ? $nv_Lang->getModule('form_' . $row['form']) : $row['form']));
-            $xtpl->assign('PLAN_DESCRIPTION_NAME', $row['description']);
-            $xtpl->assign('PLAN_DETAIL', $nv_Lang->getGlobal('detail'));
-            $xtpl->set_autoreset();
-            if (isset($global_array_uplans[$row['id']])) {
-                $xtpl->parse('main.if_banner_plan.banner_plan.allowed');
-            } else {
-                $xtpl->parse('main.if_banner_plan.banner_plan.notallowed');
-            }
-            if (!empty($row['description'])) {
-                $xtpl->parse('main.if_banner_plan.banner_plan.desc');
-            }
-            $xtpl->parse('main.if_banner_plan.banner_plan');
-        }
-
-        $xtpl->parse('main.if_banner_plan');
-    }
-
-    if (defined('NV_IS_BANNER_CLIENT')) {
-        $xtpl->assign('MANAGEMENT', $manament);
-        $xtpl->parse('main.management');
-    } elseif (!defined('NV_IS_USER')) {
-        $xtpl->parse('main.login_check');
-    } else {
-        $xtpl->parse('main.no_permission');
-    }
-
-    $xtpl->parse('main');
-
-    return $xtpl->text('main');
+    return $tpl->fetch('home.tpl');
 }
 
 /**
