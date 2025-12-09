@@ -24,6 +24,11 @@ function cron_user_datadeletion_handling()
 {
     global $db, $nv_Lang;
 
+    $skiped = nv_apply_hook('', 'cron_user_datadeletion_handling');
+    if (!is_null($skiped)) {
+        return true;
+    }
+
     $offset_time = NV_CURRENTTIME - (7 * 86400);
     $min_time = NV_CURRENTTIME - (90 * 86400);
     $uniqid = uniqid('', true);
