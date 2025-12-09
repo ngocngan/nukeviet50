@@ -169,6 +169,7 @@ function cron_user_datadeletion_handling()
             ]
         ]];
         nv_sendmail_template_async(['users', Emails::DELETE_ACCOUNT_COMPLETED], $send_data, $lang);
+        nv_apply_hook('', 'cron_user_datadeletion_handling_row', [$row, $user_info]);
     }
 
     $nv_Lang->changeLang(NV_LANG_INTERFACE);
