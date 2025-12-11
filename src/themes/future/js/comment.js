@@ -75,4 +75,11 @@ $(function() {
             commReset($(this).parents('form'))
         });
     }
+
+    // Hiển thị/giấu danh sách comments
+    $('[data-toggle=commListShow][data-obj]').on('click', function(e) {
+        e.preventDefault();
+        $('[class*=fa-]', this).toggleClass('fa-eye fa-eye-slash');
+        $($(this).data('obj')).toggleClass('d-none');
+    });
 });

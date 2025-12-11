@@ -11,8 +11,8 @@
             <i class="fa-regular fa-message me-1"></i> {$LANG->getModule('comment')}
         </div>
         <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-input" data-toggle="commListShow" data-obj="#showcomment" title="{$LANG->getModule('comment_hide_show')}" aria-label="{$LANG->getModule('comment_hide_show')}">
-                <i class="fa-regular fa-eye"></i>
+            <button class="btn btn-sm btn-outline-input text-center" data-toggle="commListShow" data-obj="#showcomment" title="{$LANG->getModule('comment_hide_show')}" aria-label="{$LANG->getModule('comment_hide_show')}">
+                <i class="fa-regular fa-fw fa-eye"></i>
             </button>
             <select class="form-select form-select-sm flex-shrink-0 fw-125" data-toggle="nv_comment_sort_change" name="nv_comment_sort_change">
                 {for $i = 0 to 2}
@@ -52,8 +52,8 @@
                 </div>
             </div>
             <div class="mb-3">
-                <div class="position-relative" data-valid="editor">
-                    <div class="nv-ckeditor5classic" id="outer_commentcontent">
+                <div class="position-relative">
+                    <div data-valid="editor" data-name="content" data-error-mess="{$LANG->getModule('comment_content_error')}" class="nv-ckeditor5classic" id="outer_commentcontent">
                         <textarea class="form-control" name="content" id="commentcontent" rows="5"></textarea>
                     </div>
                 </div>
@@ -149,19 +149,21 @@
                 <div class="pb-3">
                     <div class="alert alert-info mb-0 vstack gap-3">
                         {if not empty($GCONFIG.data_warning)}
-                        <div class="d-flex gap-2">
-                            <input type="checkbox" class="form-check-input mt-2" id="data_permission_confirm" name="data_permission_confirm" value="1" data-error="{$LANG->getGlobal('data_warning_error')}">
-                            <label for="data_permission_confirm">
+                        <div class="form-check mb-0">
+                            <input type="checkbox" data-valid data-error-type="feedback" class="form-check-input mt-2" id="data_permission_confirm" name="data_permission_confirm" value="1" data-error="{$LANG->getGlobal('data_warning_error')}">
+                            <label for="data_permission_confirm" class="form-check-label">
                                 <small>{$GCONFIG.data_warning_content ?: $LANG->getGlobal('data_warning_content')}</small>
                             </label>
+                            <div class="invalid-feedback">{$LANG->getGlobal('data_warning_error')}.</div>
                         </div>
                         {/if}
                         {if not empty($GCONFIG.antispam_warning)}
-                        <div class="d-flex gap-2">
-                            <input type="checkbox" class="form-check-input mt-2" id="antispam_confirm" name="antispam_confirm" value="1" data-error="{$LANG->getGlobal('antispam_warning_error')}">
-                            <label for="antispam_confirm">
+                        <div class="form-check mb-0">
+                            <input type="checkbox" data-valid data-error-type="feedback" class="form-check-input mt-2" id="antispam_confirm" name="antispam_confirm" value="1" data-error="{$LANG->getGlobal('antispam_warning_error')}">
+                            <label for="antispam_confirm" class="form-check-label">
                                 <small>{$GCONFIG.antispam_warning_content ?: $LANG->getGlobal('antispam_warning_content')}</small>
                             </label>
+                            <div class="invalid-feedback">{$LANG->getGlobal('antispam_warning_error')}.</div>
                         </div>
                         {/if}
                     </div>
