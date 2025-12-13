@@ -68,9 +68,27 @@ $(function() {
     // Sắp xếp comments
     $('[data-toggle=nv_comment_sort_change]').on('change', function(e) {
         e.preventDefault();
+        const btn = $(this);
         const data = $('#idcomment').data();
-        $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=comment&module=' + data.module + '&area=' + data.area + '&id=' + data.id + '&allowed=' + data.allowed + '&checkss=' + data.checkss + '&comment_load=1' + '&nocache=' + new Date().getTime(), 'sortcomm=' + $(sel).val(), function(res) {
-            $('#showcomment').html(res);
+        data.comment_load = 1;
+        data.sortcomm = btn.val();
+        btn.prop('disabled', true);
+
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=comment&nocache=' + new Date().getTime(),
+            data: data,
+            dataType: 'html',
+            success: function(res) {
+                btn.prop('disabled', false);
+                $('#showcomment').html(res);
+            },
+            error: function(xhr, text, err) {
+                btn.prop('disabled', false);
+                nukeviet.toast(err || text, 'error');
+                console.log(xhr, text, err);
+            }
         });
     });
 
