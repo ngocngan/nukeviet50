@@ -43,12 +43,10 @@ function commFeedback(cid, post_name) {
 
 function commLike(cid, checkss, like) {
     $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=comment&' + nv_fc_variable + '=like&nocache=' + new Date().getTime(), 'cid=' + cid + '&like=' + like + '&checkss=' + checkss, function(res) {
-        var rs = res.split('_');
-        if (rs[0] == 'OK') {
-            $("#" + rs[1]).text(rs[2]);
-        } else if (rs[0] == 'ERR') {
-            alert(rs[1]);
+        if (res.status != 'success') {
+            return nukeviet.toast(res.mess, 'error');
         }
+        $("#" + res.mode + res.cid).text(res.count);
     });
 }
 
