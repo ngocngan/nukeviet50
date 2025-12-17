@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{$CSS_JS.css}?t={$GCONFIG.timestamp}">
 
 <form action="{$smarty.const.NV_BASE_SITEURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}=login" method="post" class="fw-300"
-    data-toggle="userLogin" data-precheck="login_form_precheck"
+    data-toggle="userLogin" data-precheck="nv_precheck_form"
     autocomplete="off" novalidate {$CAPTCHA_ATTRS}
     data-note-webview1="{$LANG->getModule('note_webview1')}"
     data-note-webview2="{$LANG->getModule('note_webview2')}"
@@ -28,8 +28,8 @@
                 <div class="position-relative">
                     <input type="text" autocomplete="username" class="form-control ps-with-fw-icon" id="nv_login" name="nv_login" maxlength="100" value=""
                         placeholder="{$LANG->getGlobal('username_email')}"
-                        {literal}data-pattern="/^(.){1,}$/"{/literal}
-                        data-mess="{$LANG->getGlobal('username_empty')}"
+                        data-error-mess="{$LANG->getGlobal('username_empty')}"
+                        data-valid data-error-type="tooltip"
                     >
                     <i class="z-10 text-center fa-fw fa-solid fa-user position-absolute top-50 start-0 ms-2 translate-middle-y"></i>
                 </div>
@@ -39,14 +39,14 @@
                 <div class="position-relative">
                     <input type="password" autocomplete="current-password" class="form-control ps-with-fw-icon" id="nv_password" name="nv_password" maxlength="100" value=""
                         placeholder="{$LANG->getGlobal('password')}"
-                        {literal}data-pattern="/^(.){3,}$/"{/literal}
-                        data-mess="{$LANG->getGlobal('password_empty')}"
+                        data-error-mess="{$LANG->getGlobal('password_empty')}"
+                        data-valid data-error-type="tooltip"
                     >
                     <i class="z-10 text-center fa-fw fa-solid fa-lock position-absolute top-50 start-0 ms-2 translate-middle-y"></i>
                 </div>
             </div>
             <div class="mb-3 d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-title="{$LANG->getGlobal('reset')}" title="{$LANG->getGlobal('reset')}">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-title="{$LANG->getGlobal('reset')}" title="{$LANG->getGlobal('reset')}" data-toggle="nv-reset-form">
                     <i class="fa-solid fa-rotate-left"></i><span class="visually-hidden-focusable">{$LANG->getGlobal('reset')}</span>
                 </button>
                 <button type="submit" class="btn btn-primary flex-fill">

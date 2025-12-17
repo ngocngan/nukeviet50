@@ -19,13 +19,24 @@
  */
 function _make_check_invalid(ipt, data, message) {
     const form = ipt.closest('form');
+    const iptGroup = ipt.parent();
+    const hasInputGroup = iptGroup.length && iptGroup.is('.input-group');
     let element = ipt.next();
     if (element.is('label')) {
         // Dạng form-check
         element = element.next();
+    } else if (hasInputGroup) {
+        element = iptGroup.next();
     }
+
+    // Thẻ sẽ tạo báo lỗi sau đó
+    let eleBeforeInvalid = ipt.next().is('label') ? ipt.next() : ipt;
+    if (hasInputGroup) {
+        eleBeforeInvalid = iptGroup;
+    }
+
     if (!element.length || (!element.is('.invalid-feedback') && !element.is('.invalid-tooltip'))) {
-        element = $(`<div class="invalid-${data.errType}"></div>`).insertAfter(ipt.next().is('label') ? ipt.next() : ipt);
+        element = $(`<div class="invalid-${data.errType}"></div>`).insertAfter(eleBeforeInvalid);
     }
     element.text(message);
     if (data.type === 'editor') {
@@ -33,6 +44,7 @@ function _make_check_invalid(ipt, data, message) {
     } else {
         $(_get_input_name(ipt), form).addClass('is-invalid');
     }
+    hasInputGroup && iptGroup.addClass('is-invalid');
 
     return element;
 }
@@ -95,7 +107,7 @@ function _check_invalid(ipt, customMess, specialType) {
         return _make_check_invalid(ipt, valid, customMess);
     }
     // Check bắt buộc dạng nhập
-    if (!valid.allowedEmpty && (valid.type == 'email' || valid.type == 'text') && (
+    if (!valid.allowedEmpty && (valid.type == 'email' || valid.type == 'text' || valid.type == 'password') && (
         trim(ipt.val()) == valid.empty ||
         (valid.minLen >= 0 && trim(ipt.val()).length < valid.minLen) ||
         (valid.maxLen >= 0 && trim(ipt.val()).length > valid.maxLen)
