@@ -24,7 +24,7 @@
     <div data-area="form">
         <div data-area="step1">
             <div class="mb-3 position-relative">
-                <label class="form-label fw-medium" for="nv_login">{$LANG->getGlobal('username_email')}:</label>
+                <label class="form-label" for="nv_login">{$LANG->getGlobal('username_email')}:</label>
                 <div class="position-relative">
                     <input type="text" autocomplete="username" class="form-control ps-with-fw-icon" id="nv_login" name="nv_login" maxlength="100" value=""
                         placeholder="{$LANG->getGlobal('username_email')}"
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="mb-3 position-relative">
-                <label class="form-label fw-medium" for="nv_password">{$LANG->getGlobal('password')}:</label>
+                <label class="form-label" for="nv_password">{$LANG->getGlobal('password')}:</label>
                 <div class="position-relative">
                     <input type="password" autocomplete="current-password" class="form-control ps-with-fw-icon" id="nv_password" name="nv_password" maxlength="100" value=""
                         placeholder="{$LANG->getGlobal('password')}"
@@ -61,61 +61,62 @@
                 <div class="text-danger mt-1 d-none" data-area="passkey-error"></div>
             </div>
         </div>
-        <div data-area="step2">
-
+        <div data-area="step2" class="d-none border-top pt-3">
+            <div class="d-none" data-item="app">
+                <div class="mb-3 position-relative">
+                    <label class="form-label" for="nv_totppin">{$LANG->getGlobal('2teplogin_totppin_label')}:</label>
+                    <div class="position-relative">
+                        <input type="text" class="form-control ps-with-fw-icon" placeholder="{$LANG->getGlobal('2teplogin_totppin_placeholder')}"
+                            value="" name="nv_totppin" id="nv_totppin" minlength="6" maxlength="6"
+                            data-valid data-error-type="tooltip"
+                            data-error-mess="{$LANG->getGlobal('2teplogin_totppin_placeholder')}"
+                        >
+                        <i class="z-10 text-center fa-fw fa-solid fa-key position-absolute top-50 start-0 ms-2 translate-middle-y"></i>
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="validReset2fa">{$LANG->getGlobal('reset')}</button>
+                    <button class="btn btn-primary" type="submit">{$LANG->getGlobal('verify')}</button>
+                </div>
+            </div>
+            <div class="d-none" data-item="code">
+                <div class="form-group">
+                    <label class="margin-bottom">{$LANG->getGlobal('2teplogin_code_label')}</label>
+                    <div class="input-group margin-bottom">
+                        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
+                        <input type="text" class="required form-control" placeholder="{$LANG->getGlobal('2teplogin_code_placeholder')}" value="" name="nv_backupcodepin" maxlength="8" {literal}data-pattern="/^(.){8,}$/"{/literal} data-toggle="validErrorHidden" data-event="keypress" data-mess="{$LANG->getGlobal('2teplogin_code_placeholder')}">
+                    </div>
+                </div>
+                <div class="text-center margin-bottom-lg">
+                    <button type="button" class="btn btn-default" data-toggle="validReset2fa">{$LANG->getGlobal('reset')}</button>
+                    <button class="bsubmit btn btn-primary" type="submit">{$LANG->getGlobal('verify')}</button>
+                </div>
+            </div>
+            <div class="d-none" data-item="key">
+                <div class="mb-3">
+                    <div class="mb-1">{$LANG->getGlobal('2fa_method_key2')}</div>
+                    <div class="text-danger d-none mb-1" data-area="passkey-error"></div>
+                    <button class="btn w-100 btn-success" type="button" data-toggle="passkey-verify">
+                        <i class="fa-solid fa-key" data-icon="fa-key" aria-hidden="true"></i> {$LANG->getGlobal('2fa_method_key1')}
+                    </button>
+                </div>
+                <input type="hidden" name="auth_assertion" value="">
+            </div>
+            <div data-area="step2-methods" data-is-key="0">
+                <div class="mb-1 fw-medium">{$LANG->getGlobal('2fa_problems')}:</div>
+                <ul>
+                    <li data-area="2fa-cctn"><a href="#" data-toggle="2fa-choose" data-method="key">{$LANG->getGlobal('2fa_method_key')}</a></li>
+                    <li data-area="2fa-cctn"><a href="#" data-toggle="2fa-choose" data-method="app">{$LANG->getGlobal('2fa_method_app')}</a></li>
+                    <li data-area="2fa-cctn"><a href="#" data-toggle="2fa-choose" data-method="code">{$LANG->getGlobal('2fa_method_code')}</a></li>
+                    <li data-area="2fa-cctn"><a href="#" data-toggle="2fa-choose-recovery">{$LANG->getGlobal('2fa_recovery')}</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </form>
 
 {*
     <div class="form-detail">
-        <div class="loginstep2 hidden">
-            <div class="loginstep2-item loginstep2-app hidden">
-                <div class="form-group">
-                    <label class="margin-bottom">{GLANG.2teplogin_totppin_label}</label>
-                    <div class="input-group margin-bottom">
-                        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
-                        <input type="text" class="required form-control" placeholder="{GLANG.2teplogin_totppin_placeholder}" value="" name="nv_totppin" maxlength="6" data-pattern="/^(.){6,}$/" data-toggle="validErrorHidden" data-event="keypress" data-mess="{GLANG.2teplogin_totppin_placeholder}">
-                    </div>
-                </div>
-                <div class="text-center margin-bottom-lg">
-                    <button type="button" class="btn btn-default" data-toggle="validReset2fa">{GLANG.reset}</button>
-                    <button class="bsubmit btn btn-primary" type="submit">{GLANG.verify}</button>
-                </div>
-            </div>
-            <div class="loginstep2-item loginstep2-code hidden">
-                <div class="form-group">
-                    <label class="margin-bottom">{GLANG.2teplogin_code_label}</label>
-                    <div class="input-group margin-bottom">
-                        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
-                        <input type="text" class="required form-control" placeholder="{GLANG.2teplogin_code_placeholder}" value="" name="nv_backupcodepin" maxlength="8" data-pattern="/^(.){8,}$/" data-toggle="validErrorHidden" data-event="keypress" data-mess="{GLANG.2teplogin_code_placeholder}">
-                    </div>
-                </div>
-                <div class="text-center margin-bottom-lg">
-                    <button type="button" class="btn btn-default" data-toggle="validReset2fa">{GLANG.reset}</button>
-                    <button class="bsubmit btn btn-primary" type="submit">{GLANG.verify}</button>
-                </div>
-            </div>
-            <div class="loginstep2-item loginstep2-key hidden">
-                <div class="margin-bottom-lg">
-                    <div class="margin-bottom-sm">{GLANG.2fa_method_key2}</div>
-                    <div class="text-danger hidden margin-bottom-sm" data-toggle="passkey-error"></div>
-                    <button class="btn btn-block btn-success" type="button" data-toggle="passkey-verify"><i class="fa fa-key" data-icon="fa-key" aria-hidden="true"></i> {GLANG.2fa_method_key1}</button>
-                </div>
-                <input type="hidden" name="auth_assertion" value="">
-            </div>
-            <div class="loginstep2-methods methods" data-is-key="0">
-                <div class="margin-bottom-sm">
-                    <strong>{GLANG.2fa_problems}:</strong>
-                </div>
-                <ul class="list-default">
-                    <li class="item"><a href="#" data-toggle="2fa-choose" data-method="key">{GLANG.2fa_method_key}</a></li>
-                    <li class="item"><a href="#" data-toggle="2fa-choose" data-method="app">{GLANG.2fa_method_app}</a></li>
-                    <li class="item"><a href="#" data-toggle="2fa-choose" data-method="code">{GLANG.2fa_method_code}</a></li>
-                    <li class="item"><a href="#" data-toggle="2fa-choose-recovery">{GLANG.2fa_recovery}</a></li>
-                </ul>
-            </div>
-        </div>
 
         <!-- BEGIN: allowuserreg2_form -->
         <div class="form-group">
