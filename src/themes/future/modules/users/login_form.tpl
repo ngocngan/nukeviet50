@@ -80,16 +80,20 @@
                 </div>
             </div>
             <div class="d-none" data-item="code">
-                <div class="form-group">
-                    <label class="margin-bottom">{$LANG->getGlobal('2teplogin_code_label')}</label>
-                    <div class="input-group margin-bottom">
-                        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
-                        <input type="text" class="required form-control" placeholder="{$LANG->getGlobal('2teplogin_code_placeholder')}" value="" name="nv_backupcodepin" maxlength="8" {literal}data-pattern="/^(.){8,}$/"{/literal} data-toggle="validErrorHidden" data-event="keypress" data-mess="{$LANG->getGlobal('2teplogin_code_placeholder')}">
+                <div class="mb-3 position-relative">
+                    <label class="form-label" for="nv_backupcodepin">{$LANG->getGlobal('2teplogin_code_label')}:</label>
+                    <div class="position-relative">
+                        <input type="text" class="form-control ps-with-fw-icon" placeholder="{$LANG->getGlobal('2teplogin_code_placeholder')}"
+                            value="" name="nv_backupcodepin" id="nv_backupcodepin" minlength="8" maxlength="8"
+                            data-valid data-error-type="tooltip"
+                            data-error-mess="{$LANG->getGlobal('2teplogin_code_placeholder')}"
+                        >
+                        <i class="z-10 text-center fa-fw fa-solid fa-key position-absolute top-50 start-0 ms-2 translate-middle-y"></i>
                     </div>
                 </div>
-                <div class="text-center margin-bottom-lg">
-                    <button type="button" class="btn btn-default" data-toggle="validReset2fa">{$LANG->getGlobal('reset')}</button>
-                    <button class="bsubmit btn btn-primary" type="submit">{$LANG->getGlobal('verify')}</button>
+                <div class="text-center mb-3">
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="validReset2fa">{$LANG->getGlobal('reset')}</button>
+                    <button class="btn btn-primary" type="submit">{$LANG->getGlobal('verify')}</button>
                 </div>
             </div>
             <div class="d-none" data-item="key">
@@ -112,47 +116,48 @@
                 </ul>
             </div>
         </div>
+
+        <div class="alert alert-warning d-none" role="alert" data-toggle="webview-warning"></div>
+
+        {if $smarty.const.NV_OPENID_ALLOWED}
+        {* Nếu cho phép đăng nhập Oauth *}
+        {if in_array('google-identity', $GCONFIG.openid_servers, true)}
+        <div id="g_id_onload" data-client_id="{$GCONFIG.google_client_id}" data-context="signin"
+            data-ux_mode="popup" data-callback="GIDHandleCredentialResponse"
+            data-itp_support="true" data-use_fedcm_for_prompt="true"
+            data-url="{$smarty.const.NV_BASE_SITEURL}index.php?{$smarty.const.NV_LANG_VARIABLE}={$smarty.const.NV_LANG_DATA}&amp;{$smarty.const.NV_NAME_VARIABLE}={$MODULE_NAME}&amp;{$smarty.const.NV_OP_VARIABLE}=oauth&amp;server=google-identity"
+            data-csrf="{$OAUTH_CHECKSS}" data-redirect="{$NV_REDIRECT}">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular"
+            data-theme="outline" data-text="signin_with" data-size="large"
+            data-locale="{$smarty.const.NV_LANG_INTERFACE}" data-logo_alignment="center" data-width="300">
+        </div>
+        <div id="g_id_confirm" class="d-none">
+            <div class="alert alert-info" role="alert">
+                <p>{$LANG->getModule('g_id_confirm')}</p>
+                <div class="text-center">
+                    <a href="" class="btn btn-primary">{$LANG->getModule('g_id_confirm2')}</a>
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="vstack mt-2 gap-2">
+            {assign var=""}
+            {foreach from=$GCONFIG.openid_servers item=server}
+            <button type="button">
+
+            </button>
+            {/foreach}
+        </div>
+        {/if}
     </div>
 </form>
 
 {*
     <div class="form-detail">
 
-        <!-- BEGIN: allowuserreg2_form -->
-        <div class="form-group">
-            <div class="text-right clearfix">
-                <a href="#" data-toggle="modalShowByObj" data-obj="#guestReg_{BLOCKID}" data-callback="recaptchareset">{GLANG.register}</a>
-            </div>
-        </div>
-        <!-- END: allowuserreg2_form -->
-
-        <!-- BEGIN: allowuserreg_linkform -->
-        <div class="form-group">
-            <div class="text-right clearfix">
-                <a href="{USER_REGISTER}">{GLANG.register}</a>
-            </div>
-        </div>
-        <!-- END: allowuserreg_linkform -->
-
-        <div class="alert alert-warning hidden" data-toggle="webview-warning"></div>
 
         <!-- BEGIN: openid -->
-        <!-- BEGIN: google_identity_onload -->
-        <div id="g_id_onload" data-client_id="{GOOGLE_CLIENT_ID}" data-context="signin" data-ux_mode="popup" data-callback="GIDHandleCredentialResponse" data-itp_support="true" data-use_fedcm_for_prompt="true" data-url="{GOOGLE_IDENTITY_URL}" data-csrf="{CHECKSS}" data-redirect="{REDIRECT}">
-        </div>
-
-        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-locale="{NV_LANG_INTERFACE}" data-logo_alignment="center" data-width="300">
-        </div>
-
-        <div id="g_id_confirm" class="hidden">
-            <div class="alert alert-info">
-                <p class="m-bottom">{LANG.g_id_confirm}</p>
-                <div class="text-center">
-                    <a href="" class="btn btn-primary">{LANG.g_id_confirm2}</a>
-                </div>
-            </div>
-        </div>
-        <!-- END: google_identity_onload -->
         <div class="text-center openid-btns">
             <!-- BEGIN: server -->
             <div class="btn-group m-bottom btn-group-justified">

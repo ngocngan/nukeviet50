@@ -476,4 +476,9 @@ $(function() {
         $('[name="cant_do_2step"]', form).val('1');
         form.submit();
     });
+
+    // Reset form 2FA tương đương tải lại trang
+    $(document).off('click.users', '[data-toggle="validReset2fa"]').on('click.users', '[data-toggle="validReset2fa"]', function() {
+        location.reload();
+    });
 });
