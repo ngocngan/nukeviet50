@@ -98,6 +98,32 @@ $(function() {
         }
     });
 
+    // Xử lý cảnh báo của sổ WebView trên tất cả các form đăng nhập
+    if (isInAppBrowser()) {
+        $('form[data-toggle="userLogin"]').each(function() {
+            const form = $(this);
+            if (form.data('isinappbrowser-initialized')) {
+                return;
+            }
+            form.data('isinappbrowser-initialized', true);
+
+            const thirdPartyLogin = ($('[data-toggle="openID_load"]', form).length > 0 || $('.g_id_signin', form).length > 0);
+            const ele = $('[data-toggle="webview-warning"]', form);
+            let message = '';
+            if (thirdPartyLogin && nukeviet.WebAuthnSupported) {
+                message = form.data('note-webview1');
+            } else if (nukeviet.WebAuthnSupported && !thirdPartyLogin) {
+                message = form.data('note-webview2');
+            } else if (thirdPartyLogin && !nukeviet.WebAuthnSupported) {
+                message = form.data('note-webview3');
+            }
+            if (message) {
+                ele.removeClass('d-none');
+                ele.html(message);
+            }
+        });
+    }
+
     // Xử lý passkey trên toàn bộ các form đăng nhập
     $('form[data-toggle="userLogin"]').each(function() {
         const form = $(this);

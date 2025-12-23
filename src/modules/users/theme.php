@@ -423,40 +423,6 @@ function user_login(bool $is_ajax = false): string
     $tpl->assign('NAVS', $navs);
 
     return $tpl->fetch($tpl_file);
-
-
-    if (defined('NV_OPENID_ALLOWED')) {
-        $assigns = [];
-        $icons = [
-            'single-sign-on' => 'lock',
-            'google' => 'google-plus',
-            'facebook' => 'facebook',
-            'zalo' => 'zalo'
-        ];
-        foreach ($global_config['openid_servers'] as $server) {
-            if ($server != 'google-identity') {
-                $assigns['href'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=oauth&amp;server=' . $server;
-                if (!empty($nv_redirect)) {
-                    $assigns['href'] .= '&nv_redirect=' . $nv_redirect;
-                } else {
-                    $assigns['href'] .= '&nv_redirect=' . $default_redirect;
-                }
-                $assigns['server'] = $server;
-                $assigns['title'] = ucfirst($server);
-                $assigns['icon'] = $icons[$server];
-
-                $xtpl->assign('OPENID', $assigns);
-                $xtpl->parse('main.openid.server');
-            }
-        }
-
-        $xtpl->parse('main.openid');
-    }
-
-
-
-    $xtpl->parse('main');
-    return $xtpl->text('main');
 }
 
 /**
