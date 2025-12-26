@@ -146,4 +146,9 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Chặn sự kiện đóng dropdown khi click vào phần cảnh báo
+    $('[data-area="dropdown-close-dismiss"]').on('click', function(e) {
+        e.stopPropagation();
+    });
 });

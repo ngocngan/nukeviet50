@@ -561,6 +561,9 @@ if ($global_config['extension_setup'] == 1 or $global_config['extension_setup'] 
 
     if (!$sys_info['zlib_support']) {
         $xtpl->parse('main.upload_allowed.nozlib');
+    } elseif (!in_array(NV_CLIENT_IP, ($global_config['extension_setup_ips'] ?? []), true)) {
+        $xtpl->assign('UPLOAD_IPS', sprintf($lang_module['install_ips'], NV_CLIENT_IP));
+        $xtpl->parse('main.upload_allowed.noip');
     } else {
         $xtpl->parse('main.upload_allowed.upload');
     }
