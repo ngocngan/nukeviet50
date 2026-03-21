@@ -134,7 +134,7 @@ $global_config['site_timezone'] = 'byCountry';
 $global_config['spadmin_add_admin'] = 1;
 $global_config['static_noquerystring'] = 0;
 $global_config['str_referer_blocker'] = 0;
-$global_config['timestamp'] = 1768876015;
+$global_config['timestamp'] = 1770257617;
 $global_config['turnstile_secretkey'] = '';
 $global_config['turnstile_sitekey'] = '';
 $global_config['two_step_verification'] = 0;
@@ -163,4 +163,4 @@ $global_config['engine_allowed'] = ['Google' => ['host_pattern' => 'google.', 'q
 
 $language_array = ['en' => ['name' => 'English', 'language' => 'English'], 'fr' => ['name' => 'Français', 'language' => 'French'], 'vi' => ['name' => 'Tiếng Việt', 'language' => 'Vietnamese']];
 
-$nv_plugins = ['vi' => ['' => ['change_site_buffer' => [1 => [0 => 'includes/plugin/cdn_js_css_image.php', 1 => '', 2 => 2]], 'get_email_merge_fields' => [3 => [0 => 'includes/plugin/emf_all.php', 1 => '', 2 => 5], 2 => [0 => 'includes/plugin/emf_core_author.php', 1 => '', 2 => 4], 1 => [0 => 'modules/users/hooks/emf_code_user.php', 1 => 'users', 2 => 3]], 'get_global_admin_theme' => [1 => [0 => 'includes/plugin/get_global_admin_theme.php', 1 => '', 2 => 999]], 'get_module_admin_theme' => [1 => [0 => 'includes/plugin/get_module_admin_theme.php', 1 => '', 2 => 998]], 'get_qr_code' => [1 => [0 => 'includes/plugin/qrcode.php', 1 => '', 2 => 1]]]]];
+$nv_plugins = ['vi' => ['' => ['change_site_buffer' => [10 => [0 => 'modules/popups/hooks/popups_site.php', 1 => '', 2 => 1004], 1 => [0 => 'modules/popups/hooks/popups_site.php', 1 => 'popups', 2 => 1005]], 'get_email_merge_fields' => [3 => [0 => 'includes/plugin/emf_all.php', 1 => '', 2 => 5], 2 => [0 => 'includes/plugin/emf_core_author.php', 1 => '', 2 => 4], 1 => [0 => 'modules/users/hooks/emf_code_user.php', 1 => 'users', 2 => 3]], 'get_global_admin_theme' => [1 => [0 => 'includes/plugin/get_global_admin_theme.php', 1 => '', 2 => 999]], 'get_module_admin_theme' => [1 => [0 => 'includes/plugin/get_module_admin_theme.php', 1 => '', 2 => 998]], 'get_qr_code' => [1 => [0 => 'includes/plugin/qrcode.php', 1 => '', 2 => 1]]]]];

@@ -1,0 +1,24 @@
+.nv-popups-modal .modal-content{border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,.2)}
+.nv-popups-modal .modal-header{border-bottom:0;padding:14px 18px;border-top-left-radius:12px;border-top-right-radius:12px}
+.nv-popups-modal .modal-title{font-weight:600;font-size:16px;line-height:1.2;margin:0}
+.nv-popups-content{padding:16px 24px}
+.nv-popups-desc{color:#6c757d;margin:0 0 10px 0}
+.nv-popups-info{padding:0}
+.nv-popups-info ul{margin:0;padding-left:1.25rem}
+.nv-popups-info li{margin-bottom:6px}
+.nv-popups-modal .modal-footer{border-top:0;padding:16px 24px}
+.nv-popups-link{display:inline-block;padding:8px 14px;border-radius:8px;text-decoration:none}
+.nv-popups-actions{margin-top:12px}
+.nv-popups-x{border:0;background:transparent;font-size:22px;line-height:1;cursor:pointer;padding:0 4px}
+.nv-popups-modal.nv-popups-layout-1 .modal-dialog{max-width:560px}
+.nv-popups-modal.nv-popups-layout-2 .modal-dialog{max-width:980px}
+.nv-popups-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.55);z-index:2147483647}
+.nv-popups-overlay.nv-popups-open{display:flex}
+.nv-popups-lock{overflow:hidden}
+.nv-popups-dialog{width:min(560px,100%);max-height:calc(100vh - 32px);overflow:auto}
+.nv-popups-dialog.nv-popups-lg{width:min(980px,100%)}
+.nv-popups-contentbox{background:#fff;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.2);overflow:hidden}
+.nv-popups-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.nv-popups-header-title{font-weight:600;font-size:16px;line-height:1.2}
+.nv-popups-body{padding:18px}
+.nv-popups-footer{border-top:1px solid #e9ecef;padding:12px 18px;display:flex;justify-content:flex-end}

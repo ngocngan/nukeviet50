@@ -1,0 +1,55 @@
+/**
+ * @Project NUKEVIET 5.x
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2020 VINADES.,JSC. All rights reserved
+ * @License: Not free read more http://nukeviet.vn/vi/store/modules/nvtools/
+ * @Createdate Tue, 02 Mar 2026 09:11:42 GMT
+ */
+
+.popup-stats-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.popup-stat-card {
+    border: 1px solid #e1e5eb;
+    border-radius: 6px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.popup-stat-card .stat-title {
+    font-size: 14px;
+    border-bottom: 1px solid;
+    margin-bottom: 10px;
+    padding-bottom: 3px;
+}
+
+.popup-stat-card .stat-value {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 9px;
+}
+
+.margin-left-lg {
+    margin-left: 15px;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.start-date-btn, .end-date-btn{
+    padding-bottom: 5.5px;
+}
+
+.status-select-menu {
+    padding: 0;
+    border: none;
+}
+.vertical-align td {
+    vertical-align: middle !important;
+}
