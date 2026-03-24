@@ -53,3 +53,54 @@
 .vertical-align td {
     vertical-align: middle !important;
 }
+
+.popup-tree {
+    max-height: 210px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    background: #fff;
+}
+.module-item {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 5px 0;
+}
+
+.module-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.module-header:hover {
+    background: #f5f7fa;
+}
+.popup-tree .toggle {
+    margin-bottom: 2px;
+    width: 15px;
+    text-align: center;
+}
+.func-list {
+    display: none;
+    margin-left: 22px;
+    padding-left: 10px;
+    border-left: 1px dashed #ddd;
+}
+
+.module-item.open .func-list {
+    display: block;
+}
+
+.func-list label {
+    display: block;
+    padding: 2px 0;
+    cursor: pointer;
+}
+
+.popup-tree label {
+    margin-bottom: 0px;
+}

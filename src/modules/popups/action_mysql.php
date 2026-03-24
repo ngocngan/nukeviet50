@@ -27,7 +27,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
     popup_type VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'Loại Popup',
     priority TINYINT(4) NOT NULL DEFAULT '0' COMMENT 'Độ ưu tiên',
     status TINYINT(4) NOT NULL DEFAULT '0' COMMENT 'Trạng thái: 0: Chờ duyệt, 1: Đang hoạt động, 2: Bị đình chỉ',
-    list_id_page VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'ID các trang hiển thị',
+    display_pages TEXT NOT NULL DEFAULT '' COMMENT 'Danh sách các trang hiển thị',
     is_all_page TINYINT(4) NOT NULL DEFAULT '0' COMMENT 'Hiển thị tất cả các trang',
     display_object VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'Đối tượng hiển thị: 0 - Tất cả, 1 - đã đăng nhập, 2 - chưa đăng nhập',
     display_layout TINYINT(4) NOT NULL DEFAULT '0' COMMENT 'Giao diện hiển thị: 1 - Center Middle, 2 - Large Modal',
