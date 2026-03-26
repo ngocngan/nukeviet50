@@ -1,4 +1,7 @@
-<form action="" method="post">
+{if $ERROR}
+<div class="alert alert-danger">{$ERROR}</div>
+{/if}
+<form action="" method="post" class="ajax-submit">
     <div class="card border-primary border-3 border-bottom-0 border-start-0 border-end-0">
         <div class="card-body pt-4">
             <div class="row mb-3">
@@ -56,7 +59,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-8 col-lg-6 col-xxl-5 offset-lg-3 offset-sm-5">
-                    <input type="hidden" name="checkss" value="">
+                    <input type="hidden" name="checkss" value="{$CHECKSS}">
                     <input type="hidden" name="submit" value="1">
                     <button type="submit" class="btn btn-primary">{$LANG->getModule('save')}</button>
                 </div>

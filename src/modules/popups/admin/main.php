@@ -22,34 +22,70 @@ $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
 $per_page = 15;
-$nv_checkss = md5(NV_CHECK_SESSION . '_' . $module_name . '_' . $op . '_' . $admin_info['userid']);
+
 $checkss = $nv_Request->get_string('checkss', 'post');
-if ($nv_Request->isset_request('delete', 'post') and hash_equals($nv_checkss, $checkss)) {
+if ($nv_Request->isset_request('delete', 'post')) {
     $id = $nv_Request->get_string('id', 'post');
-    if (!empty($id)) {
-        $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = " . $id);
+    $listid = $nv_Request->get_string('listid', 'post');
+    if (!csrf_check($checkss, $csrf_key)) {
+        nv_jsonOutput([
+            'status' => 'error',
+            'mess' => $nv_Lang->getModule('error_checkss')
+        ]);
+    }
+    if (!empty($id) || !empty($listid)) {
+        if (!empty($listid)) {
+            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id IN (" . $listid .")");
+        } else {
+            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = " . $id);
+        }
+        
         if ($exc) {
-            nv_htmlOutput('OK');
+            $nv_Cache->delMod($module_name);
+            nv_jsonOutput([
+                'status' => 'success',
+                'mess' => $nv_Lang->getModule('save_success')
+            ]);
         }
     }
-    $nv_Cache->delMod($module_name);
-    nv_htmlOutput('ERROR');
+    nv_jsonOutput([
+        'status' => 'error',
+        'mess' => $nv_Lang->getModule('error_mess')
+    ]);
 }
 
-if ($nv_Request->isset_request('change_status', 'post') and hash_equals($nv_checkss, $checkss)) {
+if ($nv_Request->isset_request('change_status', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
+    $listid = $nv_Request->get_string('listid', 'post', '');
+    $action = $nv_Request->get_string('action', 'post', '');
     $status = $nv_Request->get_int('status', 'post', 0);
-    if (!empty($id)) {
-        $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetchColumn();
-        if (empty($row)) {
-            nv_htmlOutput('NO|ID_' . $id);
-        }
-        $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . "  WHERE id = " . $id);
-        if ($exc) {
-            nv_htmlOutput('OK');
+    if (!csrf_check($checkss, $csrf_key)) {
+        nv_jsonOutput([
+            'status' => 'error',
+            'mess' => $nv_Lang->getModule('error_checkss')
+        ]);
+    }
+    if (!empty($id) || !empty($listid)) {
+        $where = !empty($listid) ? " WHERE id IN (" . $listid . ")" : " WHERE id = " . $id;
+        $status = $action == 'active' ? 1 : ($action == 'wait' ? 0 : ($action == 'stop' ? 2 : $status));
+        if (!empty($where)) {
+            $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail " . $where)->fetchColumn();
+            if (!empty($row)) {
+                $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . $where);
+                if ($exc) {
+                    $nv_Cache->delMod($module_name);
+                    nv_jsonOutput([
+                        'status' => 'success',
+                        'mess' => $nv_Lang->getModule('save_success')
+                    ]);
+                }
+            }
         }
     }
-    nv_htmlOutput('ERROR');
+    nv_jsonOutput([
+        'status' => 'error',
+        'mess' => $nv_Lang->getModule('error_mess')
+    ]);
 }
 
 $base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
@@ -108,6 +144,10 @@ while ($row = $sth->fetch()) {
     $row['end_time'] = nv_date("H:i d/m/Y", $row['end_time']);
     $row['label_status'] = $row['status'] == 1 ? 'success' : ($row['status'] == 2 ? 'danger' : 'warning');
     $row['status'] = $nv_Lang->getModule('status_' . $row['status']);
+    $row['popup_type'] = isset($arr_type_popup[$row['popup_type']]) ? $arr_type_popup[$row['popup_type']] : '';
+    $row['total_view'] = nv_number_format($row['total_view']);
+    $row['total_click'] = nv_number_format($row['total_click']);
+    $row['total_closed'] = nv_number_format($row['total_closed']);
     $row['total_click_view'] = nv_number_format($row['total_click']) . '/' . nv_number_format($row['total_view']);
     $row['display_layout'] = $nv_Lang->getModule('display_layout_' . $row['display_layout']);
     $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];;
@@ -116,6 +156,14 @@ while ($row = $sth->fetch()) {
     $array_data[] = $row;
 }
 $generate_page = nv_generate_page($base_url, $all_page, $per_page, $page);
+$array_list_action = [
+    'active' => $nv_Lang->getModule('status_1'),
+    'stop' => $nv_Lang->getModule('status_2'),
+    'wait' => $nv_Lang->getModule('status_0')
+];
+if ($admin_info['level'] <= 2) {
+    $array_list_action['delete'] = $nv_Lang->getGlobal('delete');
+}
 
 $stpl = new \NukeViet\Template\NVSmarty();
 $stpl->setTemplateDir(get_module_tpl_dir('main.tpl'));
@@ -125,13 +173,15 @@ $stpl->assign('NV_LANG_DATA', NV_LANG_DATA);
 $stpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
 $stpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $stpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
-$stpl->assign('CHECKSS', $nv_checkss);
+$stpl->assign('CHECKSS', csrf_create($csrf_key));
 $stpl->assign('DATA', $array_data);
 $stpl->assign('GENERATE_PAGE', $generate_page);
 $stpl->assign('SEARCH', $array_search);
 $stpl->assign('STATUS', $_arr_status);
 $stpl->assign('TYPE_POPUP', $arr_type_popup);
 $stpl->assign('LAYOUT', $arr_layout);
+$stpl->assign('ACTIONS', $array_list_action);
+$stpl->assign('ADMIN_LEV', $admin_info['level']);
 $contents = $stpl->fetch('main.tpl');
 
 include NV_ROOTDIR . '/includes/header.php';

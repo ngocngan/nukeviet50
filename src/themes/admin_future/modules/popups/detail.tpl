@@ -10,7 +10,7 @@
             <div class="d-flex flex-wrap align-items-center gap-2">
                 <div class="dropdown" id="status-container-{$DETAIL.id}">
                     <a href="javascript:void(0)" 
-                        class="badge d-flex align-items-center gap-2 px-3 py-2 text-decoration-none rounded-pill shadow-sm border border-opacity-25 dropdown-toggle fs-6
+                        class="badge-status-{$DETAIL.id} badge d-flex align-items-center gap-2 px-3 py-2 text-decoration-none rounded-pill shadow-sm border border-opacity-25 dropdown-toggle fs-6
                         {if $DETAIL.status == 1}bg-success-subtle text-success border-success{elseif $DETAIL.status == 0}bg-warning-subtle text-warning border-warning{else}bg-danger-subtle text-danger border-danger{/if}" 
                         data-bs-toggle="dropdown" 
                         aria-expanded="false"
@@ -56,7 +56,7 @@
                         </div>
                         <div class="info-value text-dark ps-4 border-start border-2">
                             {if $item.0 == "{$LANG->getModule('status')}"}
-                                <span class="rounded-pill 
+                                <span class="badge-status-{$DETAIL.id} rounded-pill 
                                     {if $DETAIL.status == 1}bg-success-subtle text-success
                                     {else if $DETAIL.status == 2}bg-danger-subtle text-danger
                                     {else}bg-warning-subtle text-warning{/if} 

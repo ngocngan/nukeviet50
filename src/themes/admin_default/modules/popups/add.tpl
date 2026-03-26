@@ -249,6 +249,7 @@
             </table>
         </div>
         <div class="text-center">
+            <input type="hidden" name="checkss" value="{$CHECKSS}">
             <input type="submit" value="{$LANG->getModule('save')}" class="btn btn-primary">
         </div>
         <div id="demo"></div>

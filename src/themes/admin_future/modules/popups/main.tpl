@@ -55,21 +55,23 @@
         </form>
     </div>
     <div class="card-body">
-        <div class="table-responsive-lg table-card pb-1">
+        <div class="table-responsive-lg table-card pb-1" id="list-news-items">
             <table class="table table-striped align-middle table-sticky mb-0">
                 <colgroup>
                     <col style="width: 5%;">
                     <col style="width: 20%;">
                     <col style="width: 10%;">
-                    <col style="width: 10%;">
-                    <col style="width: 13%;">
-                    <col style="width: 15%;">
+                    <col style="width: 11%;">
+                    <col style="width: 12%;">
                     <col style="width: 14%;">
-                    <col style="width: 30%;">
+                    <col style="width: 14%;">
+                    <col style="width: 14%;">
                 </colgroup>
                 <thead class="tableFloatingHeaderOriginal">
                     <tr>
-                        <th class="text-nowrap">{$LANG->getModule('stt')}</th>
+                        <th class="text-nowrap">
+                            <input type="checkbox" data-toggle="checkAll" name="checkAll[]" class="form-check-input m-0 align-middle" aria-label="{$LANG->getGlobal('toggle_checkall')}">
+                        </th>
                         <th class="text-nowrap">{$LANG->getModule('title')}</th>
                         <th class="text-nowrap">{$LANG->getModule('type_popup')}</th>
                         <th class="text-nowrap">{$LANG->getModule('display_layout')}</th>
@@ -82,7 +84,9 @@
                 <tbody>
                     {foreach from=$DATA item=row}
                     <tr>
-                        <td>{$row.stt}</td>            
+                        <td class="checkbox-{$row.id}">
+                            <input type="checkbox" data-toggle="checkSingle" name="checkSingle[]" value="{$row.id}" class="form-check-input m-0 align-middle" aria-label="{$LANG->getGlobal('toggle_checksingle')}">
+                        </td>
                         <td><a href="{$row.link}">{$row.title}</a></td>
                         <td>{$row.popup_type}</td>
                         <td>{$row.display_layout}</td>
@@ -90,7 +94,7 @@
                         <td>
                             <div class="dropdown" id="status-container-{$row.id}">
                                 <a href="javascript:void(0)" 
-                                class="badge bg-{$row.label_status} rounded-pill dropdown-toggle pointer text-decoration-none" 
+                                class="badge-status-{$row.id} badge bg-{$row.label_status} rounded-pill dropdown-toggle pointer text-decoration-none" 
                                 data-bs-toggle="dropdown" 
                                 aria-expanded="false" 
                                 id="badge-status-{$row.id}">{$row.status}</a>
@@ -118,37 +122,50 @@
                             <div class="d-flex align-items-center gap-3">
                                 <span title="{$LANG->getModule('total_view')}" class="{if $row.total_view > 0}text-primary{else}text-muted{/if}">
                                     <i class="fa fa-eye"></i> {$row.total_view}
-                                </span>
-                                
+                                </span>                                
                                 <span title="{$LANG->getModule('total_click')}" class="{if $row.total_click > 0}text-success{else}text-muted{/if}">
                                     <i class="fa fa-hand-pointer-o"></i> {$row.total_click}
                                 </span>
-                                
                                 <span title="{$LANG->getModule('total_closed')}" class="{if $row.total_closed > 0}text-danger{else}text-muted{/if}">
                                     <i class="fa fa-window-close-o"></i> {$row.total_closed}
                                 </span>
                             </div>
                         </td>
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-1">
+                        <td>
+                            <div class="d-flex gap-1">
                                 <a href="{$row.link_preview}" title="{$LANG->getModule('preview_popup')}" class="btn btn-outline-primary btn-xs me-1"><em class="fa fa-eye fa-xs"></em></a>
                                 <a href="{$row.link_edit}" title="{$LANG->getModule('edit')}" class="btn btn-outline-success btn-xs me-1"><em class="fa fa-edit fa-xs"></em></a>
+                                {if $ADMIN_LEV <= 2}
                                 <button type="button" title="{$LANG->getModule('delete')}" class="btn btn-danger btn-xs delete_popup" data-checkss="{$CHECKSS}" data-id={$row.id}><em class="fa fa-trash-o fa-xs"></em></button>
+                                {/if}
                             </div>
                         </td>
                     </tr>
                     {/foreach}
                 </tbody>
-                {if not empty($GENERATE_PAGE)}
-                <tfoot class="text-center">
-                    <tr>
-                        <td colspan="10">
-                            {$GENERATE_PAGE}
-                        </td>
-                    </tr>
-                </tfoot>
-                {/if}
             </table>
+        </div>
+    </div>
+    <div class="card-footer border-top">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex flex-wrap flex-sm-nowrap align-items-center">
+                <div class="me-2">
+                    <input type="checkbox" data-toggle="checkAll" name="checkAll[]" class="form-check-input m-0 align-middle" aria-label="{$LANG->getGlobal('toggle_checkall')}">
+                </div>
+                <div class="input-group me-1 my-1">
+                    <select id="element_action" class="form-select fw-150" aria-label="{$LANG->getGlobal('select_actions')}" aria-describedby="element_action_btn">
+                        {foreach from=$ACTIONS key=action item=title}
+                        <option value="{$action}">{$title}</option>
+                        {/foreach}
+                    </select>
+                    <button class="btn btn-primary" type="button" id="element_action_btn" data-toggle="actionArticle" data-checksess="{$CHECKSS}" data-ctn="#list-news-items">{$LANG->getModule('action')}</button>
+                </div>
+            </div>
+            {if not empty($GENERATE_PAGE)}
+            <div class="pagination-wrap">
+                {$GENERATE_PAGE}
+            </div>
+            {/if}
         </div>
     </div>
 </div>

@@ -37,7 +37,7 @@ $(function() {
                 },
                 success: function (res) {
                     btn.prop('disabled', false);
-                    if (res == 'OK') {
+                    if (res.status == 'success') {
                         location.reload();
                         return;
                     }
@@ -137,10 +137,92 @@ $(document).ready(function() {
         });
         $('#display_pages').val(JSON.stringify(data));
     }
+
+    // Chọn 1 or nhiều popup và thực hiện các chức năng đổi trạng thái, xóa
+    $('[data-toggle="actionArticle"]').on('click', function (e) {
+        e.preventDefault();
+        let btn = $(this);
+        if (btn.is(':disabled')) {
+            return;
+        }
+        let ctn = $(btn.data('ctn')), listid = [];
+        $('[data-toggle="checkSingle"]:checked', ctn).each(function () {
+            listid.push($(this).val());
+        });
+        if (listid.length < 1) {
+            nvAlert(nv_please_check);
+            return;
+        }
+        let action = $('#element_action').val();
+
+        if (action == 'delete') {
+            nvConfirm(nv_is_del_confirm[0], () => {
+                btn.prop('disabled', true);
+                $('#element_action').prop('disabled', true);
+                $.ajax({
+                    type: 'POST',
+                    url: script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=main&nocache=' + new Date().getTime(),
+                    data: {
+                        checkss: btn.data('checksess'),
+                        listid: listid.join(','),
+                        action: action,
+                        delete: 1
+                    },
+                    success: function (res) {
+                        btn.prop('disabled', false);
+                        $('#element_action').prop('disabled', false);
+                        if (res.status == 'success') {
+                            location.reload();
+                        } else if (res.status == 'error') {
+                            nvToast(res.mess, 'error');
+                        } else {
+                            nvToast(nv_is_del_confirm[2], 'error');
+                        }
+                    },
+                    error: function (xhr, text, err) {
+                        btn.prop('disabled', false);
+                        $('#element_action').prop('disabled', false);
+                        nvToast(text, 'error');
+                        console.log(xhr, text, err);
+                    }
+                });
+            });
+        } else {
+            btn.prop('disabled', true);
+            $('#element_action').prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=main&nocache=' + new Date().getTime(),
+                data: {
+                    checkss: btn.data('checksess'),
+                    listid: listid.join(','),
+                    action: action,
+                    change_status: 1
+                },
+                success: function (res) {
+                    btn.prop('disabled', false);
+                    $('#element_action').prop('disabled', false);
+                    if (res.status == 'success') {
+                        location.reload();
+                    } else if (res.status == 'error') {
+                        nvToast(res.mess, 'error');
+                    } else {
+                        nvToast(nv_is_del_confirm[2], 'error');
+                    }
+                },
+                error: function (xhr, text, err) {
+                    btn.prop('disabled', false);
+                    $('#element_action').prop('disabled', false);
+                    nvToast(text, 'error');
+                    console.log(xhr, text, err);
+                }
+            });
+        }
+    });
 });
 
 function changePopupStatus(id, newStatus, textStatus, label, checkss) {
-    var badge = $('#badge-status-' + id);
+    var badge = $('.badge-status-' + id);
     badge.addClass('opacity-50');
     $.ajax({
         type: 'POST',
@@ -152,8 +234,10 @@ function changePopupStatus(id, newStatus, textStatus, label, checkss) {
             "status": newStatus
         },
         success: function (res) {
-            if (res == 'OK') {
+            if (res.status == 'success') {
                 badge.removeClass('bg-success bg-warning bg-danger opacity-50');
+                badge.removeClass('bg-success-subtle bg-warning-subtle bg-danger-subtle');
+                badge.removeClass('text-success text-warning text-danger border-success border-warning border-danger');
                 badge.html(textStatus).addClass(label);
                 nvToast(nv_is_change_act_confirm[1], 'success');
             } else {
@@ -165,18 +249,4 @@ function changePopupStatus(id, newStatus, textStatus, label, checkss) {
             nvToast(text, 'error');
         }
     });
-}
-
-function nv_chang_status(id, checkss) {
-    if (confirm(nv_is_change_act_confirm[0])) {
-        $(this).prop('disabled', true);
-        $.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=' + nv_func_name + '&nocache=' + new Date().getTime()+ '&change_status=1&id=' + id + '&checkss=' + checkss, function(res) {
-            var r_split = res.split("|");
-            if (r_split[0] != 'OK') {
-                alert(nv_is_change_act_confirm[2]);
-            } else {
-                window.location.href = window.location.href;
-            }
-        });
-    }
 }

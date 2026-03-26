@@ -50,6 +50,7 @@
                 </tr>
             </tbody>
         </table>
+        <input type="hidden" name="checkss" value="{$CHECKSS}">
         <div class="text-center"><input class="btn btn-primary" name="submit" type="submit" value="{$LANG->getModule('save')}"></div>
     </div>
 </form>

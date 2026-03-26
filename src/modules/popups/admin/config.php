@@ -14,7 +14,14 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $nv_Lang->getModule('config');
 $submit = $nv_Request->get_title('submit', 'post');
+$checkss = $nv_Request->get_title('checkss', 'post,get', '');
 if (!empty($submit)) {
+    if (!csrf_check($checkss, $csrf_key)) {
+        nv_jsonOutput([
+            'status' => 'error',
+            'mess' => $nv_Lang->getModule('error_checkss')
+        ]);
+    }
     $data = [];
     $data['display_layout'] = $nv_Request->get_int('display_layout', 'post,get', 0);
     $data['popup_delay'] = $nv_Request->get_title('popup_delay', 'post,get', 0);
@@ -29,7 +36,11 @@ if (!empty($submit)) {
         $sth->bindParam(':config_value', $config_value, PDO::PARAM_STR);
         $exc = $sth->execute();
     }
-    $nv_Cache->delMod($module_name);    
+    $nv_Cache->delMod($module_name);
+    nv_jsonOutput([
+        'status' => 'success',
+        'mess' => $nv_Lang->getModule('save_success')
+    ]);
 }
 
 $sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . $module_data . "_config";
@@ -52,6 +63,7 @@ $stpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $stpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $stpl->assign('MODULE_NAME', $module_name);
 $stpl->assign('DATA', $array_data);
+$stpl->assign('CHECKSS', csrf_create($csrf_key));
 $stpl->assign('OP', $op);
 
 $display_device_arr = array(

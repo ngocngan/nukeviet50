@@ -16,6 +16,8 @@ define('NV_IS_FILE_ADMIN', true);
 
 $allow_func = ['main', 'config', 'add', 'detail', 'statics'];
 
+$csrf_key = defined('NV_IS_USER') ? $user_info['userid'] . '_' . $module_name . '_' . $op : $module_name . '_' . $op;
+
 $_arr_status = array (
     1 => $nv_Lang->getModule('status_1'),
     0 => $nv_Lang->getModule('status_0'),

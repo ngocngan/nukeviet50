@@ -20,27 +20,40 @@ $array_data = [];
 if (empty($detail)) {
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 }
-$nv_checkss = md5(NV_CHECK_SESSION . '_' . $module_name . '_' . $op . '_' . $admin_info['userid']);
-$checkss = $nv_Request->get_title('checkss', 'post,get', '');
 
-if ($nv_Request->isset_request('change_status', 'post, get') and hash_equals($nv_checkss, $checkss)) {
-    $id = $nv_Request->get_int('id', 'post,get', 0);    
+$checkss = $nv_Request->get_title('checkss', 'post,get', '');
+if ($nv_Request->isset_request('change_status', 'post, get')) {
+    $id = $nv_Request->get_int('id', 'post,get', 0);
+    if (!csrf_check($checkss, $csrf_key) or empty($id)) {
+        nv_jsonOutput([
+            'status' => 'error',
+            'mess' => $nv_Lang->getModule('error_checkss')
+        ]);
+    }
     if (!empty($id)) {        
         if ($nv_Request->isset_request('status', 'post, get')) {
             $status = $nv_Request->get_int('status', 'post', 0);
             $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetchColumn();
             if (empty($row)) {
-                nv_htmlOutput('NO|ID_' . $id);
+                nv_jsonOutput([
+                    'status' => 'error',
+                    'mess' => $nv_Lang->getModule('error_mess')
+                ]);
             }
             $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . "  WHERE id = " . $id);
             if ($exc) {
-                nv_htmlOutput('OK');
+                nv_jsonOutput([
+                    'status' => 'success',
+                    'mess' => $nv_Lang->getModule('save_success')
+                ]);
             }
-            nv_htmlOutput('ERROR');
         } else {        
             $row = $db->query("SELECT id, status, start_time, end_time FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetch();
             if (empty($row)) {
-                nv_htmlOutput('NO|ID_' . $id);
+                nv_jsonOutput([
+                    'status' => 'error',
+                    'mess' => $nv_Lang->getModule('error_mess')
+                ]);
             }
             if ($row['status'] == 1) {
                 $status = 3;
@@ -50,11 +63,17 @@ if ($nv_Request->isset_request('change_status', 'post, get') and hash_equals($nv
             $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . " WHERE id = " . $id);
             if ($exc) {
                 $nv_Cache->delMod($module_name);
-                nv_htmlOutput('OK');            
+                nv_jsonOutput([
+                    'status' => 'success',
+                    'mess' => $nv_Lang->getModule('save_success')
+                ]);            
             }
         }
     }
-    nv_htmlOutput('ERROR');
+    nv_jsonOutput([
+        'status' => 'error',
+        'mess' => $nv_Lang->getModule('error_mess')
+    ]);
 }
 
 $detail['start_time'] = nv_date('H:i d/m/Y', $detail['start_time']);
@@ -62,6 +81,7 @@ $detail['end_time'] = nv_date('H:i d/m/Y', $detail['end_time']);
 $detail['created_time'] = nv_date('H:i d/m/Y', $detail['created_time']);
 $detail['label_status'] = $detail['status'] == 1 ? 'success' : ($detail['status'] == 2 ? 'danger' : 'warning');
 $detail['status_txt'] = $nv_Lang->getModule('status_' . $detail['status']);
+$detail['popup_type'] = isset($arr_type_popup[$detail['popup_type']]) ? $arr_type_popup[$detail['popup_type']] : '';
 
 $array_data['data'][] = ['id', $detail['id']];
 $array_data['data'][] = [$nv_Lang->getModule('title'), $detail['title']];
@@ -96,7 +116,7 @@ $stpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $stpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $stpl->assign('DATA', $array_data);
 $stpl->assign('DETAIL', $detail);
-$stpl->assign('CHECKSS', $nv_checkss);
+$stpl->assign('CHECKSS', csrf_create($csrf_key));
 $contents = $stpl->fetch('detail.tpl');
 
 include NV_ROOTDIR . '/includes/header.php';

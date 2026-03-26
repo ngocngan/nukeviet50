@@ -41,6 +41,13 @@ if ($nv_Request->isset_request('save', 'post')) {
         'status' => 'error',
         'mess' => '',
     ];
+    $checkss = $nv_Request->get_title('checkss', 'post,get', '');
+    if (!csrf_check($checkss, $csrf_key)) {
+        nv_jsonOutput([
+            'status' => 'error',
+            'mess' => $nv_Lang->getModule('error_checkss')
+        ]);
+    }
     $title = nv_htmlspecialchars(strip_tags($nv_Request->get_string('title', 'post', '')));
     $description = nv_htmlspecialchars(strip_tags($nv_Request->get_string('description', 'post', '')));
     $is_all_page = $nv_Request->get_int('is_all_page', 'post', 0);
@@ -232,6 +239,7 @@ $stpl->assign('NV_LANG_DATA', NV_LANG_DATA);
 $stpl->assign('DATA', $array_data);
 $stpl->assign('HAS_EDITOR', $has_editor);
 $stpl->assign('ERROR', $error);
+$stpl->assign('CHECKSS', csrf_create($csrf_key));
 if (!empty($id)) {
     $stpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;id=' . $id);
 } else {

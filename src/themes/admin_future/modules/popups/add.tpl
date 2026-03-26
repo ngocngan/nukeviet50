@@ -28,7 +28,7 @@
                                 <label for="start_time" class="form-label d-block">{$LANG->getModule('start_time')}:</label>
                                 <div class="d-flex align-items-center">                                    
                                     <div class="input-group me-2">
-                                        <input name="start_time" id="start_time" value="{$DATA.start_time}" class="form-control" type="text" readonly />
+                                        <input name="start_time" id="start_time" value="{$DATA.start_time}" class="form-control" type="text" readonly="readonly" placeholder="{$LANG->getModule('from_date')}" aria-label="{$LANG->getModule('from_date')}" />
                                         <div class="input-group-append">
                                             <button class="btn btn-secondary start-date-btn" type="button" id="start-date-btn">
                                                 <i class="fa fa-calendar"></i>
@@ -60,7 +60,7 @@
                                 <label for="end_time" class="form-label d-block">{$LANG->getModule('end_time')}:</label>
                                 <div class="d-flex align-items-center">                                    
                                     <div class="input-group me-2">
-                                        <input name="end_time" id="end_time" value="{$DATA.end_time}" class="form-control" type="text" readonly />
+                                        <input name="end_time" id="end_time" value="{$DATA.end_time}" class="form-control" type="text" readonly="readonly" placeholder="{$LANG->getModule('to_date')}" aria-label="{$LANG->getModule('to_date')}" />
                                         <div class="input-group-append">
                                             <button class="btn btn-secondary end-date-btn" type="button" id="end-date-btn">
                                                 <i class="fa fa-calendar"></i>
@@ -269,6 +269,7 @@
     <div class="text-center">
         <input type="hidden" name="submit" value="1">
         <input type="hidden" value="1" name="save" id="save">
+        <input type="hidden" name="checkss" value="{$CHECKSS}">
         <button type="submit" class="btn btn-primary">{$LANG->getModule('save')}</button>
     </div>
 </form>
