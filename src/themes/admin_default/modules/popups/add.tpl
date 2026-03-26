@@ -40,15 +40,36 @@
                         <td>{$LANG->getModule('show_page')}:</td>
                         <td><sup class="required{if $DATA.is_all_page == 1} hidden {/if}" id="required_page">∗</sup></td>
                         <td>
-                            <div class="clearfix">
-                                <select id="list_page_show" name="list_page[]" class="form-control gselect2 w400 pull-left" multiple="multiple">
-                                    <option value="-1">{$LANG->getModule('all_page')}</option>
-                                    {foreach from=$ARR_PAGE key=id item=row}
-                                    <option value="{$id}" {if in_array($id, $DATA.list_page)} selected="selected" {/if}>{$row}</option>
-                                    {/foreach}
-                                </select>
+                            <div class="popup-tree">
+                            {foreach from=$MODULES key=module item=funcs}
+                                <div class="module-item">
+                                    <div class="module-header">
+                                        <span class="toggle"><i class="fa fa-angle-right toggle fa-lg"></i></span>
+                                        <label>
+                                            <input type="checkbox" class="module-checkbox" data-module="{$module}">
+                                            <span class="module-title">{$funcs.title}</span>
+                                        </label>
+                                    </div>
+                                    <div class="func-list">
+                                        {foreach from=$funcs.list_func item=func}
+                                            <label>
+                                                <input type="checkbox" class="func-checkbox" data-module="{$module}" value="{$func.alias}">
+                                                {$func.title}
+                                            </label>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                            {/foreach}
                             </div>
-                            <span class="help-block help-block-bottom">{$LANG->getModule('choose_all_ctrl')}</span>
+                            <input type="hidden" name="display_pages" id="display_pages" value='{$DATA.display_pages}'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{$LANG->getModule('priority')}:</td>
+                        <td><sup class="required">∗</sup></td>
+                        <td>
+                            <input class="w400 required form-control" name="priority" type="number" value="{$DATA.priority}" min="1">
+                            <span class="help-block help-block-bottom">{$LANG->getModule('note_priority')}</span>
                         </td>
                     </tr>
                     <tr>
@@ -57,9 +78,35 @@
                         <td>
                             <select name="type_popup" class="form-control w400 valid" aria-invalid="false">
                                 {foreach from=$TYPE_POPUP key=key item=row}
-                                <option value="{$key}" {if $key == $SEARCH.type_popup} selected="selected" {/if}>{$row}</option>
+                                <option value="{$key}" {if $key == $DATA.popup_type} selected="selected" {/if}>{$row}</option>
                                 {/foreach}
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{$LANG->getModule('display_type')}:</td>
+                        <td></td>
+                        <td>
+                            <select name="display_type" class="form-control w400 valid" aria-invalid="false">
+                                {foreach from=$DISPLAY_TYPE key=key item=row}
+                                <option value="{$key}" {if $key == $DATA.display_type} selected="selected" {/if}>{$row}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="tr_display_interval" class="{if $DATA.display_type != 3} hidden {/if}">
+                        <td>{$LANG->getModule('display_interval')}:</td>
+                        <td><sup class="required">∗</sup></td>
+                        <td>
+                            <input class="w400 required form-control" name="display_interval" type="number" value="{$DATA.display_interval}" min="0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{$LANG->getModule('max_show')}:</td>
+                        <td><sup class="required">∗</sup></td>
+                        <td>
+                            <input class="w400 required form-control" name="max_show" type="number" value="{$DATA.max_show}" min="0">
+                            <span class="help-block help-block-bottom">{$LANG->getModule('max_show_note')}</span>
                         </td>
                     </tr>
                     <tr>
@@ -94,15 +141,7 @@
                                 {/foreach}
                             </select>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>{$LANG->getModule('priority')}:</td>
-                        <td><sup class="required">∗</sup></td>
-                        <td>
-                            <input class="w400 required form-control" name="priority" type="number" value="{$DATA.priority}" min="1">
-                            <span class="help-block help-block-bottom">{$LANG->getModule('note_priority')}</span>
-                        </td>
-                    </tr>
+                    </tr>                    
                     <tr>
                         <td>{$LANG->getModule('display_device')}:</td>
                         <td></td>
@@ -219,6 +258,13 @@
     $(document).ready(function() {
         $(".gselect2").select2();
         $('#form_add_new_popup').validate();
+        $('select[name="display_type"]').change(function(){
+            if ($(this).val() != 3) {
+                $("#tr_display_interval").addClass('hidden');
+            } else {
+                $("#tr_display_interval").removeClass('hidden');
+            }
+        });
         $('input[name="is_all_page"]').change(function(){
             if ($(this).is(':checked')) {
                 $("#required_page").addClass('hidden');
@@ -239,5 +285,51 @@
         $('#end-date-btn').click(function(){
             $("#end_time").datepicker('show');
         });
+
+        // Toggle collapse
+        $('.module-header').click(function(e) {
+            if ($(e.target).is('input')) return;
+            let $item = $(this).closest('.module-item');
+            $item.toggleClass('open');
+            $(this).find('.toggle')
+                .html($item.hasClass('open') ? '<i class="fa fa-angle-down toggle fa-lg"></i>' : '<i class="fa fa-angle-right toggle fa-lg"></i>');
+        });
+
+        // Check module thì check all func
+        $('.module-checkbox').change(function() {
+            let module = $(this).data('module');
+            $('.func-checkbox[data-module="' + module + '"]').prop('checked', $(this).is(':checked'));
+            buildData();
+        });
+
+        // Check func thì chỉ cần build lại data
+        $('.func-checkbox').change(function() {
+            buildData();
+        });
+
+        let val = $('#display_pages').val();
+        if (val) {
+            let data = JSON.parse(val);
+            $.each(data, function(module, funcs) {
+                funcs.forEach(function(fun) {
+                    $('.func-checkbox[data-module="' + module + '"][value="' + fun + '"]').prop('checked', true);
+                });
+                $('.module-checkbox[data-module="' + module + '"]').prop('checked', true);
+            });
+        }
+
+        function buildData() {
+            let data = {};
+            $('.module-checkbox').each(function() {
+                let module = $(this).data('module');
+                let funcs = $('.func-checkbox[data-module="' + module + '"]:checked');
+                if (funcs.length === 0) return;
+                data[module] = [];
+                funcs.each(function() {
+                    data[module].push($(this).val());
+                });
+            });
+            $('#display_pages').val(JSON.stringify(data));
+        }
     });
 </script>

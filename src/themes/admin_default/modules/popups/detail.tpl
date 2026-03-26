@@ -10,6 +10,8 @@
 <div class="clearfix"></div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
+        <colgroup><col class="w300">
+        <col>
         <caption>
             <em class="fa fa-file-text-o">&nbsp;</em>{$DETAIL.title}
         </caption>

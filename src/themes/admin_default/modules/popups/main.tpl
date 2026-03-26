@@ -14,7 +14,7 @@
             <div class="col-xs-12 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label><strong>{$LANG->getModule('status')}:</strong></label>
-                    <select class="form-control" name="status" data-default="0">
+                    <select class="form-control" name="status" data-default="-1">
                         <option value="-1">{$LANG->getModule('all')}</option>
                         {foreach from=$STATUS key=key item=row}
                         <option value="{$key}" {if $key == $SEARCH.status} selected="selected" {/if}>{$row}</option>
@@ -67,7 +67,7 @@
     </form>
 </div>
 <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover vertical-align" style="padding: 0px;">
+    <table class="table table-striped table-bordered table-hover vertical-align">
         <thead class="tableFloatingHeaderOriginal">
             <tr>
                 <th class="text-center w50">{$LANG->getModule('stt')}</th>
@@ -111,7 +111,7 @@
                         <strong><i class="fa fa-eye"></i> {$row.total_view}</strong>
                     </span>
                     
-                    <span title="{$LANG->getModule('total_click')}" class="text-primary margin-left-lg" style="font-weight: 600;">
+                    <span title="{$LANG->getModule('total_click')}" class="text-primary margin-left-lg">
                         <strong><i class="fa fa-mouse-pointer"></i> {$row.total_click}</strong>
                     </span>
                     
@@ -120,7 +120,8 @@
                     </span>
                 </td>
                 <td class="text-center">
-                    <a href="{$row.link_edit}" title="{$LANG->getModule('edit')}" class="btn btn-primary btn-xs"><em class="fa fa-edit fa-xs"></em></a>
+                    <a href="{$row.link_preview}" title="{$LANG->getModule('preview_popup')}" class="btn btn-primary btn-xs"><em class="fa fa-eye fa-xs"></em></a>
+                    <a href="{$row.link_edit}" title="{$LANG->getModule('edit')}" class="btn btn-primary btn-xs margin-left"><em class="fa fa-edit fa-xs"></em></a>
                     <button type="button" title="{$LANG->getModule('delete')}" class="btn btn-danger btn-xs delete_popup margin-left" data-id={$row.id}><em class="fa fa-trash-o fa-xs"></em></button>
                 </td>
             </tr>

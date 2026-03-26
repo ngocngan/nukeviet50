@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label><strong>{$LANG->getModule('status')}:</strong></label>
-                    <select class="form-control" name="status" data-default="0">
+                    <select class="form-control" name="status" data-default="-1">
                         <option value="-1">{$LANG->getModule('all')}</option>
                         {foreach from=$STATUS key=key item=row}
                         <option value="{$key}" {if $key == $SEARCH.status} selected="selected" {/if}>{$row}</option>
@@ -29,11 +29,10 @@
             </div>
             <div class="col-xs-12 col-md-6 col-sm-6">
                 <div class="form-group">
-                    <label><strong>{$LANG->getModule('show_page')}:</strong></label>
-                    <select class="form-control" name="show_page" data-default="0">
-                        <option value="0">{$LANG->getModule('all')}</option>
-                        {foreach from=$LAYOUT key=key item=row}
-                        <option value="{$key}" {if $key == $SEARCH.show_page} selected="selected" {/if}>{$row}</option>
+                    <label><strong>{$LANG->getModule('display_object')}:</strong></label>
+                    <select class="form-control" name="display_object" data-default="0">
+                        {foreach from=$OBJECT key=key item=row}
+                        <option value="{$key}" {if $key == $SEARCH.display_object} selected="selected" {/if}>{$row}</option>
                         {/foreach}
                     </select>
                 </div>
@@ -94,11 +93,11 @@
     </div>
 </div>
 <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover" style="padding: 0px;">
+    <table class="table table-striped table-bordered table-hover">
         <thead class="tableFloatingHeaderOriginal">
             <tr>
-                <th class="w50">{$LANG->getModule('stt')}</th>
-                <th class=""><div class="inlineblock">{$LANG->getModule('title')}</div></th>
+                <th class="w50 text-center">{$LANG->getModule('stt')}</th>
+                <th class="text-center"><div class="inlineblock">{$LANG->getModule('title')}</div></th>
                 <th class="text-center"><div class="inlineblock">{$LANG->getModule('total_view')}</div></th>
                 <th class="text-center"><div class="inlineblock">{$LANG->getModule('total_click')}</div></th>
                 <th class="text-center"><div class="inlineblock">{$LANG->getModule('ctr_click_view')}</div></th>
@@ -111,7 +110,7 @@
             <tr>
                 <td class="text-center">{$row.stt}</td>            
                 <td><a href="{$row.link}">{$row.title}</a></td>
-                <td>{$row.total_view}</td>
+                <td class="text-center">{$row.total_view}</td>
                 <td class="text-center">{$row.total_click}</td>
                 <td class="text-center">{$row.ctr_click_view}</td>
                 <td class="text-center">{$row.total_closed}</td>

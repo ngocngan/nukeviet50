@@ -21,7 +21,7 @@ $array_search['type_popup'] = $nv_Request->get_title('type_popup', 'get', '');
 $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 0);
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
-$per_page = 20;
+$per_page = 15;
 $nv_checkss = md5(NV_CHECK_SESSION . '_' . $module_name . '_' . $op . '_' . $admin_info['userid']);
 $checkss = $nv_Request->get_string('checkss', 'post');
 if ($nv_Request->isset_request('delete', 'post') and hash_equals($nv_checkss, $checkss)) {
@@ -65,7 +65,7 @@ if ($array_search['status'] >= 0) {
 }
 if (!empty($array_search['type_popup'])) {
     $base_url .= '&amp;type_popup=' . $array_search['type_popup'];
-    $_where[] = "status=" . $array_search['status'];
+    $_where[] = "popup_type=" . $db->quote($array_search['type_popup']);
 }
 if (!empty($array_search['display_layout'])) {
     $base_url .= '&amp;display_layout=' . $array_search['display_layout'];
@@ -112,6 +112,7 @@ while ($row = $sth->fetch()) {
     $row['display_layout'] = $nv_Lang->getModule('display_layout_' . $row['display_layout']);
     $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];;
     $row['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=add&amp;id=' . $row['id'];
+    $row['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=main&amp;preview=' . $row['id'];
     $array_data[] = $row;
 }
 $generate_page = nv_generate_page($base_url, $all_page, $per_page, $page);

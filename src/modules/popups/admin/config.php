@@ -16,12 +16,13 @@ $page_title = $nv_Lang->getModule('config');
 $submit = $nv_Request->get_title('submit', 'post');
 if (!empty($submit)) {
     $data = [];
-    $data['display_layout'] = $nv_Request->get_int('display_layout', 'post,get');
-    $data['popup_delay'] = $nv_Request->get_title('popup_delay', 'post,get');
-    $data['display_frequency'] = $nv_Request->get_int('display_frequency', 'post,get');
-    $data['display_device'] = $nv_Request->get_int('display_device', 'post,get');
-    $data['display_object'] = $nv_Request->get_int('display_object', 'post,get');
-    $data['close_on_outside_click'] = $nv_Request->get_int('close_on_outside_click', 'post,get');
+    $data['display_layout'] = $nv_Request->get_int('display_layout', 'post,get', 0);
+    $data['popup_delay'] = $nv_Request->get_title('popup_delay', 'post,get', 0);
+    $data['display_frequency'] = $nv_Request->get_int('display_frequency', 'post,get', 0);
+    $data['display_device'] = $nv_Request->get_int('display_device', 'post,get', 0);
+    $data['display_object'] = $nv_Request->get_int('display_object', 'post,get', 0);
+    $data['close_on_outside_click'] = $nv_Request->get_int('close_on_outside_click', 'post,get', 0);
+
     $sth = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . $module_data . "_config SET config_value = :config_value WHERE config_name = :config_name");
     foreach ($data as $config_name => $config_value) {
         $sth->bindParam(':config_name', $config_name, PDO::PARAM_STR);

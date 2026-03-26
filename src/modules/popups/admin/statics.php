@@ -14,12 +14,13 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $nv_Lang->getModule('statics');
 $page = $nv_Request->get_page('page', 'get', 1);
-$per_page = 20;
+$per_page = 15;
 $array_data = $array_search = [];
 $array_search['status'] = $nv_Request->get_int('status', 'get', -1);
 $array_search['show_page'] = $nv_Request->get_title('show_page', 'get', 0);
 $array_search['type_popup'] = $nv_Request->get_title('type_popup', 'get', '');
 $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 0);
+$array_search['display_object'] = $nv_Request->get_int('display_object', 'get', 0);
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
 
@@ -33,11 +34,15 @@ if ($array_search['status'] >= 0) {
 }
 if (!empty($array_search['type_popup'])) {
     $base_url .= '&amp;type_popup=' . $array_search['type_popup'];
-    $_where[] = "status=" . $array_search['status'];
+    $_where[] = "popup_type=" . $db->quote($array_search['type_popup']);
 }
 if (!empty($array_search['display_layout'])) {
     $base_url .= '&amp;display_layout=' . $array_search['display_layout'];
     $_where[] = "display_layout=" . $array_search['display_layout'];
+}
+if (!empty($array_search['display_object'])) {
+    $base_url .= '&amp;display_object=' . $array_search['display_object'];
+    $_where[] = "display_object=" . $array_search['display_object'];
 }
 if (!empty($array_search['start_time'])) {
     $base_url .= '&amp;start_time=' . $array_search['start_time'];
@@ -104,6 +109,7 @@ $stpl->assign('SEARCH', $array_search);
 $stpl->assign('STATUS', $_arr_status);
 $stpl->assign('TYPE_POPUP', $arr_type_popup);
 $stpl->assign('LAYOUT', $arr_layout);
+$stpl->assign('OBJECT', $arr_object);
 $contents = $stpl->fetch('statics.tpl');
 
 include NV_ROOTDIR . '/includes/header.php';
