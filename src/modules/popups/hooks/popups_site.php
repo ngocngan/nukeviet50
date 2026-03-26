@@ -22,7 +22,7 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
         return null;
     }
 
-    global $global_config, $db, $db_config, $home, $module_name, $op;
+    global $global_config, $db, $db_config, $home, $module_name, $op, $nv_Request;
     $themes = [];
     if (!empty($global_config['current_theme_type']) && $global_config['current_theme_type'] === 'm' && !empty($global_config['mobile_theme']) && !str_starts_with($global_config['mobile_theme'], ':')) {
         $themes[] = $global_config['mobile_theme'];
@@ -88,10 +88,27 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
         $pageId = 1;
     }
 
+    $itemId = 0;
+    if (!empty($module_name) && $module_name === 'news') {
+        $tmp = 0;
+        if (isset($GLOBALS['id'])) {
+            $tmp = (int) $GLOBALS['id'];
+        }
+        if ($tmp <= 0 && isset($nv_Request)) {
+            $tmp = (int) $nv_Request->get_int('id', 'get', 0);
+        }
+        if ($tmp <= 0 && isset($nv_Request)) {
+            $tmp = (int) $nv_Request->get_int('newsid', 'get', 0);
+        }
+        if ($tmp > 0) {
+            $itemId = $tmp;
+        }
+    }
+
     $adminMeta = defined('NV_IS_ADMIN') ? '<meta name="nv-popups-admin" content="1">' : '';
 
     if (strpos($contents, 'name="nv-popups"') === false) {
-        $meta = '<meta name="nv-popups" content="1"><meta name="nv-popups-pageid" content="' . $pageId . '">' . $adminMeta;
+        $meta = '<meta name="nv-popups" content="1"><meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">' . $adminMeta;
         if (stripos($contents, '</head>') !== false) {
             $contents = preg_replace('/(<\\/head>)/i', $meta . '\\1', $contents, 1);
         } elseif (preg_match('/<body[^>]*>/i', $contents)) {
@@ -100,7 +117,7 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
             $contents = $meta . $contents;
         }
     } elseif (strpos($contents, 'name="nv-popups-pageid"') === false) {
-        $meta2 = '<meta name="nv-popups-pageid" content="' . $pageId . '">' . $adminMeta;
+        $meta2 = '<meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">' . $adminMeta;
         if (stripos($contents, 'name="nv-popups"') !== false) {
             $contents = preg_replace('/(<meta\\s+name="nv-popups"[^>]*>)/i', '$1' . $meta2, $contents, 1);
         } elseif (stripos($contents, '</head>') !== false) {
@@ -117,6 +134,34 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
             $contents = preg_replace('/(<\\/head>)/i', $adminMeta . '\\1', $contents, 1);
         } else {
             $contents = $adminMeta . $contents;
+        }
+    }
+    if (strpos($contents, 'name="nv-popups-module"') === false || strpos($contents, 'name="nv-popups-op"') === false) {
+        $metaMO = '<meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">';
+        if (stripos($contents, 'name="nv-popups-pageid"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-pageid"[^>]*>)/i', '$1' . $metaMO, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups"[^>]*>)/i', '$1' . $metaMO, $contents, 1);
+        } elseif (stripos($contents, '</head>') !== false) {
+            $contents = preg_replace('/(<\\/head>)/i', $metaMO . '\\1', $contents, 1);
+        } else {
+            $contents = $metaMO . $contents;
+        }
+    }
+    if ($itemId > 0 && strpos($contents, 'name="nv-popups-itemid"') === false) {
+        $metaItem = '<meta name="nv-popups-itemid" content="' . $itemId . '">';
+        if (stripos($contents, 'name="nv-popups-op"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-op"[^>]*>)/i', '$1' . $metaItem, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups-module"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-module"[^>]*>)/i', '$1' . $metaItem, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups-pageid"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-pageid"[^>]*>)/i', '$1' . $metaItem, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups"[^>]*>)/i', '$1' . $metaItem, $contents, 1);
+        } elseif (stripos($contents, '</head>') !== false) {
+            $contents = preg_replace('/(<\\/head>)/i', $metaItem . '\\1', $contents, 1);
+        } else {
+            $contents = $metaItem . $contents;
         }
     }
 

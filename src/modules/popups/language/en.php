@@ -114,3 +114,5 @@ $lang_module['to_date'] = 'To date';
 $lang_module['error_checkss'] = 'Security error, please reload page!';
 $lang_module['save_success'] = 'Perform complete';
 $lang_module['error_mess'] = 'There are some problems ocoured in data processing progress.';
+$lang_module['error_rang_time'] = 'The end time must be greater than the start time';
+$lang_module['error_end_time'] = 'The end time must be greater than the current time';

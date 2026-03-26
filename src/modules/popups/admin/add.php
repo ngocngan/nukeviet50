@@ -30,7 +30,7 @@ foreach ($site_mods as $mod => $info) {
             }
         }
         if (!empty($list_func)) {
-            $_arr_modules[$mod]['title'] = empty($info['site_title']) ? $info['custom_title'] : $info['site_title'];;
+            $_arr_modules[$mod]['title'] = empty($info['site_title']) ? $info['custom_title'] : $info['site_title'];
             $_arr_modules[$mod]['list_func'] = $list_func;
         }
     }
@@ -77,14 +77,14 @@ if ($nv_Request->isset_request('save', 'post')) {
     $display_type = $nv_Request->get_int('display_type', 'post', 0);
     $display_interval = $nv_Request->get_int('display_interval', 'post', 0);
     $max_show = $nv_Request->get_int('max_show', 'post', 0);
-
+    $time_cr = NV_CURRENTTIME;
     if ($display_type != 3) {
         $display_interval = 0;
     }
-    if (!empty($start_date) and !preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $start_date)) {
+    if (!empty($start_date) and !preg_match('/^([0-9]{1,2})\-([0-9]{1,2})\-([0-9]{4})$/', $start_date)) {
         $start_date = '';
     }
-    if (!empty($end_date) and !preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $end_date)) {
+    if (!empty($end_date) and !preg_match('/^([0-9]{1,2})\-([0-9]{1,2})\-([0-9]{4})$/', $end_date)) {
         $end_date = '';
     }
     if ($hour_start_time < 0 or $hour_start_time > 23) {
@@ -118,14 +118,14 @@ if ($nv_Request->isset_request('save', 'post')) {
         nv_jsonOutput($respon);
     } else {
         if (empty($start_date)) {
-            $starttime = NV_CURRENTTIME;
+            $starttime = $time_cr;
         } else {
             unset($m);
-            preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $start_date, $m);
+            preg_match('/^([0-9]{1,2})\-([0-9]{1,2})\-([0-9]{4})$/', $start_date, $m);
             $starttime = mktime($hour_start_time, $minute_start_time, 0, $m[2], $m[1], $m[3]);
         }
 
-        if (preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $end_date, $m)) {
+        if (preg_match('/^([0-9]{1,2})\-([0-9]{1,2})\-([0-9]{4})$/', $end_date, $m)) {
             $endtime = mktime($hour_end_time, $minute_end_time, 59, $m[2], $m[1], $m[3]);
             if ($endtime <= $starttime) {
                 $endtime = $starttime;
@@ -134,7 +134,14 @@ if ($nv_Request->isset_request('save', 'post')) {
             $endtime = 0;
         }
         if ($endtime != 0 and $endtime <= $starttime) {
-            $endtime = $starttime;
+            $respon['input'] = 'end_time';
+            $respon['mess'] = $nv_Lang->getModule('error_rang_time');
+            nv_jsonOutput($respon);
+        }
+        if ($endtime != 0 and $endtime < $time_cr) {
+            $respon['input'] = 'end_time';
+            $respon['mess'] = $nv_Lang->getModule('error_end_time');
+            nv_jsonOutput($respon);
         }
     }
 

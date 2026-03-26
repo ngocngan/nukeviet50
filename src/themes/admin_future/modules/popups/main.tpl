@@ -1,6 +1,6 @@
 <script src="{$smarty.const.ASSETS_STATIC_URL}/js/flatpickr/flatpickr.min.js"></script>
 <script src="{$smarty.const.ASSETS_STATIC_URL}/js/language/flatpickr-{$smarty.const.NV_LANG_INTERFACE}.js"></script>
-<div class="card">
+<div class="card card-popup-content">
     <div class="card-header">
         <form action="" method="get" id="form_search_popup">
             <div class="row mb-3 g-2">

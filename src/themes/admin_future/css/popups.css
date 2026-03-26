@@ -137,7 +137,7 @@
     background-color: #f8f9fa;
 }
 
-.card.rounded-4 {
+.card-popup-content .card.rounded-4 {
     border-radius: 1rem !important;
 }
 
@@ -159,19 +159,19 @@
     border-color: #cfe2ff !important;
 }
 
-.btn-soft-danger {
+.card-popup-content .btn-soft-danger {
     background-color: #fff1f0;
     color: #ff4d4f;
 }
-.btn-soft-danger:hover { background-color: #ff4d4f; color: #fff; }
+.card-popup-content .btn-soft-danger:hover { background-color: #ff4d4f; color: #fff; }
 
-.btn-soft-success {
+.card-popup-content .btn-soft-success {
     background-color: #f6ffed;
     color: #52c41a;
 }
-.btn-soft-success:hover { background-color: #52c41a; color: #fff; }
+.card-popup-content .btn-soft-success:hover { background-color: #52c41a; color: #fff; }
 
-.btn-icon {
+.card-popup-content .btn-icon {
     width: 32px;
     height: 32px;
     padding: 0;
@@ -182,12 +182,12 @@
     border: none;
 }
 
-.bg-success-subtle {
+.card-popup-content .bg-success-subtle {
     background-color: #e1f5ea !important;
     color: #198754 !important;
 }
 
-.bg-danger-subtle {
+.card-popup-content .bg-danger-subtle {
     background-color: #fde8e8 !important;
     color: #dc3545 !important;
 }
@@ -198,9 +198,10 @@
     background-color: #e9ecef;
 }
 
-.dropdown-toggle::after {
+.card-popup-content .dropdown-toggle::after {
     vertical-align: middle;
 }
+
 .pointer { cursor: pointer; }
 
 .badge.dropdown-toggle:hover {
@@ -208,9 +209,10 @@
     transition: all 0.2s;
 }
 
-.dropdown-menu {
+.card-popup-content .dropdown-menu {
     min-width: 160px;
 }
-.dropdown-item {
+
+.card-popup-content .dropdown-item {
     transition: 0.2s;
 }

@@ -76,17 +76,50 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
     ]);
 }
 
+// Lấy các trang cho hiển thị popup
+$list_func = [];
+foreach ($site_mods as $mod => $info) {
+    if (!empty($info['funcs'])) {
+        foreach ($info['funcs'] as $_func) {
+            if (!empty($_func['func_id'])) {
+                $list_func[$mod][$_func['func_name']] = empty($_func['func_site_title']) ? $_func['func_custom_name'] : $_func['func_site_title'];
+            }
+        }
+    }
+}
+
 $detail['start_time'] = nv_date('H:i d/m/Y', $detail['start_time']);
 $detail['end_time'] = nv_date('H:i d/m/Y', $detail['end_time']);
 $detail['created_time'] = nv_date('H:i d/m/Y', $detail['created_time']);
 $detail['label_status'] = $detail['status'] == 1 ? 'success' : ($detail['status'] == 2 ? 'danger' : 'warning');
 $detail['status_txt'] = $nv_Lang->getModule('status_' . $detail['status']);
 $detail['popup_type'] = isset($arr_type_popup[$detail['popup_type']]) ? $arr_type_popup[$detail['popup_type']] : '';
+$list_module = [];
+if ($detail['is_all_page'] == 1) {
+    $show_page = $nv_Lang->getModule('all_page');
+} else {
+    $display_pages = json_decode($detail['display_pages'], true);
+    $temp_modules = [];
 
+    foreach ($display_pages as $mod => $funcs) {
+        $list_names = [];
+        foreach ($funcs as $func) {
+            // Lấy tên trang từ mảng $list_func nếu tồn tại, không thì để tên hàm gốc
+            $list_names[] = isset($list_func[$mod][$func]) ? $list_func[$mod][$func] : $func;
+        }
+
+        if (!empty($list_names)) {
+            // Lấy tên hiển thị của Module
+            $mod_title = empty($site_mods[$mod]['site_title']) ? $site_mods[$mod]['custom_title'] : $site_mods[$mod]['site_title'];            
+            // Gom nhóm lại dạng: Tên Module (Trang 1, Trang 2)
+            $temp_modules[] = "<span class='text-primary fw-bold'>" . $mod_title . "</span> (" . implode(', ', $list_names) . ")";
+        }
+    }
+    $show_page = implode(' | ', $temp_modules);
+}
 $array_data['data'][] = ['id', $detail['id']];
 $array_data['data'][] = [$nv_Lang->getModule('title'), $detail['title']];
 $array_data['data'][] = [$nv_Lang->getModule('description'), $detail['description']];
-$array_data['data'][] = [$nv_Lang->getModule('show_page'), $detail['is_all_page']];
 $array_data['data'][] = [$nv_Lang->getModule('type_popup'), $detail['popup_type']];
 $array_data['data'][] = [$nv_Lang->getModule('display_layout'), $arr_layout[$detail['display_layout']] ?? ''];
 $array_data['data'][] = [$nv_Lang->getModule('display_object'), $arr_object[$detail['display_object']] ?? ''];
@@ -101,9 +134,10 @@ $array_data['data'][] = [$nv_Lang->getModule('total_view'), $detail['total_view'
 $array_data['data'][] = [$nv_Lang->getModule('total_click'), $detail['total_click']];
 $array_data['data'][] = [$nv_Lang->getModule('total_closed'), $detail['total_closed']];
 $array_data['data'][] = [$nv_Lang->getModule('created_date'), $detail['created_time']];
+$array_data['data'][] = [$nv_Lang->getModule('show_page'), $show_page];
 $array_data['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=add&amp;id=' . $detail['id'];
-$array_data['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=main&amp;preview=' . $detail['id'];
-
+$array_data['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;preview_id=' . $row['id'] . '&preview_only=1';
+    
 $base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 
 $stpl = new \NukeViet\Template\NVSmarty();

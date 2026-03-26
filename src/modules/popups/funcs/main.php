@@ -57,11 +57,14 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
     $where[] = 'start_time<=' . $now;
     $where[] = '(end_time=0 OR end_time>=' . $now . ')';
     $defaultPriority = (int) ($config['default_priority'] ?? 1);
-    $sql = 'SELECT id, title, description, content, popup_type, priority, display_layout, display_type, display_interval, max_show, url, type_open, css_class, display_device, display_object, is_all_page, list_id_page, updated_time FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_popups_detail WHERE ' . implode(' AND ', $where) . ' ORDER BY (CASE WHEN priority=0 THEN ' . $defaultPriority . ' ELSE priority END) DESC, updated_time DESC';
+    $sql = 'SELECT id, title, description, content, popup_type, priority, display_layout, display_type, display_interval, max_show, url, type_open, css_class, display_device, display_object, is_all_page, display_pages, updated_time FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_popups_detail WHERE ' . implode(' AND ', $where) . ' ORDER BY (CASE WHEN priority=0 THEN ' . $defaultPriority . ' ELSE priority END) DESC, updated_time DESC';
     $popups = [];
     $closeText = $nv_Lang->getGlobal('close');
     $viewMoreText = $nv_Lang->getGlobal('view_more');
     $pid = $nv_Request->get_int('pid', 'get', 0);
+    $m = $nv_Request->get_title('m', 'get', '');
+    $f = $nv_Request->get_title('f', 'get', '');
+    $iid = $nv_Request->get_int('iid', 'get', 0);
     $previewId = $nv_Request->get_int('preview_id', 'get', 0);
     $userid = defined('NV_IS_USER') ? (int) ($user_info['userid'] ?? 0) : 0;
     $isPreview = false;
@@ -72,12 +75,15 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
     $previewRow = null;
     $previewEffectivePriority = 0;
     $previewUpdatedTime = 0;
+    $previewError = '';
     if ($previewId > 0) {
         $sthPreview = $db->prepare('SELECT id, title, description, content, popup_type, priority, display_layout, url, type_open, css_class, updated_time, created_by FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_popups_detail WHERE id=:id LIMIT 1');
         $sthPreview->bindParam(':id', $previewId, PDO::PARAM_INT);
         $sthPreview->execute();
         $previewRow = $sthPreview->fetch();
-        if (!empty($previewRow)) {
+        if (empty($previewRow)) {
+            $previewError = $nv_Lang->getModule('preview_error_not_found');
+        } else {
             $isPreview = defined('NV_IS_ADMIN') || ($userid > 0 && (int) $previewRow['created_by'] === $userid);
         }
         if ($isPreview) {
@@ -87,6 +93,9 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
             }
             $previewUpdatedTime = (int) $previewRow['updated_time'];
         } else {
+            if ($previewError === '') {
+                $previewError = $nv_Lang->getModule('preview_error_not_allowed');
+            }
             $previewRow = null;
         }
     }
@@ -99,12 +108,60 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
         if ($isPreview && $previewOnly > 0) {
             continue;
         }
-        if ($pid > 0 && (int) $row['is_all_page'] !== 1) {
-            $ids = array_filter(array_map('trim', explode(',', (string) $row['list_id_page'])), static function ($v) {
-                return $v !== '';
-            });
-            $ids = array_map('intval', $ids);
-            if (empty($ids) || !in_array($pid, $ids, true)) {
+        if ((int) $row['is_all_page'] !== 1) {
+            $raw = (string) $row['display_pages'];
+            $ok = false;
+            $curOp = $f !== '' ? $f : 'main';
+
+            if ($m !== '' && $raw !== '') {
+                $decoded = json_decode($raw, true);
+                if (is_array($decoded)) {
+                    $moduleRule = $decoded;
+                    if (array_keys($decoded) !== range(0, count($decoded) - 1)) {
+                        $moduleRule = $decoded[$m] ?? null;
+                    }
+
+                    if (is_string($moduleRule)) {
+                        $ok = $moduleRule === '*';
+                    } elseif (is_array($moduleRule)) {
+                        $isList = array_keys($moduleRule) === range(0, count($moduleRule) - 1);
+                        if ($isList) {
+                            $funcs = array_map('strval', $moduleRule);
+                            $ok = in_array('*', $funcs, true) || in_array($curOp, $funcs, true);
+                        } else {
+                            $rule = $moduleRule[$curOp] ?? null;
+                            if ($rule === null && $m === 'news' && $iid > 0) {
+                                $rule = $moduleRule['detail'] ?? null;
+                            }
+                            if ($rule === '*' || $rule === true) {
+                                $ok = true;
+                            } elseif (is_array($rule)) {
+                                $vals = array_map('strval', $rule);
+                                if (in_array('*', $vals, true)) {
+                                    $ok = true;
+                                } else {
+                                    $ids = array_map('intval', $rule);
+                                    if ($iid > 0 && in_array($iid, $ids, true)) {
+                                        $ok = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!$ok && $pid > 0) {
+                $ids = array_filter(array_map('trim', explode(',', $raw)), static function ($v) {
+                    return $v !== '';
+                });
+                $ids = array_map('intval', $ids);
+                if (!empty($ids) && in_array($pid, $ids, true)) {
+                    $ok = true;
+                }
+            }
+
+            if (!$ok) {
                 continue;
             }
         }
@@ -174,7 +231,8 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
     }
     nv_jsonOutput([
         'popups' => $popups,
-        'preview_mode' => $isPreview ? 1 : 0
+        'preview_mode' => $isPreview ? 1 : 0,
+        'preview_error' => $previewError
     ]);
 }
 

@@ -114,3 +114,5 @@ $lang_module['to_date'] = 'Đến ngày';
 $lang_module['error_checkss'] = 'Lỗi bảo mật, vui lòng tải lại trang!';
 $lang_module['save_success'] = 'Thực hiện hoàn tất';
 $lang_module['error_mess'] = 'Đã có lỗi xảy ra trong quá trình xử lý';
+$lang_module['error_rang_time'] = 'Thời gian kết thúc phải lớn hơn thời gian bắt đầu';
+$lang_module['error_end_time'] = 'Thời gian kết thúc phải lớn hơn thời gian hiện tại';

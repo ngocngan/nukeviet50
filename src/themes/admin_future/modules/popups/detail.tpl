@@ -1,6 +1,6 @@
 <script src="{$smarty.const.ASSETS_STATIC_URL}/js/flatpickr/flatpickr.min.js"></script>
 <script src="{$smarty.const.ASSETS_STATIC_URL}/js/language/flatpickr-{$smarty.const.NV_LANG_INTERFACE}.js"></script>
-<div class="popup-detail-wrapper p-2 p-md-4">
+<div class="popup-detail-wrapper card-popup-content p-2 p-md-4">
     <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">        
         <div class="card-header bg-white py-3 px-3 px-md-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 border-bottom border-light">
             <div>
@@ -71,6 +71,6 @@
                 </div>
                 {/foreach}
             </div>
-        </div>        
+        </div>
     </div>
 </div>
