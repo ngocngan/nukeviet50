@@ -2,7 +2,6 @@
   if (window.__nvPopupsInit) return;
   window.__nvPopupsInit = true;
   window.__nvPopupsLoaded = true;
-  if (typeof nv_area_admin !== 'undefined' && parseInt(nv_area_admin, 10) === 1) return;
   var previewId = 0;
   var previewOnly = 0;
   var previewActive = false;
@@ -20,6 +19,7 @@
       }
     }
   }catch(e){ previewId = 0; }
+  if (typeof nv_area_admin !== 'undefined' && parseInt(nv_area_admin, 10) === 1 && previewId <= 0) return;
   function daysSince(ts){
     if(!ts) return Infinity;
     var diff = Date.now() - parseInt(ts,10);
@@ -37,6 +37,14 @@
       }
     }catch(e){}
     return '';
+  }
+  function getPageScope(){
+    try{
+      var mEl = document.querySelector('meta[name="nv-popups-module"]');
+      var mod = mEl ? (mEl.getAttribute('content') || '') : '';
+      if (!mod) return 'site';
+      return String(mod);
+    }catch(e){ return 'site'; }
   }
   function setCookie(name, value, maxAgeSeconds){
     try{
@@ -64,10 +72,11 @@
   }
   function getShowKey(data){
     var id = parseInt(data && data.id || 0, 10) || 0;
+    var scope = getPageScope();
     var t = parseInt(data && data.display_type || 0, 10) || 0;
-    if (t === 1) return 'nv_popups_sh_s_' + id;
-    if (t === 2) return 'nv_popups_sh_d_' + id;
-    if (t === 3) return 'nv_popups_sh_m_' + id;
+    if (t === 1) return 'nv_popups_sh_s_' + id + '_' + scope;
+    if (t === 2) return 'nv_popups_sh_d_' + id + '_' + scope;
+    if (t === 3) return 'nv_popups_sh_m_' + id + '_' + scope;
     return '';
   }
   function shouldTrack(id, act){
@@ -178,9 +187,9 @@
       header = '<div class="modal-header bg-primary text-white"><div class="modal-title">'+escapeHtml(data.title || '')+'</div><button type="button" class="nv-popups-x text-white" data-bs-dismiss="modal" aria-label="'+escapeHtml(closeText)+'">×</button></div>';
       footerBtn = '<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">'+escapeHtml(closeText)+'</button></div>';
     } else {
-      header = '<div class="nv-popups-header bg-primary text-white"><div class="nv-popups-header-title">'+escapeHtml(data.title || '')+'</div><button type="button" class="nv-popups-x text-white" aria-label="Close" data-nv-popups-close="1">×</button></div>';
+      header = '<div class="nv-popups-header bg-primary text-white"><div class="nv-popups-header-title">'+escapeHtml(data.title || '')+'</div><button type="button" class="nv-popups-x text-white" aria-label="'+escapeHtml(closeText)+'" data-nv-popups-close="1">×</button></div>';
       if (!data.title) {
-        header = '<div class="nv-popups-header bg-primary text-white"><div class="nv-popups-header-title"></div><button type="button" class="nv-popups-x text-white" aria-label="Close" data-nv-popups-close="1">×</button></div>';
+        header = '<div class="nv-popups-header bg-primary text-white"><div class="nv-popups-header-title"></div><button type="button" class="nv-popups-x text-white" aria-label="'+escapeHtml(closeText)+'" data-nv-popups-close="1">×</button></div>';
       }
       footerBtn = '<div class="nv-popups-footer"><button type="button" class="nv-popups-close btn btn-primary">'+escapeHtml(closeText)+'</button></div>';
     }
@@ -299,6 +308,20 @@
     if (pid > 0) {
       url += '&pid=' + encodeURIComponent(pid);
     }
+    try{
+      var mEl = document.querySelector('meta[name="nv-popups-module"]');
+      var fEl = document.querySelector('meta[name="nv-popups-op"]');
+      var iidEl = document.querySelector('meta[name="nv-popups-itemid"]');
+      var mod = mEl ? (mEl.getAttribute('content') || '') : '';
+      var fun = fEl ? (fEl.getAttribute('content') || '') : '';
+      var iid = iidEl ? (parseInt(iidEl.getAttribute('content') || '0', 10) || 0) : 0;
+      if (mod === 'news' && iid > 0) {
+        fun = 'detail';
+      }
+      if (mod) url += '&m=' + encodeURIComponent(mod);
+      if (fun) url += '&f=' + encodeURIComponent(fun);
+      if (iid > 0) url += '&iid=' + encodeURIComponent(iid);
+    }catch(e){}
     if (previewId > 0) {
       url += '&preview_id=' + encodeURIComponent(previewId);
       if (previewOnly > 0) {
@@ -312,12 +335,15 @@
       var url = getListUrl();
       if (typeof fetch === 'function') {
         fetch(url).then(function(r){return r.json();}).then(function(data){
-          if(data && Array.isArray(data.popups) && data.popups.length){
-            previewActive = (previewId > 0 && parseInt(data.preview_mode || 0, 10) === 1);
-            if (previewId > 0 && !previewActive) {
-              previewId = 0;
-              previewOnly = 0;
+          var hasPopups = !!(data && Array.isArray(data.popups) && data.popups.length);
+          if (previewId > 0) {
+            previewActive = (parseInt(data && data.preview_mode || 0, 10) === 1);
+            if (!previewActive) {
+              try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
+              return;
             }
+          }
+          if(hasPopups){
             if (previewActive && previewOnly > 0) {
               data.popups = data.popups.filter(function(p){ return parseInt(p && p.id || 0, 10) === previewId; });
               data.popups.forEach(function(p){
@@ -326,6 +352,10 @@
                   p.freq = 0;
                 }catch(e){}
               });
+            }
+            if (previewActive && previewOnly > 0 && !data.popups.length) {
+              try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
+              return;
             }
             data.popups.sort(function(a, b){
               var ap = parseInt(a.priority || 0, 10);
@@ -336,6 +366,8 @@
               return bt - at;
             });
             showSequential(data.popups);
+          } else if (previewId > 0) {
+            try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
           }
         }).catch(function(){});
         return;
@@ -347,12 +379,15 @@
         if (xhr.status >= 200 && xhr.status < 300) {
           try{
             var data = JSON.parse(xhr.responseText);
-            if(data && Array.isArray(data.popups) && data.popups.length){
-              previewActive = (previewId > 0 && parseInt(data.preview_mode || 0, 10) === 1);
-              if (previewId > 0 && !previewActive) {
-                previewId = 0;
-                previewOnly = 0;
+            var hasPopups = !!(data && Array.isArray(data.popups) && data.popups.length);
+            if (previewId > 0) {
+              previewActive = (parseInt(data && data.preview_mode || 0, 10) === 1);
+              if (!previewActive) {
+                try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
+                return;
               }
+            }
+            if(hasPopups){
               if (previewActive && previewOnly > 0) {
                 data.popups = data.popups.filter(function(p){ return parseInt(p && p.id || 0, 10) === previewId; });
                 data.popups.forEach(function(p){
@@ -361,6 +396,10 @@
                     p.freq = 0;
                   }catch(e){}
                 });
+              }
+              if (previewActive && previewOnly > 0 && !data.popups.length) {
+                try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
+                return;
               }
               data.popups.sort(function(a, b){
                 var ap = parseInt(a.priority || 0, 10);
@@ -371,6 +410,8 @@
                 return bt - at;
               });
               showSequential(data.popups);
+            } else if (previewId > 0) {
+              try{ if (data && data.preview_error) alert(String(data.preview_error)); }catch(e){}
             }
           }catch(e){}
         }

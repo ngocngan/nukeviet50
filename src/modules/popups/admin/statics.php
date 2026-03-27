@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $page_title = $nv_Lang->getModule('statics');
@@ -23,6 +23,8 @@ $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 
 $array_search['display_object'] = $nv_Request->get_int('display_object', 'get', 0);
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
+$array_search['t_start_time'] = nv_d2u_get($array_search['start_time']);
+$array_search['t_end_time'] = nv_d2u_get($array_search['end_time']);
 
 $base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 
@@ -46,11 +48,11 @@ if (!empty($array_search['display_object'])) {
 }
 if (!empty($array_search['start_time'])) {
     $base_url .= '&amp;start_time=' . $array_search['start_time'];
-    $_where[] = "start_time=" . $array_search['start_time'];
+    $_where[] = "start_time>=" . $array_search['t_start_time'];
 }
 if (!empty($array_search['end_time'])) {
     $base_url .= '&amp;end_time=' . $array_search['end_time'];
-    $_where[] = "end_time=" . $array_search['end_time'];
+    $_where[] = "end_time<=" . $array_search['t_end_time'];
 }
 
 $db->sqlreset()

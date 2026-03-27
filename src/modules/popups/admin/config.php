@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $page_title = $nv_Lang->getModule('config');
@@ -49,7 +49,7 @@ $array_data = [];
 $array_data['display_device'] = $array_data['display_layout'] = $array_data['display_object'] = 1;
 
 while ($row = $result->fetch()) {
-    $array_data[$row['config_name']] = $row['config_value'];        
+    $array_data[$row['config_name']] = $row['config_value'];
 }
 (isset($array_data['close_on_outside_click']) and $array_data['close_on_outside_click'] == 1) && $array_data['checked'] = 'checked';
 

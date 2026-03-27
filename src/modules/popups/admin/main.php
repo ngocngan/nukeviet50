@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $page_title = $nv_Lang->getModule('title_popup');
@@ -21,25 +21,33 @@ $array_search['type_popup'] = $nv_Request->get_title('type_popup', 'get', '');
 $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 0);
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
+$array_search['t_start_time'] = nv_d2u_get($array_search['start_time']);
+$array_search['t_end_time'] = nv_d2u_get($array_search['end_time']);
 $per_page = 15;
 
-$checkss = $nv_Request->get_string('checkss', 'post');
-if ($nv_Request->isset_request('delete', 'post')) {
-    $id = $nv_Request->get_string('id', 'post');
-    $listid = $nv_Request->get_string('listid', 'post');
+$checkss = $nv_Request->get_title('checkss', 'post');
+if ($admin_info['level'] <= 2 and $nv_Request->isset_request('delete', 'post')) {
+    $id = $nv_Request->get_int('id', 'post', 0);
+    $listid = $nv_Request->get_title('listid', 'post', '');
+    $id_array = array_map('intval', explode(',', $listid));
+    $id_array = array_filter($id_array);
+    $_listid = '';
+    if (!empty($id_array)) {
+        $_listid = implode(',', $id_array);
+    }
     if (!csrf_check($checkss, $csrf_key)) {
         nv_jsonOutput([
             'status' => 'error',
             'mess' => $nv_Lang->getModule('error_checkss')
         ]);
     }
-    if (!empty($id) || !empty($listid)) {
-        if (!empty($listid)) {
-            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id IN (" . $listid .")");
+    if (!empty($id) || !empty($_listid)) {
+        if (!empty($_listid)) {
+            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id IN (" . $_listid .")");
         } else {
             $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = " . $id);
         }
-        
+
         if ($exc) {
             $nv_Cache->delMod($module_name);
             nv_jsonOutput([
@@ -56,8 +64,14 @@ if ($nv_Request->isset_request('delete', 'post')) {
 
 if ($nv_Request->isset_request('change_status', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
-    $listid = $nv_Request->get_string('listid', 'post', '');
-    $action = $nv_Request->get_string('action', 'post', '');
+    $listid = $nv_Request->get_title('listid', 'post', '');
+    $id_array = array_map('intval', explode(',', $listid));
+    $id_array = array_filter($id_array);
+    $_listid = '';
+    if (!empty($id_array)) {
+        $_listid = implode(',', $id_array);
+    }
+    $action = $nv_Request->get_title('action', 'post', '');
     $status = $nv_Request->get_int('status', 'post', 0);
     if (!csrf_check($checkss, $csrf_key)) {
         nv_jsonOutput([
@@ -65,20 +79,17 @@ if ($nv_Request->isset_request('change_status', 'post')) {
             'mess' => $nv_Lang->getModule('error_checkss')
         ]);
     }
-    if (!empty($id) || !empty($listid)) {
-        $where = !empty($listid) ? " WHERE id IN (" . $listid . ")" : " WHERE id = " . $id;
+    if (!empty($id) || !empty($_listid)) {
+        $where = !empty($_listid) ? " WHERE id IN (" . $_listid . ")" : " WHERE id = " . $id;
         $status = $action == 'active' ? 1 : ($action == 'wait' ? 0 : ($action == 'stop' ? 2 : $status));
         if (!empty($where)) {
-            $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail " . $where)->fetchColumn();
-            if (!empty($row)) {
-                $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . $where);
-                if ($exc) {
-                    $nv_Cache->delMod($module_name);
-                    nv_jsonOutput([
-                        'status' => 'success',
-                        'mess' => $nv_Lang->getModule('save_success')
-                    ]);
-                }
+            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . $where);
+            if ($exc) {
+                $nv_Cache->delMod($module_name);
+                nv_jsonOutput([
+                    'status' => 'success',
+                    'mess' => $nv_Lang->getModule('save_success')
+                ]);
             }
         }
     }
@@ -107,13 +118,13 @@ if (!empty($array_search['display_layout'])) {
     $base_url .= '&amp;display_layout=' . $array_search['display_layout'];
     $_where[] = "display_layout=" . $array_search['display_layout'];
 }
-if (!empty($array_search['start_time'])) {
+if (!empty($array_search['t_start_time'])) {
     $base_url .= '&amp;start_time=' . $array_search['start_time'];
-    $_where[] = "start_time=" . $array_search['start_time'];
+    $_where[] = "start_time>=" . $array_search['t_start_time'];
 }
-if (!empty($array_search['end_time'])) {
+if (!empty($array_search['t_end_time'])) {
     $base_url .= '&amp;end_time=' . $array_search['end_time'];
-    $_where[] = "end_time=" . $array_search['end_time'];
+    $_where[] = "end_time<=" . $array_search['t_end_time'];
 }
 
 $db->sqlreset()
@@ -145,9 +156,9 @@ while ($row = $sth->fetch()) {
     $row['label_status'] = $row['status'] == 1 ? 'success' : ($row['status'] == 2 ? 'danger' : 'warning');
     $row['status'] = $nv_Lang->getModule('status_' . $row['status']);
     $row['popup_type'] = isset($arr_type_popup[$row['popup_type']]) ? $arr_type_popup[$row['popup_type']] : '';
-    $row['total_view'] = nv_number_format($row['total_view']);
-    $row['total_click'] = nv_number_format($row['total_click']);
-    $row['total_closed'] = nv_number_format($row['total_closed']);
+    $row['total_view'] = nv_number_format($row['total_view'] ?? 0);
+    $row['total_click'] = nv_number_format($row['total_click'] ?? 0);
+    $row['total_closed'] = nv_number_format($row['total_closed'] ?? 0);
     $row['total_click_view'] = nv_number_format($row['total_click']) . '/' . nv_number_format($row['total_view']);
     $row['display_layout'] = $nv_Lang->getModule('display_layout_' . $row['display_layout']);
     $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];;

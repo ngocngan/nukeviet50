@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $id = $nv_Request->get_int('id', 'get, post', 0);
@@ -30,7 +30,7 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
             'mess' => $nv_Lang->getModule('error_checkss')
         ]);
     }
-    if (!empty($id)) {        
+    if (!empty($id)) {
         if ($nv_Request->isset_request('status', 'post, get')) {
             $status = $nv_Request->get_int('status', 'post', 0);
             $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetchColumn();
@@ -47,7 +47,7 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
                     'mess' => $nv_Lang->getModule('save_success')
                 ]);
             }
-        } else {        
+        } else {
             $row = $db->query("SELECT id, status, start_time, end_time FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetch();
             if (empty($row)) {
                 nv_jsonOutput([
@@ -60,13 +60,13 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
             } else if ($row['status'] == 3) {
                 $status = 1;
             }
-            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . " WHERE id = " . $id);
+            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . " WHERE id = " . $id);
             if ($exc) {
                 $nv_Cache->delMod($module_name);
                 nv_jsonOutput([
                     'status' => 'success',
                     'mess' => $nv_Lang->getModule('save_success')
-                ]);            
+                ]);
             }
         }
     }
@@ -93,7 +93,7 @@ $detail['end_time'] = nv_date('H:i d/m/Y', $detail['end_time']);
 $detail['created_time'] = nv_date('H:i d/m/Y', $detail['created_time']);
 $detail['label_status'] = $detail['status'] == 1 ? 'success' : ($detail['status'] == 2 ? 'danger' : 'warning');
 $detail['status_txt'] = $nv_Lang->getModule('status_' . $detail['status']);
-$detail['popup_type'] = isset($arr_type_popup[$detail['popup_type']]) ? $arr_type_popup[$detail['popup_type']] : '';
+$detail['popup_type_text'] = isset($arr_type_popup[$detail['popup_type']]) ? $arr_type_popup[$detail['popup_type']] : '';
 $list_module = [];
 if ($detail['is_all_page'] == 1) {
     $show_page = $nv_Lang->getModule('all_page');
@@ -120,7 +120,7 @@ if ($detail['is_all_page'] == 1) {
 $array_data['data'][] = ['id', $detail['id']];
 $array_data['data'][] = [$nv_Lang->getModule('title'), $detail['title']];
 $array_data['data'][] = [$nv_Lang->getModule('description'), $detail['description']];
-$array_data['data'][] = [$nv_Lang->getModule('type_popup'), $detail['popup_type']];
+$array_data['data'][] = [$nv_Lang->getModule('type_popup'), $detail['popup_type_text']];
 $array_data['data'][] = [$nv_Lang->getModule('display_layout'), $arr_layout[$detail['display_layout']] ?? ''];
 $array_data['data'][] = [$nv_Lang->getModule('display_object'), $arr_object[$detail['display_object']] ?? ''];
 $array_data['data'][] = [$nv_Lang->getModule('display_device'), $arr_device[$detail['display_device']] ?? ''];
@@ -136,8 +136,8 @@ $array_data['data'][] = [$nv_Lang->getModule('total_closed'), $detail['total_clo
 $array_data['data'][] = [$nv_Lang->getModule('created_date'), $detail['created_time']];
 $array_data['data'][] = [$nv_Lang->getModule('show_page'), $show_page];
 $array_data['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=add&amp;id=' . $detail['id'];
-$array_data['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;preview_id=' . $row['id'] . '&preview_only=1';
-    
+$array_data['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;preview_id=' . $detail['id'] . '&preview_only=1';
+
 $base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 
 $stpl = new \NukeViet\Template\NVSmarty();
