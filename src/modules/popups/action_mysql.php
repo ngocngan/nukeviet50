@@ -8,13 +8,12 @@
  * @Createdate Tue, 02 Mar 2026 09:11:42 GMT
  */
 
-if (!defined('NV_IS_FILE_MODULES'))
+if (!defined('NV_IS_FILE_MODULES')) {
     die('Stop!!!');
-
+}
 $sql_drop_module = array();
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $module_data . "_config;";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_detail;";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_statics;";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $module_data . "_logs;";
 
 $sql_create_module = $sql_drop_module;
@@ -54,21 +53,14 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
     KEY display_layout (display_layout),
     KEY display_device (display_device),
     KEY updated_time (updated_time)
-) ENGINE=MyISAM COMMENT 'Bảng lưu thông tin chi tiết các popup';";
+) ENGINE=InnoDB COMMENT 'Bảng lưu thông tin chi tiết các popup';";
 
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $module_data . "_config (
     id int(11) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'ID popup',
     config_name VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Tên cấu hình',
     config_value VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Giá trị cấu hình',
     PRIMARY KEY (id)
-) ENGINE=MyISAM COMMENT 'Bảng lưu dữ liệu thống kê';";
-
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_statics (
-    id int(11) unsigned NOT NULL AUTO_INCREMENT  COMMENT 'ID popup',
-    config_name VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Tên cấu hình',
-    config_value VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Giá trị cấu hình',
-    PRIMARY KEY (id)
-) ENGINE=MyISAM COMMENT 'Bảng lưu dữ liệu thống kê';";
+) ENGINE=InnoDB COMMENT 'Bảng cấu hình module';";
 
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $module_data . "_logs (
     id int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -82,8 +74,8 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $module_da
     KEY userid (userid),
     KEY act (act),
     KEY log_time (log_time)
-) ENGINE=MyISAM COMMENT 'Bảng lưu log hiển thị/click/đóng popup';";
- 
+) ENGINE=InnoDB COMMENT 'Bảng lưu log hiển thị/click/đóng popup';";
+
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_config (config_name, config_value) VALUES ('display_layout', '1');";
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_config (config_name, config_value) VALUES ('popup_delay', '1');";
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_config (config_name, config_value) VALUES ('display_frequency', '0');";
@@ -103,7 +95,7 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 (7, 'Popup - Chưa tới giờ', 'Test: chưa tới thời điểm', '<p>Không được trả về</p>', 'noti', 10, 0, '', 1, '0', 1, 2, 0, 0, " . ($now + 3600) . ", 0, '', '_self', 1, 'nv-popups-demo-future', " . $now . ", " . ($now - 50) . ", 1),
 (8, 'Popup - Bị đình chỉ', 'Test: status=2', '<p>Không được trả về</p>', 'prom', 10, 0, '', 1, '0', 1, 2, 0, 0, " . ($now - 60) . ", 0, '', '_self', 1, 'nv-popups-demo-off', " . $now . ", " . ($now - 60) . ", 1),
 (9, 'Popup - Có danh sách trang', 'Test: News (main) + toàn bộ About', '<p>Test lọc trang (news chọn main; about tất cả)</p>', 'prom', 4, 0, '{\"news\":[\"main\"],\"about\":[\"*\"]}', 0, '0', 1, 4, 0, 0, " . ($now - 60) . ", 0, '', '_self', 1, 'nv-popups-demo-pages', " . $now . ", " . ($now - 70) . ", 1),
-(10, 'Popup - Tin tức (chỉ user)', 'Ví dụ: chỉ hiện khi pid=2 (Module Tin tức/news) và đã đăng nhập (Always)', '<p>Test: chỉ hiện với user (đã đăng nhập) ở Module Tin tức (pid=2)</p>', 'Test', 3, 0, '2', 0, '1', 1, 4, 0, 0, 0, 0, '', '_self', 1, 'nv-popups-demo-page-2', " . $now . ", " . $now . ", 1),
+(10, 'Popup - Tin tức (chỉ user)', 'Ví dụ: chỉ hiện khi pid=2 (Module Tin tức/news) và đã đăng nhập (Always)', '<p>Test: chỉ hiện với user (đã đăng nhập) ở Module Tin tức (pid=2)</p>', 'prom', 3, 0, '2', 0, '1', 1, 4, 0, 0, 0, 0, '', '_self', 1, 'nv-popups-demo-page-2', " . $now . ", " . $now . ", 1),
 (11, 'Popup - Chỉ khách (ẩn khi login)', 'Ví dụ: chưa đăng nhập thì thấy, đăng nhập thì không thấy', '<p>Test: guest-only</p>', 'prom', 2, 0, '', 1, '2', 1, 4, 0, 0, " . ($now - 60) . ", 0, '', '_self', 1, 'nv-popups-demo-guest-only', " . $now . ", " . $now . ", 1),
 (12, 'Popup - Chỉ user (1 lần)', 'Ví dụ: đăng nhập thì thấy 1 lần duy nhất rồi không hiện nữa', '<p>Test: user-only + max_show=1</p>', 'prom', 2, 0, '', 1, '1', 1, 4, 0, 1, " . ($now - 60) . ", 0, '', '_self', 1, 'nv-popups-demo-user-only-2', " . $now . ", " . $now . ", 1),
 (13, 'Popup - About (mỗi 2 phút)', 'Test: display_type=3, display_interval=2, chỉ ở About', '<p>Test: every 2 minutes (About)</p>', 'prom', 5, 0, '{\"about\":[\"*\"]}', 0, '0', 1, 3, 2, 0, " . ($now - 60) . ", 0, '', '_self', 1, 'nv-popups-demo-about-2m', " . $now . ", " . $now . ", 1),

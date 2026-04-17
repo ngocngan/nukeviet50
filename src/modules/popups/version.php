@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @Project Module Nukeviet 5.x
  * @Author Webvang.vn (hoang.nguyen@webvang.vn)
@@ -7,10 +7,11 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 02 Mar 2026 09:11:42 GMT
  */
- 
-if (!defined('NV_ADMIN') or !defined('NV_MAINFILE'))
-    die('Stop!!!');
- 
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
+    exit('Stop!!!');
+}
+
 $module_version = array(
     'name' => 'popups',
     'modfuncs' => 'main',

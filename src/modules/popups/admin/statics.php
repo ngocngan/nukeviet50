@@ -26,16 +26,20 @@ $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
 $array_search['t_start_time'] = nv_d2u_get($array_search['start_time']);
 $array_search['t_end_time'] = nv_d2u_get($array_search['end_time']);
 
+if (!empty($array_search['t_start_time']) && !empty($array_search['t_end_time']) && $array_search['t_start_time'] > $array_search['t_end_time']) {
+    $array_search['start_time'] = '';
+    $array_search['t_start_time'] = 0;
+}
+
 $base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 
 $_where = [];
-$where_statics = '';
 if ($array_search['status'] >= 0) {
     $base_url .= '&amp;status=' . $array_search['status'];
     $_where[] = "status=" . $array_search['status'];
 }
 if (!empty($array_search['type_popup'])) {
-    $base_url .= '&amp;type_popup=' . $array_search['type_popup'];
+    $base_url .= '&amp;type_popup=' . urlencode($array_search['type_popup']);
     $_where[] = "popup_type=" . $db->quote($array_search['type_popup']);
 }
 if (!empty($array_search['display_layout'])) {
@@ -78,20 +82,28 @@ if ($page > 1) {
 }
 while ($row = $sth->fetch()) {
     $row['stt'] = $stt++;
-    $row['ctr_click_view'] = !empty($row['total_view']) ? round($row['total_click'] / $row['total_view'] * 100, 2) . '%' : '0%';
-    $row['ctr_closed_view'] = !empty($row['total_view']) ? round($row['total_closed'] / $row['total_view'] * 100, 2) . '%' : '0%';
+    $row['ctr_click_view'] = ($row['total_view'] > 0) ? round($row['total_click'] / $row['total_view'] * 100, 2) . '%' : '0%';
+    $row['ctr_closed_view'] = ($row['total_view'] > 0) ? round($row['total_closed'] / $row['total_view'] * 100, 2) . '%' : '0%';
     $row['total_click'] = nv_number_format($row['total_click']);
     $row['total_closed'] = nv_number_format($row['total_closed']);
     $row['total_view'] = nv_number_format($row['total_view']);
-    $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];;
+    $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];
     $array_data[] = $row;
 }
 $generate_page = nv_generate_page($base_url, $all_page, $per_page, $page);
 
-$sql = "SELECT SUM(total_view) as total_view, SUM(total_click) as total_click, SUM(total_closed) as total_closed FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail" . $where_statics;
-$static = $db->query($sql)->fetch();
-$static['ctr_click_view'] = !empty($static['total_view']) ? round($static['total_click'] / $static['total_view'] * 100, 2) . '%' : '0%';
-$static['ctr_closed_view'] = !empty($static['total_view']) ? round($static['total_closed'] / $static['total_view'] * 100, 2) . '%' : '0%';
+$db->sqlreset()
+    ->select('SUM(total_view) as total_view, SUM(total_click) as total_click, SUM(total_closed) as total_closed')
+    ->from($db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail");
+if (!empty($_where)) {
+    $db->where(implode(' AND ', $_where));
+}
+$sth = $db->prepare($db->sql());
+$sth->execute();
+$static = $sth->fetch();
+
+$static['ctr_click_view'] = ($static['total_view'] > 0) ? round($static['total_click'] / $static['total_view'] * 100, 2) . '%' : '0%';
+$static['ctr_closed_view'] = ($static['total_view'] > 0) ? round($static['total_closed'] / $static['total_view'] * 100, 2) . '%' : '0%';
 $static['total_click'] = nv_number_format($static['total_click'] ?? 0);
 $static['total_closed'] = nv_number_format($static['total_closed'] ?? 0);
 $static['total_view'] = nv_number_format($static['total_view'] ?? 0);

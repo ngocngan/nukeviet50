@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_ADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $submenu['add'] = $nv_Lang->getModule('add_new_popup');

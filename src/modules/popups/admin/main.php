@@ -43,7 +43,7 @@ if ($admin_info['level'] <= 2 and $nv_Request->isset_request('delete', 'post')) 
     }
     if (!empty($id) || !empty($_listid)) {
         if (!empty($_listid)) {
-            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id IN (" . $_listid .")");
+            $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id IN (" . $_listid . ")");
         } else {
             $exc = $db->exec("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = " . $id);
         }
@@ -81,16 +81,19 @@ if ($nv_Request->isset_request('change_status', 'post')) {
     }
     if (!empty($id) || !empty($_listid)) {
         $where = !empty($_listid) ? " WHERE id IN (" . $_listid . ")" : " WHERE id = " . $id;
-        $status = $action == 'active' ? 1 : ($action == 'wait' ? 0 : ($action == 'stop' ? 2 : $status));
-        if (!empty($where)) {
-            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . $where);
-            if ($exc) {
-                $nv_Cache->delMod($module_name);
-                nv_jsonOutput([
-                    'status' => 'success',
-                    'mess' => $nv_Lang->getModule('save_success')
-                ]);
-            }
+        $status_map = [
+            'active' => 1,
+            'wait' => 0,
+            'stop' => 2
+        ];
+        $status = $status_map[$action] ?? $status;
+        $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . $where);
+        if ($exc) {
+            $nv_Cache->delMod($module_name);
+            nv_jsonOutput([
+                'status' => 'success',
+                'mess' => $nv_Lang->getModule('save_success')
+            ]);
         }
     }
     nv_jsonOutput([
@@ -161,7 +164,7 @@ while ($row = $sth->fetch()) {
     $row['total_closed'] = nv_number_format($row['total_closed'] ?? 0);
     $row['total_click_view'] = nv_number_format($row['total_click']) . '/' . nv_number_format($row['total_view']);
     $row['display_layout'] = $nv_Lang->getModule('display_layout_' . $row['display_layout']);
-    $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];;
+    $row['link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=detail&amp;id=' . $row['id'];
     $row['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=add&amp;id=' . $row['id'];
     $row['link_preview'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;preview_id=' . $row['id'] . '&preview_only=1';
     $array_data[] = $row;

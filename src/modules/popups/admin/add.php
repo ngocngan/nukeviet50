@@ -54,8 +54,10 @@ if ($nv_Request->isset_request('save', 'post')) {
     $display_pages = html_entity_decode($display_pages);
     $page_json = json_decode($display_pages, true);
     if (json_last_error() === JSON_ERROR_NONE && is_array($page_json)) {
-        array_walk_recursive($page_json, function(&$item) {
-            $item = nv_htmlspecialchars(strip_tags($item));
+        array_walk_recursive($page_json, function (&$item) {
+            if (is_string($item)) {
+                $item = nv_htmlspecialchars(strip_tags($item));
+            }
         });
         $display_pages = json_encode($page_json);
     } else {
@@ -75,7 +77,7 @@ if ($nv_Request->isset_request('save', 'post')) {
     $end_date = $nv_Request->get_title('end_time', 'post', '');
     $hour_start_time = $nv_Request->get_int('start_date_h', 'post', 0);
     $minute_start_time = $nv_Request->get_int('start_date_m', 'post', 0);
-    $hour_end_time = $nv_Request->get_int('end_date_h', 'post', 0);    
+    $hour_end_time = $nv_Request->get_int('end_date_h', 'post', 0);
     $minute_end_time = $nv_Request->get_int('end_date_m', 'post', 0);
     $css_class = $nv_Request->get_title('css_class', 'post', '');
     $content = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS);
@@ -122,6 +124,16 @@ if ($nv_Request->isset_request('save', 'post')) {
         $respon['input'] = 'priority';
         $respon['mess'] = $nv_Lang->getModule('priority_not_selected');
         nv_jsonOutput($respon);
+    } elseif (empty($content)) {
+        $error = $nv_Lang->getModule('content_not_empty');
+        $respon['input'] = 'content';
+        $respon['mess'] = $nv_Lang->getModule('content_not_empty');
+        nv_jsonOutput($respon);
+    } elseif (!$click_url_allow) {
+        $error = $nv_Lang->getModule('click_url_invalid');
+        $respon['input'] = 'url_click';
+        $respon['mess'] = $nv_Lang->getModule('click_url_invalid');
+        nv_jsonOutput($respon);
     } else {
         if (empty($start_date)) {
             $starttime = $time_cr;
@@ -161,13 +173,12 @@ if ($nv_Request->isset_request('save', 'post')) {
                 :start_time, :end_time, :url, :type_open, :display_device, :css_class, :created_time, :created_by
             )");
             $sth->bindValue(':created_time', NV_CURRENTTIME, PDO::PARAM_INT);
-        
         } else {
             $sth = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET
                 title=:title, description=:description, content=:content, popup_type=:popup_type, priority=:priority, status=:status, display_pages=:display_pages, is_all_page=:is_all_page, display_object=:display_object, display_layout=:display_layout, 
                 display_type=:display_type, display_interval=:display_interval, max_show=:max_show, start_time=:start_time, end_time=:end_time, url=:url, type_open=:type_open, display_device=:display_device, css_class=:css_class, updated_time=:updated_time, created_by=:created_by
                 WHERE id = " . $id);
-            $sth->bindValue(':updated_time', NV_CURRENTTIME, PDO::PARAM_INT);        
+            $sth->bindValue(':updated_time', NV_CURRENTTIME, PDO::PARAM_INT);
         }
         $sth->bindParam(':title', $title, PDO::PARAM_STR);
         $sth->bindParam(':description', $description, PDO::PARAM_STR);
@@ -198,19 +209,21 @@ if ($nv_Request->isset_request('save', 'post')) {
         $respon['status'] = 'ok';
         $respon['redirect'] = $redirect;
         nv_jsonOutput($respon);
-    }  
+    }
 }
 
 $array_data = [];
 if (!empty($id)) {
-    $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id= " . $id;
-    $array_data = $db->query($sql)->fetch();
+    $sth = $db->prepare("SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = :id");
+    $sth->bindParam(':id', $id, PDO::PARAM_INT);
+    $sth->execute();
+    $array_data = $sth->fetch();
 }
 
 if (empty($array_data)) {
     $array_data['status'] = $array_data['display_device'] = $array_data['display_object'] = 0;
     $array_data['display_layout'] = $array_data['type_open'] = $array_data['start_hour'] = $array_data['start_minute'] = 0;
-    $array_data['end_hour'] = $array_data['end_minute'] = $array_data['display_type'] = $array_data['display_interval'] = $array_data['max_show']= 0;
+    $array_data['end_hour'] = $array_data['end_minute'] = $array_data['display_type'] = $array_data['display_interval'] = $array_data['max_show'] = 0;
     $array_data['start_time'] = $array_data['end_time'] = $array_data['content'] = $array_data['description'] = $array_data['title'] = '';
     $array_data['priority'] = $array_data['url'] = $array_data['css_class'] = $array_data['popup_type'] = $array_data['display_pages'] = '';
     $array_data['is_all_page'] = 0;
@@ -231,7 +244,7 @@ if (empty($array_data)) {
         $array_data['end_minute'] = 59;
     }
     $array_data['start_time'] = nv_date('d/m/Y', $array_data['start_time']);
-    $array_data['end_time'] = nv_date('d/m/Y', $array_data['end_time']);    
+    $array_data['end_time'] = nv_date('d/m/Y', $array_data['end_time']);
 }
 if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';

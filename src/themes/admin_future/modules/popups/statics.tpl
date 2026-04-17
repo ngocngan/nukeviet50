@@ -123,7 +123,7 @@
                     {foreach from=$DATA item=row}
                     <tr>
                         <td>{$row.stt}</td>            
-                        <td><a href="{$row.link}">{$row.title}</a></td>
+                        <td><a href="{$row.link}">{$row.title|escape:'html'}</a></td>
                         <td>{$row.total_view}</td>
                         <td>{$row.total_click}</td>
                         <td>{$row.ctr_click_view}</td>

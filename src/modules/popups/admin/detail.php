@@ -14,16 +14,18 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $id = $nv_Request->get_int('id', 'get, post', 0);
 $page_title = $nv_Lang->getModule('detail_popup');
-$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id;
-$detail = $db->query($sql)->fetch();
+$sth = $db->prepare("SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = :id");
+$sth->bindParam(':id', $id, PDO::PARAM_INT);
+$sth->execute();
+$detail = $sth->fetch();
 $array_data = [];
 if (empty($detail)) {
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 }
 
-$checkss = $nv_Request->get_title('checkss', 'post,get', '');
-if ($nv_Request->isset_request('change_status', 'post, get')) {
-    $id = $nv_Request->get_int('id', 'post,get', 0);
+if ($nv_Request->isset_request('change_status', 'post')) {
+    $checkss = $nv_Request->get_title('checkss', 'post', '');
+    $id = $nv_Request->get_int('id', 'post', 0);
     if (!csrf_check($checkss, $csrf_key) or empty($id)) {
         nv_jsonOutput([
             'status' => 'error',
@@ -31,16 +33,23 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
         ]);
     }
     if (!empty($id)) {
-        if ($nv_Request->isset_request('status', 'post, get')) {
+        if ($nv_Request->isset_request('status', 'post')) {
             $status = $nv_Request->get_int('status', 'post', 0);
-            $row = $db->query("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetchColumn();
+            $sth = $db->prepare("SELECT id FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = :id");
+            $sth->bindParam(':id', $id, PDO::PARAM_INT);
+            $sth->execute();
+            $row = $sth->fetchColumn();
             if (empty($row)) {
                 nv_jsonOutput([
                     'status' => 'error',
                     'mess' => $nv_Lang->getModule('error_mess')
                 ]);
             }
-            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . "  WHERE id = " . $id);
+            $sth_update = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = :status, updated_time = :updated_time WHERE id = :id");
+            $sth_update->bindParam(':status', $status, PDO::PARAM_INT);
+            $sth_update->bindValue(':updated_time', NV_CURRENTTIME, PDO::PARAM_INT);
+            $sth_update->bindParam(':id', $id, PDO::PARAM_INT);
+            $exc = $sth_update->execute();
             if ($exc) {
                 nv_jsonOutput([
                     'status' => 'success',
@@ -48,7 +57,10 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
                 ]);
             }
         } else {
-            $row = $db->query("SELECT id, status, start_time, end_time FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id=" . $id)->fetch();
+            $sth = $db->prepare("SELECT id, status, start_time, end_time FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail WHERE id = :id");
+            $sth->bindParam(':id', $id, PDO::PARAM_INT);
+            $sth->execute();
+            $row = $sth->fetch();
             if (empty($row)) {
                 nv_jsonOutput([
                     'status' => 'error',
@@ -60,7 +72,11 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
             } else if ($row['status'] == 3) {
                 $status = 1;
             }
-            $exc = $db->exec("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = " . $status . ", updated_time = " . NV_CURRENTTIME . " WHERE id = " . $id);
+            $sth_update = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET status = :status, updated_time = :updated_time WHERE id = :id");
+            $sth_update->bindParam(':status', $status, PDO::PARAM_INT);
+            $sth_update->bindValue(':updated_time', NV_CURRENTTIME, PDO::PARAM_INT);
+            $sth_update->bindParam(':id', $id, PDO::PARAM_INT);
+            $exc = $sth_update->execute();
             if ($exc) {
                 $nv_Cache->delMod($module_name);
                 nv_jsonOutput([
@@ -110,9 +126,10 @@ if ($detail['is_all_page'] == 1) {
 
         if (!empty($list_names)) {
             // Lấy tên hiển thị của Module
-            $mod_title = empty($site_mods[$mod]['site_title']) ? $site_mods[$mod]['custom_title'] : $site_mods[$mod]['site_title'];            
-            // Gom nhóm lại dạng: Tên Module (Trang 1, Trang 2)
-            $temp_modules[] = "<span class='text-primary fw-bold'>" . $mod_title . "</span> (" . implode(', ', $list_names) . ")";
+            $mod_title = empty($site_mods[$mod]['site_title']) ? $site_mods[$mod]['custom_title'] : $site_mods[$mod]['site_title'];
+            $mod_title_escaped = nv_htmlspecialchars($mod_title);
+            $list_names_escaped = array_map('nv_htmlspecialchars', $list_names);
+            $temp_modules[] = "<span class='text-primary fw-bold'>" . $mod_title_escaped . "</span> (" . implode(', ', $list_names_escaped) . ")";
         }
     }
     $show_page = implode(' | ', $temp_modules);

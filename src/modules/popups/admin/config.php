@@ -14,7 +14,7 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $nv_Lang->getModule('config');
 $submit = $nv_Request->get_title('submit', 'post');
-$checkss = $nv_Request->get_title('checkss', 'post,get', '');
+$checkss = $nv_Request->get_title('checkss', 'post', '');
 if (!empty($submit)) {
     if (!csrf_check($checkss, $csrf_key)) {
         nv_jsonOutput([
@@ -23,12 +23,12 @@ if (!empty($submit)) {
         ]);
     }
     $data = [];
-    $data['display_layout'] = $nv_Request->get_int('display_layout', 'post,get', 0);
-    $data['popup_delay'] = $nv_Request->get_title('popup_delay', 'post,get', 0);
-    $data['display_frequency'] = $nv_Request->get_int('display_frequency', 'post,get', 0);
-    $data['display_device'] = $nv_Request->get_int('display_device', 'post,get', 0);
-    $data['display_object'] = $nv_Request->get_int('display_object', 'post,get', 0);
-    $data['close_on_outside_click'] = $nv_Request->get_int('close_on_outside_click', 'post,get', 0);
+    $data['display_layout'] = $nv_Request->get_int('display_layout', 'post', 0);
+    $data['popup_delay'] = $nv_Request->get_int('popup_delay', 'post', 0);
+    $data['display_frequency'] = $nv_Request->get_int('display_frequency', 'post', 0);
+    $data['display_device'] = $nv_Request->get_int('display_device', 'post', 0);
+    $data['display_object'] = $nv_Request->get_int('display_object', 'post', 0);
+    $data['close_on_outside_click'] = $nv_Request->get_int('close_on_outside_click', 'post', 0);
 
     $sth = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . $module_data . "_config SET config_value = :config_value WHERE config_name = :config_name");
     foreach ($data as $config_name => $config_value) {
@@ -46,12 +46,20 @@ if (!empty($submit)) {
 $sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . $module_data . "_config";
 $result = $db->query($sql);
 $array_data = [];
-$array_data['display_device'] = $array_data['display_layout'] = $array_data['display_object'] = 1;
 
 while ($row = $result->fetch()) {
     $array_data[$row['config_name']] = $row['config_value'];
 }
-(isset($array_data['close_on_outside_click']) and $array_data['close_on_outside_click'] == 1) && $array_data['checked'] = 'checked';
+
+$array_data['display_device'] = $array_data['display_device'] ?? 1;
+$array_data['display_layout'] = $array_data['display_layout'] ?? 1;
+$array_data['display_object'] = $array_data['display_object'] ?? 0;
+$array_data['popup_delay'] = $array_data['popup_delay'] ?? 0;
+$array_data['display_frequency'] = $array_data['display_frequency'] ?? 0;
+
+if (isset($array_data['close_on_outside_click']) && $array_data['close_on_outside_click'] == 1) {
+    $array_data['checked'] = 'checked';
+}
 
 $stpl = new \NukeViet\Template\NVSmarty();
 $stpl->setTemplateDir(get_module_tpl_dir('config.tpl'));

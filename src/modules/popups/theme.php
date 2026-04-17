@@ -7,6 +7,7 @@
  * @License: Not free read more http://nukeviet.vn/vi/store/modules/nvtools/
  * @Createdate Tue, 02 Mar 2026 09:11:42 GMT
  */
+
 if (!defined('NV_IS_MOD_POPUPS')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }

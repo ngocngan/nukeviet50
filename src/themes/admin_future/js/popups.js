@@ -246,6 +246,7 @@ function changePopupStatus(id, newStatus, textStatus, label, checkss) {
             }            
         },
         error: function (xhr, text, err) {
+            badge.removeClass('opacity-50');
             nvToast(text, 'error');
         }
     });

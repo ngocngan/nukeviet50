@@ -17,14 +17,14 @@
             <div class="row mb-3">
                 <label for="lb_popup_delay" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('popup_delay')}</label>
                 <div class="col-sm-8 col-lg-6 col-xxl-5">
-                    <input type="number" value="{$DATA.popup_delay}" class="form-control" id="lb_popup_delay" name="popup_delay">
+                    <input type="number" value="{$DATA.popup_delay|escape:'html'}" class="form-control" id="lb_popup_delay" name="popup_delay">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="lb_display_frequency" class="col-sm-3 col-form-label text-sm-end">{$LANG->getModule('display_frequency')}</label>
                 <div class="col-sm-8 col-lg-6 col-xxl-5">
                     <div class="input-group">
-                        <input type="number" value="{$DATA.display_frequency}" class="form-control" id="lb_display_frequency" name="display_frequency">
+                        <input type="number" value="{$DATA.display_frequency|escape:'html'}" class="form-control" id="lb_display_frequency" name="display_frequency">
                     </div>
                     <div class="form-text">{$LANG->getModule('display_frequency_note')}</div>
                 </div>

@@ -22,7 +22,7 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
         return null;
     }
 
-    global $global_config, $db, $db_config, $home, $module_name, $op, $nv_Request;
+    global $global_config, $db_slave, $db_config, $home, $module_name, $op, $nv_Request, $user_info;
     $themes = [];
     if (!empty($global_config['current_theme_type']) && $global_config['current_theme_type'] === 'm' && !empty($global_config['mobile_theme']) && !str_starts_with($global_config['mobile_theme'], ':')) {
         $themes[] = $global_config['mobile_theme'];
@@ -69,11 +69,12 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
             return $v !== '';
         })));
         if (!empty($keys)) {
-            $sth = $db->prepare('SELECT id FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_popups_page WHERE status=1 AND module_name=:m LIMIT 1');
+            $sth = $db_slave->prepare('SELECT id FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_popups_page WHERE status=1 AND module_name=:m LIMIT 1');
             foreach ($keys as $k) {
-                $sth->bindParam(':m', $k, PDO::PARAM_STR);
+                $sth->bindValue(':m', $k, PDO::PARAM_STR);
                 $sth->execute();
                 $tmp = (int) $sth->fetchColumn();
+                $sth->closeCursor();
                 if ($tmp > 0) {
                     $pageId = $tmp;
                     break;
@@ -82,7 +83,9 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
         }
     } catch (Throwable $e) {
         $pageId = 0;
-        trigger_error(print_r($e, true));
+        if (defined('NV_IS_ADMIN')) {
+            trigger_error($e->getMessage());
+        }
     }
     if ($pageId <= 0 && !empty($home)) {
         $pageId = 1;
@@ -106,9 +109,14 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
     }
 
     $adminMeta = defined('NV_IS_ADMIN') ? '<meta name="nv-popups-admin" content="1">' : '';
+    $moduleMeta = htmlspecialchars((string) ($module_name ?? ''), ENT_QUOTES, 'UTF-8');
+    $opMeta = htmlspecialchars((string) ($op ?? ''), ENT_QUOTES, 'UTF-8');
+    $userid = defined('NV_IS_USER') ? (int) ($user_info['userid'] ?? 0) : 0;
+    $checkssMetaValue = htmlspecialchars(csrf_create('popups_tracking_' . $userid), ENT_QUOTES, 'UTF-8');
+    $checkssMeta = '<meta name="nv-popups-checkss" content="' . $checkssMetaValue . '">';
 
     if (strpos($contents, 'name="nv-popups"') === false) {
-        $meta = '<meta name="nv-popups" content="1"><meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">' . $adminMeta;
+        $meta = '<meta name="nv-popups" content="1"><meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . $moduleMeta . '"><meta name="nv-popups-op" content="' . $opMeta . '">' . $checkssMeta . $adminMeta;
         if (stripos($contents, '</head>') !== false) {
             $contents = preg_replace('/(<\\/head>)/i', $meta . '\\1', $contents, 1);
         } elseif (preg_match('/<body[^>]*>/i', $contents)) {
@@ -117,7 +125,7 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
             $contents = $meta . $contents;
         }
     } elseif (strpos($contents, 'name="nv-popups-pageid"') === false) {
-        $meta2 = '<meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">' . $adminMeta;
+        $meta2 = '<meta name="nv-popups-pageid" content="' . $pageId . '"><meta name="nv-popups-module" content="' . $moduleMeta . '"><meta name="nv-popups-op" content="' . $opMeta . '">' . $checkssMeta . $adminMeta;
         if (stripos($contents, 'name="nv-popups"') !== false) {
             $contents = preg_replace('/(<meta\\s+name="nv-popups"[^>]*>)/i', '$1' . $meta2, $contents, 1);
         } elseif (stripos($contents, '</head>') !== false) {
@@ -137,7 +145,7 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
         }
     }
     if (strpos($contents, 'name="nv-popups-module"') === false || strpos($contents, 'name="nv-popups-op"') === false) {
-        $metaMO = '<meta name="nv-popups-module" content="' . ($module_name ?? '') . '"><meta name="nv-popups-op" content="' . ($op ?? '') . '">';
+        $metaMO = '<meta name="nv-popups-module" content="' . $moduleMeta . '"><meta name="nv-popups-op" content="' . $opMeta . '">' . $checkssMeta;
         if (stripos($contents, 'name="nv-popups-pageid"') !== false) {
             $contents = preg_replace('/(<meta\\s+name="nv-popups-pageid"[^>]*>)/i', '$1' . $metaMO, $contents, 1);
         } elseif (stripos($contents, 'name="nv-popups"') !== false) {
@@ -162,6 +170,21 @@ nv_add_hook('', 'change_site_buffer', $priority, function (&$args, $from_data, $
             $contents = preg_replace('/(<\\/head>)/i', $metaItem . '\\1', $contents, 1);
         } else {
             $contents = $metaItem . $contents;
+        }
+    }
+    if (strpos($contents, 'name="nv-popups-checkss"') === false) {
+        if (stripos($contents, 'name="nv-popups-op"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-op"[^>]*>)/i', '$1' . $checkssMeta, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups-module"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-module"[^>]*>)/i', '$1' . $checkssMeta, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups-pageid"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups-pageid"[^>]*>)/i', '$1' . $checkssMeta, $contents, 1);
+        } elseif (stripos($contents, 'name="nv-popups"') !== false) {
+            $contents = preg_replace('/(<meta\\s+name="nv-popups"[^>]*>)/i', '$1' . $checkssMeta, $contents, 1);
+        } elseif (stripos($contents, '</head>') !== false) {
+            $contents = preg_replace('/(<\\/head>)/i', $checkssMeta . '\\1', $contents, 1);
+        } else {
+            $contents = $checkssMeta . $contents;
         }
     }
 

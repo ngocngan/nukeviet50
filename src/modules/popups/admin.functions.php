@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 define('NV_IS_FILE_ADMIN', true);
@@ -23,7 +23,7 @@ $_arr_status = array (
     0 => $nv_Lang->getModule('status_0'),
     2 => $nv_Lang->getModule('status_2')
 );
-$arr_layout = array(    
+$arr_layout = array(
     1 => $nv_Lang->getModule('display_layout_1'),
     2 => $nv_Lang->getModule('display_layout_2')
 );
@@ -41,7 +41,7 @@ $arr_window_click = array(
     '_blank' => $nv_Lang->getModule('blank_click'),
     '_self' => $nv_Lang->getModule('self_click')
 );
-$arr_type_popup = array(    
+$arr_type_popup = array(
     'noti' => $nv_Lang->getModule('notification'),
     'prom' => $nv_Lang->getModule('promotions')
 );

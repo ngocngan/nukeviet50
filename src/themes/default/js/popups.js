@@ -9,10 +9,10 @@
     if (window.location && window.location.search) {
       if (typeof URLSearchParams === 'function') {
         var usp = new URLSearchParams(window.location.search);
-        previewId = parseInt(usp.get('popup_preview_id') || usp.get('preview_id') || usp.get('popup_id') || '0', 10) || 0;
+        previewId = parseInt(usp.get('popup_preview_id') || usp.get('preview_id') || usp.get('popup_id') || usp.get('preview') || '0', 10) || 0;
         previewOnly = parseInt(usp.get('popup_preview_only') || usp.get('preview_only') || usp.get('isonly') || '0', 10) || 0;
       } else {
-        var m = window.location.search.match(/[?&](?:popup_preview_id|preview_id|popup_id)=([0-9]+)/);
+        var m = window.location.search.match(/[?&](?:popup_preview_id|preview_id|popup_id|preview)=([0-9]+)/);
         if (m) previewId = parseInt(m[1] || '0', 10) || 0;
         var m2 = window.location.search.match(/[?&](?:popup_preview_only|preview_only|isonly)=([0-9]+)/);
         if (m2) previewOnly = parseInt(m2[1] || '0', 10) || 0;
@@ -137,13 +137,28 @@
       }
     }catch(e){}
   }
-  function track(url, id, act){
+  var __nvPopupsTrackCheckss = '';
+  function getTrackCheckssFromMeta(){
+    if (__nvPopupsTrackCheckss) return __nvPopupsTrackCheckss;
+    try{
+      var m = document.querySelector('meta[name="nv-popups-checkss"]');
+      if (m) {
+        __nvPopupsTrackCheckss = String(m.getAttribute('content') || '');
+      }
+    }catch(e){}
+    return __nvPopupsTrackCheckss;
+  }
+  function track(url, id, act, checkss){
     if(previewActive) return;
     if(!shouldTrack(id, act)) return;
     try{
       var fd = new FormData();
       fd.append("id", id);
       fd.append("act", act);
+      try{
+        var token = String(checkss || '') || getTrackCheckssFromMeta();
+        if (token) fd.append("checkss", token);
+      }catch(e){}
       if (typeof fetch === 'function') {
         fetch(url, {method:"POST", body: fd});
         return;
@@ -198,6 +213,7 @@
     var wrapperClass = isBs ? 'modal fade nv-popups-modal ' + layoutClass + ' ' : 'nv-popups-overlay nv-popups-modal ' + layoutClass + ' ';
     var wrapperId = 'nv-popups-modal-' + data.id;
     var wrapperAttrs = ' id="'+wrapperId+'" tabindex="-1" role="dialog" data-id="'+data.id+'" data-delay="'+data.delay+'" data-freq="'+data.freq+'" data-track-url="'+escapeHtml(data.track_url||'')+'"';
+    if (data.track_checkss) wrapperAttrs += ' data-track-checkss="'+escapeHtml(data.track_checkss||'')+'"';
     if (isBs) wrapperAttrs += backdrop;
     if (data.close_outside === 0) wrapperAttrs += ' data-close-outside="0"';
     var dialogOpen = isBs ? '<div class="modal-dialog modal-dialog-centered'+size+'" role="document">' : '<div class="nv-popups-dialog'+(data.layout === 2 ? ' nv-popups-lg' : '')+'" role="document">';
@@ -224,11 +240,17 @@
       if(!shouldShow(data)) { next(); return; }
       var el = buildModal(data);
       var trackUrl = data.track_url || '';
+      var trackCheckss = data.track_checkss || '';
+      if (!trackCheckss) {
+        try{
+          trackCheckss = String(el.getAttribute('data-track-checkss') || '') || '';
+        }catch(e){}
+      }
       setTimeout(function(){
         var useBs = hasBootstrapModal();
         var escHandler = null;
         var close = function(){
-          if(trackUrl){ track(trackUrl, data.id, 'close'); }
+          if(trackUrl){ track(trackUrl, data.id, 'close', trackCheckss); }
           if (!useBs) {
             if (escHandler) document.removeEventListener('keydown', escHandler);
             if (el && el.parentNode) el.parentNode.removeChild(el);
@@ -264,7 +286,7 @@
         }
 
         setShown(data);
-        if(trackUrl){ track(trackUrl, data.id, 'view'); }
+        if(trackUrl){ track(trackUrl, data.id, 'view', trackCheckss); }
 
         if (useBs) {
           el.addEventListener('hidden.bs.modal', function(){
@@ -285,7 +307,7 @@
           document.addEventListener('keydown', escHandler);
         }
         el.querySelectorAll('a').forEach(function(a){
-          a.addEventListener('click', function(){ if(trackUrl){ track(trackUrl, data.id, 'click'); } });
+          a.addEventListener('click', function(){ if(trackUrl){ track(trackUrl, data.id, 'click', trackCheckss); } });
         });
       }, Math.max(0, (data.delay||0) * 1000));
     }
