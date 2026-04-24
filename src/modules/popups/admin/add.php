@@ -175,7 +175,7 @@ if ($nv_Request->isset_request('save', 'post')) {
             $sth->bindValue(':created_time', NV_CURRENTTIME, PDO::PARAM_INT);
         } else {
             $sth = $db->prepare("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_detail SET
-                title=:title, description=:description, content=:content, popup_type=:popup_type, priority=:priority, status=:status, display_pages=:display_pages, is_all_page=:is_all_page, display_object=:display_object, display_layout=:display_layout, 
+                title=:title, description=:description, content=:content, popup_type=:popup_type, priority=:priority, status=:status, display_pages=:display_pages, is_all_page=:is_all_page, display_object=:display_object, display_layout=:display_layout,
                 display_type=:display_type, display_interval=:display_interval, max_show=:max_show, start_time=:start_time, end_time=:end_time, url=:url, type_open=:type_open, display_device=:display_device, css_class=:css_class, updated_time=:updated_time, created_by=:created_by
                 WHERE id = " . $id);
             $sth->bindValue(':updated_time', NV_CURRENTTIME, PDO::PARAM_INT);
@@ -206,7 +206,7 @@ if ($nv_Request->isset_request('save', 'post')) {
         }
         $nv_Cache->delMod($module_name);
         $redirect = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $id;
-        $respon['status'] = 'ok';
+        $respon['status'] = 'OK';
         $respon['redirect'] = $redirect;
         nv_jsonOutput($respon);
     }

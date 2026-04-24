@@ -24,7 +24,7 @@ $array_search['display_object'] = $nv_Request->get_int('display_object', 'get', 
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
 $array_search['t_start_time'] = nv_d2u_get($array_search['start_time']);
-$array_search['t_end_time'] = nv_d2u_get($array_search['end_time']);
+$array_search['t_end_time'] = nv_d2u_get($array_search['end_time'], 23, 59, 59);
 
 if (!empty($array_search['t_start_time']) && !empty($array_search['t_end_time']) && $array_search['t_start_time'] > $array_search['t_end_time']) {
     $array_search['start_time'] = '';
@@ -56,7 +56,7 @@ if (!empty($array_search['start_time'])) {
 }
 if (!empty($array_search['end_time'])) {
     $base_url .= '&amp;end_time=' . $array_search['end_time'];
-    $_where[] = "end_time<=" . $array_search['t_end_time'];
+    $_where[] = "end_time<=" . $array_search['t_end_time'] . " AND end_time > 0";
 }
 
 $db->sqlreset()
@@ -66,6 +66,7 @@ if (!empty($_where)) {
     $db->where(implode(' AND ', $_where));
     $where_statics = ' WHERE ' . implode(' AND ', $_where);
 }
+
 $sth = $db->prepare($db->sql());
 $sth->execute();
 $all_page = $sth->fetchColumn();

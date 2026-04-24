@@ -105,7 +105,7 @@ foreach ($site_mods as $mod => $info) {
 }
 
 $detail['start_time'] = nv_date('H:i d/m/Y', $detail['start_time']);
-$detail['end_time'] = nv_date('H:i d/m/Y', $detail['end_time']);
+$detail['end_time'] = !empty($detail['end_time']) ? nv_date('H:i d/m/Y', $detail['end_time']) : $nv_Lang->getModule('no_end_date');
 $detail['created_time'] = nv_date('H:i d/m/Y', $detail['created_time']);
 $detail['label_status'] = $detail['status'] == 1 ? 'success' : ($detail['status'] == 2 ? 'danger' : 'warning');
 $detail['status_txt'] = $nv_Lang->getModule('status_' . $detail['status']);

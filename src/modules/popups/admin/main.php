@@ -22,7 +22,7 @@ $array_search['display_layout'] = $nv_Request->get_int('display_layout', 'get', 
 $array_search['start_time'] = $nv_Request->get_title('start_time', 'get', '');
 $array_search['end_time'] = $nv_Request->get_title('end_time', 'get', '');
 $array_search['t_start_time'] = nv_d2u_get($array_search['start_time']);
-$array_search['t_end_time'] = nv_d2u_get($array_search['end_time']);
+$array_search['t_end_time'] = nv_d2u_get($array_search['end_time'], 23, 59, 59);
 $per_page = 15;
 
 $checkss = $nv_Request->get_title('checkss', 'post');
@@ -123,11 +123,11 @@ if (!empty($array_search['display_layout'])) {
 }
 if (!empty($array_search['t_start_time'])) {
     $base_url .= '&amp;start_time=' . $array_search['start_time'];
-    $_where[] = "start_time>=" . $array_search['t_start_time'];
+    $_where[] = "start_time >= " . $array_search['t_start_time'];
 }
 if (!empty($array_search['t_end_time'])) {
     $base_url .= '&amp;end_time=' . $array_search['end_time'];
-    $_where[] = "end_time<=" . $array_search['t_end_time'];
+    $_where[] = "(end_time <= " . $array_search['t_end_time'] . " AND end_time > 0)";
 }
 
 $db->sqlreset()
@@ -155,7 +155,7 @@ if ($page > 1) {
 while ($row = $sth->fetch()) {
     $row['stt'] = $stt++;
     $row['start_time'] = nv_date("H:i d/m/Y", $row['start_time']);
-    $row['end_time'] = nv_date("H:i d/m/Y", $row['end_time']);
+    $row['end_time'] = !empty($row['end_time']) ? nv_date('H:i d/m/Y', $row['end_time']) : $nv_Lang->getModule('no_end_date');
     $row['label_status'] = $row['status'] == 1 ? 'success' : ($row['status'] == 2 ? 'danger' : 'warning');
     $row['status'] = $nv_Lang->getModule('status_' . $row['status']);
     $row['popup_type'] = isset($arr_type_popup[$row['popup_type']]) ? $arr_type_popup[$row['popup_type']] : '';

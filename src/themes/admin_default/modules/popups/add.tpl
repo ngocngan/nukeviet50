@@ -8,8 +8,8 @@
 {if $ERROR}
 <div class="alert alert-danger">{$ERROR}</div>
 {/if}
-<div id="contentmod">              
-    <form id="form_add_new_popup" method="post" enctype="multipart/form-data" action="{$FORM_ACTION}" novalidate="novalidate">
+<div id="contentmod">
+    <form id="form_add_new_popup" method="post" class="ajax-submit" enctype="multipart/form-data" action="{$FORM_ACTION}" novalidate="novalidate">
         <input type="hidden" value="1" name="save" id="save">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
@@ -141,7 +141,7 @@
                                 {/foreach}
                             </select>
                         </td>
-                    </tr>                    
+                    </tr>
                     <tr>
                         <td>{$LANG->getModule('display_device')}:</td>
                         <td></td>
@@ -233,7 +233,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <p class="m-bottom">{$LANG->getModule('content')}:</p>
+                            <p class="m-bottom">{$LANG->getModule('content')}: <sup class="required">∗</sup></p>
                             <div class="position-relative">
                                 <div data-toggle="container-content_popup_html">
                                     {if $HAS_EDITOR}
@@ -266,71 +266,5 @@
                 $("#tr_display_interval").removeClass('hidden');
             }
         });
-        $('input[name="is_all_page"]').change(function(){
-            if ($(this).is(':checked')) {
-                $("#required_page").addClass('hidden');
-            } else {
-                $("#required_page").removeClass('hidden');
-            }
-        });
-        $("#start_time, #end_time").datepicker({
-            dateFormat : "dd/mm/yy",
-            changeMonth : true,
-            changeYear : true,
-            showOtherMonths : true,
-            showOn: 'focus'
-        });
-        $('#start-date-btn').click(function(){
-            $("#start_time").datepicker('show');
-        });
-        $('#end-date-btn').click(function(){
-            $("#end_time").datepicker('show');
-        });
-
-        // Toggle collapse
-        $('.module-header').click(function(e) {
-            if ($(e.target).is('input')) return;
-            let $item = $(this).closest('.module-item');
-            $item.toggleClass('open');
-            $(this).find('.toggle')
-                .html($item.hasClass('open') ? '<i class="fa fa-angle-down toggle fa-lg"></i>' : '<i class="fa fa-angle-right toggle fa-lg"></i>');
-        });
-
-        // Check module thì check all func
-        $('.module-checkbox').change(function() {
-            let module = $(this).data('module');
-            $('.func-checkbox[data-module="' + module + '"]').prop('checked', $(this).is(':checked'));
-            buildData();
-        });
-
-        // Check func thì chỉ cần build lại data
-        $('.func-checkbox').change(function() {
-            buildData();
-        });
-
-        let val = $('#display_pages').val();
-        if (val) {
-            let data = JSON.parse(val);
-            $.each(data, function(module, funcs) {
-                funcs.forEach(function(fun) {
-                    $('.func-checkbox[data-module="' + module + '"][value="' + fun + '"]').prop('checked', true);
-                });
-                $('.module-checkbox[data-module="' + module + '"]').prop('checked', true);
-            });
-        }
-
-        function buildData() {
-            let data = {};
-            $('.module-checkbox').each(function() {
-                let module = $(this).data('module');
-                let funcs = $('.func-checkbox[data-module="' + module + '"]:checked');
-                if (funcs.length === 0) return;
-                data[module] = [];
-                funcs.each(function() {
-                    data[module].push($(this).val());
-                });
-            });
-            $('#display_pages').val(JSON.stringify(data));
-        }
     });
 </script>

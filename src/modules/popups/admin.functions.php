@@ -33,7 +33,7 @@ $arr_device = array(
     3 => $nv_Lang->getModule('display_device_3')
 );
 $arr_object = array(
-    0 => $nv_Lang->getModule('all'),
+    3 => $nv_Lang->getModule('all_object'),
     1 => $nv_Lang->getModule('display_object_1'),
     2 => $nv_Lang->getModule('display_object_2')
 );

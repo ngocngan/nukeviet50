@@ -13,6 +13,15 @@
     margin-bottom: 24px;
 }
 
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.btn-status, .btn-status:hover, .btn-status:focus{
+    color: #fff;
+    box-shadow: none;
+}
+
 .popup-stat-card {
     border: 1px solid #e1e5eb;
     border-radius: 6px;
@@ -103,4 +112,10 @@
 
 .popup-tree label {
     margin-bottom: 0px;
+}
+
+#element_action_btn{
+    margin-left: -1;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

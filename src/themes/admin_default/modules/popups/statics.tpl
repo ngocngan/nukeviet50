@@ -4,7 +4,7 @@
 
 <div class="well">
     <form action="" method="get" id="form_search_popup">
-        <div class="row">            
+        <div class="row">
             <div class="col-xs-12 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label><strong>{$LANG->getModule('status')}:</strong></label>
@@ -30,7 +30,8 @@
             <div class="col-xs-12 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label><strong>{$LANG->getModule('display_object')}:</strong></label>
-                    <select class="form-control" name="display_object" data-default="0">
+                    <select class="form-control" name="display_object" data-default="0">\
+                        <option value="0">{$LANG->getModule('all_type_object')}</option>
                         {foreach from=$OBJECT key=key item=row}
                         <option value="{$key}" {if $key == $SEARCH.display_object} selected="selected" {/if}>{$row}</option>
                         {/foreach}
@@ -70,26 +71,26 @@
         </div>
     </form>
 </div>
-<div class="popup-stats-wrapper">    
+<div class="popup-stats-wrapper">
     <div class="popup-stat-card btn-success">
         <div class="stat-title">{$LANG->getModule('total_view')}</div>
-        <div class="stat-value">{$STATICS.total_view}</div>        
+        <div class="stat-value">{$STATICS.total_view}</div>
     </div>
     <div class="popup-stat-card btn-primary">
         <div class="stat-title">{$LANG->getModule('total_click')}</div>
-        <div class="stat-value">{$STATICS.total_click}</div>        
+        <div class="stat-value">{$STATICS.total_click}</div>
     </div>
     <div class="popup-stat-card btn-warning">
         <div class="stat-title">{$LANG->getModule('total_closed')}</div>
-        <div class="stat-value">{$STATICS.total_closed}</div>        
-    </div>    
+        <div class="stat-value">{$STATICS.total_closed}</div>
+    </div>
     <div class="popup-stat-card btn-info">
         <div class="stat-title">{$LANG->getModule('ctr_click_view')}</div>
-        <div class="stat-value">{$STATICS.ctr_click_view}</div>        
+        <div class="stat-value">{$STATICS.ctr_click_view}</div>
     </div>
     <div class="popup-stat-card btn-danger">
         <div class="stat-title">{$LANG->getModule('ctr_closed_view')}</div>
-        <div class="stat-value">{$STATICS.ctr_closed_view}</div>        
+        <div class="stat-value">{$STATICS.ctr_closed_view}</div>
     </div>
 </div>
 <div class="table-responsive">
@@ -108,7 +109,7 @@
         <tbody>
             {foreach from=$DATA item=row}
             <tr>
-                <td class="text-center">{$row.stt}</td>            
+                <td class="text-center">{$row.stt}</td>
                 <td><a href="{$row.link}">{$row.title}</a></td>
                 <td class="text-center">{$row.total_view}</td>
                 <td class="text-center">{$row.total_click}</td>
@@ -129,29 +130,4 @@
         {/if}
     </table>
 </div>
-<script type="text/javascript">
-$(function() {
-    form = $('#form_search_popup');
-    $('#btn_reset_form_search').on('click', function (e) {
-        e.preventDefault();
-        $("[data-default]", form).each(function() {
-            if ($(this).is("input[type=text], input[type=hidden], input[type=number]")) {
-                $(this).val($(this).attr("data-default"));
-            } else if ($(this).is("select")) {
-                $(this).val($(this).attr("data-default"));
-            }
-        });
-        $('html, body').animate({ scrollTop : $('#contentmod').offset().top }, 800);
-    });
-});
 
-$(document).ready(function() {
-    $("#start_time, #end_time").datepicker({
-        dateFormat : "dd/mm/yy",
-        changeMonth : true,
-        changeYear : true,
-        showOtherMonths : true,
-        showOn: 'focus'
-    });
-});
-</script>

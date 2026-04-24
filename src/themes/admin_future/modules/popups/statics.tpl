@@ -22,6 +22,7 @@
                 </div>
                 <div class="col-6 col-md-3">
                     <select class="form-control" name="display_object" data-default="0" aria-label="{$LANG->getModule('search_by')}">
+                        <option value="0">{$LANG->getModule('display_object')}</option>
                         {foreach from=$OBJECT key=key item=row}
                         <option value="{$key}" {if $key == $SEARCH.display_object} selected="selected" {/if}>{$row}</option>
                         {/foreach}
@@ -58,7 +59,7 @@
             </div>
         </form>
     </div>
-    <div class="card-body popup-stats-wrapper d-flex flex-wrap gap-3 p-4">    
+    <div class="card-body popup-stats-wrapper d-flex flex-wrap gap-3 p-4">
         <div class="popup-stat-card bg-success-subtle border-success-subtle text-success">
             <div class="stat-content">
                 <div class="stat-label text-secondary small">{$LANG->getModule('total_view')}</div>
@@ -122,7 +123,7 @@
                 <tbody>
                     {foreach from=$DATA item=row}
                     <tr>
-                        <td>{$row.stt}</td>            
+                        <td>{$row.stt}</td>
                         <td><a href="{$row.link}">{$row.title|escape:'html'}</a></td>
                         <td>{$row.total_view}</td>
                         <td>{$row.total_click}</td>
