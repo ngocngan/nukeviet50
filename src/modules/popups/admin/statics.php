@@ -52,11 +52,13 @@ if (!empty($array_search['display_object'])) {
 }
 if (!empty($array_search['start_time'])) {
     $base_url .= '&amp;start_time=' . $array_search['start_time'];
-    $_where[] = "start_time>=" . $array_search['t_start_time'];
+    // Popup phải kết thúc sau khi thời gian tìm kiếm bắt đầu (hoặc là popup giới hạn thời gian hiển thị)
+    $_where[] = "(end_time >= " . $array_search['t_start_time'] . " OR end_time = 0)";
 }
 if (!empty($array_search['end_time'])) {
     $base_url .= '&amp;end_time=' . $array_search['end_time'];
-    $_where[] = "end_time<=" . $array_search['t_end_time'] . " AND end_time > 0";
+    // Popup phải bắt đầu trước khi thời gian tìm kiếm kết thúc
+    $_where[] = "start_time <= " . $array_search['t_end_time'];
 }
 
 $db->sqlreset()

@@ -185,7 +185,7 @@ if ($nv_Request->get_int('list', 'get', 0) === 1) {
         $dev = (int) ($row['display_device'] ?: $config['display_device']);
         $obj = (string) ($row['display_object'] !== '' ? $row['display_object'] : $config['display_object']);
         $isDeviceOk = ($dev == 1) || ($client_info['is_mobile'] && $dev == 2) || ((!$client_info['is_mobile'] && !$client_info['is_tablet']) && $dev == 3);
-        $isObjectOk = ($obj === '0') || ((defined('NV_IS_USER')) ? ($obj === '1') : ($obj === '2'));
+        $isObjectOk = ($obj === '3') || ((defined('NV_IS_USER')) ? ($obj === '1') : ($obj === '2'));
         if (!$isDeviceOk || !$isObjectOk) {
             continue;
         }

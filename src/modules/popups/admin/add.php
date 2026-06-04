@@ -243,8 +243,8 @@ if (empty($array_data)) {
         $array_data['end_hour'] = 23;
         $array_data['end_minute'] = 59;
     }
-    $array_data['start_time'] = nv_date('d/m/Y', $array_data['start_time']);
-    $array_data['end_time'] = nv_date('d/m/Y', $array_data['end_time']);
+    $array_data['start_time'] = nv_date('d-m-Y', $array_data['start_time']);
+    $array_data['end_time'] = nv_date('d-m-Y', $array_data['end_time']);
 }
 if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
