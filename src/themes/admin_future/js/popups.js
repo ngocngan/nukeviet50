@@ -26,7 +26,7 @@ $(function() {
         btn.prop('disabled', true);
         let id_popup = btn.data('id');
         let checkss = btn.data('checkss');
-        nvConfirm(nv_is_del_confirm[0], function() {  
+        nvConfirm(nv_is_del_confirm[0], function() {
             $.ajax({
                 type: 'POST',
                 url: script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=' + nv_func_name + '&nocache=' + new Date().getTime(),
@@ -38,7 +38,10 @@ $(function() {
                 success: function (res) {
                     btn.prop('disabled', false);
                     if (res.status == 'success') {
-                        location.reload();
+                        nvToast(nv_is_del_confirm[1], 'success');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 700);
                         return;
                     }
                     nvToast(nv_is_del_confirm[2], 'error');
@@ -51,22 +54,24 @@ $(function() {
         }, function() {
             btn.prop('disabled', false);
         });
-    });  
+    });
 });
 
 $(document).ready(function() {
     var fmt = nv_jsdate_get.replace(/dd/g, 'd').replace(/mm/g, 'm').replace(/yyyy/g, 'Y');
-    $('#start_time, #end_time').flatpickr({
-        enableTime: false,
-        dateFormat: fmt,
-        ariaDateFormat: fmt,
-        locale: nv_lang_interface,
-        onOpen: function (selectedDates, dateStr, instance) {
-            if (instance.input.value.length == 0) {
-                instance.setDate(new Date());
+    if ($("#start_time, #end_time").length > 0) {
+        $('#start_time, #end_time').flatpickr({
+            enableTime: false,
+            dateFormat: fmt,
+            ariaDateFormat: fmt,
+            locale: nv_lang_interface,
+            onOpen: function (selectedDates, dateStr, instance) {
+                if (instance.input.value.length == 0) {
+                    instance.setDate(new Date());
+                }
             }
-        }
-    });
+        });
+    }
 
     $('#form_add_new_popup select[name="display_type"]').change(function(){
         if ($(this).val() != 3) {
@@ -243,7 +248,7 @@ function changePopupStatus(id, newStatus, textStatus, label, checkss) {
             } else {
                 nvToast(nv_is_change_act_confirm[2], 'error');
                 badge.removeClass('opacity-50');
-            }            
+            }
         },
         error: function (xhr, text, err) {
             badge.removeClass('opacity-50');

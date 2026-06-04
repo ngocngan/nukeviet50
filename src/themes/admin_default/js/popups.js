@@ -23,8 +23,9 @@ $(function() {
     $('.delete_popup').on('click', function (e) {
         e.preventDefault();
         let btn = $(this);
-         btn.prop('disabled', true);
+        btn.prop('disabled', true);
         id_popup = btn.data('id');
+        let checkss = btn.data('checkss');
         nvConfirm(nv_is_del_confirm[0], function() {
             $.ajax({
                 type: 'POST',
@@ -32,12 +33,15 @@ $(function() {
                 data: {
                     "delete": 1,
                     "id": id_popup,
-                    "checkss": '{$CHECKSS}',
+                    "checkss": checkss,
                 },
                 success: function (res) {
                     btn.prop('disabled', false);
-                    if (res == 'OK') {
-                        location.reload();
+                    if (res.status == 'success') {
+                        nvToast(nv_is_del_confirm[1], 'success');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 700);
                         return;
                     }
                     nvToast(nv_is_del_confirm[2], 'error');
@@ -49,6 +53,28 @@ $(function() {
             });
         }, function() {
             btn.prop('disabled', false);
+        });
+    });
+    $('.submit-form-ajax').on('submit', function(e) {
+        e.preventDefault();
+        $('input[type="submit"]').prop('disabled', true);
+        $.ajax({
+            type: 'POST',
+            url: this.action,
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(res) {
+                if (res.status == 'success') {
+                    nvToast(res.mess, 'success');
+                    $('input[type="submit"]').prop('disabled', false);
+                    if (res.redirect) {
+                        location.href = res.redirect;
+                    }
+                } else {
+                    nvToast(res.mess, 'error');
+                    $('input[type="submit"]').prop('disabled', false);
+                }
+            }
         });
     });
 });
@@ -141,14 +167,14 @@ $(document).ready(function() {
     }
 
     // Chọn 1 or nhiều popup và thực hiện các chức năng đổi trạng thái, xóa
-    $('[data-toggle="actionArticle"]').on('click', function (e) {
+    $('[data-toggle="actionPopup"]').on('click', function (e) {
         e.preventDefault();
         let btn = $(this);
         if (btn.is(':disabled')) {
             return;
         }
         let ctn = $(btn.data('ctn')), listid = [];
-        $('[data-toggle="checkSingle"]:checked', ctn).each(function () {
+        $('.checkbox_popup:checked', ctn).each(function () {
             listid.push($(this).val());
         });
         if (listid.length < 1) {
@@ -237,7 +263,7 @@ function changePopupStatus(id, newStatus, textStatus, label, checkss) {
         },
         success: function (res) {
             if (res.status == 'success') {
-                badge.removeClass('badge-success label-warning text-dark label-danger opacity-50');
+                badge.removeClass('badge-success label-warning text-dark label-danger opacity-50');;
                 badge.html(textStatus + ' <i class="fa fa-angle-down ml-1"></i>').addClass(label);
                 nvToast(nv_is_change_act_confirm[1], 'success');
             } else {

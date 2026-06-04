@@ -56,7 +56,7 @@ $array_data['display_layout'] = $array_data['display_layout'] ?? 1;
 $array_data['display_object'] = $array_data['display_object'] ?? 0;
 $array_data['popup_delay'] = $array_data['popup_delay'] ?? 0;
 $array_data['display_frequency'] = $array_data['display_frequency'] ?? 0;
-
+$array_data['checked'] = '';
 if (isset($array_data['close_on_outside_click']) && $array_data['close_on_outside_click'] == 1) {
     $array_data['checked'] = 'checked';
 }

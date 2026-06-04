@@ -66,75 +66,88 @@
         </div>
     </form>
 </div>
-<div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover vertical-align">
-        <thead class="tableFloatingHeaderOriginal">
-            <tr>
-                <th class="text-center w50">{$LANG->getModule('stt')}</th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('title')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('type_popup')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('display_layout')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('time_valid')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('status')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('statics')}</div></th>
-                <th class="text-center"><div class="inlineblock">{$LANG->getModule('action')}</div></th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach from=$DATA item=row}
-            <tr>
-                <td class="text-center">{$row.stt}</td>
-                <td><a href="{$row.link}">{$row.title}</a></td>
-                <td class="text-center">{$row.popup_type}</td>
-                <td class="text-center">{$row.display_layout}</td>
-                <td class="text-center"><span>{$row.start_time}</span><br/><span>{$row.end_time}</span></td>
-                <td class="text-center">
-                    <div class="dropdown" id="status-container-{$row.id}">
-                        <span class="label label-{$row.label_status} dropdown-toggle pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="badge-status-{$row.id}">
-                            {$row.status} <i class="fa fa-angle-down ml-1"></i>
-                        </span>
-                        <div class="dropdown-menu shadow border-0 py-2 list-group list-group-flush status-select-menu">
-                            <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 1, '{$LANG->getModule('status_1')}', 'badge-success', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-success">
-                                <i class="fa fa-check-circle mr-2"></i> {$LANG->getModule('status_1')}
-                            </a>
-                            <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 0, '{$LANG->getModule('status_0')}', 'label-warning text-dark', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-warning">
-                                <i class="fa fa-clock-o mr-2"></i> {$LANG->getModule('status_0')}
-                            </a>
-                            <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 2, '{$LANG->getModule('status_2')}', 'label-danger', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-danger">
-                                <i class="fa fa-ban mr-2"></i> {$LANG->getModule('status_2')}
-                            </a>
+<form class="navbar-form popup_list" name="block_list" action="">
+    <div class="table-responsive" id="list-news-items">
+        <table class="table table-striped table-bordered table-hover vertical-align">
+            <thead class="tableFloatingHeaderOriginal">
+                <tr>
+                    <th class="text-center"><input name="check_all[]" type="checkbox" value="yes" onclick="nv_checkAll(this.form, 'idcheck[]', 'check_all[]',this.checked);" /></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('title')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('type_popup')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('display_layout')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('time_valid')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('status')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('statics')}</div></th>
+                    <th class="text-center"><div class="inlineblock">{$LANG->getModule('action')}</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$DATA item=row}
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="checkbox_popup" onclick="nv_UncheckAll(this.form, 'idcheck[]', 'check_all[]', this.checked);" value="{$row.id}" name="idcheck[]" />
+                    </td>
+                    <td><a href="{$row.link}">{$row.title}</a></td>
+                    <td class="text-center">{$row.popup_type}</td>
+                    <td class="text-center">{$row.display_layout}</td>
+                    <td class="text-center"><span>{$row.start_time}</span><br/><span>{$row.end_time}</span></td>
+                    <td class="text-center">
+                        <div class="dropdown" id="status-container-{$row.id}">
+                            <span class="label label-{$row.label_status} badge-status-{$row.id} dropdown-toggle pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="badge-status-{$row.id}">
+                                {$row.status} <i class="fa fa-angle-down ml-1"></i>
+                            </span>
+                            <div class="dropdown-menu shadow border-0 py-2 list-group list-group-flush status-select-menu">
+                                <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 1, '{$LANG->getModule('status_1')}', 'label-success', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-success">
+                                    <i class="fa fa-check-circle mr-2"></i> {$LANG->getModule('status_1')}
+                                </a>
+                                <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 0, '{$LANG->getModule('status_0')}', 'label-warning text-dark', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-warning">
+                                    <i class="fa fa-clock-o mr-2"></i> {$LANG->getModule('status_0')}
+                                </a>
+                                <a href="javascript:void(0)" onclick="changePopupStatus({$row.id}, 2, '{$LANG->getModule('status_2')}', 'label-danger', '{$CHECKSS}')" class="list-group-item list-group-item-action py-2 text-danger">
+                                    <i class="fa fa-ban mr-2"></i> {$LANG->getModule('status_2')}
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td class="text-center">
-                    <span title="{$LANG->getModule('total_view')}" class="{if $row.total_view > 0}text-primary {else}text-muted{/if}">
-                        <strong><i class="fa fa-eye"></i> {$row.total_view}</strong>
-                    </span>
+                    </td>
+                    <td class="text-center">
+                        <span title="{$LANG->getModule('total_view')}" class="{if $row.total_view > 0}text-primary {else}text-muted{/if}">
+                            <strong><i class="fa fa-eye"></i> {$row.total_view}</strong>
+                        </span>
 
-                    <span title="{$LANG->getModule('total_click')}" class="{if $row.total_click > 0}text-success{else}text-muted{/if} margin-left-lg">
-                        <strong><i class="fa fa-mouse-pointer"></i> {$row.total_click}</strong>
-                    </span>
+                        <span title="{$LANG->getModule('total_click')}" class="{if $row.total_click > 0}text-success{else}text-muted{/if} margin-left-lg">
+                            <strong><i class="fa fa-mouse-pointer"></i> {$row.total_click}</strong>
+                        </span>
 
-                    <span title="{$LANG->getModule('total_closed')}" class="{if $row.total_closed > 0}text-danger{else}text-muted{/if} margin-left-lg">
-                        <strong><i class="fa fa-times-circle"></i> {$row.total_closed}</strong>
-                    </span>
-                </td>
-                <td class="text-center">
-                    <a href="{$row.link_preview}" title="{$LANG->getModule('preview_popup')}" class="btn btn-primary btn-xs"><em class="fa fa-eye fa-xs"></em></a>
-                    <a href="{$row.link_edit}" title="{$LANG->getModule('edit')}" class="btn btn-primary btn-xs margin-left"><em class="fa fa-edit fa-xs"></em></a>
-                    <button type="button" title="{$LANG->getModule('delete')}" class="btn btn-danger btn-xs delete_popup margin-left" data-id={$row.id}><em class="fa fa-trash-o fa-xs"></em></button>
-                </td>
-            </tr>
-            {/foreach}
-        </tbody>
-        {if not empty($GENERATE_PAGE)}
-        <tfoot class="text-center">
-            <tr>
-                <td colspan="10">
-                    {$GENERATE_PAGE}
-                </td>
-            </tr>
-        </tfoot>
-        {/if}
-    </table>
-</div>
+                        <span title="{$LANG->getModule('total_closed')}" class="{if $row.total_closed > 0}text-danger{else}text-muted{/if} margin-left-lg">
+                            <strong><i class="fa fa-times-circle"></i> {$row.total_closed}</strong>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a href="{$row.link_preview}" title="{$LANG->getModule('preview_popup')}" class="btn btn-primary btn-xs"><em class="fa fa-eye fa-xs"></em></a>
+                        <a href="{$row.link_edit}" title="{$LANG->getModule('edit')}" class="btn btn-primary btn-xs margin-left"><em class="fa fa-edit fa-xs"></em></a>
+                        <button type="button" title="{$LANG->getModule('delete')}" class="btn btn-danger btn-xs delete_popup margin-left" data-checkss="{$CHECKSS}" data-id={$row.id}><em class="fa fa-trash-o fa-xs"></em></button>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+            <tfoot>
+                <tr class="text-left">
+                    <td colspan="2">
+                        <select class="form-control w150" name="action" id="element_action">
+                            {foreach from=$ACTIONS key=action item=title}
+                            <option value="{$action}">{$title}</option>
+                            {/foreach}
+                        </select>
+                        <input type="button" class="btn btn-primary" data-toggle="actionPopup" data-checksess="{$CHECKSS}" data-ctn="#list-news-items" value="{$LANG->getModule('action')}" />
+                    </td>
+                    {if not empty($GENERATE_PAGE)}
+                        <td colspan="6" class="text-right">
+                            {$GENERATE_PAGE}
+                        </td>
+                    </tfoot>
+                    {/if}
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</form>

@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form action="" method="post" class="submit-form-ajax">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <tbody>
@@ -34,7 +34,7 @@
                         </select>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td>{$LANG->getModule('display_device')}</td>
                     <td>
@@ -51,6 +51,7 @@
             </tbody>
         </table>
         <input type="hidden" name="checkss" value="{$CHECKSS}">
+        <input type="hidden" name="submit" value="1">
         <div class="text-center"><input class="btn btn-primary" name="submit" type="submit" value="{$LANG->getModule('save')}"></div>
     </div>
 </form>
